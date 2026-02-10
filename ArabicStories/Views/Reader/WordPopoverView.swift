@@ -18,6 +18,23 @@ struct WordPopoverView: View {
     @State private var showExampleSentences = false
     @State private var dragOffset: CGSize = .zero
     
+    init(word: Word, position: CGPoint, isLearned: Bool, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void, onAddToFlashcards: @escaping () -> Void) {
+        self.word = word
+        self.position = position
+        self.isLearned = isLearned
+        self.onClose = onClose
+        self.onBookmark = onBookmark
+        self.onPlayAudio = onPlayAudio
+        self.onAddToFlashcards = onAddToFlashcards
+        
+        print("🎯 WordPopoverView showing word:")
+        print("   Arabic: '\(word.arabicText)'")
+        print("   English: '\(word.englishMeaning)'")
+        print("   Transliteration: '\(word.transliteration ?? "N/A")'")
+        print("   Part of Speech: '\(word.partOfSpeech?.displayName ?? "N/A")'")
+        print("   Root Letters: '\(word.rootLetters ?? "N/A")'")
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -59,19 +76,21 @@ struct WordPopoverView: View {
                             }
                             
                             // Transliteration
-                            Text(word.transliteration)
+                            Text(word.transliteration ?? "")
                                 .font(.title3)
                                 .foregroundStyle(.secondary)
                             
                             // Part of Speech Badge
                             HStack(spacing: 8) {
-                                Label(word.partOfSpeech.displayName, systemImage: word.partOfSpeech.icon)
-                                    .font(.caption.weight(.medium))
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 5)
-                                    .background(Color.hikayaTeal.opacity(0.15))
-                                    .foregroundStyle(Color.hikayaTeal)
-                                    .clipShape(Capsule())
+                                if let pos = word.partOfSpeech {
+                                    Label(pos.displayName, systemImage: pos.icon)
+                                        .font(.caption.weight(.medium))
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .background(Color.hikayaTeal.opacity(0.15))
+                                        .foregroundStyle(Color.hikayaTeal)
+                                        .clipShape(Capsule())
+                                }
                                 
                                 if let root = word.rootLetters {
                                     Label("Root: \(root)", systemImage: "link")
@@ -111,9 +130,9 @@ struct WordPopoverView: View {
                                 
                                 // Bookmark Button
                                 ActionButton(
-                                    icon: word.isBookmarked ? "bookmark.fill" : "bookmark",
-                                    title: word.isBookmarked ? "Saved" : "Save",
-                                    color: word.isBookmarked ? .hikayaOrange : .gray
+                                    icon: word.isBookmarked ?? false ? "bookmark.fill" : "bookmark",
+                                    title: word.isBookmarked ?? false ? "Saved" : "Save",
+                                    color: word.isBookmarked ?? false ? .hikayaOrange : .gray
                                 ) {
                                     onBookmark()
                                 }
@@ -277,7 +296,7 @@ struct SRSStatusView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "star.fill")
                         .font(.caption)
-                    Text(word.masteryLevel.displayName)
+                    Text(word.masteryLevel?.displayName ?? "")
                         .font(.caption.weight(.semibold))
                 }
                 .foregroundStyle(masteryColor)
@@ -329,6 +348,8 @@ struct SRSStatusView: View {
         case .familiar: return .orange
         case .mastered: return .blue
         case .known: return .green
+        case .none:
+            return .black
         }
     }
     
@@ -359,17 +380,11 @@ struct SRSStatusView: View {
                 englishMeaning: "city",
                 partOfSpeech: .noun,
                 rootLetters: "م د ن",
-                tashkeel: "مَدِينَة",
                 exampleSentences: [
                     ExampleSentence(
                         arabic: "القاهرة مدينة كبيرة.",
                         transliteration: "Al-qāhira madīna kabīra.",
                         english: "Cairo is a big city."
-                    ),
-                    ExampleSentence(
-                        arabic: "أحب مدينتي.",
-                        transliteration: "Uḥibbu madīnatī.",
-                        english: "I love my city."
                     )
                 ],
                 difficulty: 1,

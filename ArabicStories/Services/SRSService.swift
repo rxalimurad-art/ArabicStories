@@ -135,11 +135,11 @@ class SRSService {
         let allWords = await dataService.fetchAllWords()
         guard !allWords.isEmpty else { return 0.0 }
         
-        let reviewedWords = allWords.filter { $0.reviewCount > 0 }
+        let reviewedWords = allWords.filter { $0.reviewCount ?? 0 > 0 }
         guard !reviewedWords.isEmpty else { return 0.0 }
         
         let successfulReviews = reviewedWords.filter { word in
-            word.easeFactor >= 2.5
+            word.easeFactor ?? 0 >= 2.5
         }
         
         return Double(successfulReviews.count) / Double(reviewedWords.count)

@@ -10,11 +10,11 @@ struct Word: Identifiable, Codable, Hashable {
     // MARK: - Identification
     var id: UUID
     var arabicText: String
-    var transliteration: String
+    var transliteration: String?
     var englishMeaning: String
     
     // MARK: - Linguistic Metadata
-    var partOfSpeech: PartOfSpeech
+    var partOfSpeech: PartOfSpeech?
     var rootLetters: String?
     var tashkeel: String?
     
@@ -24,30 +24,82 @@ struct Word: Identifiable, Codable, Hashable {
     var difficulty: Int
     
     // MARK: - SRS (Spaced Repetition) Fields
-    var isBookmarked: Bool
-    var reviewCount: Int
+    var isBookmarked: Bool?
+    var reviewCount: Int?
     var nextReviewDate: Date?
     var lastReviewDate: Date?
-    var interval: Double
-    var easeFactor: Double
-    var masteryLevel: MasteryLevel
+    var interval: Double?
+    var easeFactor: Double?
+    var masteryLevel: MasteryLevel?
     
     // MARK: - Timestamps
     var createdAt: Date
     var updatedAt: Date
     
+    // MARK: - Coding Keys
+    enum CodingKeys: String, CodingKey {
+        case id
+        case arabicText = "arabic"
+        case transliteration
+        case englishMeaning = "english"
+        case partOfSpeech
+        case rootLetters
+        case tashkeel
+        case exampleSentences
+        case audioPronunciationURL
+        case difficulty
+        case isBookmarked
+        case reviewCount
+        case nextReviewDate
+        case lastReviewDate
+        case interval
+        case easeFactor
+        case masteryLevel
+        case createdAt
+        case updatedAt
+    }
+    
+    // MARK: - Custom Decoding
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(UUID.self, forKey: .id)
+        arabicText = try container.decode(String.self, forKey: .arabicText)
+        transliteration = try container.decodeIfPresent(String.self, forKey: .transliteration)
+        englishMeaning = try container.decode(String.self, forKey: .englishMeaning)
+        partOfSpeech = try container.decodeIfPresent(PartOfSpeech.self, forKey: .partOfSpeech)
+        rootLetters = try container.decodeIfPresent(String.self, forKey: .rootLetters)
+        tashkeel = try container.decodeIfPresent(String.self, forKey: .tashkeel)
+        exampleSentences = try container.decodeIfPresent([ExampleSentence].self, forKey: .exampleSentences)
+        audioPronunciationURL = try container.decodeIfPresent(String.self, forKey: .audioPronunciationURL)
+        difficulty = try container.decode(Int.self, forKey: .difficulty)
+        isBookmarked = try container.decodeIfPresent(Bool.self, forKey: .isBookmarked) ?? false
+        reviewCount = try container.decodeIfPresent(Int.self, forKey: .reviewCount) ?? 0
+        nextReviewDate = try container.decodeIfPresent(Date.self, forKey: .nextReviewDate)
+        lastReviewDate = try container.decodeIfPresent(Date.self, forKey: .lastReviewDate)
+        interval = try container.decodeIfPresent(Double.self, forKey: .interval) ?? 0
+        easeFactor = try container.decodeIfPresent(Double.self, forKey: .easeFactor) ?? 2.5
+        masteryLevel = try container.decodeIfPresent(MasteryLevel.self, forKey: .masteryLevel) ?? .new
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+    }
+    
     init(
         id: UUID = UUID(),
         arabicText: String,
-        transliteration: String,
+        transliteration: String? = nil,
         englishMeaning: String,
-        partOfSpeech: PartOfSpeech,
+        partOfSpeech: PartOfSpeech? = nil,
         rootLetters: String? = nil,
         tashkeel: String? = nil,
         exampleSentences: [ExampleSentence]? = nil,
         audioPronunciationURL: String? = nil,
         difficulty: Int = 1,
-        isBookmarked: Bool = false
+        isBookmarked: Bool? = false,
+        reviewCount: Int? = 0,
+        interval: Double? = 0,
+        easeFactor: Double? = 2.5,
+        masteryLevel: MasteryLevel? = .new
     ) {
         self.id = id
         self.arabicText = arabicText
@@ -60,10 +112,10 @@ struct Word: Identifiable, Codable, Hashable {
         self.audioPronunciationURL = audioPronunciationURL
         self.difficulty = difficulty
         self.isBookmarked = isBookmarked
-        self.reviewCount = 0
-        self.interval = 0
-        self.easeFactor = 2.5
-        self.masteryLevel = .new
+        self.reviewCount = reviewCount
+        self.interval = interval
+        self.easeFactor = easeFactor
+        self.masteryLevel = masteryLevel
         self.createdAt = Date()
         self.updatedAt = Date()
     }
@@ -82,29 +134,35 @@ struct Word: Identifiable, Codable, Hashable {
     mutating func processReviewResponse(quality: ResponseQuality) {
         let q = quality.rawValue
         
+        // Initialize SRS values if nil
+        let currentEaseFactor = easeFactor ?? 2.5
+        let currentInterval = interval ?? 0
+        let currentReviewCount = reviewCount ?? 0
+        let currentMasteryLevel = masteryLevel ?? .new
+        
         // Update ease factor
         let qualityPenalty = 5 - q
         let easeAdjustment = 0.1 - Double(qualityPenalty) * (0.08 + Double(qualityPenalty) * 0.02)
-        easeFactor = max(1.3, easeFactor + easeAdjustment)
+        easeFactor = max(1.3, currentEaseFactor + easeAdjustment)
         
         // Update interval
         if q < 3 {
             interval = 0
             masteryLevel = .learning
         } else {
-            if reviewCount == 0 {
+            if currentReviewCount == 0 {
                 interval = 1
-            } else if reviewCount == 1 {
+            } else if currentReviewCount == 1 {
                 interval = 6
             } else {
-                interval = round(interval * easeFactor)
+                interval = round(currentInterval * currentEaseFactor)
             }
-            masteryLevel = masteryLevel.nextLevel()
+            masteryLevel = currentMasteryLevel.nextLevel()
         }
         
-        reviewCount += 1
+        reviewCount = currentReviewCount + 1
         lastReviewDate = Date()
-        nextReviewDate = Calendar.current.date(byAdding: .day, value: Int(interval), to: Date())
+        nextReviewDate = Calendar.current.date(byAdding: .day, value: Int(interval ?? 0), to: Date())
         updatedAt = Date()
     }
     

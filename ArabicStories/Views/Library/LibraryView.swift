@@ -134,7 +134,7 @@ struct DifficultyFilterBar: View {
                 ForEach(levels, id: \.self) { level in
                     FilterChip(
                         title: "L\(level)",
-                        subtitle: "\(counts[level] ?? 0)",
+                        
                         isSelected: selectedLevel == level,
                         color: difficultyColor(for: level)
                     ) {
@@ -443,6 +443,7 @@ struct LoadingView: View {
 
 struct EmptyLibraryView: View {
     let hasFilters: Bool
+    @State private var isSeeding = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -459,9 +460,65 @@ struct EmptyLibraryView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+            
+            if !hasFilters {
+                Button {
+                    Task {
+                        isSeeding = true
+                        await seedSampleStories()
+                        isSeeding = false
+                    }
+                } label: {
+                    if isSeeding {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                    } else {
+                        Label("Add Sample Story", systemImage: "plus.circle")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .padding(.top)
+                .disabled(isSeeding)
+            }
         }
         .padding()
         .frame(maxHeight: .infinity)
+    }
+    
+    private func seedSampleStories() async {
+        // This is a temporary function for testing
+        // In production, use the web admin panel
+        let sampleStory = Story(
+            title: "The Friendly Cat",
+            titleArabic: "القطة الودودة",
+            storyDescription: "A simple story about a friendly cat who helps a lost bird find its way home.",
+            storyDescriptionArabic: "قصة بسيطة عن قطة ودودة تساعد عصفوراً ضالاً في إيجاد طريقه إلى المنزل.",
+            author: "Hikaya Test",
+            difficultyLevel: 1,
+            category: .children,
+            tags: ["animals", "friendship"],
+            coverImageURL: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800",
+            segments: [
+                StorySegment(
+                    index: 0,
+                    arabicText: "في يوم مشمس، كانت هناك قطة صغيرة اسمها لولو.",
+                    englishText: "On a sunny day, there was a small cat named Lulu.",
+                    transliteration: "Fī yawm mushmis, kānat hunā qiṭṭa ṣaghīra ismuhā Lūlū."
+                ),
+                StorySegment(
+                    index: 1,
+                    arabicText: "سمعت لولو صوتاً ضعيفاً قادماً من الشجرة.",
+                    englishText: "Lulu heard a weak voice coming from the tree.",
+                    transliteration: "Samiʿat Lūlū ṣawtan ḍaʿīfan qādiman min al-shajara."
+                )
+            ]
+        )
+        
+        do {
+            try await FirebaseService.shared.saveStory(sampleStory)
+        } catch {
+            print("Failed to seed: \(error)")
+        }
     }
 }
 

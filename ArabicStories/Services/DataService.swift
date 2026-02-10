@@ -30,9 +30,13 @@ class DataService {
         isLoadingPublisher.send(true)
         defer { isLoadingPublisher.send(false) }
         
+        print("📱 DataService: Fetching all stories...")
+        
         do {
             // Try to fetch from Firebase first
+            print("📱 DataService: Calling firebaseService.fetchStories()")
             let stories = try await firebaseService.fetchStories()
+            print("📱 DataService: Got \(stories.count) stories from Firebase")
             
             // Cache locally
             await localCache.saveStories(stories)
@@ -40,9 +44,11 @@ class DataService {
             storiesPublisher.send(stories)
             return stories
         } catch {
+            print("📱 DataService: Error fetching from Firebase: \(error)")
             // Fallback to cache
             errorPublisher.send(error)
             let cachedStories = await localCache.fetchStories()
+            print("📱 DataService: Returning \(cachedStories.count) cached stories")
             return cachedStories
         }
     }
@@ -146,7 +152,7 @@ class DataService {
     
     func fetchBookmarkedWords() async -> [Word] {
         let words = await fetchAllWords()
-        return words.filter { $0.isBookmarked }
+        return words.filter { $0.isBookmarked ?? false }
     }
     
     func fetchWordsDueForReview() async -> [Word] {

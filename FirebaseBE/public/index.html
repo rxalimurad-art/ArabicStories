@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arabic Stories Admin</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="app">
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <h1>🕌 Arabic Stories Admin</h1>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn active" data-view="stories">📚 Stories</button>
+        <button class="nav-btn" data-view="create">➕ New Story</button>
+        <button class="nav-btn" data-view="import">📤 Import</button>
+      </nav>
+      <div class="header-actions">
+        <button id="settings-btn" class="btn btn-icon" title="API Settings">⚙️</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <!-- Stories List View -->
+      <div id="stories-view" class="view">
+        <div class="view-header">
+          <h2>📚 All Stories</h2>
+          <div class="search-box">
+            <input type="text" id="story-search" placeholder="Search stories...">
+            <button id="refresh-stories" class="btn btn-icon">🔄</button>
+          </div>
+        </div>
+        
+        <div id="stories-list" class="stories-grid">
+          <div class="loading">Loading stories...</div>
+        </div>
+        
+        <div id="stories-pagination" class="pagination hidden">
+          <button id="prev-page" class="btn btn-secondary">Previous</button>
+          <span id="page-info">Page 1</span>
+          <button id="next-page" class="btn btn-secondary">Next</button>
+        </div>
+      </div>
+
+      <!-- Create/Edit Story View -->
+      <div id="create-view" class="view hidden">
+        <div class="view-header">
+          <h2 id="form-title">➕ Create New Story</h2>
+          <div class="form-actions">
+            <button id="validate-btn" class="btn btn-secondary">Validate</button>
+            <button id="save-draft-btn" class="btn btn-secondary">Save Draft</button>
+            <button id="publish-btn" class="btn btn-primary">Publish Story</button>
+          </div>
+        </div>
+
+        <form id="story-form" class="story-form">
+          <input type="hidden" id="story-id">
+          
+          <!-- Basic Info Section -->
+          <section class="form-section">
+            <h3>📖 Basic Information</h3>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="story-title">Title (English) *</label>
+                <input type="text" id="story-title" required placeholder="Story title">
+              </div>
+              <div class="form-group">
+                <label for="story-title-arabic">Title (Arabic)</label>
+                <input type="text" id="story-title-arabic" dir="rtl" placeholder="عنوان القصة">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group form-group-wide">
+                <label for="story-desc">Description (English) *</label>
+                <textarea id="story-desc" rows="3" required placeholder="Brief description of the story"></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group form-group-wide">
+                <label for="story-desc-arabic">Description (Arabic)</label>
+                <textarea id="story-desc-arabic" rows="3" dir="rtl" placeholder="وصف موجز للقصة"></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="story-author">Author *</label>
+                <input type="text" id="story-author" required placeholder="Author name">
+              </div>
+              <div class="form-group">
+                <label for="story-difficulty">Difficulty Level *</label>
+                <select id="story-difficulty" required>
+                  <option value="1">1 - Beginner</option>
+                  <option value="2">2 - Elementary</option>
+                  <option value="3">3 - Intermediate</option>
+                  <option value="4">4 - Advanced</option>
+                  <option value="5">5 - Expert</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="story-category">Category *</label>
+                <select id="story-category" required>
+                  <option value="general">General</option>
+                  <option value="folktale">Folktale</option>
+                  <option value="history">History</option>
+                  <option value="science">Science</option>
+                  <option value="culture">Culture</option>
+                  <option value="adventure">Adventure</option>
+                  <option value="mystery">Mystery</option>
+                  <option value="romance">Romance</option>
+                  <option value="children">Children</option>
+                  <option value="religious">Religious</option>
+                  <option value="poetry">Poetry</option>
+                  <option value="modern">Modern</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="story-tags">Tags (comma separated)</label>
+                <input type="text" id="story-tags" placeholder="animals, friendship, adventure">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group form-group-wide">
+                <label for="story-cover">Cover Image URL</label>
+                <input type="url" id="story-cover" placeholder="https://example.com/image.jpg">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group form-group-wide">
+                <label for="story-audio">Audio Narration URL</label>
+                <input type="url" id="story-audio" placeholder="https://example.com/audio.mp3">
+              </div>
+            </div>
+          </section>
+
+          <!-- Segments Section -->
+          <section class="form-section">
+            <div class="section-header">
+              <h3>📝 Story Segments</h3>
+              <button type="button" id="add-segment-btn" class="btn btn-small btn-primary">+ Add Segment</button>
+            </div>
+            
+            <div id="segments-container">
+              <!-- Segments will be added here dynamically -->
+            </div>
+            
+            <div id="empty-segments" class="empty-state">
+              <p>No segments yet. Click "Add Segment" to start building your story.</p>
+            </div>
+          </section>
+
+          <!-- Vocabulary Section -->
+          <section class="form-section">
+            <div class="section-header">
+              <h3>📚 Vocabulary Words</h3>
+              <button type="button" id="add-word-btn" class="btn btn-small btn-primary">+ Add Word</button>
+            </div>
+            
+            <div id="words-container">
+              <!-- Words will be added here dynamically -->
+            </div>
+            
+            <div id="empty-words" class="empty-state">
+              <p>No vocabulary words yet. Click "Add Word" to add words from the story.</p>
+            </div>
+          </section>
+        </form>
+
+        <!-- Validation Results -->
+        <div id="validation-results" class="validation-panel hidden">
+          <h4>Validation Results</h4>
+          <div id="validation-content"></div>
+        </div>
+      </div>
+
+      <!-- Import/Export View -->
+      <div id="import-view" class="view hidden">
+        <div class="view-header">
+          <h2>📤 Import / Export</h2>
+        </div>
+
+        <div class="import-export-grid">
+          <section class="form-section">
+            <h3>📥 Import Story</h3>
+            <p>Import a story from JSON file</p>
+            
+            <div class="form-group">
+              <label for="import-file">Select JSON file</label>
+              <input type="file" id="import-file" accept=".json">
+            </div>
+            
+            <div class="form-group">
+              <label for="import-json">Or paste JSON here</label>
+              <textarea id="import-json" rows="10" placeholder='{"title": "...", "segments": [...]}'></textarea>
+            </div>
+            
+            <button id="import-btn" class="btn btn-primary">Import Story</button>
+            <div id="import-preview" class="import-preview hidden"></div>
+          </section>
+
+          <section class="form-section">
+            <h3>📤 Export Stories</h3>
+            <p>Export all stories or selected story</p>
+            
+            <div class="form-group">
+              <label>Export Options</label>
+              <button id="export-all-btn" class="btn btn-secondary btn-block">Export All Stories</button>
+              <button id="export-template-btn" class="btn btn-secondary btn-block">Download Template</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>⚠️ Confirm Delete</h3>
+        <p>Are you sure you want to delete this story? This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
+          <button id="confirm-delete" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>⚙️ API Settings</h3>
+        <p>Configure the API base URL (leave empty for same-origin)</p>
+        
+        <div class="form-group">
+          <label for="api-base-url">API Base URL</label>
+          <input type="url" id="api-base-url" placeholder="http://localhost:5001/project/us-central1">
+          <small>For local development with emulators</small>
+        </div>
+        
+        <div class="modal-actions">
+          <button id="cancel-settings" class="btn btn-secondary">Cancel</button>
+          <button id="save-settings" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Templates -->
+  <template id="segment-template">
+    <div class="segment-card" data-index="{index}">
+      <div class="segment-header">
+        <span class="segment-number">Segment {number}</span>
+        <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Arabic Text *</label>
+          <textarea class="segment-arabic" rows="3" dir="rtl" required placeholder="النص العربي"></textarea>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>English Text *</label>
+          <textarea class="segment-english" rows="3" required placeholder="English translation"></textarea>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Transliteration</label>
+          <input type="text" class="segment-transliteration" placeholder="Arabic transliteration">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Audio Start (seconds)</label>
+          <input type="number" class="segment-audio-start" min="0" step="0.1" placeholder="0.0">
+        </div>
+        <div class="form-group">
+          <label>Audio End (seconds)</label>
+          <input type="number" class="segment-audio-end" min="0" step="0.1" placeholder="0.0">
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="word-template">
+    <div class="word-card" data-index="{index}">
+      <div class="word-header">
+        <span class="word-number">Word {number}</span>
+        <button type="button" class="btn btn-icon btn-danger remove-word">✕</button>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Arabic *</label>
+          <input type="text" class="word-arabic" dir="rtl" required placeholder="كلمة">
+        </div>
+        <div class="form-group">
+          <label>English *</label>
+          <input type="text" class="word-english" required placeholder="Translation">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Transliteration</label>
+          <input type="text" class="word-transliteration" placeholder="Transliteration">
+        </div>
+        <div class="form-group">
+          <label>Part of Speech</label>
+          <select class="word-pos">
+            <option value="">Select...</option>
+            <option value="noun">Noun</option>
+            <option value="verb">Verb</option>
+            <option value="adjective">Adjective</option>
+            <option value="adverb">Adverb</option>
+            <option value="preposition">Preposition</option>
+            <option value="pronoun">Pronoun</option>
+            <option value="particle">Particle</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Root Letters</label>
+          <input type="text" class="word-root" dir="rtl" placeholder="أصل الكلمة">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Example Sentence</label>
+          <input type="text" class="word-example" dir="rtl" placeholder="Example usage">
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -52,6 +52,39 @@ struct Story: Identifiable, Codable, Hashable {
     var createdAt: Date
     var updatedAt: Date
     
+    // MARK: - Coding Keys
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case titleArabic
+        case storyDescription
+        case storyDescriptionArabic
+        case author
+        case difficultyLevel
+        case category
+        case tags
+        case coverImageURL
+        case audioNarrationURL
+        case segments
+        case words
+        case grammarNotes
+        case isUserCreated
+        case isDownloaded
+        case downloadDate
+        case sourceURL
+        case readingProgress
+        case currentSegmentIndex
+        case lastReadDate
+        case completedWords
+        case isBookmarked
+        case totalReadingTime
+        case viewCount
+        case completionCount
+        case averageRating
+        case createdAt
+        case updatedAt
+    }
+    
     init(
         id: UUID = UUID(),
         title: String,
@@ -245,6 +278,20 @@ struct StorySegment: Identifiable, Codable, Hashable {
     // Translation notes
     var culturalNote: String?
     var grammarNote: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case index
+        case arabicText = "arabicText"
+        case englishText = "englishText"
+        case transliteration
+        case audioStartTime
+        case audioEndTime
+        case wordTimings
+        case imageURL
+        case culturalNote
+        case grammarNote
+    }
     
     init(
         id: UUID = UUID(),

@@ -181,11 +181,11 @@ class FlashcardsViewModel {
     }
     
     var bookmarkedWords: [Word] {
-        allWords.filter { $0.isBookmarked }
+        allWords.filter { $0.isBookmarked ?? false }
     }
     
     var wordsByMastery: [MasteryLevel: [Word]] {
-        Dictionary(grouping: allWords) { $0.masteryLevel }
+        Dictionary(grouping: allWords) { $0.masteryLevel ?? .new }
     }
     
     var dueTodayCount: Int {

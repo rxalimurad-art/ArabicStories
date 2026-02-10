@@ -325,6 +325,8 @@ struct BookmarkedWordRow: View {
         case .familiar: return .orange
         case .mastered: return .blue
         case .known: return .green
+        case .none:
+                return .black
         }
     }
 }
@@ -412,19 +414,21 @@ struct FlashcardView: View {
                             .font(.title.weight(.semibold))
                             .multilineTextAlignment(.center)
                         
-                        Text(word.transliteration)
+                        Text(word.transliteration ?? "")
                             .font(.title3)
                             .foregroundStyle(.secondary)
                             .italic()
                         
-                        HStack(spacing: 8) {
-                            Label(word.partOfSpeech.displayName, systemImage: word.partOfSpeech.icon)
-                                .font(.caption)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
-                                .background(Color.hikayaTeal.opacity(0.15))
-                                .foregroundStyle(Color.hikayaTeal)
-                                .clipShape(Capsule())
+                        if let pos = word.partOfSpeech {
+                            HStack(spacing: 8) {
+                                Label(pos.displayName, systemImage: pos.icon)
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(Color.hikayaTeal.opacity(0.15))
+                                    .foregroundStyle(Color.hikayaTeal)
+                                    .clipShape(Capsule())
+                            }
                         }
                         
                         if let root = word.rootLetters {

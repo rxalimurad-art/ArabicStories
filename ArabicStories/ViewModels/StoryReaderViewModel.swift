@@ -43,6 +43,17 @@ class StoryReaderViewModel {
         self.story = story
         self.currentSegmentIndex = story.currentSegmentIndex
         setupAudioCallbacks()
+        
+        // Debug: Print story info
+        print("📖 StoryReaderViewModel initialized")
+        print("   Story: '\(story.title)'")
+        print("   Segments: \(story.segments?.count ?? 0)")
+        print("   Words: \(story.words?.count ?? 0)")
+        if let words = story.words {
+            for word in words {
+                print("   - Word: '\(word.arabicText)' = '\(word.englishMeaning)'")
+            }
+        }
     }
     
     // MARK: - Computed Properties
@@ -132,11 +143,26 @@ class StoryReaderViewModel {
     // MARK: - Word Interaction
     
     func handleWordTap(wordText: String, position: CGPoint) {
+        print("👆 Word tapped: '\(wordText)'")
+        
+        // Print all available words in the story
+        if let words = story.words, !words.isEmpty {
+            print("📚 Story has \(words.count) words:")
+            for word in words {
+                print("   - '\(word.arabicText)' -> '\(word.englishMeaning)'")
+            }
+        } else {
+            print("⚠️ Story has no words defined")
+        }
+        
         // Find the word in the story's vocabulary
         let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
+        print("🔍 Looking for match: '\(cleanedWord)'")
+        
         if let word = story.words?.first(where: { 
             $0.arabicText == cleanedWord || $0.arabicText.contains(cleanedWord)
         }) {
+            print("✅ Found word match: '\(word.arabicText)' = '\(word.englishMeaning)'")
             selectedWord = word
             popoverPosition = position
             showWordPopover = true
@@ -149,6 +175,8 @@ class StoryReaderViewModel {
             Task {
                 try? await dataService.saveStory(story)
             }
+        } else {
+            print("❌ No word match found for '\(cleanedWord)'")
         }
     }
     

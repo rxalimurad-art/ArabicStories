@@ -18,17 +18,42 @@ class FirebaseService {
     // MARK: - Stories
     
     func fetchStories() async throws -> [Story] {
-        let snapshot = try await db.collection("stories").getDocuments()
-        return try snapshot.documents.compactMap { try $0.data(as: Story.self) }
+        print("📚 Fetching stories from Firestore...")
+        
+        do {
+            let snapshot = try await db.collection("stories").getDocuments()
+            print("✅ Got \(snapshot.documents.count) documents from Firestore")
+            
+            var stories: [Story] = []
+            for doc in snapshot.documents {
+                print("📄 Processing document: \(doc.documentID)")
+                do {
+                    let story = try convertToStory(doc.data(), id: doc.documentID)
+                    stories.append(story)
+                    print("✅ Parsed story: \(story.title)")
+                } catch {
+                    print("❌ Failed to parse story \(doc.documentID): \(error)")
+                    print("   Data keys: \(doc.data().keys.sorted())")
+                }
+            }
+            
+            print("📚 Returning \(stories.count) stories")
+            return stories
+        } catch {
+            print("❌ Firestore error: \(error)")
+            throw error
+        }
     }
     
     func fetchStory(id: String) async throws -> Story? {
         let doc = try await db.collection("stories").document(id).getDocument()
-        return try doc.data(as: Story.self)
+        guard let data = doc.data() else { return nil }
+        return try convertToStory(data, id: doc.documentID)
     }
     
     func saveStory(_ story: Story) async throws {
-        try db.collection("stories").document(story.id.uuidString).setData(from: story)
+        let data = try storyToDictionary(story)
+        try await db.collection("stories").document(story.id.uuidString).setData(data)
     }
     
     func deleteStory(id: String) async throws {
@@ -39,22 +64,25 @@ class FirebaseService {
     
     func fetchWords(for storyId: String) async throws -> [Word] {
         let snapshot = try await db.collection("stories").document(storyId).collection("words").getDocuments()
-        return try snapshot.documents.compactMap { try $0.data(as: Word.self) }
+        return snapshot.documents.compactMap { try? convertToWord($0.data()) }
     }
     
     func saveWord(_ word: Word, storyId: String) async throws {
-        try db.collection("stories").document(storyId).collection("words").document(word.id.uuidString).setData(from: word)
+        let data = try wordToDictionary(word)
+        try await db.collection("stories").document(storyId).collection("words").document(word.id.uuidString).setData(data)
     }
     
     // MARK: - User Progress
     
     func fetchUserProgress(userId: String) async throws -> UserProgress? {
         let doc = try await db.collection("users").document(userId).getDocument()
-        return try doc.data(as: UserProgress.self)
+        guard let data = doc.data() else { return nil }
+        return try convertToUserProgress(data)
     }
     
     func saveUserProgress(_ progress: UserProgress, userId: String) async throws {
-        try db.collection("users").document(userId).setData(from: progress)
+        let data = try userProgressToDictionary(progress)
+        try await db.collection("users").document(userId).setData(data)
     }
     
     // MARK: - Search
@@ -64,31 +92,133 @@ class FirebaseService {
             .whereField("title", isGreaterThanOrEqualTo: query)
             .whereField("title", isLessThanOrEqualTo: query + "\u{f8ff}")
             .getDocuments()
-        return try snapshot.documents.compactMap { try $0.data(as: Story.self) }
+        return snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) }
     }
     
     func fetchStoriesByDifficulty(level: Int) async throws -> [Story] {
         let snapshot = try await db.collection("stories")
             .whereField("difficultyLevel", isEqualTo: level)
             .getDocuments()
-        return try snapshot.documents.compactMap { try $0.data(as: Story.self) }
+        return snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) }
     }
-}
-
-// MARK: - Firestore Decoding Extensions
-
-extension DocumentSnapshot {
-    func data<T: Decodable>(as type: T.Type) throws -> T? {
-        guard exists else { return nil }
-        let data = try JSONSerialization.data(withJSONObject: data() ?? [:])
-        return try JSONDecoder().decode(T.self, from: data)
+    
+    // MARK: - Data Conversion Helpers
+    
+    private func convertToStory(_ data: [String: Any], id: String) throws -> Story {
+        var jsonDict = data
+        jsonDict["id"] = id
+        
+        // Convert Firestore Timestamps to ISO8601 strings
+        let dateFormatter = ISO8601DateFormatter()
+        
+        if let createdAt = data["createdAt"] as? Timestamp {
+            jsonDict["createdAt"] = dateFormatter.string(from: createdAt.dateValue())
+        }
+        if let updatedAt = data["updatedAt"] as? Timestamp {
+            jsonDict["updatedAt"] = dateFormatter.string(from: updatedAt.dateValue())
+        }
+        if let lastReadDate = data["lastReadDate"] as? Timestamp {
+            jsonDict["lastReadDate"] = dateFormatter.string(from: lastReadDate.dateValue())
+        }
+        if let downloadDate = data["downloadDate"] as? Timestamp {
+            jsonDict["downloadDate"] = dateFormatter.string(from: downloadDate.dateValue())
+        }
+        
+        // Convert segments
+        if let segments = data["segments"] as? [[String: Any]] {
+            jsonDict["segments"] = segments.map { segment -> [String: Any] in
+                var seg = segment
+                if let start = segment["audioStartTime"] as? Timestamp {
+                    seg["audioStartTime"] = start.seconds
+                }
+                if let end = segment["audioEndTime"] as? Timestamp {
+                    seg["audioEndTime"] = end.seconds
+                }
+                return seg
+            }
+        }
+        
+        // Convert words
+        if let words = data["words"] as? [[String: Any]] {
+            jsonDict["words"] = words.map { word -> [String: Any] in
+                var w = word
+                // Map Firestore field names to Swift model field names
+                if let arabic = word["arabic"] as? String {
+                    w["arabicText"] = arabic
+                }
+                if let english = word["english"] as? String {
+                    w["englishMeaning"] = english
+                }
+                if let pos = word["partOfSpeech"] as? String {
+                    w["partOfSpeech"] = pos
+                } else {
+                    w["partOfSpeech"] = nil
+                }
+                // Handle null values
+                if word["transliteration"] is NSNull {
+                    w["transliteration"] = nil
+                }
+                if word["partOfSpeech"] is NSNull {
+                    w["partOfSpeech"] = nil
+                }
+                return w
+            }
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(Story.self, from: jsonData)
     }
-}
-
-extension DocumentReference {
-    func setData<T: Encodable>(from object: T) throws {
-        let data = try JSONEncoder().encode(object)
-        let dict = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
-        setData(dict)
+    
+    private func storyToDictionary(_ story: Story) throws -> [String: Any] {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(story)
+        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+    }
+    
+    private func convertToWord(_ data: [String: Any]) throws -> Word {
+        var jsonDict = data
+        // Map Firestore field names to Swift model field names
+        if let arabic = data["arabic"] as? String {
+            jsonDict["arabicText"] = arabic
+        }
+        if let english = data["english"] as? String {
+            jsonDict["englishMeaning"] = english
+        }
+        // Handle null values
+        if data["transliteration"] is NSNull {
+            jsonDict["transliteration"] = nil
+        }
+        if data["partOfSpeech"] is NSNull {
+            jsonDict["partOfSpeech"] = nil
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(Word.self, from: jsonData)
+    }
+    
+    private func wordToDictionary(_ word: Word) throws -> [String: Any] {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(word)
+        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+    }
+    
+    private func convertToUserProgress(_ data: [String: Any]) throws -> UserProgress {
+        let jsonData = try JSONSerialization.data(withJSONObject: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(UserProgress.self, from: jsonData)
+    }
+    
+    private func userProgressToDictionary(_ progress: UserProgress) throws -> [String: Any] {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(progress)
+        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
     }
 }
