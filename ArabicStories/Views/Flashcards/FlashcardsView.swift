@@ -5,7 +5,7 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 struct FlashcardsView: View {
     @State private var viewModel = FlashcardsViewModel()
@@ -640,5 +640,4 @@ struct SummaryStatRow: View {
 
 #Preview {
     FlashcardsView()
-        .modelContainer(for: [Word.self, UserProgress.self], inMemory: true)
 }

@@ -6,7 +6,6 @@
 
 import Foundation
 import SwiftUI
-import SwiftData
 
 @Observable
 class ProgressViewModel {
@@ -69,8 +68,6 @@ class ProgressViewModel {
     }
     
     func loadAchievements() async {
-        // Fetch achievements from database
-        // For now, use the default achievements
         achievements = Achievement.defaultAchievements
     }
     
@@ -113,12 +110,12 @@ class ProgressViewModel {
         await loadUserProgress()
     }
     
-    func updateDailyGoal(minutes: Int) {
+    func updateDailyGoal(minutes: Int) async {
         dailyGoalMinutes = minutes
-        userProgress?.dailyGoalMinutes = minutes
         
-        Task {
-            try? await dataService.modelContext.save()
+        if var progress = userProgress {
+            progress.dailyGoalMinutes = minutes
+            try? await dataService.updateUserProgress(progress)
         }
     }
     
@@ -166,26 +163,7 @@ class ProgressViewModel {
         guard !weeklyStudyData.isEmpty else { return 0 }
         return weeklyTotalMinutes / weeklyStudyData.count
     }
-}
-
-// MARK: - Study Day Data
-
-struct StudyDayData: Identifiable {
-    let id = UUID()
-    let day: String
-    let minutes: Int
-}
-
-// MARK: - Quick Stats
-
-struct QuickStats {
-    let label: String
-    let value: String
-    let icon: String
-    let color: Color
-}
-
-extension ProgressViewModel {
+    
     var quickStats: [QuickStats] {
         [
             QuickStats(
@@ -224,4 +202,13 @@ extension ProgressViewModel {
             return "\(minutes)m"
         }
     }
+}
+
+// MARK: - Quick Stats
+
+struct QuickStats {
+    let label: String
+    let value: String
+    let icon: String
+    let color: Color
 }

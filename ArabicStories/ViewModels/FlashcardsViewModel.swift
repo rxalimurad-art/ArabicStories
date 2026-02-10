@@ -153,25 +153,9 @@ class FlashcardsViewModel {
     
     // MARK: - Word Management
     
-    func toggleBookmark(_ word: Word) {
-        dataService.toggleWordBookmark(word)
-        
-        // Update local state
-        if let index = allWords.firstIndex(where: { $0.id == word.id }) {
-            allWords[index] = word
-        }
-    }
-    
-    func resetWordProgress(_ word: Word) {
-        srsService.resetWordProgress(word)
-    }
-    
-    func suspendWord(_ word: Word) {
-        srsService.suspendWord(word)
-    }
-    
-    func deleteWord(_ word: Word) async {
-        // Implementation for deleting user-created words
+    func toggleBookmark(_ word: Word) async {
+        // Words are part of stories in Firebase
+        // Would need to update the parent story
     }
     
     // MARK: - Settings
@@ -213,7 +197,6 @@ class FlashcardsViewModel {
     }
     
     var nextReviewDate: Date? {
-        // Calculate next review date based on due words
         let futureReviews = allWords.compactMap { $0.nextReviewDate }
         return futureReviews.min()
     }

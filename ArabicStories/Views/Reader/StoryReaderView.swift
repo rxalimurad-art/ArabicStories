@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct StoryReaderView: View {
-    let story: Story
+    var story: Story
     @Bindable var viewModel: StoryReaderViewModel
     @State private var showingSettings = false
     @Environment(\.dismiss) private var dismiss
@@ -46,8 +46,8 @@ struct StoryReaderView: View {
                     viewModel: viewModel,
                     canGoNext: viewModel.canGoNext,
                     canGoPrevious: viewModel.canGoPrevious,
-                    onNext: { viewModel.goToNextSegment() },
-                    onPrevious: { viewModel.goToPreviousSegment() }
+                    onNext: { Task { await viewModel.goToNextSegment() } },
+                    onPrevious: { Task { await viewModel.goToPreviousSegment() } }
                 )
             }
             
@@ -70,7 +70,7 @@ struct StoryReaderView: View {
             ReaderSettingsView(viewModel: viewModel)
         }
         .onAppear {
-            story.incrementViewCount()
+            viewModel.incrementViewCount()
         }
     }
 }
@@ -430,8 +430,10 @@ struct ReaderSettingsView: View {
                     .foregroundStyle(.red)
                     
                     Button("Mark as Completed") {
-                        viewModel.markAsCompleted()
-                        dismiss()
+                        Task {
+                            await viewModel.markAsCompleted()
+                            dismiss()
+                        }
                     }
                     .foregroundStyle(Color.hikayaTeal)
                 }

@@ -5,7 +5,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct MainTabView: View {
     @State private var selectedTab = 0
@@ -24,23 +23,17 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
-            CreateStoryView()
-                .tabItem {
-                    Label("Create", systemImage: "plus.circle.fill")
-                }
-                .tag(2)
-            
             ProgressDashboardView()
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
-                .tag(3)
+                .tag(2)
             
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
-                .tag(4)
+                .tag(3)
         }
         .tint(.hikayaTeal)
     }
@@ -50,9 +43,4 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView()
-        .modelContainer(for: [
-            Story.self,
-            Word.self,
-            UserProgress.self
-        ], inMemory: true)
 }

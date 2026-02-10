@@ -7,8 +7,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var showingImportSheet = false
-    @State private var showingExportSheet = false
     @State private var showingResetAlert = false
     @State private var dailyGoalMinutes = 15
     @State private var notificationsEnabled = true
@@ -73,30 +71,6 @@ struct SettingsView: View {
                 
                 // Data Management
                 Section("Data Management") {
-                    Button {
-                        showingImportSheet = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.down")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
-                            
-                            Text("Import Stories")
-                        }
-                    }
-                    
-                    Button {
-                        showingExportSheet = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
-                            
-                            Text("Export Stories")
-                        }
-                    }
-                    
                     Button {
                         showingResetAlert = true
                     } label: {
@@ -167,9 +141,6 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $showingImportSheet) {
-                JSONImportView()
-            }
             .alert("Reset Progress?", isPresented: $showingResetAlert) {
                 Button("Cancel", role: .cancel) {}
                 Button("Reset", role: .destructive) {

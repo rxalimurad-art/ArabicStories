@@ -5,11 +5,10 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 struct LibraryView: View {
     @State private var viewModel = LibraryViewModel()
-    @State private var showingImportSheet = false
     
     var body: some View {
         NavigationStack {
@@ -52,14 +51,15 @@ struct LibraryView: View {
                         LoadingView()
                     } else if viewModel.stories.isEmpty {
                         EmptyLibraryView(
-                            hasFilters: viewModel.hasActiveFilters,
-                            onImportTap: { showingImportSheet = true }
+                            hasFilters: viewModel.hasActiveFilters
                         )
                     } else {
                         StoryGridView(
                             stories: viewModel.stories,
                             onBookmarkToggle: { story in
-                                viewModel.toggleBookmark(story)
+                                Task {
+                                    await viewModel.toggleBookmark(story)
+                                }
                             }
                         )
                     }
@@ -67,19 +67,8 @@ struct LibraryView: View {
             }
             .navigationTitle("Hikaya")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingImportSheet = true
-                    } label: {
-                        Image(systemName: "square.and.arrow.down")
-                            .foregroundStyle(Color.hikayaTeal)
-                    }
-                }
-            }
-            .sheet(isPresented: $showingImportSheet) {
-                JSONImportView()
-            }
+            
+           
             .refreshable {
                 await viewModel.refresh()
             }
@@ -454,7 +443,6 @@ struct LoadingView: View {
 
 struct EmptyLibraryView: View {
     let hasFilters: Bool
-    let onImportTap: () -> Void
     
     var body: some View {
         VStack(spacing: 20) {
@@ -467,26 +455,10 @@ struct EmptyLibraryView: View {
             
             Text(hasFilters 
                  ? "Try adjusting your filters or search query"
-                 : "Import stories from JSON or create your own")
+                 : "Stories will appear here when available")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-            
-            if !hasFilters {
-                Button(action: onImportTap) {
-                    HStack {
-                        Image(systemName: "square.and.arrow.down")
-                        Text("Import Stories")
-                    }
-                    .font(.subheadline.weight(.semibold))
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(Color.hikayaTeal)
-                    .foregroundStyle(.white)
-                    .clipShape(Capsule())
-                }
-                .padding(.top, 8)
-            }
         }
         .padding()
         .frame(maxHeight: .infinity)
@@ -497,8 +469,5 @@ struct EmptyLibraryView: View {
 
 #Preview {
     LibraryView()
-        .modelContainer(for: [
-            Story.self,
-            Word.self
-        ], inMemory: true)
+       
 }

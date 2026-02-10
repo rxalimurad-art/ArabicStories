@@ -131,19 +131,39 @@ class StoryReaderViewModel {
     
     // MARK: - Word Interaction
     
-    func handleWordTap(word: Word, position: CGPoint) {
-        selectedWord = word
-        popoverPosition = position
-        showWordPopover = true
-        
-        // Mark word as learned
-        var updatedStory = story
-        updatedStory.markWordAsLearned(word.id.uuidString)
-        story = updatedStory
-        
-        Task {
-            try? await dataService.saveStory(story)
+    func handleWordTap(wordText: String, position: CGPoint) {
+        // Find the word in the story's vocabulary
+        let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
+        if let word = story.words?.first(where: { 
+            $0.arabicText == cleanedWord || $0.arabicText.contains(cleanedWord)
+        }) {
+            selectedWord = word
+            popoverPosition = position
+            showWordPopover = true
+            
+            // Mark word as learned
+            var updatedStory = story
+            updatedStory.markWordAsLearned(word.id.uuidString)
+            story = updatedStory
+            
+            Task {
+                try? await dataService.saveStory(story)
+            }
         }
+    }
+    
+    func isWordLearned(_ wordId: String) -> Bool {
+        story.isWordLearned(wordId)
+    }
+    
+    func toggleWordBookmark(_ word: Word) {
+        // Implementation for bookmarking word - would need to be saved to user progress
+        // For now, just a placeholder
+    }
+    
+    func addWordToFlashcards(_ word: Word) {
+        // Implementation for adding word to flashcards
+        // Would add to a flashcard list in user progress
     }
     
     func playWordPronunciation(_ word: Word) {
@@ -196,5 +216,26 @@ class StoryReaderViewModel {
     
     func toggleTransliteration() {
         showTransliteration.toggle()
+    }
+    
+    func resetProgress() {
+        var updatedStory = story
+        updatedStory.resetProgress()
+        story = updatedStory
+        currentSegmentIndex = 0
+        
+        Task {
+            try? await dataService.saveStory(story)
+        }
+    }
+    
+    func incrementViewCount() {
+        var updatedStory = story
+        updatedStory.incrementViewCount()
+        story = updatedStory
+        
+        Task {
+            try? await dataService.saveStory(story)
+        }
     }
 }

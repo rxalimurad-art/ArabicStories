@@ -5,7 +5,7 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 struct ProgressDashboardView: View {
     @State private var viewModel = ProgressViewModel()
@@ -388,5 +388,4 @@ struct AchievementBadge: View {
 
 #Preview {
     ProgressDashboardView()
-        .modelContainer(for: [UserProgress.self, Achievement.self, Story.self], inMemory: true)
 }
