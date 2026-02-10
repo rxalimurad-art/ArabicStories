@@ -1,0 +1,980 @@
+[
+  {
+    "id": "story-001",
+    "title": "The Wise Merchant",
+    "title_arabic": "التاجر الحكيم",
+    "description": "A story about a merchant who learns the value of honesty and wisdom through a journey to a distant city.",
+    "description_arabic": "قصة عن تاجر تعلم قيمة الصدق والحكمة من خلال رحلة إلى مدينة بعيدة.",
+    "author": "Traditional Arabic Folktale",
+    "difficulty_level": 1,
+    "category": "folktale",
+    "tags": ["wisdom", "honesty", "trade", "journey"],
+    "cover_image_url": "https://images.unsplash.com/photo-1544212281-43271b247151?w=800",
+    "audio_narration_url": null,
+    "segments": [
+      {
+        "index": 0,
+        "arabic_text": "كان يا ما كان، في قديم الزمان، في مدينة بغداد الجميلة، تاجرٌ اسمه أحمد.",
+        "english_text": "Once upon a time, in ancient days, in the beautiful city of Baghdad, there was a merchant named Ahmad.",
+        "transliteration": "Kāna yā mā kān, fī qadīm az-zamān, fī madīnat baghdād al-jamīla, tājirun ismuhu aḥmad.",
+        "audio_start_time": 0.0,
+        "audio_end_time": 8.5,
+        "word_timings": [
+          {"word": "كان", "start_time": 0.0, "end_time": 0.8, "word_id": null},
+          {"word": "يا", "start_time": 0.8, "end_time": 1.2, "word_id": null},
+          {"word": "ما", "start_time": 1.2, "end_time": 1.6, "word_id": null},
+          {"word": "كان", "start_time": 1.6, "end_time": 2.5, "word_id": null},
+          {"word": "في", "start_time": 3.0, "end_time": 3.4, "word_id": "word-001"},
+          {"word": "قديم", "start_time": 3.4, "end_time": 4.2, "word_id": null},
+          {"word": "الزمان", "start_time": 4.2, "end_time": 5.0, "word_id": null},
+          {"word": "في", "start_time": 5.2, "end_time": 5.6, "word_id": "word-001"},
+          {"word": "مدينة", "start_time": 5.6, "end_time": 6.2, "word_id": "word-002"},
+          {"word": "بغداد", "start_time": 6.2, "end_time": 6.8, "word_id": null},
+          {"word": "الجميلة", "start_time": 6.8, "end_time": 7.5, "word_id": "word-003"},
+          {"word": "تاجر", "start_time": 7.8, "end_time": 8.2, "word_id": "word-004"},
+          {"word": "اسمه", "start_time": 8.2, "end_time": 8.5, "word_id": null}
+        ],
+        "cultural_note": "Baghdad was the center of trade and learning during the Abbasid Caliphate (8th-13th centuries).",
+        "grammar_note": "The phrase 'كان يا ما كان' is the traditional Arabic way to begin a story, similar to 'Once upon a time'."
+      },
+      {
+        "index": 1,
+        "arabic_text": "كان أحمد تاجراً صادقاً، يبيع الحرير والبهارات في سوق المدينة.",
+        "english_text": "Ahmad was an honest merchant, selling silk and spices in the city market.",
+        "transliteration": "Kāna aḥmadun tājiran ṣādiqan, yabīʿu al-ḥarīra wa-l-bahārāt fī sūq al-madīna.",
+        "audio_start_time": 8.5,
+        "audio_end_time": 15.0,
+        "word_timings": [
+          {"word": "كان", "start_time": 8.5, "end_time": 9.0, "word_id": null},
+          {"word": "أحمد", "start_time": 9.0, "end_time": 9.8, "word_id": null},
+          {"word": "تاجرا", "start_time": 9.8, "end_time": 10.5, "word_id": "word-004"},
+          {"word": "صادقا", "start_time": 10.5, "end_time": 11.5, "word_id": "word-005"},
+          {"word": "يبيع", "start_time": 12.0, "end_time": 12.6, "word_id": "word-006"},
+          {"word": "الحرير", "start_time": 12.6, "end_time": 13.2, "word_id": "word-007"},
+          {"word": "والبهارات", "start_time": 13.2, "end_time": 14.0, "word_id": "word-008"},
+          {"word": "في", "start_time": 14.0, "end_time": 14.3, "word_id": "word-001"},
+          {"word": "سوق", "start_time": 14.3, "end_time": 14.7, "word_id": "word-009"},
+          {"word": "المدينة", "start_time": 14.7, "end_time": 15.0, "word_id": "word-002"}
+        ],
+        "cultural_note": "Traditional souks (markets) were the heart of Middle Eastern cities, organized by trade type.",
+        "grammar_note": "The word 'صادقاً' shows the accusative case (منصوب) as a predicate (خبر) of كان."
+      },
+      {
+        "index": 2,
+        "arabic_text": "في يوم من الأيام، قال له رجل عجوز: 'يا أحمد، هل تريد أن تصبح الأغنى في الدنيا؟'",
+        "english_text": "One day, an old man said to him: 'O Ahmad, do you want to become the richest in the world?'",
+        "transliteration": "Fī yawmin min al-ayyām, qāla lahu rajulun ʿajūz: 'yā aḥmad, hal turīdu an taṣīra al-aghnā fī ad-dunyā?'",
+        "audio_start_time": 15.0,
+        "audio_end_time": 24.0,
+        "word_timings": [
+          {"word": "في", "start_time": 15.0, "end_time": 15.3, "word_id": "word-001"},
+          {"word": "يوم", "start_time": 15.3, "end_time": 15.8, "word_id": "word-010"},
+          {"word": "من", "start_time": 15.8, "end_time": 16.1, "word_id": "word-011"},
+          {"word": "الأيام", "start_time": 16.1, "end_time": 17.0, "word_id": null},
+          {"word": "قال", "start_time": 17.5, "end_time": 18.0, "word_id": "word-012"},
+          {"word": "له", "start_time": 18.0, "end_time": 18.3, "word_id": null},
+          {"word": "رجل", "start_time": 18.3, "end_time": 18.8, "word_id": "word-013"},
+          {"word": "عجوز", "start_time": 18.8, "end_time": 19.5, "word_id": "word-014"},
+          {"word": "يا", "start_time": 20.0, "end_time": 20.3, "word_id": null},
+          {"word": "أحمد", "start_time": 20.3, "end_time": 21.0, "word_id": null},
+          {"word": "هل", "start_time": 21.0, "end_time": 21.4, "word_id": "word-015"},
+          {"word": "تريد", "start_time": 21.4, "end_time": 22.0, "word_id": "word-016"},
+          {"word": "أن", "start_time": 22.0, "end_time": 22.3, "word_id": null},
+          {"word": "تصبح", "start_time": 22.3, "end_time": 22.8, "word_id": "word-017"},
+          {"word": "الأغنى", "start_time": 22.8, "end_time": 23.5, "word_id": null},
+          {"word": "في", "start_time": 23.5, "end_time": 23.7, "word_id": "word-001"},
+          {"word": "الدنيا", "start_time": 23.7, "end_time": 24.0, "word_id": "word-018"}
+        ],
+        "cultural_note": "In Arabic culture, elders are respected for their wisdom. The way of asking questions using 'هل' is polite and formal.",
+        "grammar_note": "'هل' is an interrogative particle used to introduce yes/no questions in formal Arabic."
+      }
+    ],
+    "vocabulary": [
+      {
+        "id": "word-001",
+        "arabic_text": "في",
+        "tashkeel": "فِي",
+        "transliteration": "fī",
+        "english_meaning": "in",
+        "part_of_speech": "preposition",
+        "root_letters": "ف و ي",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "أنا في البيت.",
+            "transliteration": "Anā fī al-bayt.",
+            "english": "I am in the house."
+          },
+          {
+            "arabic": "الكتاب في المكتبة.",
+            "transliteration": "Al-kitāb fī al-maktaba.",
+            "english": "The book is in the library."
+          }
+        ]
+      },
+      {
+        "id": "word-002",
+        "arabic_text": "مدينة",
+        "tashkeel": "مَدِينَة",
+        "transliteration": "madīna",
+        "english_meaning": "city",
+        "part_of_speech": "noun",
+        "root_letters": "م د ن",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "القاهرة مدينة كبيرة.",
+            "transliteration": "Al-qāhira madīna kabīra.",
+            "english": "Cairo is a big city."
+          }
+        ]
+      },
+      {
+        "id": "word-003",
+        "arabic_text": "جميل",
+        "tashkeel": "جَمِيل",
+        "transliteration": "jamīl",
+        "english_meaning": "beautiful",
+        "part_of_speech": "adjective",
+        "root_letters": "ج م ل",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "هذا البيت جميل.",
+            "transliteration": "Hādhā al-bayt jamīl.",
+            "english": "This house is beautiful."
+          }
+        ]
+      },
+      {
+        "id": "word-004",
+        "arabic_text": "تاجر",
+        "tashkeel": "تَاجِر",
+        "transliteration": "tājir",
+        "english_meaning": "merchant, trader",
+        "part_of_speech": "noun",
+        "root_letters": "ت ج ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "التاجر يبيع السلع.",
+            "transliteration": "At-tājir yabīʿu as-silʿa.",
+            "english": "The merchant sells goods."
+          }
+        ]
+      },
+      {
+        "id": "word-005",
+        "arabic_text": "صادق",
+        "tashkeel": "صَادِق",
+        "transliteration": "ṣādiq",
+        "english_meaning": "honest, truthful",
+        "part_of_speech": "adjective",
+        "root_letters": "ص د ق",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الرجل صادق في كلامه.",
+            "transliteration": "Ar-rajul ṣādiq fī kalāmith.",
+            "english": "The man is honest in his speech."
+          }
+        ]
+      },
+      {
+        "id": "word-006",
+        "arabic_text": "يبيع",
+        "tashkeel": "يَبِيعُ",
+        "transliteration": "yabīʿu",
+        "english_meaning": "he sells",
+        "part_of_speech": "verb",
+        "root_letters": "ب ي ع",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "يبيع التاجر التمر.",
+            "transliteration": "Yabīʿu at-tājir at-tamr.",
+            "english": "The merchant sells dates."
+          }
+        ]
+      },
+      {
+        "id": "word-007",
+        "arabic_text": "حرير",
+        "tashkeel": "حَرِير",
+        "transliteration": "ḥarīr",
+        "english_meaning": "silk",
+        "part_of_speech": "noun",
+        "root_letters": "ح ر ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الحرير ناعم.",
+            "transliteration": "Al-ḥarīr naʿīm.",
+            "english": "Silk is soft."
+          }
+        ]
+      },
+      {
+        "id": "word-008",
+        "arabic_text": "بهارات",
+        "tashkeel": "بَهَارَات",
+        "transliteration": "bahārāt",
+        "english_meaning": "spices",
+        "part_of_speech": "noun",
+        "root_letters": "ب ه ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "البهارات تعطي الطعام نكهة.",
+            "transliteration": "Al-bahārāt taʿṭī aṭ-ṭaʿām nakha.",
+            "english": "Spices give food flavor."
+          }
+        ]
+      },
+      {
+        "id": "word-009",
+        "arabic_text": "سوق",
+        "tashkeel": "سُوق",
+        "transliteration": "sūq",
+        "english_meaning": "market",
+        "part_of_speech": "noun",
+        "root_letters": "س و ق",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "السوق مزدحم اليوم.",
+            "transliteration": "As-sūq muzdaḥim al-yawm.",
+            "english": "The market is crowded today."
+          }
+        ]
+      }
+    ],
+    "grammar_notes": [
+      {
+        "title": "The Particle كان",
+        "explanation": "The particle كان is used to express the past tense of nominal sentences. It changes the predicate (خبر) to the accusative case (منصوب).",
+        "example_arabic": "كان أحمد تاجراً صادقاً",
+        "example_english": "Ahmad was an honest merchant",
+        "rule_category": "verb_conjugation"
+      },
+      {
+        "title": "The Preposition في",
+        "explanation": "في is a preposition (حرف جر) meaning 'in'. It causes the noun following it to be in the genitive case (مجرور).",
+        "example_arabic": "في المدينة",
+        "example_english": "in the city",
+        "rule_category": "preposition"
+      }
+    ]
+  },
+  {
+    "id": "story-002",
+    "title": "The Patient Farmer",
+    "title_arabic": "الفلاح الصبور",
+    "description": "A tale about a farmer who teaches his impatient son the value of patience and hard work through a year of farming.",
+    "description_arabic": "حكاية عن فلاح يعلم ابنه العجول قيمة الصبر والعمل الجاد من خلال عام من الزراعة.",
+    "author": "Hikaya Collection",
+    "difficulty_level": 2,
+    "category": "children",
+    "tags": ["patience", "agriculture", "family", "seasons"],
+    "cover_image_url": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800",
+    "audio_narration_url": null,
+    "segments": [
+      {
+        "index": 0,
+        "arabic_text": "عاش فلاحٌ فقيرٌ مع ابنه في قريةٍ صغيرةٍ بالقرب من النهر.",
+        "english_text": "A poor farmer lived with his son in a small village near the river.",
+        "transliteration": "ʿĀsha fallāḥun faqīrun maʿa ibnihi fī qaryatin ṣaghīratin bi-l-qurb min an-nahr.",
+        "audio_start_time": 0.0,
+        "audio_end_time": 9.0,
+        "word_timings": [
+          {"word": "عاش", "start_time": 0.0, "end_time": 0.7, "word_id": "word-101"},
+          {"word": "فلاح", "start_time": 0.7, "end_time": 1.5, "word_id": "word-102"},
+          {"word": "فقير", "start_time": 1.5, "end_time": 2.5, "word_id": "word-103"},
+          {"word": "مع", "start_time": 2.8, "end_time": 3.2, "word_id": "word-104"},
+          {"word": "ابنه", "start_time": 3.2, "end_time": 4.0, "word_id": "word-105"},
+          {"word": "في", "start_time": 4.2, "end_time": 4.5, "word_id": "word-001"},
+          {"word": "قرية", "start_time": 4.5, "end_time": 5.2, "word_id": "word-106"},
+          {"word": "صغيرة", "start_time": 5.2, "end_time": 6.0, "word_id": "word-107"},
+          {"word": "بالقرب", "start_time": 6.3, "end_time": 7.0, "word_id": "word-108"},
+          {"word": "من", "start_time": 7.0, "end_time": 7.3, "word_id": "word-011"},
+          {"word": "النهر", "start_time": 7.3, "end_time": 9.0, "word_id": "word-109"}
+        ],
+        "cultural_note": "Villages in the Arab world are traditionally built near water sources like rivers or oases for irrigation.",
+        "grammar_note": "The adjective 'صغيرة' agrees with 'قرية' in definiteness, gender, number, and case."
+      },
+      {
+        "index": 1,
+        "arabic_text": "كان الابن يسأل أباه كل يوم: 'متى سنحصد المحصول يا أبي؟'",
+        "english_text": "The son would ask his father every day: 'When will we harvest the crop, father?'",
+        "transliteration": "Kāna al-ibnu yasʾalu abāhu kulla yawm: 'matā sanuḥṣidu al-maḥṣūl yā abī?'",
+        "audio_start_time": 9.0,
+        "audio_end_time": 17.0,
+        "word_timings": [
+          {"word": "كان", "start_time": 9.0, "end_time": 9.5, "word_id": null},
+          {"word": "الابن", "start_time": 9.5, "end_time": 10.3, "word_id": "word-105"},
+          {"word": "يسأل", "start_time": 10.3, "end_time": 11.2, "word_id": "word-110"},
+          {"word": "أباه", "start_time": 11.2, "end_time": 12.0, "word_id": "word-105"},
+          {"word": "كل", "start_time": 12.2, "end_time": 12.7, "word_id": "word-111"},
+          {"word": "يوم", "start_time": 12.7, "end_time": 13.5, "word_id": "word-010"},
+          {"word": "متى", "start_time": 14.0, "end_time": 14.8, "word_id": "word-112"},
+          {"word": "سنحصد", "start_time": 14.8, "end_time": 15.5, "word_id": "word-113"},
+          {"word": "المحصول", "start_time": 15.5, "end_time": 16.5, "word_id": "word-114"},
+          {"word": "يا", "start_time": 16.5, "end_time": 16.8, "word_id": null},
+          {"word": "أبي", "start_time": 16.8, "end_time": 17.0, "word_id": null}
+        ],
+        "cultural_note": "In Arabic, addressing parents with 'يا أبي' (O my father) shows respect and affection.",
+        "grammar_note": "The particle متى is used for asking 'when' in questions about time."
+      }
+    ],
+    "vocabulary": [
+      {
+        "id": "word-101",
+        "arabic_text": "عاش",
+        "tashkeel": "عَاشَ",
+        "transliteration": "ʿāsha",
+        "english_meaning": "he lived",
+        "part_of_speech": "verb",
+        "root_letters": "ع ي ش",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "عاش الملك في القصر.",
+            "transliteration": "ʿĀsha al-malik fī al-qaṣr.",
+            "english": "The king lived in the palace."
+          }
+        ]
+      },
+      {
+        "id": "word-102",
+        "arabic_text": "فلاح",
+        "tashkeel": "فَلَّاح",
+        "transliteration": "fallāḥ",
+        "english_meaning": "farmer",
+        "part_of_speech": "noun",
+        "root_letters": "ف ل ح",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الفلاح يعمل في الحقل.",
+            "transliteration": "Al-fallāḥ yaʿmal fī al-ḥaql.",
+            "english": "The farmer works in the field."
+          }
+        ]
+      },
+      {
+        "id": "word-103",
+        "arabic_text": "فقير",
+        "tashkeel": "فَقِير",
+        "transliteration": "faqīr",
+        "english_meaning": "poor",
+        "part_of_speech": "adjective",
+        "root_letters": "ف ق ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الرجل فقير لكنه صبور.",
+            "transliteration": "Ar-rajul faqīr lākinahu ṣabūr.",
+            "english": "The man is poor but patient."
+          }
+        ]
+      },
+      {
+        "id": "word-104",
+        "arabic_text": "مع",
+        "tashkeel": "مَعَ",
+        "transliteration": "maʿa",
+        "english_meaning": "with",
+        "part_of_speech": "preposition",
+        "root_letters": "م ع",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "أنا مع صديقي.",
+            "transliteration": "Anā maʿa ṣadīqī.",
+            "english": "I am with my friend."
+          }
+        ]
+      },
+      {
+        "id": "word-105",
+        "arabic_text": "ابن",
+        "tashkeel": "اِبْن",
+        "transliteration": "ibn",
+        "english_meaning": "son",
+        "part_of_speech": "noun",
+        "root_letters": "ب ن ي",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "هذا ابني.",
+            "transliteration": "Hādhā ibnī.",
+            "english": "This is my son."
+          }
+        ]
+      },
+      {
+        "id": "word-106",
+        "arabic_text": "قرية",
+        "tashkeel": "قَرْيَة",
+        "transliteration": "qarya",
+        "english_meaning": "village",
+        "part_of_speech": "noun",
+        "root_letters": "ق ر ي",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "القرية هادئة.",
+            "transliteration": "Al-qarya hādiʾa.",
+            "english": "The village is quiet."
+          }
+        ]
+      },
+      {
+        "id": "word-107",
+        "arabic_text": "صغير",
+        "tashkeel": "صَغِير",
+        "transliteration": "ṣaghīr",
+        "english_meaning": "small",
+        "part_of_speech": "adjective",
+        "root_letters": "ص غ ر",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "الولد صغير.",
+            "transliteration": "Al-walad ṣaghīr.",
+            "english": "The boy is small."
+          }
+        ]
+      },
+      {
+        "id": "word-108",
+        "arabic_text": "بالقرب من",
+        "tashkeel": "بِالْقُرْبِ مِنْ",
+        "transliteration": "bi-l-qurbi min",
+        "english_meaning": "near, close to",
+        "part_of_speech": "preposition",
+        "root_letters": "ق ر ب",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "البيت بالقرب من المدرسة.",
+            "transliteration": "Al-bayt bi-l-qurbi min al-madrasa.",
+            "english": "The house is near the school."
+          }
+        ]
+      },
+      {
+        "id": "word-109",
+        "arabic_text": "نهر",
+        "tashkeel": "نَهْر",
+        "transliteration": "nahr",
+        "english_meaning": "river",
+        "part_of_speech": "noun",
+        "root_letters": "ن ه ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "النيل أطول نهر في أفريقيا.",
+            "transliteration": "An-nīl aṭwal nahr fī ifrīqiyā.",
+            "english": "The Nile is the longest river in Africa."
+          }
+        ]
+      },
+      {
+        "id": "word-110",
+        "arabic_text": "يسأل",
+        "tashkeel": "يَسْأَلُ",
+        "transliteration": "yasʾalu",
+        "english_meaning": "he asks",
+        "part_of_speech": "verb",
+        "root_letters": "س أ ل",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "يسأل الطالب المعلم.",
+            "transliteration": "Yasʾalu aṭ-ṭālib al-muʿallim.",
+            "english": "The student asks the teacher."
+          }
+        ]
+      },
+      {
+        "id": "word-111",
+        "arabic_text": "كل",
+        "tashkeel": "كُلَّ",
+        "transliteration": "kulla",
+        "english_meaning": "every, all",
+        "part_of_speech": "noun",
+        "root_letters": "ك ل ل",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "كل يوم أدرس العربية.",
+            "transliteration": "Kulla yawm adrusu al-ʿarabiyya.",
+            "english": "Every day I study Arabic."
+          }
+        ]
+      },
+      {
+        "id": "word-112",
+        "arabic_text": "متى",
+        "tashkeel": "مَتَى",
+        "transliteration": "matā",
+        "english_meaning": "when",
+        "part_of_speech": "particle",
+        "root_letters": "م ت ي",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "متى ستذهب إلى المدرسة؟",
+            "transliteration": "Matā satadhhabu ilā al-madrasa?",
+            "english": "When will you go to school?"
+          }
+        ]
+      },
+      {
+        "id": "word-113",
+        "arabic_text": "نحصد",
+        "tashkeel": "نَحْصُدُ",
+        "transliteration": "naḥṣudu",
+        "english_meaning": "we harvest",
+        "part_of_speech": "verb",
+        "root_letters": "ح ص د",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "نحصد القمح في الصيف.",
+            "transliteration": "Naḥṣidu al-qamḥ fī aṣ-ṣayf.",
+            "english": "We harvest wheat in the summer."
+          }
+        ]
+      },
+      {
+        "id": "word-114",
+        "arabic_text": "محصول",
+        "tashkeel": "مَحْصُول",
+        "transliteration": "maḥṣūl",
+        "english_meaning": "crop, harvest",
+        "part_of_speech": "noun",
+        "root_letters": "ح ص ل",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "المحصول وفير هذا العام.",
+            "transliteration": "Al-maḥṣūl wafīr hādha al-ʿām.",
+            "english": "The harvest is abundant this year."
+          }
+        ]
+      }
+    ],
+    "grammar_notes": [
+      {
+        "title": "Adjective Agreement",
+        "explanation": "In Arabic, adjectives must agree with the nouns they describe in definiteness, gender, number, and case.",
+        "example_arabic": "قرية صغيرة / القرية الصغيرة",
+        "example_english": "a small village / the small village",
+        "rule_category": "sentence_structure"
+      },
+      {
+        "title": "Possessive Pronouns",
+        "explanation": "Possessive pronouns are suffixed to nouns. 'أباه' means 'his father' where the ـه suffix indicates 'his'.",
+        "example_arabic": "كتابه / بيتها",
+        "example_english": "his book / her house",
+        "rule_category": "noun_cases"
+      }
+    ]
+  },
+  {
+    "id": "story-003",
+    "title": "The Star Navigator",
+    "title_arabic": "ملاح النجوم",
+    "description": "An adventure story about a young navigator who uses ancient Arabic astronomy to find his way home across the desert.",
+    "description_arabic": "قصة مغامرة عن ملاح شاب يستخدم علم الفلك العربي القديم للعثور على طريقه إلى الوطن عبر الصحراء.",
+    "author": "Hikaya Original",
+    "difficulty_level": 3,
+    "category": "adventure",
+    "tags": ["astronomy", "desert", "navigation", "adventure"],
+    "cover_image_url": "https://images.unsplash.com/photo-1509773896068-7fd415d91e2e?w=800",
+    "audio_narration_url": null,
+    "segments": [
+      {
+        "index": 0,
+        "arabic_text": "في ليلةٍ مقمرةٍ من ليالي الصحراء، وقف خالد يراقب النجوم التي تلألأ في السماء.",
+        "english_text": "On a moonlit night of desert nights, Khalid stood watching the stars that twinkled in the sky.",
+        "transliteration": "Fī laylatin muqmiratin min layālī aṣ-ṣaḥrāʾ, waqafa khālid yurāqibu an-nujūm allatī talālaʾ fī as-samāʾ.",
+        "audio_start_time": 0.0,
+        "audio_end_time": 12.0,
+        "word_timings": [
+          {"word": "في", "start_time": 0.0, "end_time": 0.4, "word_id": "word-001"},
+          {"word": "ليلة", "start_time": 0.4, "end_time": 1.2, "word_id": "word-201"},
+          {"word": "مقمرة", "start_time": 1.2, "end_time": 2.2, "word_id": "word-202"},
+          {"word": "من", "start_time": 2.4, "end_time": 2.7, "word_id": "word-011"},
+          {"word": "ليالي", "start_time": 2.7, "end_time": 3.5, "word_id": "word-203"},
+          {"word": "الصحراء", "start_time": 3.5, "end_time": 4.8, "word_id": "word-204"},
+          {"word": "وقف", "start_time": 5.2, "end_time": 6.0, "word_id": "word-205"},
+          {"word": "خالد", "start_time": 6.0, "end_time": 6.8, "word_id": null},
+          {"word": "يراقب", "start_time": 7.0, "end_time": 7.8, "word_id": "word-206"},
+          {"word": "النجوم", "start_time": 7.8, "end_time": 8.8, "word_id": "word-207"},
+          {"word": "التي", "start_time": 9.0, "end_time": 9.5, "word_id": "word-208"},
+          {"word": "تلألأ", "start_time": 9.5, "end_time": 10.5, "word_id": "word-209"},
+          {"word": "في", "start_time": 10.5, "end_time": 10.8, "word_id": "word-001"},
+          {"word": "السماء", "start_time": 10.8, "end_time": 12.0, "word_id": "word-210"}
+        ],
+        "cultural_note": "Arabian astronomy has ancient roots. Arabs named many stars and constellations that we still use today.",
+        "grammar_note": "The relative pronoun 'التي' (allati) is used here because 'النجوم' is feminine plural."
+      },
+      {
+        "index": 1,
+        "arabic_text": "قال خالد لنفسه: 'باستخدام علم الفلك، سأجد طريقي إلى الوطن.'",
+        "english_text": "Khalid said to himself: 'Using astronomy, I will find my way home.'",
+        "transliteration": "Qāla khālid li-nafsihi: 'bi-stikhdāmi ʿilm al-falak, saʾajidu ṭarīqī ilā al-waṭan.'",
+        "audio_start_time": 12.0,
+        "audio_end_time": 20.0,
+        "word_timings": [
+          {"word": "قال", "start_time": 12.0, "end_time": 12.6, "word_id": "word-012"},
+          {"word": "خالد", "start_time": 12.6, "end_time": 13.2, "word_id": null},
+          {"word": "لنفسه", "start_time": 13.2, "end_time": 14.5, "word_id": "word-211"},
+          {"word": "باستخدام", "start_time": 15.0, "end_time": 16.0, "word_id": "word-212"},
+          {"word": "علم", "start_time": 16.0, "end_time": 16.6, "word_id": "word-213"},
+          {"word": "الفلك", "start_time": 16.6, "end_time": 17.5, "word_id": "word-214"},
+          {"word": "سأجد", "start_time": 17.8, "end_time": 18.5, "word_id": "word-215"},
+          {"word": "طريقي", "start_time": 18.5, "end_time": 19.3, "word_id": "word-216"},
+          {"word": "إلى", "start_time": 19.3, "end_time": 19.6, "word_id": "word-217"},
+          {"word": "الوطن", "start_time": 19.6, "end_time": 20.0, "word_id": "word-218"}
+        ],
+        "cultural_note": "Ancient Arab astronomers developed sophisticated instruments and charts for navigation.",
+        "grammar_note": "The verb 'سأجد' shows the future tense with the prefix سـ (sa-)."
+      }
+    ],
+    "vocabulary": [
+      {
+        "id": "word-201",
+        "arabic_text": "ليلة",
+        "tashkeel": "لَيْلَة",
+        "transliteration": "layla",
+        "english_meaning": "night",
+        "part_of_speech": "noun",
+        "root_letters": "ل ي ل",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الليلة جميلة.",
+            "transliteration": "Al-layla jamīla.",
+            "english": "The night is beautiful."
+          }
+        ]
+      },
+      {
+        "id": "word-202",
+        "arabic_text": "مقمر",
+        "tashkeel": "مُقْمِر",
+        "transliteration": "muqmir",
+        "english_meaning": "moonlit",
+        "part_of_speech": "adjective",
+        "root_letters": "ق م ر",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "ليلة مقمرة هادئة.",
+            "transliteration": "Layla muqmirah hādiʾa.",
+            "english": "A quiet moonlit night."
+          }
+        ]
+      },
+      {
+        "id": "word-203",
+        "arabic_text": "ليالي",
+        "tashkeel": "لَيَالِي",
+        "transliteration": "layālī",
+        "english_meaning": "nights (plural)",
+        "part_of_speech": "noun",
+        "root_letters": "ل ي ل",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "ليالي الشتاء طويلة.",
+            "transliteration": "Layālī ash-shitāʾ ṭawīla.",
+            "english": "Winter nights are long."
+          }
+        ]
+      },
+      {
+        "id": "word-204",
+        "arabic_text": "صحراء",
+        "tashkeel": "صَحْرَاء",
+        "transliteration": "ṣaḥrāʾ",
+        "english_meaning": "desert",
+        "part_of_speech": "noun",
+        "root_letters": "ص ح ر",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "الصحراء واسعة.",
+            "transliteration": "Aṣ-ṣaḥrāʾ wāsiʿa.",
+            "english": "The desert is vast."
+          }
+        ]
+      },
+      {
+        "id": "word-205",
+        "arabic_text": "وقف",
+        "tashkeel": "وَقَفَ",
+        "transliteration": "waqafa",
+        "english_meaning": "he stood",
+        "part_of_speech": "verb",
+        "root_letters": "و ق ف",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "وقف الطالب ليتحدث.",
+            "transliteration": "Waqafa aṭ-ṭālib li-yataḥaddath.",
+            "english": "The student stood to speak."
+          }
+        ]
+      },
+      {
+        "id": "word-206",
+        "arabic_text": "يراقب",
+        "tashkeel": "يُرَاقِبُ",
+        "transliteration": "yurāqibu",
+        "english_meaning": "he observes, watches",
+        "part_of_speech": "verb",
+        "root_letters": "ر ق ب",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "يراقب العالم السماء.",
+            "transliteration": "Yurāqibu al-ʿālim as-samāʾ.",
+            "english": "The scientist observes the sky."
+          }
+        ]
+      },
+      {
+        "id": "word-207",
+        "arabic_text": "نجم",
+        "tashkeel": "نَجْم",
+        "transliteration": "najm",
+        "english_meaning": "star",
+        "part_of_speech": "noun",
+        "root_letters": "ن ج م",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "النجوم لامعة في الليل.",
+            "transliteration": "An-nujūm lāmiʿa fī al-layl.",
+            "english": "The stars are shining at night."
+          }
+        ]
+      },
+      {
+        "id": "word-208",
+        "arabic_text": "التي",
+        "tashkeel": "الَّتِي",
+        "transliteration": "allatī",
+        "english_meaning": "which, that (feminine)",
+        "part_of_speech": "pronoun",
+        "root_letters": "ا ل ل",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "هذه هي الفتاة التي رأيتها.",
+            "transliteration": "Hādhī hiya al-fatā allatī raʾaytuhā.",
+            "english": "This is the girl whom I saw."
+          }
+        ]
+      },
+      {
+        "id": "word-209",
+        "arabic_text": "تلألأ",
+        "tashkeel": "تَلَأْلَأَ",
+        "transliteration": "talālaʾa",
+        "english_meaning": "to shine, twinkle",
+        "part_of_speech": "verb",
+        "root_letters": "ل أ ل أ",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "النجوم تلألأ في السماء.",
+            "transliteration": "An-nujūm talālaʾ fī as-samāʾ.",
+            "english": "The stars twinkle in the sky."
+          }
+        ]
+      },
+      {
+        "id": "word-210",
+        "arabic_text": "سماء",
+        "tashkeel": "سَمَاء",
+        "transliteration": "samāʾ",
+        "english_meaning": "sky, heaven",
+        "part_of_speech": "noun",
+        "root_letters": "س م و",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "السماء زرقاء اليوم.",
+            "transliteration": "As-samāʾ zarqāʾ al-yawm.",
+            "english": "The sky is blue today."
+          }
+        ]
+      },
+      {
+        "id": "word-211",
+        "arabic_text": "نفس",
+        "tashkeel": "نَفْس",
+        "transliteration": "nafs",
+        "english_meaning": "self, soul",
+        "part_of_speech": "noun",
+        "root_letters": "ن ف س",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "تحدثت مع نفسي.",
+            "transliteration": "Taḥaddathtu maʿa nafsī.",
+            "english": "I talked to myself."
+          }
+        ]
+      },
+      {
+        "id": "word-212",
+        "arabic_text": "استخدام",
+        "tashkeel": "اِسْتِخْدَام",
+        "transliteration": "istikhdām",
+        "english_meaning": "use, usage",
+        "part_of_speech": "noun",
+        "root_letters": "خ د م",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "استخدام الحاسوب سهل.",
+            "transliteration": "Istikhdām al-ḥāsūb sahl.",
+            "english": "Using the computer is easy."
+          }
+        ]
+      },
+      {
+        "id": "word-213",
+        "arabic_text": "علم",
+        "tashkeel": "عِلْم",
+        "transliteration": "ʿilm",
+        "english_meaning": "science, knowledge",
+        "part_of_speech": "noun",
+        "root_letters": "ع ل م",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "علم الفلك ممتع.",
+            "transliteration": "ʿIlm al-falak mumtiʿ.",
+            "english": "Astronomy is fun."
+          }
+        ]
+      },
+      {
+        "id": "word-214",
+        "arabic_text": "فلك",
+        "tashkeel": "فَلَك",
+        "transliteration": "falak",
+        "english_meaning": "astronomy, orbit",
+        "part_of_speech": "noun",
+        "root_letters": "ف ل ك",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "الفلك علم قديم.",
+            "transliteration": "Al-falak ʿilm qadīm.",
+            "english": "Astronomy is an ancient science."
+          }
+        ]
+      },
+      {
+        "id": "word-215",
+        "arabic_text": "يجد",
+        "tashkeel": "يَجِدُ",
+        "transliteration": "yajidu",
+        "english_meaning": "he finds",
+        "part_of_speech": "verb",
+        "root_letters": "و ج د",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "يجد الطالب الإجابة.",
+            "transliteration": "Yajidu aṭ-ṭālib al-ijāba.",
+            "english": "The student finds the answer."
+          }
+        ]
+      },
+      {
+        "id": "word-216",
+        "arabic_text": "طريق",
+        "tashkeel": "طَرِيق",
+        "transliteration": "ṭarīq",
+        "english_meaning": "road, way, path",
+        "part_of_speech": "noun",
+        "root_letters": "ط ر ق",
+        "difficulty": 2,
+        "example_sentences": [
+          {
+            "arabic": "هذا طريق طويل.",
+            "transliteration": "Hādhā ṭarīq ṭawīl.",
+            "english": "This is a long road."
+          }
+        ]
+      },
+      {
+        "id": "word-217",
+        "arabic_text": "إلى",
+        "tashkeel": "إِلَى",
+        "transliteration": "ilā",
+        "english_meaning": "to, towards",
+        "part_of_speech": "preposition",
+        "root_letters": "أ ل ي",
+        "difficulty": 1,
+        "example_sentences": [
+          {
+            "arabic": "ذهبت إلى المدرسة.",
+            "transliteration": "Dhahabtu ilā al-madrasa.",
+            "english": "I went to school."
+          }
+        ]
+      },
+      {
+        "id": "word-218",
+        "arabic_text": "وطن",
+        "tashkeel": "وَطَن",
+        "transliteration": "waṭan",
+        "english_meaning": "homeland, country",
+        "part_of_speech": "noun",
+        "root_letters": "و ط ن",
+        "difficulty": 3,
+        "example_sentences": [
+          {
+            "arabic": "أحب وطني كثيراً.",
+            "transliteration": "Uḥibbu waṭanī kathīran.",
+            "english": "I love my homeland very much."
+          }
+        ]
+      }
+    ],
+    "grammar_notes": [
+      {
+        "title": "Relative Pronouns",
+        "explanation": "Arabic has specific relative pronouns that agree in gender and number with their antecedents. 'التي' is used for feminine singular nouns.",
+        "example_arabic": "النجوم التي تلألأ",
+        "example_english": "the stars that twinkle",
+        "rule_category": "sentence_structure"
+      },
+      {
+        "title": "Future Tense",
+        "explanation": "The future tense in Arabic is formed by adding the prefix سـ (sa-) or the particle سوف (sawfa) before the present tense verb.",
+        "example_arabic": "سأجد / سوف أجد",
+        "example_english": "I will find",
+        "rule_category": "verb_conjugation"
+      },
+      {
+        "title": "Form VIII Verbs",
+        "explanation": "The verb 'يراقب' is a Form VIII verb (افتعل pattern), indicating the reflexive or intensive meaning of the root.",
+        "example_arabic": "راقب - يراقب - مراقبة",
+        "example_english": "to observe - he observes - observation",
+        "rule_category": "derived_forms"
+      }
+    ]
+  }
+]

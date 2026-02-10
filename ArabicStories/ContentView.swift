@@ -1,24 +1,23 @@
 //
 //  ContentView.swift
-//  ArabicStories
-//
-//  Created by Ali Murad on 10/02/2026.
+//  Hikaya
+//  Legacy content view - redirects to MainTabView
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        MainTabView()
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [
+            Story.self,
+            Word.self,
+            UserProgress.self
+        ], inMemory: true)
 }

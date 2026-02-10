@@ -1,17 +1,22 @@
 //
 //  ArabicStoriesApp.swift
-//  ArabicStories
-//
-//  Created by Ali Murad on 10/02/2026.
+//  Hikaya
+//  Main app entry point with Firebase configuration
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
-struct ArabicStoriesApp: App {
+struct HikayaApp: App {
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
         }
     }
 }
