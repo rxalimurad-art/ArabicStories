@@ -756,12 +756,9 @@ function resetForm() {
   document.getElementById('story-id').value = '';
   
   document.getElementById('segments-container').innerHTML = '';
-  document.getElementById('words-container').innerHTML = '';
   state.segments = [];
-  state.words = [];
   
   document.getElementById('empty-segments')?.classList.remove('hidden');
-  document.getElementById('empty-words')?.classList.remove('hidden');
   document.getElementById('validation-results')?.classList.add('hidden');
   
   document.getElementById('form-title').textContent = '➕ Create New Story';
@@ -807,13 +804,7 @@ function populateForm(data) {
     }
   }
   
-  // Clear and repopulate words
-  document.getElementById('words-container').innerHTML = '';
-  state.words = [];
-  
-  if (data.words?.length > 0) {
-    data.words.forEach(word => addWord(word));
-  }
+  // Story vocabulary words section removed - words are now managed in General Words
 }
 
 // ============================================
