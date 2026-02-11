@@ -260,27 +260,94 @@ struct MixedTextView: View {
     let isNightMode: Bool
     let onWordTap: (String, CGPoint) -> Void
     
-    // Create a dictionary of words by ID for quick lookup
-    private var wordsById: [String: Word] {
-        guard let words = storyWords else { return [:] }
-        return Dictionary(uniqueKeysWithValues: words.compactMap { word in
-            (word.id.uuidString, word)
-        })
+    // Get linked words for this segment
+    private var linkedWords: [Word] {
+        guard let words = storyWords else { return [] }
+        return linkedWordIds.compactMap { wordId in
+            words.first { $0.id.uuidString == wordId }
+        }
     }
     
     var body: some View {
-        // Simple text display - admin will link Arabic words separately
-        // For now, just display the plain text
-        // When admin links words, they will be highlighted based on linkedWordIds
-        Text(text)
-            .font(.system(size: fontSize))
-            .foregroundStyle(isNightMode ? .white : .primary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isNightMode ? Color.white.opacity(0.05) : Color.white)
-            )
+        VStack(alignment: .leading, spacing: 16) {
+            // Main text content
+            Text(text)
+                .font(.system(size: fontSize))
+                .foregroundStyle(isNightMode ? .white : .primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Linked Arabic words section (if any)
+            if !linkedWords.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Tap words to learn:")
+                        .font(.caption)
+                        .foregroundStyle(isNightMode ? .gray : .secondary)
+                    
+                    FlowLayout(spacing: 12) {
+                        ForEach(linkedWords) { word in
+                            LinkedWordButton(
+                                word: word,
+                                isNightMode: isNightMode,
+                                onTap: { position in
+                                    onWordTap(word.id.uuidString, position)
+                                }
+                            )
+                        }
+                    }
+                }
+                .padding(.top, 8)
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isNightMode ? Color.white.opacity(0.05) : Color.white)
+        )
+    }
+}
+
+// MARK: - Linked Word Button
+
+struct LinkedWordButton: View {
+    let word: Word
+    let isNightMode: Bool
+    let onTap: (CGPoint) -> Void
+    
+    @State private var tapPosition: CGPoint = .zero
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            // Arabic text
+            Text(word.arabicText)
+                .font(.custom("NotoNaskhArabic", size: 18))
+                .fontWeight(.semibold)
+            
+            // Transliteration (if available)
+            if let transliteration = word.transliteration {
+                Text(transliteration)
+                    .font(.caption2)
+                    .italic()
+                    .foregroundStyle(isNightMode ? .gray : .secondary)
+            }
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(isNightMode ? Color.hikayaTeal.opacity(0.2) : Color.hikayaTeal.opacity(0.1))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.hikayaTeal.opacity(0.4), lineWidth: 1)
+        )
+        .foregroundStyle(Color.hikayaTeal)
+        .contentShape(Rectangle())
+        .onTapGesture { location in
+            tapPosition = location
+            onTap(location)
+        }
+        .scaleEffect(1.0)
+        .animation(.spring(response: 0.3), value: word.id)
     }
 }
 

@@ -149,7 +149,16 @@ class FirebaseService {
     
     private func convertToStory(_ data: [String: Any], id: String) throws -> Story {
         var jsonDict = data
-        jsonDict["id"] = id
+        
+        // Handle ID - Firestore document ID might not be a valid UUID
+        // If it's not a valid UUID, generate a new one
+        if UUID(uuidString: id) != nil {
+            jsonDict["id"] = id
+        } else {
+            // Generate a deterministic UUID from the Firestore ID
+            jsonDict["id"] = UUID().uuidString
+            print("⚠️ Firestore document ID '\(id)' is not a valid UUID, generated new UUID")
+        }
         
         // Convert Firestore Timestamps to ISO8601 strings
         let dateFormatter = ISO8601DateFormatter()
@@ -177,12 +186,22 @@ class FirebaseService {
         
         // Convert mixed segments (Level 1 format) - simplified: just text and linkedWordIds
         if let mixedSegments = data["mixedSegments"] as? [[String: Any]] {
-            jsonDict["mixedSegments"] = mixedSegments.map { segment -> [String: Any] in
+            jsonDict["mixedSegments"] = mixedSegments.enumerated().map { index, segment -> [String: Any] in
                 var seg = segment
+                
+                // Ensure segment has an ID
+                if seg["id"] == nil || (seg["id"] as? String)?.isEmpty == true {
+                    seg["id"] = UUID().uuidString
+                }
+                
+                // Ensure segment has an index
+                if seg["index"] == nil {
+                    seg["index"] = index
+                }
                 
                 // Handle text field (plain text content)
                 if seg["text"] == nil {
-                    seg["text"] = ""
+                    seg["text"] = seg["content"] as? String ?? ""
                 }
                 
                 // Handle linkedWordIds (Arabic words linked by admin)
@@ -196,8 +215,20 @@ class FirebaseService {
         
         // Convert regular segments (Level 2+ format)
         if let segments = data["segments"] as? [[String: Any]] {
-            jsonDict["segments"] = segments.map { segment -> [String: Any] in
+            jsonDict["segments"] = segments.enumerated().map { index, segment -> [String: Any] in
                 var seg = segment
+                
+                // Ensure segment has an ID
+                if seg["id"] == nil || (seg["id"] as? String)?.isEmpty == true {
+                    seg["id"] = UUID().uuidString
+                }
+                
+                // Ensure segment has an index
+                if seg["index"] == nil {
+                    seg["index"] = index
+                }
+                
+                // Convert timestamps
                 if let start = segment["audioStartTime"] as? Timestamp {
                     seg["audioStartTime"] = start.seconds
                 }
@@ -212,6 +243,12 @@ class FirebaseService {
         if let words = data["words"] as? [[String: Any]] {
             jsonDict["words"] = words.map { word -> [String: Any] in
                 var w = word
+                
+                // Ensure word has an ID
+                if w["id"] == nil || (w["id"] as? String)?.isEmpty == true {
+                    w["id"] = UUID().uuidString
+                }
+                
                 // Map Firestore field names to Swift model field names
                 if let arabic = word["arabic"] as? String {
                     w["arabicText"] = arabic
@@ -276,7 +313,28 @@ class FirebaseService {
         let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(Story.self, from: jsonData)
+        
+        do {
+            let story = try decoder.decode(Story.self, from: jsonData)
+            print("✅ Successfully decoded story: \(story.title) [Format: \(story.format.rawValue)]")
+            if story.format == .mixed {
+                print("   Mixed segments: \(story.mixedSegments?.count ?? 0)")
+            } else {
+                print("   Bilingual segments: \(story.segments?.count ?? 0)")
+            }
+            print("   Words: \(story.words?.count ?? 0)")
+            return story
+        } catch {
+            print("❌ Failed to decode Story: \(error)")
+            print("   JSON keys: \(jsonDict.keys.sorted())")
+            if let mixedSegments = jsonDict["mixedSegments"] as? [[String: Any]] {
+                print("   Mixed segments count: \(mixedSegments.count)")
+                for (i, seg) in mixedSegments.enumerated() {
+                    print("   Segment \(i): \(seg.keys.sorted())")
+                }
+            }
+            throw error
+        }
     }
     
     private func storyToDictionary(_ story: Story) throws -> [String: Any] {
