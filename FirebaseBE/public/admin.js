@@ -393,29 +393,22 @@ function addMixedSegment(data = null) {
       <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
     </div>
     
-    <div class="content-parts-container"></div>
-    
-    <div class="segment-actions">
-      <button type="button" class="btn btn-small btn-secondary add-text-part">+ Text</button>
-      <button type="button" class="btn btn-small btn-secondary add-word-part">+ Arabic Word</button>
+    <div class="form-group form-group-wide" style="margin-bottom: 12px;">
+      <label>Segment Text *</label>
+      <textarea class="segment-text" rows="4" required placeholder="Enter story text here..."></textarea>
     </div>
   `;
   
   // Setup remove button
   card.querySelector('.remove-segment').addEventListener('click', () => removeSegment(index));
   
-  // Setup add part buttons
-  card.querySelector('.add-text-part').addEventListener('click', () => {
-    addContentPartToCard(card, { type: 'text' });
-  });
-  
-  card.querySelector('.add-word-part').addEventListener('click', () => {
-    addContentPartToCard(card, { type: 'arabicWord' });
-  });
-  
-  // Add existing content parts if data provided
-  if (data?.contentParts?.length > 0) {
-    data.contentParts.forEach(part => addContentPartToCard(card, part));
+  // Fill existing text if data provided
+  if (data?.text) {
+    card.querySelector('.segment-text').value = data.text;
+  } else if (data?.contentParts?.length > 0) {
+    // Backward compatibility: convert contentParts to simple text
+    const text = data.contentParts.map(part => part.text || '').join('');
+    card.querySelector('.segment-text').value = text;
   }
   
   container.appendChild(card);
@@ -425,55 +418,14 @@ function addMixedSegment(data = null) {
   card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+// Keep for backward compatibility - no longer used
 function addContentPartToCard(card, data = {}) {
-  const container = card.querySelector('.content-parts-container');
-  if (!container) return;
-  
-  const partDiv = document.createElement('div');
-  partDiv.className = 'content-part';
-  partDiv.dataset.type = data.type || 'text';
-  partDiv.dataset.partId = data.id || generateId();
-  
-  if (data.type === 'arabicWord') {
-    partDiv.innerHTML = `
-      <div class="part-header">
-        <div>
-          <span class="part-label">🎯 Arabic Word</span>
-          <span class="part-type-badge">Word</span>
-        </div>
-        <button type="button" class="remove-part">×</button>
-      </div>
-      <input type="text" class="part-text" placeholder="Arabic text (e.g., اللَّهُ)" value="${data.text || ''}">
-      <input type="text" class="part-transliteration" placeholder="Transliteration (e.g., Allah)" value="${data.transliteration || ''}">
-      <input type="text" class="part-word-id" placeholder="Word ID from General Words" value="${data.wordId || ''}">
-    `;
-  } else {
-    partDiv.innerHTML = `
-      <div class="part-header">
-        <div>
-          <span class="part-label">📝 Text</span>
-          <span class="part-type-badge">Text</span>
-        </div>
-        <button type="button" class="remove-part">×</button>
-      </div>
-      <textarea class="part-text" rows="2" placeholder="English text...">${data.text || ''}</textarea>
-    `;
-  }
-  
-  // Setup remove button
-  partDiv.querySelector('.remove-part').addEventListener('click', () => {
-    partDiv.remove();
-  });
-  
-  container.appendChild(partDiv);
+  console.log('addContentPartToCard is deprecated. Use simple text fields instead.');
 }
 
 // Keep old function for backward compatibility
 function addContentPart(segmentIndex, type) {
-  const cards = document.querySelectorAll('.segment-card.mixed-format');
-  if (cards[segmentIndex]) {
-    addContentPartToCard(cards[segmentIndex], { type });
-  }
+  console.log('addContentPart is deprecated. Use simple text fields instead.');
 }
 
 function removeSegment(index) {
@@ -575,7 +527,8 @@ function collectFormData() {
     format: format,
     difficultyLevel: parseInt(document.getElementById('story-difficulty').value) || 1,
     category: document.getElementById('story-category').value,
-    tags: document.getElementById('story-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    // Tags field removed from UI
+    tags: [],
     coverImageURL: document.getElementById('story-cover').value.trim() || null
     // No audioNarrationURL - removed per requirements
     // No vocabulary words - using general words only
@@ -583,34 +536,16 @@ function collectFormData() {
   
   // Collect format-specific content
   if (format === 'mixed') {
-    // Single/Mixed format: English text with embedded Arabic words
+    // Single/Mixed format: Simple text segments
     result.mixedSegments = [];
     document.querySelectorAll('.segment-card[data-format="mixed"]').forEach((card, idx) => {
-      const contentParts = [];
-      card.querySelectorAll('.content-part').forEach((part) => {
-        const type = part.dataset.type || 'text';
-        const partData = {
-          id: part.dataset.partId || undefined,
-          type: type,
-          text: part.querySelector('.part-text').value.trim()
-        };
-        
-        if (type === 'arabicWord') {
-          partData.wordId = part.querySelector('.part-word-id').value || null;
-          partData.transliteration = part.querySelector('.part-transliteration').value.trim() || null;
-        }
-        
-        if (partData.text) {
-          contentParts.push(partData);
-        }
-      });
+      const text = card.querySelector('.segment-text')?.value.trim() || '';
       
-      if (contentParts.length > 0) {
+      if (text) {
         result.mixedSegments.push({
           id: card.dataset.segmentId || undefined,
           index: idx,
-          contentParts: contentParts
-          // No culturalNote - removed per requirements
+          text: text
         });
       }
     });
@@ -793,6 +728,9 @@ function populateForm(data) {
   
   if (format === 'mixed' && data.mixedSegments?.length > 0) {
     data.mixedSegments.forEach(seg => addMixedSegment(seg));
+  } else if (format === 'mixed' && data.segments?.length > 0) {
+    // Backward compatibility: convert old segments to new format
+    data.segments.forEach(seg => addMixedSegment({ text: seg.englishText || '' }));
   } else if (data.segments?.length > 0) {
     data.segments.forEach(seg => addBilingualSegment(seg));
   } else {
@@ -1054,24 +992,10 @@ function downloadTemplate(type = 'bilingual') {
       coverImageURL: "https://example.com/image.jpg",
       mixedSegments: [
         {
-          contentParts: [
-            { type: "text", text: "Once upon a time, there was a young man who turned to " },
-            { type: "arabicWord", text: "اللَّهُ", transliteration: "(Allah)", wordId: "word-1" },
-            { type: "text", text: " for guidance." }
-          ],
-          culturalNote: "Allah is the Arabic word for God"
+          text: "Once upon a time, there was a young man who turned to Allah for guidance."
         }
       ],
-      words: [
-        {
-          id: "word-1",
-          arabic: "اللَّهُ",
-          english: "God - The one and only God in Islam",
-          transliteration: "Allah",
-          partOfSpeech: "noun",
-          difficulty: 1
-        }
-      ]
+      words: []
     };
   } else {
     // Bilingual format template (Level 2+)
@@ -1133,28 +1057,13 @@ async function seedSampleStories(type = 'bilingual') {
         coverImageURL: "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
         mixedSegments: [
           {
-            contentParts: [
-              { type: "text", text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace. He turned to " },
-              { type: "arabicWord", text: "اللَّهُ", transliteration: "(Allah)", wordId: "word-allah" },
-              { type: "text", text: ", the Most Merciful." }
-            ],
-            culturalNote: "Allah is the Arabic word for God, used by Muslims and Arab Christians alike."
+            text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace. He turned to Allah, the Most Merciful."
           },
           {
-            contentParts: [
-              { type: "text", text: "He opened the " },
-              { type: "arabicWord", text: "الْكِتَابُ", transliteration: "(Al-Kitab)", wordId: "word-kitab" },
-              { type: "text", text: " and learned that " },
-              { type: "arabicWord", text: "السَّلَامُ", transliteration: "(As-Salaam)", wordId: "word-salaam" },
-              { type: "text", text: " comes from submission to God." }
-            ]
+            text: "He opened the Al-Kitab and learned that As-Salaam comes from submission to God."
           }
         ],
-        words: [
-          { id: "word-allah", arabic: "اللَّهُ", english: "God", transliteration: "Allah", difficulty: 1 },
-          { id: "word-kitab", arabic: "الْكِتَابُ", english: "The Book (Quran)", transliteration: "Al-Kitab", difficulty: 1 },
-          { id: "word-salaam", arabic: "السَّلَامُ", english: "Peace", transliteration: "As-Salaam", difficulty: 1 }
-        ]
+        words: []
       };
       
       const result = await apiRequest(API.stories(), {

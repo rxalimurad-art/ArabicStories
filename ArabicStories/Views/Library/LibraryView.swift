@@ -659,27 +659,17 @@ struct EmptyLibraryView: View {
             Word(arabicText: "الصَّلَاةُ", transliteration: "As-Salah", englishMeaning: "Prayer", difficulty: 1)
         ]
         
-        // Create mixed content segments
+        // Create mixed content segments - simplified format: just text with linkedWordIds
         let segments = [
             MixedContentSegment(
                 index: 0,
-                contentParts: [
-                    .text("Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to "),
-                    .arabicWord("اللَّهُ", wordId: words[0].id.uuidString, transliteration: "(Allah)"),
-                    .text(", the Most Merciful, and calling upon his "),
-                    .arabicWord("رَبِّ", wordId: words[1].id.uuidString, transliteration: "(Rabb)"),
-                    .text(" for guidance.")
-                ]
+                text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance.",
+                linkedWordIds: [words[0].id.uuidString, words[1].id.uuidString]
             ),
             MixedContentSegment(
                 index: 1,
-                contentParts: [
-                    .text("Every day, Ahmad would open the "),
-                    .arabicWord("الْكِتَابُ", wordId: words[2].id.uuidString, transliteration: "(Al-Kitab)"),
-                    .text(" — the holy book sent by Allah — and read its beautiful verses. He learned that "),
-                    .arabicWord("السَّلَامُ", wordId: words[3].id.uuidString, transliteration: "(As-Salaam)"),
-                    .text(" (peace) comes only through submission to the One God.")
-                ]
+                text: "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God.",
+                linkedWordIds: [words[2].id.uuidString, words[3].id.uuidString]
             )
         ]
         

@@ -96,19 +96,14 @@ function formatStoryForFirestore(storyData) {
   
   // Handle format-specific content
   if (finalFormat === 'mixed') {
-    // Mixed format (Level 1): English text with embedded Arabic words
+    // Mixed format (Level 1): Simple text segments - admin links Arabic words separately
     baseStory.mixedSegments = (storyData.mixedSegments || []).map((seg, idx) => ({
       id: seg.id || require('crypto').randomUUID(),
       index: idx,
-      contentParts: (seg.contentParts || []).map(part => ({
-        id: part.id || require('crypto').randomUUID(),
-        type: part.type || 'text', // 'text' or 'arabicWord'
-        text: part.text || '',
-        wordId: part.wordId || null,
-        transliteration: part.transliteration || null
-      })),
+      text: seg.text || '',  // Plain text - admin will link Arabic words separately
       imageURL: seg.imageURL || null,
-      culturalNote: seg.culturalNote || null
+      culturalNote: seg.culturalNote || null,
+      linkedWordIds: seg.linkedWordIds || []  // IDs of Arabic words linked by admin
     }));
     baseStory.segments = []; // Empty for mixed format
   } else {
@@ -396,13 +391,13 @@ app.post('/api/stories/validate', async (req, res) => {
     const format = storyData.format || 'bilingual';
     
     if (format === 'mixed') {
-      // Validate mixed format (Level 1)
+      // Validate mixed format (Level 1) - simplified: just text field
       if (!storyData.mixedSegments || storyData.mixedSegments.length === 0) {
         errors.push('At least one mixed segment is required for Level 1 stories');
       } else {
         storyData.mixedSegments.forEach((seg, idx) => {
-          if (!seg.contentParts || seg.contentParts.length === 0) {
-            errors.push(`Segment ${idx + 1}: At least one content part is required`);
+          if (!seg.text || seg.text.trim().length === 0) {
+            errors.push(`Segment ${idx + 1}: Text content is required`);
           }
         });
       }

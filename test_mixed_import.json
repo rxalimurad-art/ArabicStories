@@ -8,22 +8,8 @@
   "tags": ["test", "mixed"],
   "mixedSegments": [
     {
-      "contentParts": [
-        {
-          "type": "text",
-          "text": "This is English text. "
-        },
-        {
-          "type": "arabicWord",
-          "text": "اللَّهُ",
-          "transliteration": "(Allah)",
-          "wordId": "word-1"
-        },
-        {
-          "type": "text",
-          "text": " is the Arabic word for God."
-        }
-      ]
+      "text": "This is English text. اللَّهُ (Allah) is the Arabic word for God.",
+      "linkedWordIds": ["word-1"]
     }
   ],
   "words": [

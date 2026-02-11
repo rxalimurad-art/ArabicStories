@@ -175,21 +175,19 @@ class FirebaseService {
             jsonDict["format"] = "bilingual"
         }
         
-        // Convert mixed segments (Level 1 format)
+        // Convert mixed segments (Level 1 format) - simplified: just text and linkedWordIds
         if let mixedSegments = data["mixedSegments"] as? [[String: Any]] {
             jsonDict["mixedSegments"] = mixedSegments.map { segment -> [String: Any] in
                 var seg = segment
                 
-                // Convert content parts
-                if let contentParts = segment["contentParts"] as? [[String: Any]] {
-                    seg["contentParts"] = contentParts.map { part -> [String: Any] in
-                        var p = part
-                        // Ensure type is lowercase string
-                        if let type = part["type"] as? String {
-                            p["type"] = type.lowercased()
-                        }
-                        return p
-                    }
+                // Handle text field (plain text content)
+                if seg["text"] == nil {
+                    seg["text"] = ""
+                }
+                
+                // Handle linkedWordIds (Arabic words linked by admin)
+                if seg["linkedWordIds"] == nil {
+                    seg["linkedWordIds"] = []
                 }
                 
                 return seg

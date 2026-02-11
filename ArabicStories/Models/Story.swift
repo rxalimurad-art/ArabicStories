@@ -373,8 +373,8 @@ struct MixedContentSegment: Identifiable, Codable, Hashable {
     var id: UUID
     var index: Int
     
-    // Array of content parts - each part is either plain text or an Arabic word
-    var contentParts: [MixedContentPart]
+    // Plain text content - admin will add Arabic word links separately in admin panel
+    var text: String
     
     // Optional image for this segment
     var imageURL: String?
@@ -382,93 +382,45 @@ struct MixedContentSegment: Identifiable, Codable, Hashable {
     // Optional cultural note
     var culturalNote: String?
     
+    // Arabic word references added by admin (optional, can be empty initially)
+    var linkedWordIds: [String]?
+    
     enum CodingKeys: String, CodingKey {
         case id
         case index
-        case contentParts
+        case text
         case imageURL
         case culturalNote
+        case linkedWordIds
     }
     
     init(
         id: UUID = UUID(),
         index: Int,
-        contentParts: [MixedContentPart],
+        text: String,
         imageURL: String? = nil,
-        culturalNote: String? = nil
+        culturalNote: String? = nil,
+        linkedWordIds: [String]? = nil
     ) {
         self.id = id
         self.index = index
-        self.contentParts = contentParts
+        self.text = text
         self.imageURL = imageURL
         self.culturalNote = culturalNote
+        self.linkedWordIds = linkedWordIds
     }
     
-    // Computed property to get full text for reading time estimation
+    // Computed property to get word count for reading time estimation
     var wordCount: Int {
-        contentParts.reduce(0) { count, part in
-            switch part.type {
-            case .text:
-                return count + part.text.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }.count
-            case .arabicWord:
-                return count + 1
-            }
-        }
+        text.components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .count
     }
     
-    // Get all unique Arabic word IDs in this segment
+    // Get all linked Arabic word IDs in this segment
     var arabicWordIds: [String] {
-        contentParts
-            .filter { $0.type == .arabicWord }
-            .compactMap { $0.wordId }
+        linkedWordIds ?? []
     }
-}
-
-// MARK: - Mixed Content Part
-
-struct MixedContentPart: Identifiable, Codable, Hashable {
-    var id: UUID
-    var type: ContentPartType
-    var text: String              // The display text (English or Arabic)
-    var wordId: String?           // Reference to Word model (for Arabic words)
-    var transliteration: String?  // Optional transliteration for Arabic words
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case type
-        case text
-        case wordId
-        case transliteration
-    }
-    
-    init(
-        id: UUID = UUID(),
-        type: ContentPartType,
-        text: String,
-        wordId: String? = nil,
-        transliteration: String? = nil
-    ) {
-        self.id = id
-        self.type = type
-        self.text = text
-        self.wordId = wordId
-        self.transliteration = transliteration
-    }
-    
-    // Convenience initializer for plain text
-    static func text(_ text: String) -> MixedContentPart {
-        MixedContentPart(type: .text, text: text)
-    }
-    
-    // Convenience initializer for Arabic words
-    static func arabicWord(_ arabic: String, wordId: String, transliteration: String? = nil) -> MixedContentPart {
-        MixedContentPart(type: .arabicWord, text: arabic, wordId: wordId, transliteration: transliteration)
-    }
-}
-
-enum ContentPartType: String, Codable {
-    case text = "text"
-    case arabicWord = "arabicWord"
 }
 
 // MARK: - Word Timing for Audio Sync

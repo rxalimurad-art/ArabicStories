@@ -301,17 +301,20 @@ class StoryReaderViewModel {
     
     // MARK: - Mixed Format Word Interaction
     
-    func handleMixedWordTap(wordId: String, arabicText: String, transliteration: String?, position: CGPoint) {
-        print("👆 Mixed format word tapped: '\(arabicText)' (ID: \(wordId))")
+    func handleMixedWordTap(wordId: String, position: CGPoint) {
+        print("👆 Mixed format word tapped (ID: \(wordId))")
         
         // Find word details from story's vocabulary
-        let word = story.words?.first { $0.id.uuidString == wordId }
+        guard let word = story.words?.first(where: { $0.id.uuidString == wordId }) else {
+            print("⚠️ Word not found in story vocabulary: \(wordId)")
+            return
+        }
         
         let mixedInfo = MixedWordInfo(
             wordId: wordId,
-            arabicText: arabicText,
-            transliteration: transliteration,
-            englishMeaning: word?.englishMeaning
+            arabicText: word.arabicText,
+            transliteration: word.transliteration,
+            englishMeaning: word.englishMeaning
         )
         
         selectedMixedWord = mixedInfo

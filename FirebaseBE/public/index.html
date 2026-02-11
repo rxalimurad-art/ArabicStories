@@ -75,96 +75,15 @@
       color: #1565c0;
     }
     
-    /* Content parts in mixed format */
-    .content-parts-container {
-      background: rgba(255,255,255,0.5);
-      border-radius: 8px;
-      padding: 12px;
-      margin: 12px 0;
+    /* Simplified mixed format segments */
+    .segment-card.mixed-format .form-group {
+      margin: 12px 16px;
     }
     
-    .content-part {
-      background: white;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .content-part[data-type="arabicWord"] {
-      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-      border-color: #ff9800;
-      border-left: 4px solid #ff9800;
-    }
-    
-    .content-part[data-type="text"] {
-      border-left: 4px solid #9e9e9e;
-    }
-    
-    .part-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    
-    .part-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .content-part[data-type="arabicWord"] .part-label {
-      color: #e65100;
-    }
-    
-    .content-part[data-type="text"] .part-label {
-      color: #616161;
-    }
-    
-    .part-type-badge {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-weight: 600;
-    }
-    
-    .content-part[data-type="arabicWord"] .part-type-badge {
-      background: #ff9800;
-      color: white;
-    }
-    
-    .content-part[data-type="text"] .part-type-badge {
-      background: #9e9e9e;
-      color: white;
-    }
-    
-    .remove-part {
-      background: #f44336;
-      color: white;
-      border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      line-height: 1;
-    }
-    
-    .segment-actions {
-      display: flex;
-      gap: 8px;
-      padding: 12px;
-      background: rgba(0,0,0,0.03);
-      border-radius: 8px;
-      margin-top: 8px;
-    }
-    
-    .segment-actions button {
-      font-size: 12px;
-      padding: 8px 16px;
+    .segment-card.mixed-format textarea {
+      width: 100%;
+      font-size: 15px;
+      line-height: 1.6;
     }
     
     /* Word card with audio */
@@ -734,50 +653,7 @@
     </div>
   </div>
 
-  <!-- Templates -->
-  <template id="segment-template">
-    <div class="segment-card" data-index="{index}">
-      <div class="segment-header">
-        <span class="segment-number">Segment {number}</span>
-        <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
-      </div>
-      
-      <!-- Bilingual Format Fields -->
-      <div class="bilingual-fields">
-        <div class="form-row">
-          <div class="form-group form-group-wide">
-            <label>Arabic Text *</label>
-            <textarea class="segment-arabic" rows="3" dir="rtl" required placeholder="النص العربي"></textarea>
-          </div>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group form-group-wide">
-            <label>English Text *</label>
-            <textarea class="segment-english" rows="3" required placeholder="English translation"></textarea>
-          </div>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group form-group-wide">
-            <label>Transliteration</label>
-            <input type="text" class="segment-transliteration" placeholder="Arabic transliteration">
-          </div>
-        </div>
-      </div>
-      
-      <!-- Mixed Format Fields (Hidden by default) -->
-      <div class="mixed-fields hidden">
-        <div class="content-parts-container">
-          <!-- Content parts will be added here -->
-        </div>
-        <div class="segment-actions">
-          <button type="button" class="btn btn-small btn-secondary add-text-part">+ Add Text</button>
-          <button type="button" class="btn btn-small btn-secondary add-word-part">+ Add Arabic Word</button>
-        </div>
-      </div>
-    </div>
-  </template>
+
 
   <script src="admin.js"></script>
 </body>

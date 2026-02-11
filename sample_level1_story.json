@@ -176,367 +176,44 @@
     {
       "id": "seg-1",
       "index": 0,
-      "contentParts": [
-        {
-          "id": "part-1",
-          "type": "text",
-          "text": "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to "
-        },
-        {
-          "id": "part-2",
-          "type": "arabicWord",
-          "text": "اللَّهُ",
-          "transliteration": "(Allah)",
-          "wordId": "word-allah"
-        },
-        {
-          "id": "part-3",
-          "type": "text",
-          "text": ", the Most Merciful, and calling upon his "
-        },
-        {
-          "id": "part-4",
-          "type": "arabicWord",
-          "text": "رَبِّ",
-          "transliteration": "(Rabb)",
-          "wordId": "word-rabb"
-        },
-        {
-          "id": "part-5",
-          "type": "text",
-          "text": " for guidance."
-        }
-      ]
+      "text": "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance.",
+      "linkedWordIds": ["word-allah", "word-rabb"]
     },
     {
       "id": "seg-2",
       "index": 1,
-      "contentParts": [
-        {
-          "id": "part-6",
-          "type": "text",
-          "text": "Every day, Ahmad would open the "
-        },
-        {
-          "id": "part-7",
-          "type": "arabicWord",
-          "text": "الْكِتَابُ",
-          "transliteration": "(Al-Kitab)",
-          "wordId": "word-kitab"
-        },
-        {
-          "id": "part-8",
-          "type": "text",
-          "text": " — the holy book sent by Allah — and read its beautiful verses. He learned that "
-        },
-        {
-          "id": "part-9",
-          "type": "arabicWord",
-          "text": "السَّلَامُ",
-          "transliteration": "(As-Salaam)",
-          "wordId": "word-salaam"
-        },
-        {
-          "id": "part-10",
-          "type": "text",
-          "text": " (peace) comes only through submission to the One God."
-        }
-      ]
+      "text": "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God.",
+      "linkedWordIds": ["word-kitab", "word-salaam"]
     },
     {
       "id": "seg-3",
       "index": 2,
-      "contentParts": [
-        {
-          "id": "part-11",
-          "type": "text",
-          "text": "So he started performing his "
-        },
-        {
-          "id": "part-12",
-          "type": "arabicWord",
-          "text": "الصَّلَاةُ",
-          "transliteration": "(As-Salah)",
-          "wordId": "word-salah"
-        },
-        {
-          "id": "part-13",
-          "type": "text",
-          "text": " five times a day and observed "
-        },
-        {
-          "id": "part-14",
-          "type": "arabicWord",
-          "text": "الصَّوْمُ",
-          "transliteration": "(As-Sawm)",
-          "wordId": "word-sawm"
-        },
-        {
-          "id": "part-15",
-          "type": "text",
-          "text": " during the month of Ramadan to purify his "
-        },
-        {
-          "id": "part-16",
-          "type": "arabicWord",
-          "text": "النَّفْسُ",
-          "transliteration": "(An-Nafs)",
-          "wordId": "word-nafs"
-        },
-        {
-          "id": "part-17",
-          "type": "text",
-          "text": " (soul)."
-        }
-      ]
+      "text": "So he started performing his الصَّلَاةُ (As-Salah) five times a day and observed الصَّوْمُ (As-Sawm) during the month of Ramadan to purify his النَّفْسُ (An-Nafs) (soul).",
+      "linkedWordIds": ["word-salah", "word-sawm", "word-nafs"]
     },
     {
       "id": "seg-4",
       "index": 3,
-      "contentParts": [
-        {
-          "id": "part-18",
-          "type": "text",
-          "text": "As Ahmad studied more, he gained precious "
-        },
-        {
-          "id": "part-19",
-          "type": "arabicWord",
-          "text": "الْعِلْمُ",
-          "transliteration": "(Al-Ilm)",
-          "wordId": "word-ilm"
-        },
-        {
-          "id": "part-20",
-          "type": "text",
-          "text": " (knowledge). He understood that every "
-        },
-        {
-          "id": "part-21",
-          "type": "arabicWord",
-          "text": "الْقَوْلُ",
-          "transliteration": "(Al-Qawl)",
-          "wordId": "word-qawl"
-        },
-        {
-          "id": "part-22",
-          "type": "text",
-          "text": " (word) he spoke and every "
-        },
-        {
-          "id": "part-23",
-          "type": "arabicWord",
-          "text": "الْعَمَلُ",
-          "transliteration": "(Al-Amal)",
-          "wordId": "word-amal"
-        },
-        {
-          "id": "part-24",
-          "type": "text",
-          "text": " (deed) he performed would be weighed on the "
-        },
-        {
-          "id": "part-25",
-          "type": "arabicWord",
-          "text": "اليَوْمُ",
-          "transliteration": "(Al-Yawm)",
-          "wordId": "word-yawm"
-        },
-        {
-          "id": "part-26",
-          "type": "text",
-          "text": " of "
-        },
-        {
-          "id": "part-27",
-          "type": "arabicWord",
-          "text": "الدِّينُ",
-          "transliteration": "(Ad-Din)",
-          "wordId": "word-din"
-        },
-        {
-          "id": "part-28",
-          "type": "text",
-          "text": " — the Day of Judgment."
-        }
-      ]
+      "text": "As Ahmad studied more, he gained precious الْعِلْمُ (Al-Ilm) (knowledge). He understood that every الْقَوْلُ (Al-Qawl) (word) he spoke and every الْعَمَلُ (Al-Amal) (deed) he performed would be weighed on the اليَوْمُ (Al-Yawm) of الدِّينُ (Ad-Din) — the Day of Judgment.",
+      "linkedWordIds": ["word-ilm", "word-qawl", "word-amal", "word-yawm", "word-din"]
     },
     {
       "id": "seg-5",
       "index": 4,
-      "contentParts": [
-        {
-          "id": "part-29",
-          "type": "text",
-          "text": "One "
-        },
-        {
-          "id": "part-30",
-          "type": "arabicWord",
-          "text": "اللَّيْلُ",
-          "transliteration": "(Al-Layl)",
-          "wordId": "word-layl"
-        },
-        {
-          "id": "part-31",
-          "type": "text",
-          "text": " (night), while gazing at the sky, Ahmad marveled at the "
-        },
-        {
-          "id": "part-32",
-          "type": "arabicWord",
-          "text": "السَّمَاوَاتُ",
-          "transliteration": "(As-Samawat)",
-          "wordId": "word-samawat"
-        },
-        {
-          "id": "part-33",
-          "type": "text",
-          "text": " (heavens) full of stars, and the "
-        },
-        {
-          "id": "part-34",
-          "type": "arabicWord",
-          "text": "الْأَرْضُ",
-          "transliteration": "(Al-Ard)",
-          "wordId": "word-ard"
-        },
-        {
-          "id": "part-35",
-          "type": "text",
-          "text": " (earth) beneath his feet. He realized how small he was compared to Allah's vast creation, yet how much "
-        },
-        {
-          "id": "part-36",
-          "type": "arabicWord",
-          "text": "الرَّحْمَةُ",
-          "transliteration": "(Ar-Rahmah)",
-          "wordId": "word-rahmah"
-        },
-        {
-          "id": "part-37",
-          "type": "text",
-          "text": " (mercy) Allah had showered upon him."
-        }
-      ]
+      "text": "One اللَّيْلُ (Al-Layl) (night), while gazing at the sky, Ahmad marveled at the السَّمَاوَاتُ (As-Samawat) (heavens) full of stars, and the الْأَرْضُ (Al-Ard) (earth) beneath his feet. He realized how small he was compared to Allah's vast creation, yet how much الرَّحْمَةُ (Ar-Rahmah) (mercy) Allah had showered upon him.",
+      "linkedWordIds": ["word-layl", "word-samawat", "word-ard", "word-rahmah"]
     },
     {
       "id": "seg-6",
       "index": 5,
-      "contentParts": [
-        {
-          "id": "part-38",
-          "type": "text",
-          "text": "Ahmad worked hard to soften his "
-        },
-        {
-          "id": "part-39",
-          "type": "arabicWord",
-          "text": "الْقَلْبُ",
-          "transliteration": "(Al-Qalb)",
-          "wordId": "word-qalb"
-        },
-        {
-          "id": "part-40",
-          "type": "text",
-          "text": " (heart) and fill it with "
-        },
-        {
-          "id": "part-41",
-          "type": "arabicWord",
-          "text": "النُّورُ",
-          "transliteration": "(An-Noor)",
-          "wordId": "word-noor"
-        },
-        {
-          "id": "part-42",
-          "type": "text",
-          "text": " (light). He knew that if he stayed on the right path, he would enter "
-        },
-        {
-          "id": "part-43",
-          "type": "arabicWord",
-          "text": "الْجَنَّةُ",
-          "transliteration": "(Al-Jannah)",
-          "wordId": "word-jannah"
-        },
-        {
-          "id": "part-44",
-          "type": "text",
-          "text": " (Paradise), a garden of eternal bliss. But if he turned away from Allah's guidance, he might face the "
-        },
-        {
-          "id": "part-45",
-          "type": "arabicWord",
-          "text": "النَّارُ",
-          "transliteration": "(An-Nar)",
-          "wordId": "word-nar"
-        },
-        {
-          "id": "part-46",
-          "type": "text",
-          "text": " (fire)."
-        }
-      ]
+      "text": "Ahmad worked hard to soften his الْقَلْبُ (Al-Qalb) (heart) and fill it with النُّورُ (An-Noor) (light). He knew that if he stayed on the right path, he would enter الْجَنَّةُ (Al-Jannah) (Paradise), a garden of eternal bliss. But if he turned away from Allah's guidance, he might face the النَّارُ (An-Nar) (fire).",
+      "linkedWordIds": ["word-qalb", "word-noor", "word-jannah", "word-nar"]
     },
     {
       "id": "seg-7",
       "index": 6,
-      "contentParts": [
-        {
-          "id": "part-47",
-          "type": "text",
-          "text": "From "
-        },
-        {
-          "id": "part-48",
-          "type": "arabicWord",
-          "text": "يَوْمٍ",
-          "transliteration": "(Yawm)",
-          "wordId": "word-yawm"
-        },
-        {
-          "id": "part-49",
-          "type": "text",
-          "text": " (day) to day, Ahmad grew closer to his "
-        },
-        {
-          "id": "part-50",
-          "type": "arabicWord",
-          "text": "الدِّينِ",
-          "transliteration": "(Ad-Din)",
-          "wordId": "word-din"
-        },
-        {
-          "id": "part-51",
-          "type": "text",
-          "text": " (religion), living a life of purpose and devotion. And in the end, his story became a "
-        },
-        {
-          "id": "part-52",
-          "type": "arabicWord",
-          "text": "نُورٌ",
-          "transliteration": "(Noor)",
-          "wordId": "word-noor"
-        },
-        {
-          "id": "part-53",
-          "type": "text",
-          "text": " (light) for others seeking the path to "
-        },
-        {
-          "id": "part-54",
-          "type": "arabicWord",
-          "text": "سَلَامٌ",
-          "transliteration": "(Salaam)",
-          "wordId": "word-salaam"
-        },
-        {
-          "id": "part-55",
-          "type": "text",
-          "text": " (peace)."
-        }
-      ]
+      "text": "From day to day, Ahmad grew closer to his religion, living a life of purpose and devotion. And in the end, his story became a light for others seeking the path to peace.",
+      "linkedWordIds": []
     }
   ],
   "readingProgress": 0,

@@ -219,17 +219,17 @@ struct MixedContentView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Mixed Content - English with embedded Arabic words
+                // Mixed Content - Simple text display
+                // Arabic words are linked by admin separately and managed in linkedWordIds
                 MixedTextView(
-                    contentParts: segment.contentParts,
+                    text: segment.text,
+                    linkedWordIds: segment.linkedWordIds ?? [],
                     storyWords: storyWords,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
-                    onWordTap: { wordId, arabicText, transliteration, position in
+                    onWordTap: { wordId, position in
                         viewModel.handleMixedWordTap(
                             wordId: wordId,
-                            arabicText: arabicText,
-                            transliteration: transliteration,
                             position: position
                         )
                     }
@@ -253,39 +253,34 @@ struct MixedContentView: View {
 // MARK: - Mixed Text View
 
 struct MixedTextView: View {
-    let contentParts: [MixedContentPart]
+    let text: String
+    let linkedWordIds: [String]
     let storyWords: [Word]?
     let fontSize: CGFloat
     let isNightMode: Bool
-    let onWordTap: (String, String, String?, CGPoint) -> Void
+    let onWordTap: (String, CGPoint) -> Void
+    
+    // Create a dictionary of words by ID for quick lookup
+    private var wordsById: [String: Word] {
+        guard let words = storyWords else { return [:] }
+        return Dictionary(uniqueKeysWithValues: words.compactMap { word in
+            (word.id.uuidString, word)
+        })
+    }
     
     var body: some View {
-        FlowLayout(spacing: 6) {
-            ForEach(contentParts) { part in
-                switch part.type {
-                case .text:
-                    Text(part.text)
-                        .font(.system(size: fontSize))
-                        .foregroundStyle(isNightMode ? .white : .primary)
-                case .arabicWord:
-                    MixedArabicWordView(
-                        arabicText: part.text,
-                        transliteration: part.transliteration,
-                        wordId: part.wordId,
-                        isLearned: storyWords?.first { $0.id.uuidString == part.wordId } != nil,
-                        isNightMode: isNightMode,
-                        onTap: { position in
-                            onWordTap(
-                                part.wordId ?? "",
-                                part.text,
-                                part.transliteration,
-                                position
-                            )
-                        }
-                    )
-                }
-            }
-        }
+        // Simple text display - admin will link Arabic words separately
+        // For now, just display the plain text
+        // When admin links words, they will be highlighted based on linkedWordIds
+        Text(text)
+            .font(.system(size: fontSize))
+            .foregroundStyle(isNightMode ? .white : .primary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isNightMode ? Color.white.opacity(0.05) : Color.white)
+            )
     }
 }
 

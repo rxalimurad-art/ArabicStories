@@ -48,37 +48,17 @@ Use for Level 1 stories where learners build vocabulary by tapping Arabic words 
 }
 ```
 
-### Mixed Segment Structure
+### Mixed Segment Structure (Simplified)
 ```json
 {
   "id": "segment-uuid",
   "index": 0,
-  "contentParts": [
-    {
-      "id": "part-1",
-      "type": "text",
-      "text": "Once upon a time, Ahmad turned to "
-    },
-    {
-      "id": "part-2",
-      "type": "arabicWord",
-      "text": "اللَّهُ",
-      "transliteration": "(Allah)",
-      "wordId": "word-uuid-or-id"
-    },
-    {
-      "id": "part-3",
-      "type": "text",
-      "text": " for guidance."
-    }
-  ],
-  "culturalNote": "Optional cultural context"
+  "text": "Once upon a time, Ahmad turned to اللَّهُ (Allah) for guidance.",
+  "linkedWordIds": ["word-allah", "word-guidance"]
 }
 ```
 
-### Content Part Types
-- `type: "text"` - Plain English text
-- `type: "arabicWord"` - Arabic vocabulary word (must have `wordId` linking to words array)
+> **Note:** The admin panel uses a simplified format. Admin just enters plain text segments. Arabic words are managed separately in the Words section and linked by the admin via `linkedWordIds`.
 
 ---
 
@@ -134,10 +114,8 @@ Use for Level 2+ stories with full Arabic text and English translation.
 | `englishMeaning` | `english` | Via CodingKeys |
 | `mixedSegments` | `mixedSegments` | Level 1 only |
 | `segments` | `segments` | Level 2+ only |
-| `contentParts` | `contentParts` | Inside mixedSegments |
-| `part.type` | `type` | `"text"` or `"arabicWord"` |
-| `part.text` | `text` | Display text |
-| `part.wordId` | `wordId` | Link to vocabulary |
+| `mixedSegments[].text` | `text` | Plain text content |
+| `mixedSegments[].linkedWordIds` | `linkedWordIds` | IDs of Arabic words linked by admin |
 
 ### Common Mistakes to Avoid
 
@@ -145,11 +123,11 @@ Use for Level 2+ stories with full Arabic text and English translation.
 2. **Don't use `englishMeaning` in JSON** - Use `english` (Swift maps it internally)
 3. **Mixed format MUST have `mixedSegments`** not `segments`
 4. **Bilingual format MUST have `segments`** not `mixedSegments`
-5. **Content parts in mixed format MUST have correct `type`** values: `"text"` or `"arabicWord"`
+5. **Mixed segments use simple `text` field** - admin links Arabic words separately via `linkedWordIds`
 
 ---
 
-## Complete Mixed Format Example
+## Complete Mixed Format Example (Simplified)
 
 ```json
 {
@@ -167,39 +145,18 @@ Use for Level 2+ stories with full Arabic text and English translation.
     {
       "id": "seg-1",
       "index": 0,
-      "contentParts": [
-        {
-          "id": "part-1",
-          "type": "text",
-          "text": "Once upon a time, Ahmad turned to "
-        },
-        {
-          "id": "part-2",
-          "type": "arabicWord",
-          "text": "اللَّهُ",
-          "transliteration": "(Allah)",
-          "wordId": "word-allah"
-        },
-        {
-          "id": "part-3",
-          "type": "text",
-          "text": " for guidance."
-        }
-      ]
-    }
-  ],
-  
-  "words": [
+      "text": "Once upon a time, Ahmad turned to Allah for guidance."
+    },
     {
-      "id": "word-allah",
-      "arabic": "اللَّهُ",
-      "english": "God",
-      "transliteration": "Allah",
-      "difficulty": 1
+      "id": "seg-2",
+      "index": 1,
+      "text": "He opened the Al-Kitab and found peace in his heart."
     }
   ]
 }
 ```
+
+> **Note:** Arabic words (like "Allah", "Al-Kitab") in the text will be automatically linked to vocabulary entries by the system. Admin manages words separately in the Words section.
 
 ---
 
