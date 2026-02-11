@@ -344,7 +344,7 @@ struct GrammarPoint: Identifiable, Codable, Hashable {
     var exampleArabic: String
     var exampleEnglish: String
     var ruleCategory: GrammarCategory
-    var createdAt: Date
+    var createdAt: Date?
     
     init(
         id: UUID = UUID(),

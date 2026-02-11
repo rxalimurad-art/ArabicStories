@@ -5,9 +5,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SettingsView: View {
+    @State private var authService = AuthService.shared
     @State private var showingResetAlert = false
+    @State private var showingSignOutAlert = false
+    @State private var showingDeleteAlert = false
+    @State private var showingAccountLinking = false
     @State private var dailyGoalMinutes = 15
     @State private var notificationsEnabled = true
     @State private var autoPlayAudio = true
@@ -16,6 +21,9 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
+                // Account Section
+                accountSection
+                
                 // Study Settings
                 Section("Study Settings") {
                     NavigationLink {
@@ -149,11 +157,120 @@ struct SettingsView: View {
             } message: {
                 Text("This will reset all your reading progress, word statistics, and achievements. This action cannot be undone.")
             }
+            .sheet(isPresented: $showingAccountLinking) {
+                AccountLinkingView()
+            }
+            .alert("Sign Out?", isPresented: $showingSignOutAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Sign Out", role: .destructive) {
+                    signOut()
+                }
+            } message: {
+                Text("Your data is safely stored. You can sign back in anytime.")
+            }
+            .alert("Delete Account?", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) {
+                    deleteAccount()
+                }
+            } message: {
+                Text("This will permanently delete your account and all associated data. This action cannot be undone.")
+            }
+        }
+    }
+    
+    private func signOut() {
+        do {
+            try authService.signOut()
+        } catch {
+            print("Error signing out: \(error.localizedDescription)")
+        }
+    }
+    
+    private func deleteAccount() {
+        Task {
+            do {
+                try await authService.deleteAccount()
+            } catch {
+                print("Error deleting account: \(error.localizedDescription)")
+            }
         }
     }
     
     private func resetAllProgress() {
         // Implementation for resetting all progress
+    }
+    
+    // MARK: - Account Section
+    private var accountSection: some View {
+        Section("Account") {
+            // User info
+            HStack {
+                Image(systemName: authService.isAnonymous ? "person.fill.questionmark" : "person.circle.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(authService.isAnonymous ? .secondary : Color.hikayaTeal)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(authService.currentUser?.displayName ?? "Guest User")
+                        .font(.headline)
+                    
+                    Text(authService.isAnonymous ? "Guest Account" : (authService.currentUser?.email ?? "Connected Account"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(.vertical, 4)
+            
+            // Connect Account option (only for anonymous users)
+            if authService.isAnonymous {
+                Button {
+                    showingAccountLinking = true
+                } label: {
+                    HStack {
+                        Image(systemName: "link.circle.fill")
+                            .frame(width: 30)
+                            .foregroundStyle(Color.hikayaOrange)
+                        
+                        Text("Connect Account")
+                            .foregroundStyle(Color.hikayaDeepTeal)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            
+            // Sign Out
+            Button {
+                showingSignOutAlert = true
+            } label: {
+                HStack {
+                    Image(systemName: "arrow.left.circle.fill")
+                        .frame(width: 30)
+                        .foregroundStyle(.orange)
+                    
+                    Text("Sign Out")
+                        .foregroundStyle(.primary)
+                }
+            }
+            
+            // Delete Account
+            Button {
+                showingDeleteAlert = true
+            } label: {
+                HStack {
+                    Image(systemName: "trash.circle.fill")
+                        .frame(width: 30)
+                        .foregroundStyle(.red)
+                    
+                    Text("Delete Account")
+                        .foregroundStyle(.red)
+                }
+            }
+        }
     }
 }
 

@@ -161,7 +161,45 @@ class FirebaseService {
                 if word["partOfSpeech"] is NSNull {
                     w["partOfSpeech"] = nil
                 }
+                
+                // Convert Firestore Timestamps in words to ISO8601 strings
+                let dateFormatter = ISO8601DateFormatter()
+                if let createdAt = word["createdAt"] as? Timestamp {
+                    w["createdAt"] = dateFormatter.string(from: createdAt.dateValue())
+                }
+                if let updatedAt = word["updatedAt"] as? Timestamp {
+                    w["updatedAt"] = dateFormatter.string(from: updatedAt.dateValue())
+                }
+                if let nextReviewDate = word["nextReviewDate"] as? Timestamp {
+                    w["nextReviewDate"] = dateFormatter.string(from: nextReviewDate.dateValue())
+                }
+                if let lastReviewDate = word["lastReviewDate"] as? Timestamp {
+                    w["lastReviewDate"] = dateFormatter.string(from: lastReviewDate.dateValue())
+                }
+                
+                // Convert example sentences timestamps if present
+                if let exampleSentences = word["exampleSentences"] as? [[String: Any]] {
+                    w["exampleSentences"] = exampleSentences.map { sentence -> [String: Any] in
+                        var s = sentence
+                        if sentence["audioURL"] is NSNull {
+                            s["audioURL"] = nil
+                        }
+                        return s
+                    }
+                }
+                
                 return w
+            }
+        }
+        
+        // Convert grammar notes timestamps
+        if let grammarNotes = data["grammarNotes"] as? [[String: Any]] {
+            jsonDict["grammarNotes"] = grammarNotes.map { note -> [String: Any] in
+                var n = note
+                if let createdAt = note["createdAt"] as? Timestamp {
+                    n["createdAt"] = ISO8601DateFormatter().string(from: createdAt.dateValue())
+                }
+                return n
             }
         }
         

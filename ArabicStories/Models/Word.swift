@@ -33,8 +33,8 @@ struct Word: Identifiable, Codable, Hashable {
     var masteryLevel: MasteryLevel?
     
     // MARK: - Timestamps
-    var createdAt: Date
-    var updatedAt: Date
+    var createdAt: Date?
+    var updatedAt: Date?
     
     // MARK: - Coding Keys
     enum CodingKeys: String, CodingKey {
@@ -80,8 +80,8 @@ struct Word: Identifiable, Codable, Hashable {
         interval = try container.decodeIfPresent(Double.self, forKey: .interval) ?? 0
         easeFactor = try container.decodeIfPresent(Double.self, forKey: .easeFactor) ?? 2.5
         masteryLevel = try container.decodeIfPresent(MasteryLevel.self, forKey: .masteryLevel) ?? .new
-        createdAt = try container.decode(Date.self, forKey: .createdAt)
-        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
     }
     
     init(
@@ -116,8 +116,8 @@ struct Word: Identifiable, Codable, Hashable {
         self.interval = interval
         self.easeFactor = easeFactor
         self.masteryLevel = masteryLevel
-        self.createdAt = Date()
-        self.updatedAt = Date()
+        self.createdAt = nil
+        self.updatedAt = nil
     }
     
     // MARK: - Computed Properties
