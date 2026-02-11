@@ -778,7 +778,7 @@ function populateForm(data) {
   document.getElementById('story-author').value = data.author || '';
   document.getElementById('story-difficulty').value = data.difficultyLevel || 1;
   document.getElementById('story-category').value = data.category || 'general';
-  document.getElementById('story-tags').value = (data.tags || []).join(', ');
+  // Tags field removed - story-tags no longer exists
   document.getElementById('story-cover').value = data.coverImageURL || '';
   // No audio field - removed per requirements
   
