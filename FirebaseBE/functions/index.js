@@ -205,9 +205,19 @@ app.post('/api/stories', async (req, res) => {
   try {
     const storyData = req.body;
     
-    if (!storyData.title || !storyData.storyDescription) {
+    console.log('Received story data:', JSON.stringify(storyData, null, 2));
+    
+    // Check for field name variations
+    const title = storyData.title || storyData.storyTitle || storyData.name;
+    const description = storyData.storyDescription || storyData.description || storyData.desc || storyData.summary;
+    
+    if (!title || !description) {
+      console.error('Missing required fields. Received:', Object.keys(storyData));
       res.status(400).json({ 
-        error: 'Missing required fields: title and storyDescription are required' 
+        error: 'Missing required fields: title and storyDescription are required',
+        received: Object.keys(storyData),
+        title: title || 'MISSING',
+        description: description ? 'PRESENT' : 'MISSING'
       });
       return;
     }

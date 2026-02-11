@@ -73,6 +73,10 @@ function setupEventListeners() {
   document.getElementById('cancel-settings')?.addEventListener('click', closeSettings);
   document.getElementById('save-settings')?.addEventListener('click', saveSettings);
   
+  // Format selector
+  document.getElementById('story-format')?.addEventListener('change', onFormatChange);
+  document.getElementById('story-difficulty')?.addEventListener('change', onFormatChange);
+  
   // Story form actions
   document.getElementById('add-segment-btn')?.addEventListener('click', () => {
     const format = document.getElementById('story-format')?.value || 'bilingual';
@@ -879,39 +883,52 @@ async function handleImport() {
   
   try {
     const data = JSON.parse(jsonStr);
+    console.log('Parsed JSON:', data);
+    
     const stories = Array.isArray(data) ? data : [data];
+    console.log('Stories to import:', stories.length);
     
     let successCount = 0;
     const errors = [];
     
-    for (const story of stories) {
+    for (let i = 0; i < stories.length; i++) {
+      const story = stories[i];
+      console.log(`Processing story ${i + 1}:`, story.title || 'Untitled');
+      
       try {
         // Normalize field names and set defaults
         const normalizedStory = normalizeStoryData(story);
+        console.log('Normalized story:', normalizedStory);
         
         // Validate required fields
-        if (!normalizedStory.title) {
-          errors.push(`Story missing title`);
+        if (!normalizedStory.title || normalizedStory.title.trim() === '') {
+          errors.push(`Story ${i + 1}: Missing title`);
           continue;
         }
-        if (!normalizedStory.storyDescription) {
-          errors.push(`Story "${normalizedStory.title}" missing description`);
+        if (!normalizedStory.storyDescription || normalizedStory.storyDescription.trim() === '') {
+          errors.push(`Story "${normalizedStory.title}": Missing description`);
           continue;
         }
         
-        await apiRequest(API.stories(), {
+        // Send to API
+        console.log('Sending to API:', JSON.stringify(normalizedStory, null, 2));
+        
+        const result = await apiRequest(API.stories(), {
           method: 'POST',
           body: JSON.stringify(normalizedStory)
         });
+        
+        console.log('API response:', result);
         successCount++;
       } catch (error) {
-        console.error('Failed to import story:', story.title, error);
-        errors.push(`"${story.title || 'Untitled'}": ${error.message}`);
+        console.error('Failed to import story:', story.title || 'Untitled', error);
+        errors.push(`"${story.title || `Story ${i + 1}`}": ${error.message}`);
       }
     }
     
     if (errors.length > 0) {
-      showToast(`Imported ${successCount}/${stories.length}. Errors: ${errors.join(', ')}`, 'warning');
+      console.error('Import errors:', errors);
+      showToast(`Imported ${successCount}/${stories.length}. Check console for errors.`, 'warning');
     } else {
       showToast(`Imported ${successCount}/${stories.length} stories successfully!`, 'success');
     }
@@ -921,6 +938,7 @@ async function handleImport() {
       loadStories();
     }
   } catch (error) {
+    console.error('Import parse error:', error);
     showToast(`Import failed: ${error.message}`, 'error');
   }
 }
@@ -1444,4 +1462,4 @@ function onFormatChange() {
   }
 }
 
-window.onFormatChange = onFormatChange;
+// onFormatChange is now attached via addEventListener in setupEventListeners
