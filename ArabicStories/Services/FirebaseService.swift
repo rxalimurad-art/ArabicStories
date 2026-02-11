@@ -72,6 +72,53 @@ class FirebaseService {
         try await db.collection("stories").document(storyId).collection("words").document(word.id.uuidString).setData(data)
     }
     
+    // MARK: - Generic Words
+    
+    /// Fetch all generic words from the 'words' collection
+    func fetchGenericWords() async throws -> [Word] {
+        print("📚 Fetching generic words from Firestore...")
+        
+        do {
+            let snapshot = try await db.collection("words").getDocuments()
+            print("✅ Got \(snapshot.documents.count) generic words from Firestore")
+            
+            var words: [Word] = []
+            for doc in snapshot.documents {
+                do {
+                    let word = try convertToWord(doc.data())
+                    words.append(word)
+                } catch {
+                    print("❌ Failed to parse generic word \(doc.documentID): \(error)")
+                }
+            }
+            
+            print("📚 Returning \(words.count) generic words")
+            return words
+        } catch {
+            print("❌ Firestore error fetching generic words: \(error)")
+            throw error
+        }
+    }
+    
+    /// Search generic words by Arabic text (partial match)
+    func searchGenericWords(arabicText: String) async throws -> [Word] {
+        print("🔍 Searching generic words for: '\(arabicText)'")
+        
+        // Fetch all and filter client-side for partial matching
+        let allWords = try await fetchGenericWords()
+        let normalizedSearch = arabicText.trimmingCharacters(in: .punctuationCharacters)
+        
+        let matches = allWords.filter { word in
+            let normalizedWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
+            return normalizedWord == normalizedSearch ||
+                   normalizedWord.contains(normalizedSearch) ||
+                   normalizedSearch.contains(normalizedWord)
+        }
+        
+        print("✅ Found \(matches.count) matching generic words")
+        return matches
+    }
+    
     // MARK: - User Progress
     
     func fetchUserProgress(userId: String) async throws -> UserProgress? {

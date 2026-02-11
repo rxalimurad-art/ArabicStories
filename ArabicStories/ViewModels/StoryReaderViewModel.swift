@@ -155,19 +155,60 @@ class StoryReaderViewModel {
             print("⚠️ Story has no words defined")
         }
         
-        // Find the word in the story's vocabulary
+        // Find the word in the story's vocabulary first
         let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
         print("🔍 Looking for match: '\(cleanedWord)'")
         
         if let word = story.words?.first(where: { 
             $0.arabicText == cleanedWord || $0.arabicText.contains(cleanedWord)
         }) {
-            print("✅ Found word match: '\(word.arabicText)' = '\(word.englishMeaning)'")
-            selectedWord = word
-            popoverPosition = position
-            showWordPopover = true
+            print("✅ Found word match in story: '\(word.arabicText)' = '\(word.englishMeaning)'")
+            showWordDetails(word: word, position: position)
+        } else {
+            print("❌ No word match found in story for '\(cleanedWord)'")
+            print("🔍 Searching in generic words collection...")
             
-            // Mark word as learned
+            // Search in generic words
+            Task {
+                await searchGenericWords(cleanedWord, position: position)
+            }
+        }
+    }
+    
+    /// Search for word in the generic words collection
+    private func searchGenericWords(_ arabicText: String, position: CGPoint) async {
+        do {
+            let matches = try await FirebaseService.shared.searchGenericWords(arabicText: arabicText)
+            
+            await MainActor.run {
+                if let firstMatch = matches.first {
+                    print("✅ Found word match in generic words: '\(firstMatch.arabicText)' = '\(firstMatch.englishMeaning)'")
+                    showWordDetails(word: firstMatch, position: position)
+                } else {
+                    print("❌ No word match found in generic words for '\(arabicText)'")
+                    
+                    // Create a placeholder word for unknown words
+                    let unknownWord = Word(
+                        arabicText: arabicText,
+                        englishMeaning: "Unknown word",
+                        difficulty: 1
+                    )
+                    showWordDetails(word: unknownWord, position: position)
+                }
+            }
+        } catch {
+            print("❌ Error searching generic words: \(error)")
+        }
+    }
+    
+    /// Show word details in popover
+    private func showWordDetails(word: Word, position: CGPoint) {
+        selectedWord = word
+        popoverPosition = position
+        showWordPopover = true
+        
+        // Mark word as learned (only if it's from story or known generic word)
+        if word.englishMeaning != "Unknown word" {
             var updatedStory = story
             updatedStory.markWordAsLearned(word.id.uuidString)
             story = updatedStory
@@ -175,8 +216,6 @@ class StoryReaderViewModel {
             Task {
                 try? await dataService.saveStory(story)
             }
-        } else {
-            print("❌ No word match found for '\(cleanedWord)'")
         }
     }
     
