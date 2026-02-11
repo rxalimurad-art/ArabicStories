@@ -129,6 +129,9 @@ struct StoryContentView: View {
                     text: segment.arabicText,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
+                    hasMeaningAvailable: { word in
+                        viewModel.hasMeaningAvailable(for: word)
+                    },
                     onWordTap: { word, position in
                         viewModel.handleWordTap(wordText: word, position: position)
                     }
@@ -181,6 +184,7 @@ struct ArabicTextView: View {
     let text: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
     
     var body: some View {
@@ -190,7 +194,8 @@ struct ArabicTextView: View {
                 ArabicWordView(
                     word: word,
                     fontSize: fontSize,
-                    isNightMode: isNightMode
+                    isNightMode: isNightMode,
+                    hasMeaning: hasMeaningAvailable(word)
                 )
                 .onTapGesture { location in
                     onWordTap(word, location)
@@ -207,19 +212,44 @@ struct ArabicWordView: View {
     let word: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let hasMeaning: Bool
     
     var body: some View {
         Text(word)
             .font(.custom("NotoNaskhArabic", size: fontSize))
-            .fontWeight(.medium)
-            .foregroundStyle(isNightMode ? .white : .primary)
+            .fontWeight(hasMeaning ? .semibold : .medium)
+            .foregroundStyle(textColor)
             .padding(.vertical, 4)
             .padding(.horizontal, 6)
-            .background(
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.clear)
-            )
+            .background(backgroundView)
+            .overlay(overlayView)
             .contentShape(Rectangle())
+    }
+    
+    private var textColor: Color {
+        if isNightMode {
+            return hasMeaning ? Color.hikayaTeal.opacity(0.9) : .white
+        } else {
+            return hasMeaning ? Color.hikayaTeal : .primary
+        }
+    }
+    
+    private var backgroundView: some View {
+        RoundedRectangle(cornerRadius: 6)
+            .fill(hasMeaning ? highlightBackgroundColor : Color.clear)
+    }
+    
+    private var overlayView: some View {
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(hasMeaning ? borderColor : Color.clear, lineWidth: hasMeaning ? 1.5 : 0)
+    }
+    
+    private var highlightBackgroundColor: Color {
+        isNightMode ? Color.hikayaTeal.opacity(0.15) : Color.hikayaTeal.opacity(0.08)
+    }
+    
+    private var borderColor: Color {
+        isNightMode ? Color.hikayaTeal.opacity(0.5) : Color.hikayaTeal.opacity(0.4)
     }
 }
 

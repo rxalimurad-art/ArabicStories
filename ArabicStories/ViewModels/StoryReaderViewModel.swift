@@ -39,6 +39,10 @@ class StoryReaderViewModel {
     var showTransliteration = true
     var autoScrollEnabled = true
     
+    // Generic words cache for highlighting
+    private var genericWords: [Word] = []
+    private var hasLoadedGenericWords = false
+    
     init(story: Story) {
         self.story = story
         self.currentSegmentIndex = story.currentSegmentIndex
@@ -54,6 +58,48 @@ class StoryReaderViewModel {
                 print("   - Word: '\(word.arabicText)' = '\(word.englishMeaning)'")
             }
         }
+        
+        // Pre-load generic words for highlighting
+        Task {
+            await preloadGenericWords()
+        }
+    }
+    
+    /// Pre-load all generic words to enable highlighting
+    private func preloadGenericWords() async {
+        do {
+            genericWords = try await FirebaseService.shared.fetchGenericWords()
+            hasLoadedGenericWords = true
+            print("✅ Pre-loaded \(genericWords.count) generic words for highlighting")
+        } catch {
+            print("❌ Failed to preload generic words: \(error)")
+        }
+    }
+    
+    /// Check if a word has a meaning available (in story words or generic words)
+    func hasMeaningAvailable(for wordText: String) -> Bool {
+        let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
+        
+        // Check story words first
+        if let storyWords = story.words {
+            let hasStoryMatch = storyWords.contains { word in
+                let storyWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
+                return storyWord == cleanedWord || 
+                       storyWord.contains(cleanedWord) || 
+                       cleanedWord.contains(storyWord)
+            }
+            if hasStoryMatch { return true }
+        }
+        
+        // Check generic words
+        let hasGenericMatch = genericWords.contains { word in
+            let genericWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
+            return genericWord == cleanedWord || 
+                   genericWord.contains(cleanedWord) || 
+                   cleanedWord.contains(genericWord)
+        }
+        
+        return hasGenericMatch
     }
     
     // MARK: - Computed Properties
