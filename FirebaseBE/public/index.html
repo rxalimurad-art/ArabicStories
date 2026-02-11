@@ -6,38 +6,81 @@
   <title>Arabic Stories Admin</title>
   <link rel="stylesheet" href="admin.css">
   <style>
-    /* Additional styles for mixed format */
-    .format-selector {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+    /* Format selector styling */
+    .format-selector-inline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
     
-    .format-selector label {
-      color: white;
+    .format-selector-inline label {
       font-weight: 600;
+      color: var(--gray-700);
+      white-space: nowrap;
     }
     
-    .format-selector select {
-      background: rgba(255,255,255,0.9);
-      border: none;
+    .format-selector-inline select {
       padding: 10px 16px;
+      border: 2px solid var(--primary);
       border-radius: 8px;
-      font-size: 16px;
-      margin-left: 12px;
+      font-size: 15px;
+      background: white;
+      min-width: 180px;
     }
     
-    .format-info {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-top: 8px;
+    .format-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
     }
     
-    .mixed-segment-card {
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      border: 2px solid #667eea;
+    .format-badge.mixed {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+    
+    .format-badge.bilingual {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+    }
+    
+    /* Segment styling based on format */
+    .segment-card.mixed-format {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border: 2px solid #4caf50;
+    }
+    
+    .segment-card.bilingual-format {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border: 2px solid #2196f3;
+    }
+    
+    .segment-format-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+    
+    .segment-card.mixed-format .segment-format-label {
+      color: #2e7d32;
+    }
+    
+    .segment-card.bilingual-format .segment-format-label {
+      color: #1565c0;
+    }
+    
+    /* Content parts in mixed format */
+    .content-parts-container {
+      background: rgba(255,255,255,0.5);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
     }
     
     .content-part {
@@ -46,11 +89,17 @@
       padding: 12px;
       margin-bottom: 8px;
       border: 1px solid #e0e0e0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     
     .content-part[data-type="arabicWord"] {
-      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-      border-color: #2196f3;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+      border-color: #ff9800;
+      border-left: 4px solid #ff9800;
+    }
+    
+    .content-part[data-type="text"] {
+      border-left: 4px solid #9e9e9e;
     }
     
     .part-header {
@@ -61,18 +110,39 @@
     }
     
     .part-label {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      color: #666;
+      letter-spacing: 0.5px;
     }
     
     .content-part[data-type="arabicWord"] .part-label {
-      color: #1976d2;
+      color: #e65100;
+    }
+    
+    .content-part[data-type="text"] .part-label {
+      color: #616161;
+    }
+    
+    .part-type-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    
+    .content-part[data-type="arabicWord"] .part-type-badge {
+      background: #ff9800;
+      color: white;
+    }
+    
+    .content-part[data-type="text"] .part-type-badge {
+      background: #9e9e9e;
+      color: white;
     }
     
     .remove-part {
-      background: #ff5252;
+      background: #f44336;
       color: white;
       border: none;
       width: 24px;
@@ -80,40 +150,49 @@
       border-radius: 50%;
       cursor: pointer;
       font-size: 14px;
+      line-height: 1;
     }
     
     .segment-actions {
       display: flex;
       gap: 8px;
-      margin: 12px 0;
       padding: 12px;
       background: rgba(0,0,0,0.03);
       border-radius: 8px;
-    }
-    
-    .segment-actions button {
-      font-size: 13px;
-      padding: 8px 16px;
-    }
-    
-    .badge-format-mixed {
-      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    }
-    
-    .badge-format-bilingual {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-    
-    .template-options {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
       margin-top: 8px;
     }
     
-    .template-options button {
+    .segment-actions button {
       font-size: 12px;
-      padding: 6px 12px;
+      padding: 8px 16px;
+    }
+    
+    /* Word card with audio */
+    .word-audio-input {
+      width: 100%;
+    }
+    
+    /* Simplified form sections */
+    .form-section.compact {
+      padding: 16px;
+    }
+    
+    .form-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    
+    .form-section-title h3 {
+      margin: 0;
+    }
+    
+    .format-display {
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -144,8 +223,8 @@
             <input type="text" id="story-search" placeholder="Search stories...">
             <select id="story-format-filter">
               <option value="">All Formats</option>
-              <option value="mixed">🎯 Mixed (Level 1)</option>
-              <option value="bilingual">📖 Bilingual (Level 2+)</option>
+              <option value="mixed">🎯 Single (Mixed)</option>
+              <option value="bilingual">📖 Bilingual</option>
             </select>
             <button id="refresh-stories" class="btn btn-icon">🔄</button>
           </div>
@@ -174,22 +253,12 @@
         </div>
 
         <form id="story-form" class="story-form">
-          <!-- Story Format Selector -->
-          <div class="format-selector">
-            <label for="story-format">📖 Story Format</label>
-            <select id="story-format">
-              <option value="auto">🎯 Auto (Level 1 = Mixed, Level 2+ = Bilingual)</option>
-              <option value="mixed">🎯 Mixed Format - English with Arabic words (Level 1)</option>
-              <option value="bilingual">📖 Bilingual Format - Full Arabic + English (Level 2+)</option>
-            </select>
-            <div class="format-info" id="format-info">
-              💡 <strong>Mixed Format:</strong> Best for beginners. English text with embedded Arabic vocabulary words that users tap to learn.
-            </div>
-          </div>
-          
           <!-- Basic Info Section -->
-          <section class="form-section">
-            <h3>📖 Basic Information</h3>
+          <section class="form-section compact">
+            <div class="form-section-title">
+              <h3>📖 Basic Information</h3>
+              <span id="current-format-display" class="format-display mixed">🎯 Single</span>
+            </div>
             
             <div class="form-row">
               <div class="form-group">
@@ -205,14 +274,14 @@
             <div class="form-row">
               <div class="form-group form-group-wide">
                 <label for="story-desc">Description (English) *</label>
-                <textarea id="story-desc" rows="3" required placeholder="Brief description of the story"></textarea>
+                <textarea id="story-desc" rows="2" required placeholder="Brief description of the story"></textarea>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group form-group-wide">
                 <label for="story-desc-arabic">Description (Arabic)</label>
-                <textarea id="story-desc-arabic" rows="3" dir="rtl" placeholder="وصف موجز للقصة"></textarea>
+                <textarea id="story-desc-arabic" rows="2" dir="rtl" placeholder="وصف موجز للقصة"></textarea>
               </div>
             </div>
 
@@ -221,19 +290,26 @@
                 <label for="story-author">Author *</label>
                 <input type="text" id="story-author" required placeholder="Author name">
               </div>
-              <div class="form-group">
-                <label for="story-difficulty">Difficulty Level *</label>
-                <select id="story-difficulty" required>
-                  <option value="1">Level 1 - Beginner (Recommended: Mixed Format)</option>
-                  <option value="2">Level 2 - Elementary (Recommended: Bilingual)</option>
-                  <option value="3">Level 3 - Intermediate (Bilingual)</option>
-                  <option value="4">Level 4 - Advanced (Bilingual)</option>
-                  <option value="5">Level 5 - Expert (Bilingual)</option>
+              <div class="form-group format-selector-inline">
+                <label for="story-format">Format *</label>
+                <select id="story-format" required>
+                  <option value="mixed">🎯 Single (Mixed)</option>
+                  <option value="bilingual">📖 Bilingual</option>
                 </select>
               </div>
             </div>
 
             <div class="form-row">
+              <div class="form-group">
+                <label for="story-difficulty">Difficulty Level *</label>
+                <select id="story-difficulty" required>
+                  <option value="1">Level 1 - Beginner</option>
+                  <option value="2">Level 2 - Elementary</option>
+                  <option value="3">Level 3 - Intermediate</option>
+                  <option value="4">Level 4 - Advanced</option>
+                  <option value="5">Level 5 - Expert</option>
+                </select>
+              </div>
               <div class="form-group">
                 <label for="story-category">Category *</label>
                 <select id="story-category" required>
@@ -251,35 +327,25 @@
                   <option value="modern">Modern</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="story-tags">Tags (comma separated)</label>
-                <input type="text" id="story-tags" placeholder="animals, friendship, adventure, level1">
-              </div>
             </div>
 
             <div class="form-row">
+              <div class="form-group">
+                <label for="story-tags">Tags (comma separated)</label>
+                <input type="text" id="story-tags" placeholder="beginner, vocabulary, mixed">
+              </div>
               <div class="form-group form-group-wide">
                 <label for="story-cover">Cover Image URL</label>
                 <input type="url" id="story-cover" placeholder="https://example.com/image.jpg">
               </div>
             </div>
-
-            <div class="form-row">
-              <div class="form-group form-group-wide">
-                <label for="story-audio">Audio Narration URL</label>
-                <input type="url" id="story-audio" placeholder="https://example.com/audio.mp3">
-              </div>
-            </div>
           </section>
 
-          <!-- Segments Section -->
+          <!-- Story Segments Section -->
           <section class="form-section">
             <div class="section-header">
               <h3 id="segments-section-title">📝 Story Segments</h3>
-              <div>
-                <button type="button" id="add-segment-btn" class="btn btn-small btn-primary">+ Add Segment</button>
-                <button type="button" id="add-mixed-segment-btn" class="btn btn-small btn-secondary hidden">+ Add Mixed Segment</button>
-              </div>
+              <button type="button" id="add-segment-btn" class="btn btn-small btn-primary">+ Add Segment</button>
             </div>
             
             <div id="segments-container">
@@ -288,26 +354,6 @@
             
             <div id="empty-segments" class="empty-state">
               <p>No segments yet. Click "Add Segment" to start building your story.</p>
-            </div>
-          </section>
-
-          <!-- Vocabulary Section -->
-          <section class="form-section">
-            <div class="section-header">
-              <h3>📚 Vocabulary Words</h3>
-              <button type="button" id="add-word-btn" class="btn btn-small btn-primary">+ Add Word</button>
-            </div>
-            
-            <div id="words-container">
-              <!-- Words will be added here dynamically -->
-            </div>
-            
-            <div id="empty-words" class="empty-state">
-              <p>No vocabulary words yet. Click "Add Word" to add words from the story.</p>
-            </div>
-            
-            <div class="form-hint" style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px;">
-              💡 <strong>Tip:</strong> For mixed format stories, add vocabulary words here first, then reference them by ID in the Arabic word parts.
             </div>
           </section>
         </form>
@@ -322,7 +368,7 @@
       <!-- Words List View -->
       <div id="words-view" class="view hidden">
         <div class="view-header">
-          <h2>📝 Generic Words</h2>
+          <h2>📝 General Words</h2>
           <div class="search-box">
             <input type="text" id="word-search" placeholder="Search words...">
             <select id="word-category-filter">
@@ -389,7 +435,7 @@
             <div class="form-group">
               <label>Download Templates</label>
               <div class="template-options">
-                <button onclick="downloadTemplate('mixed')" class="btn btn-secondary">🎯 Mixed Format Template</button>
+                <button onclick="downloadTemplate('mixed')" class="btn btn-secondary">🎯 Single Format Template</button>
                 <button onclick="downloadTemplate('bilingual')" class="btn btn-secondary">📖 Bilingual Template</button>
               </div>
             </div>
@@ -402,8 +448,8 @@
             <div class="form-group">
               <label>Create Sample Story</label>
               <div class="template-options">
-                <button onclick="seedSampleStories('mixed')" class="btn btn-primary">🎯 Level 1 Mixed Story</button>
-                <button onclick="seedSampleStories('bilingual')" class="btn btn-secondary">📖 Level 2+ Bilingual Story</button>
+                <button onclick="seedSampleStories('mixed')" class="btn btn-primary">🎯 Single (Mixed) Story</button>
+                <button onclick="seedSampleStories('bilingual')" class="btn btn-secondary">📖 Bilingual Story</button>
               </div>
             </div>
           </section>
@@ -469,10 +515,6 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="word-root-input">Root Letters</label>
-              <input type="text" id="word-root-input" dir="rtl" placeholder="أصل الكلمة">
-            </div>
-            <div class="form-group">
               <label for="word-difficulty-input">Difficulty Level</label>
               <select id="word-difficulty-input">
                 <option value="1">1 - Beginner</option>
@@ -482,9 +524,6 @@
                 <option value="5">5 - Expert</option>
               </select>
             </div>
-          </div>
-          
-          <div class="form-row">
             <div class="form-group">
               <label for="word-category-input">Category</label>
               <select id="word-category-input">
@@ -502,23 +541,38 @@
                 <option value="business">Business</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="word-tags-input">Tags (comma separated)</label>
-              <input type="text" id="word-tags-input" placeholder="common, daily, formal">
-            </div>
           </div>
           
           <div class="form-row">
             <div class="form-group form-group-wide">
-              <label for="word-example-input">Example Sentence (Arabic)</label>
-              <input type="text" id="word-example-input" dir="rtl" placeholder="Example usage">
+              <label for="word-example-input">Example Usage (Arabic)</label>
+              <input type="text" id="word-example-input" dir="rtl" placeholder="Example sentence using this word">
             </div>
           </div>
           
           <div class="form-row">
             <div class="form-group form-group-wide">
               <label for="word-example-translation-input">Example Translation</label>
-              <input type="text" id="word-example-translation-input" placeholder="English translation">
+              <input type="text" id="word-example-translation-input" placeholder="English translation of example">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-audio-input">Audio Pronunciation URL</label>
+              <input type="url" id="word-audio-input" placeholder="https://example.com/audio.mp3">
+              <small>Link to audio file for word pronunciation</small>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-tags-input">Tags (comma separated)</label>
+              <input type="text" id="word-tags-input" placeholder="common, daily, formal">
+            </div>
+            <div class="form-group">
+              <label for="word-root-input">Root Letters</label>
+              <input type="text" id="word-root-input" dir="rtl" placeholder="أصل الكلمة">
             </div>
           </div>
         </form>
@@ -558,110 +612,38 @@
         <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
       </div>
       
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Arabic Text *</label>
-          <textarea class="segment-arabic" rows="3" dir="rtl" required placeholder="النص العربي"></textarea>
+      <!-- Bilingual Format Fields -->
+      <div class="bilingual-fields">
+        <div class="form-row">
+          <div class="form-group form-group-wide">
+            <label>Arabic Text *</label>
+            <textarea class="segment-arabic" rows="3" dir="rtl" required placeholder="النص العربي"></textarea>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group form-group-wide">
+            <label>English Text *</label>
+            <textarea class="segment-english" rows="3" required placeholder="English translation"></textarea>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group form-group-wide">
+            <label>Transliteration</label>
+            <input type="text" class="segment-transliteration" placeholder="Arabic transliteration">
+          </div>
         </div>
       </div>
       
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>English Text *</label>
-          <textarea class="segment-english" rows="3" required placeholder="English translation"></textarea>
+      <!-- Mixed Format Fields (Hidden by default) -->
+      <div class="mixed-fields hidden">
+        <div class="content-parts-container">
+          <!-- Content parts will be added here -->
         </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Transliteration</label>
-          <input type="text" class="segment-transliteration" placeholder="Arabic transliteration">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>Audio Start (seconds)</label>
-          <input type="number" class="segment-audio-start" min="0" step="0.1" placeholder="0.0">
-        </div>
-        <div class="form-group">
-          <label>Audio End (seconds)</label>
-          <input type="number" class="segment-audio-end" min="0" step="0.1" placeholder="0.0">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Grammar Note</label>
-          <input type="text" class="segment-grammar-note" placeholder="Optional grammar explanation">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Cultural Note</label>
-          <input type="text" class="segment-cultural-note" placeholder="Optional cultural context">
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <template id="word-template">
-    <div class="word-card" data-index="{index}">
-      <div class="word-header">
-        <span class="word-number">Word {number}</span>
-        <button type="button" class="btn btn-icon btn-danger remove-word">✕</button>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>Arabic *</label>
-          <input type="text" class="word-arabic" dir="rtl" required placeholder="كلمة">
-        </div>
-        <div class="form-group">
-          <label>English *</label>
-          <input type="text" class="word-english" required placeholder="Translation">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>Transliteration</label>
-          <input type="text" class="word-transliteration" placeholder="Transliteration">
-        </div>
-        <div class="form-group">
-          <label>Part of Speech</label>
-          <select class="word-pos">
-            <option value="">Select...</option>
-            <option value="noun">Noun</option>
-            <option value="verb">Verb</option>
-            <option value="adjective">Adjective</option>
-            <option value="adverb">Adverb</option>
-            <option value="preposition">Preposition</option>
-            <option value="pronoun">Pronoun</option>
-            <option value="particle">Particle</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Root Letters</label>
-          <input type="text" class="word-root" dir="rtl" placeholder="أصل الكلمة">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Example Sentence</label>
-          <input type="text" class="word-example" dir="rtl" placeholder="Example usage">
-        </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group form-group-wide">
-          <label>Word ID (for referencing in mixed format)</label>
-          <input type="text" class="word-id-display" readonly placeholder="Will be generated automatically">
+        <div class="segment-actions">
+          <button type="button" class="btn btn-small btn-secondary add-text-part">+ Add Text</button>
+          <button type="button" class="btn btn-small btn-secondary add-word-part">+ Add Arabic Word</button>
         </div>
       </div>
     </div>

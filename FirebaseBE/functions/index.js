@@ -205,24 +205,53 @@ app.post('/api/stories', async (req, res) => {
   try {
     const storyData = req.body;
     
-    console.log('Received story data:', JSON.stringify(storyData, null, 2));
+    console.log('========================================');
+    console.log('CREATE STORY API CALLED');
+    console.log('Received body:', JSON.stringify(storyData, null, 2));
+    console.log('========================================');
     
-    // Check for field name variations
-    const title = storyData.title || storyData.storyTitle || storyData.name;
-    const description = storyData.storyDescription || storyData.description || storyData.desc || storyData.summary;
+    // Check for field name variations (handle both naming conventions)
+    const title = storyData.title || storyData.storyTitle || storyData.name || '';
+    const description = storyData.storyDescription || storyData.description || storyData.desc || storyData.summary || '';
+    const author = storyData.author || storyData.authorName || 'Anonymous';
     
-    if (!title || !description) {
-      console.error('Missing required fields. Received:', Object.keys(storyData));
+    console.log('Extracted fields:');
+    console.log('  title:', title || '(EMPTY)');
+    console.log('  description:', description ? '(PRESENT)' : '(EMPTY)');
+    console.log('  author:', author);
+    
+    if (!title || title.trim() === '') {
+      console.error('ERROR: Missing or empty title');
       res.status(400).json({ 
-        error: 'Missing required fields: title and storyDescription are required',
-        received: Object.keys(storyData),
-        title: title || 'MISSING',
-        description: description ? 'PRESENT' : 'MISSING'
+        error: 'Missing required field: title is required',
+        receivedFields: Object.keys(storyData),
+        receivedTitle: storyData.title,
+        hint: 'Make sure JSON has a "title" field'
+      });
+      return;
+    }
+    
+    if (!description || description.trim() === '') {
+      console.error('ERROR: Missing or empty description');
+      res.status(400).json({ 
+        error: 'Missing required field: storyDescription is required',
+        receivedFields: Object.keys(storyData),
+        hint: 'Make sure JSON has a "storyDescription" field (or "description" or "desc")'
       });
       return;
     }
 
     const formattedStory = formatStoryForFirestore(storyData);
+    
+    console.log('Formatted story for Firestore:');
+    console.log('  id:', formattedStory.id);
+    console.log('  title:', formattedStory.title);
+    console.log('  format:', formattedStory.format);
+    console.log('  difficultyLevel:', formattedStory.difficultyLevel);
+    console.log('  mixedSegments count:', formattedStory.mixedSegments?.length || 0);
+    console.log('  segments count:', formattedStory.segments?.length || 0);
+    console.log('  words count:', formattedStory.words?.length || 0);
+    
     await db.collection(STORIES_COLLECTION).doc(formattedStory.id).set(formattedStory);
     
     await logAdminAction('CREATE_STORY', { 
@@ -247,7 +276,7 @@ app.post('/api/stories', async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating story:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message, stack: error.stack });
   }
 });
 
@@ -507,6 +536,7 @@ function formatWordForFirestore(wordData) {
     rootLetters: wordData.rootLetters || null,
     exampleSentence: wordData.exampleSentence || null,
     exampleSentenceTranslation: wordData.exampleSentenceTranslation || null,
+    audioPronunciationURL: wordData.audioPronunciationURL || wordData.audioURL || null,
     difficulty: Math.min(Math.max(parseInt(wordData.difficulty) || 1, 1), 5),
     tags: Array.isArray(wordData.tags) ? wordData.tags : [],
     category: wordData.category || 'general',

@@ -73,24 +73,20 @@ function setupEventListeners() {
   document.getElementById('cancel-settings')?.addEventListener('click', closeSettings);
   document.getElementById('save-settings')?.addEventListener('click', saveSettings);
   
-  // Format selector
+  // Format selector - only format selector changes the segment type
   document.getElementById('story-format')?.addEventListener('change', onFormatChange);
-  document.getElementById('story-difficulty')?.addEventListener('change', onFormatChange);
   
   // Story form actions
   document.getElementById('add-segment-btn')?.addEventListener('click', () => {
-    const format = document.getElementById('story-format')?.value || 'bilingual';
-    const difficulty = parseInt(document.getElementById('story-difficulty')?.value || 2);
-    const finalFormat = format === 'auto' ? (difficulty === 1 ? 'mixed' : 'bilingual') : format;
+    const format = document.getElementById('story-format')?.value || 'mixed';
     
-    if (finalFormat === 'mixed') {
+    if (format === 'mixed') {
       addMixedSegment();
     } else {
-      addSegment();
+      addBilingualSegment();
     }
   });
   
-  document.getElementById('add-word-btn')?.addEventListener('click', () => addWord());
   document.getElementById('validate-btn')?.addEventListener('click', validateCurrentStory);
   document.getElementById('publish-btn')?.addEventListener('click', publishStory);
   document.getElementById('save-draft-btn')?.addEventListener('click', saveDraft);
@@ -324,63 +320,105 @@ function changePage(delta) {
 // ============================================
 // Story Form Management
 // ============================================
-function addSegment(data = null) {
+// Bilingual format segment (Level 2+) - Simplified without grammar/cultural notes
+function addBilingualSegment(data = null) {
   const index = state.segments.length;
   const container = document.getElementById('segments-container');
-  const template = document.getElementById('segment-template');
   
-  const clone = template.content.cloneNode(true);
-  const card = clone.querySelector('.segment-card');
-  
+  const card = document.createElement('div');
+  card.className = 'segment-card bilingual-format';
   card.dataset.index = index;
   card.dataset.segmentId = data?.id || generateId();
-  card.querySelector('.segment-number').textContent = `Segment ${index + 1}`;
+  card.dataset.format = 'bilingual';
+  
+  card.innerHTML = `
+    <div class="segment-header">
+      <span class="segment-format-label">📖 Bilingual</span>
+      <span class="segment-number">Segment ${index + 1}</span>
+      <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group form-group-wide">
+        <label>Arabic Text *</label>
+        <textarea class="segment-arabic" rows="3" dir="rtl" required placeholder="النص العربي">${data?.arabicText || ''}</textarea>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group form-group-wide">
+        <label>English Text *</label>
+        <textarea class="segment-english" rows="3" required placeholder="English translation">${data?.englishText || ''}</textarea>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group form-group-wide">
+        <label>Transliteration</label>
+        <input type="text" class="segment-transliteration" placeholder="Arabic transliteration" value="${data?.transliteration || ''}">
+      </div>
+    </div>
+  `;
   
   // Setup remove button
   card.querySelector('.remove-segment').addEventListener('click', () => removeSegment(index));
   
-  // Fill data if provided
-  if (data) {
-    card.querySelector('.segment-arabic').value = data.arabicText || '';
-    card.querySelector('.segment-english').value = data.englishText || '';
-    card.querySelector('.segment-transliteration').value = data.transliteration || '';
-    card.querySelector('.segment-audio-start').value = data.audioStartTime || '';
-    card.querySelector('.segment-audio-end').value = data.audioEndTime || '';
-  }
-  
   container.appendChild(card);
-  state.segments.push({ id: card.dataset.segmentId });
+  state.segments.push({ id: card.dataset.segmentId, format: 'bilingual' });
   
   document.getElementById('empty-segments')?.classList.add('hidden');
-  
-  // Scroll to new segment
   card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// Mixed format functions (for Level 1 stories)
+// Single/Mixed format segment (Level 1) - With content parts
 function addMixedSegment(data = null) {
   const index = state.segments.length;
   const container = document.getElementById('segments-container');
   
-  // Create mixed segment card
   const card = document.createElement('div');
-  card.className = 'mixed-segment-card segment-card';
+  card.className = 'segment-card mixed-format';
   card.dataset.index = index;
   card.dataset.segmentId = data?.id || generateId();
+  card.dataset.format = 'mixed';
   
   card.innerHTML = `
     <div class="segment-header">
-      <span class="segment-number">Mixed Segment ${index + 1}</span>
-      <button type="button" class="remove-segment">Remove</button>
+      <span class="segment-format-label">🎯 Single</span>
+      <span class="segment-number">Segment ${index + 1}</span>
+      <button type="button" class="btn btn-icon btn-danger remove-segment">✕</button>
     </div>
-    <div class="mixed-content-parts"></div>
+    
+    <div class="content-parts-container"></div>
+    
     <div class="segment-actions">
-      <button type="button" class="btn btn-small btn-secondary" onclick="addContentPart(${index}, 'text')">+ Text</button>
-      <button type="button" class="btn btn-small btn-secondary" onclick="addContentPart(${index}, 'arabicWord')">+ Arabic Word</button>
+      <button type="button" class="btn btn-small btn-secondary add-text-part">+ Text</button>
+      <button type="button" class="btn btn-small btn-secondary add-word-part">+ Arabic Word</button>
     </div>
-    <div class="segment-notes">
-      <input type="text" class="segment-cultural-note" placeholder="Cultural note (optional)" 
-        value="${data?.culturalNote || ''}">
+  `;
+  
+  // Setup remove button
+  card.querySelector('.remove-segment').addEventListener('click', () => removeSegment(index));
+  
+  // Setup add part buttons
+  card.querySelector('.add-text-part').addEventListener('click', () => {
+    addContentPartToCard(card, { type: 'text' });
+  });
+  
+  card.querySelector('.add-word-part').addEventListener('click', () => {
+    addContentPartToCard(card, { type: 'arabicWord' });
+  });
+  
+  // Add existing content parts if data provided
+  if (data?.contentParts?.length > 0) {
+    data.contentParts.forEach(part => addContentPartToCard(card, part));
+  }
+  
+  container.appendChild(card);
+  state.segments.push({ id: card.dataset.segmentId, format: 'mixed' });
+  
+  document.getElementById('empty-segments')?.classList.add('hidden');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
     </div>
   `;
   
@@ -400,14 +438,10 @@ function addMixedSegment(data = null) {
   card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function addContentPart(segmentIndex, type) {
-  const container = document.querySelectorAll('.mixed-segment-card')[segmentIndex]?.querySelector('.mixed-content-parts');
-  if (container) {
-    addContentPartToContainer(container, { type });
-  }
-}
-
-function addContentPartToContainer(container, data = {}) {
+function addContentPartToCard(card, data = {}) {
+  const container = card.querySelector('.content-parts-container');
+  if (!container) return;
+  
   const partDiv = document.createElement('div');
   partDiv.className = 'content-part';
   partDiv.dataset.type = data.type || 'text';
@@ -416,24 +450,43 @@ function addContentPartToContainer(container, data = {}) {
   if (data.type === 'arabicWord') {
     partDiv.innerHTML = `
       <div class="part-header">
-        <span class="part-label">🎯 Arabic Word</span>
-        <button type="button" class="remove-part" onclick="this.parentElement.parentElement.remove()">×</button>
+        <div>
+          <span class="part-label">🎯 Arabic Word</span>
+          <span class="part-type-badge">Word</span>
+        </div>
+        <button type="button" class="remove-part">×</button>
       </div>
       <input type="text" class="part-text" placeholder="Arabic text (e.g., اللَّهُ)" value="${data.text || ''}">
       <input type="text" class="part-transliteration" placeholder="Transliteration (e.g., Allah)" value="${data.transliteration || ''}">
-      <input type="text" class="part-word-id" placeholder="Word ID (links to vocabulary)" value="${data.wordId || ''}">
+      <input type="text" class="part-word-id" placeholder="Word ID from General Words" value="${data.wordId || ''}">
     `;
   } else {
     partDiv.innerHTML = `
       <div class="part-header">
-        <span class="part-label">📝 Text</span>
-        <button type="button" class="remove-part" onclick="this.parentElement.parentElement.remove()">×</button>
+        <div>
+          <span class="part-label">📝 Text</span>
+          <span class="part-type-badge">Text</span>
+        </div>
+        <button type="button" class="remove-part">×</button>
       </div>
       <textarea class="part-text" rows="2" placeholder="English text...">${data.text || ''}</textarea>
     `;
   }
   
+  // Setup remove button
+  partDiv.querySelector('.remove-part').addEventListener('click', () => {
+    partDiv.remove();
+  });
+  
   container.appendChild(partDiv);
+}
+
+// Keep old function for backward compatibility
+function addContentPart(segmentIndex, type) {
+  const cards = document.querySelectorAll('.segment-card.mixed-format');
+  if (cards[segmentIndex]) {
+    addContentPartToCard(cards[segmentIndex], { type });
+  }
 }
 
 function removeSegment(index) {
@@ -523,26 +576,7 @@ function removeWord(index) {
 }
 
 function collectFormData() {
-  const format = document.getElementById('story-format')?.value || 'bilingual';
-  const difficultyLevel = parseInt(document.getElementById('story-difficulty').value);
-  
-  // Auto-set format based on difficulty if not explicitly chosen
-  const finalFormat = format === 'auto' 
-    ? (difficultyLevel === 1 ? 'mixed' : 'bilingual')
-    : format;
-  
-  const words = [];
-  document.querySelectorAll('.word-card').forEach(card => {
-    words.push({
-      id: card.dataset.wordId || undefined,
-      arabic: card.querySelector('.word-arabic').value.trim(),
-      english: card.querySelector('.word-english').value.trim(),
-      transliteration: card.querySelector('.word-transliteration').value.trim() || null,
-      partOfSpeech: card.querySelector('.word-pos').value || null,
-      rootLetters: card.querySelector('.word-root').value.trim() || null,
-      exampleSentence: card.querySelector('.word-example').value.trim() || null
-    });
-  });
+  const format = document.getElementById('story-format')?.value || 'mixed';
   
   const result = {
     id: document.getElementById('story-id').value || undefined,
@@ -551,22 +585,22 @@ function collectFormData() {
     storyDescription: document.getElementById('story-desc').value.trim(),
     storyDescriptionArabic: document.getElementById('story-desc-arabic').value.trim() || null,
     author: document.getElementById('story-author').value.trim(),
-    format: finalFormat,
-    difficultyLevel: difficultyLevel,
+    format: format,
+    difficultyLevel: parseInt(document.getElementById('story-difficulty').value) || 1,
     category: document.getElementById('story-category').value,
     tags: document.getElementById('story-tags').value.split(',').map(t => t.trim()).filter(Boolean),
-    coverImageURL: document.getElementById('story-cover').value.trim() || null,
-    audioNarrationURL: document.getElementById('story-audio').value.trim() || null,
-    words: words.filter(w => w.arabic && w.english)
+    coverImageURL: document.getElementById('story-cover').value.trim() || null
+    // No audioNarrationURL - removed per requirements
+    // No vocabulary words - using general words only
   };
   
   // Collect format-specific content
-  if (finalFormat === 'mixed') {
-    // Mixed format: English text with embedded Arabic words
+  if (format === 'mixed') {
+    // Single/Mixed format: English text with embedded Arabic words
     result.mixedSegments = [];
-    document.querySelectorAll('.mixed-segment-card').forEach((card, idx) => {
+    document.querySelectorAll('.segment-card[data-format="mixed"]').forEach((card, idx) => {
       const contentParts = [];
-      card.querySelectorAll('.content-part').forEach((part, partIdx) => {
+      card.querySelectorAll('.content-part').forEach((part) => {
         const type = part.dataset.type || 'text';
         const partData = {
           id: part.dataset.partId || undefined,
@@ -579,31 +613,37 @@ function collectFormData() {
           partData.transliteration = part.querySelector('.part-transliteration').value.trim() || null;
         }
         
-        contentParts.push(partData);
+        if (partData.text) {
+          contentParts.push(partData);
+        }
       });
       
-      result.mixedSegments.push({
-        id: card.dataset.segmentId || undefined,
-        index: idx,
-        contentParts: contentParts,
-        culturalNote: card.querySelector('.segment-cultural-note')?.value.trim() || null
-      });
+      if (contentParts.length > 0) {
+        result.mixedSegments.push({
+          id: card.dataset.segmentId || undefined,
+          index: idx,
+          contentParts: contentParts
+          // No culturalNote - removed per requirements
+        });
+      }
     });
   } else {
     // Bilingual format: Full Arabic with English translation
     result.segments = [];
-    document.querySelectorAll('.segment-card').forEach((card, idx) => {
-      result.segments.push({
-        id: card.dataset.segmentId || undefined,
-        index: idx,
-        arabicText: card.querySelector('.segment-arabic').value.trim(),
-        englishText: card.querySelector('.segment-english').value.trim(),
-        transliteration: card.querySelector('.segment-transliteration').value.trim() || null,
-        audioStartTime: parseFloat(card.querySelector('.segment-audio-start').value) || null,
-        audioEndTime: parseFloat(card.querySelector('.segment-audio-end').value) || null,
-        culturalNote: card.querySelector('.segment-cultural-note')?.value.trim() || null,
-        grammarNote: card.querySelector('.segment-grammar-note')?.value.trim() || null
-      });
+    document.querySelectorAll('.segment-card[data-format="bilingual"]').forEach((card, idx) => {
+      const arabicText = card.querySelector('.segment-arabic').value.trim();
+      const englishText = card.querySelector('.segment-english').value.trim();
+      
+      if (arabicText || englishText) {
+        result.segments.push({
+          id: card.dataset.segmentId || undefined,
+          index: idx,
+          arabicText: arabicText,
+          englishText: englishText,
+          transliteration: card.querySelector('.segment-transliteration').value.trim() || null
+          // No grammarNote, culturalNote, audio - removed per requirements
+        });
+      }
     });
   }
   
@@ -753,33 +793,30 @@ function populateForm(data) {
   document.getElementById('story-category').value = data.category || 'general';
   document.getElementById('story-tags').value = (data.tags || []).join(', ');
   document.getElementById('story-cover').value = data.coverImageURL || '';
-  document.getElementById('story-audio').value = data.audioNarrationURL || '';
+  // No audio field - removed per requirements
   
-  // Set format if available
+  // Set format and update UI
+  const format = data.format || 'mixed';
   const formatSelect = document.getElementById('story-format');
-  if (formatSelect && data.format) {
-    formatSelect.value = data.format;
+  if (formatSelect) {
+    formatSelect.value = format;
+    onFormatChange(); // Update UI based on format
   }
   
   // Handle format-specific content
-  const format = data.format || 'bilingual';
+  document.getElementById('segments-container').innerHTML = '';
+  state.segments = [];
   
   if (format === 'mixed' && data.mixedSegments?.length > 0) {
-    // Clear and repopulate mixed segments
-    document.getElementById('segments-container').innerHTML = '';
-    state.segments = [];
     data.mixedSegments.forEach(seg => addMixedSegment(seg));
   } else if (data.segments?.length > 0) {
-    // Clear and repopulate regular segments
-    document.getElementById('segments-container').innerHTML = '';
-    state.segments = [];
-    data.segments.forEach(seg => addSegment(seg));
+    data.segments.forEach(seg => addBilingualSegment(seg));
   } else {
-    // Default: add one empty segment
+    // Default: add one empty segment based on format
     if (format === 'mixed') {
       addMixedSegment();
     } else {
-      addSegment();
+      addBilingualSegment();
     }
   }
   
@@ -1264,7 +1301,7 @@ function renderWords(words) {
   container.innerHTML = filtered.map(word => `
     <div class="word-card-compact" data-id="${word.id}">
       <div class="word-card-header">
-        <div class="word-arabic" dir="rtl">${escapeHtml(word.arabic)}</div>
+        <div class="word-arabic" dir="rtl">${escapeHtml(word.arabic)} ${word.audioPronunciationURL || word.audioURL ? '🔊' : ''}</div>
         <span class="word-badge difficulty-${word.difficulty || 1}">L${word.difficulty || 1}</span>
       </div>
       <div class="word-english">${escapeHtml(word.english)}</div>
@@ -1274,7 +1311,7 @@ function renderWords(words) {
         <span class="word-badge">${word.category || 'general'}</span>
         <span class="word-badge" style="background: #e3f2fd; color: #1976d2;">ID: ${word.id?.substring(0, 8)}...</span>
       </div>
-      ${word.exampleSentence ? `<div class="word-example" dir="rtl">${escapeHtml(word.exampleSentence)}</div>` : ''}
+      ${word.exampleSentence ? `<div class="word-example" dir="rtl">💡 ${escapeHtml(word.exampleSentence)}</div>` : ''}
       <div class="word-actions">
         <button class="btn btn-small btn-secondary" onclick="editWord('${word.id}')">Edit</button>
         <button class="btn btn-small btn-danger" onclick="promptDeleteWord('${word.id}')">Delete</button>
@@ -1311,6 +1348,7 @@ function openWordModal(word = null) {
     document.getElementById('word-tags-input').value = (word.tags || []).join(', ');
     document.getElementById('word-example-input').value = word.exampleSentence || '';
     document.getElementById('word-example-translation-input').value = word.exampleSentenceTranslation || '';
+    document.getElementById('word-audio-input').value = word.audioPronunciationURL || word.audioURL || '';
   } else {
     title.textContent = '➕ Add New Word';
     form.reset();
@@ -1340,7 +1378,8 @@ async function saveWord() {
     category: document.getElementById('word-category-input').value,
     tags: document.getElementById('word-tags-input').value.split(',').map(t => t.trim()).filter(Boolean),
     exampleSentence: document.getElementById('word-example-input').value.trim() || null,
-    exampleSentenceTranslation: document.getElementById('word-example-translation-input').value.trim() || null
+    exampleSentenceTranslation: document.getElementById('word-example-translation-input').value.trim() || null,
+    audioPronunciationURL: document.getElementById('word-audio-input').value.trim() || null
   };
   
   if (!wordData.arabic || !wordData.english) {
@@ -1430,36 +1469,32 @@ window.normalizeWords = normalizeWords;
 // Format switching for story form
 function onFormatChange() {
   const formatSelect = document.getElementById('story-format');
-  const difficultySelect = document.getElementById('story-difficulty');
-  const formatInfo = document.getElementById('format-info');
+  const formatDisplay = document.getElementById('current-format-display');
   const segmentsTitle = document.getElementById('segments-section-title');
   
-  if (!formatSelect || !difficultySelect) return;
+  if (!formatSelect) return;
   
-  const format = formatSelect.value;
-  const difficulty = parseInt(difficultySelect.value);
-  const finalFormat = format === 'auto' ? (difficulty === 1 ? 'mixed' : 'bilingual') : format;
+  const format = formatSelect.value; // 'mixed' or 'bilingual'
   
-  // Update info text
-  if (formatInfo) {
-    if (finalFormat === 'mixed') {
-      formatInfo.innerHTML = '💡 <strong>Mixed Format:</strong> Best for beginners (Level 1). English text with embedded Arabic vocabulary words that users tap to learn. Users need to learn 20 words to unlock Level 2.';
-    } else {
-      formatInfo.innerHTML = '📖 <strong>Bilingual Format:</strong> Full Arabic text with English translation. For Level 2+ learners who have mastered basic vocabulary.';
-    }
+  // Update format display badge
+  if (formatDisplay) {
+    formatDisplay.className = 'format-display ' + format;
+    formatDisplay.textContent = format === 'mixed' ? '🎯 Single' : '📖 Bilingual';
   }
   
   // Update section title
   if (segmentsTitle) {
-    segmentsTitle.textContent = finalFormat === 'mixed' ? '📝 Mixed Story Segments' : '📝 Bilingual Story Segments';
+    segmentsTitle.textContent = format === 'mixed' ? '📝 Single Format Segments' : '📝 Bilingual Segments';
   }
   
-  // Auto-suggest format based on difficulty (only on manual change)
-  if (format !== 'auto' && window.event && window.event.type === 'change') {
-    if (difficulty === 1 && format === 'bilingual') {
-      showToast('⚠️ Level 1 stories work best with Mixed format for vocabulary building', 'warning');
+  // Show toast about format change
+  if (window.event && window.event.type === 'change') {
+    if (format === 'mixed') {
+      showToast('🎯 Single format selected: Build story with English text + Arabic words', 'info');
+    } else {
+      showToast('📖 Bilingual format selected: Add Arabic text with English translation', 'info');
     }
   }
 }
 
-// onFormatChange is now attached via addEventListener in setupEventListeners
+window.onFormatChange = onFormatChange;
