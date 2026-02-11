@@ -74,7 +74,18 @@ function setupEventListeners() {
   document.getElementById('save-settings')?.addEventListener('click', saveSettings);
   
   // Story form actions
-  document.getElementById('add-segment-btn')?.addEventListener('click', () => addSegment());
+  document.getElementById('add-segment-btn')?.addEventListener('click', () => {
+    const format = document.getElementById('story-format')?.value || 'bilingual';
+    const difficulty = parseInt(document.getElementById('story-difficulty')?.value || 2);
+    const finalFormat = format === 'auto' ? (difficulty === 1 ? 'mixed' : 'bilingual') : format;
+    
+    if (finalFormat === 'mixed') {
+      addMixedSegment();
+    } else {
+      addSegment();
+    }
+  });
+  
   document.getElementById('add-word-btn')?.addEventListener('click', () => addWord());
   document.getElementById('validate-btn')?.addEventListener('click', validateCurrentStory);
   document.getElementById('publish-btn')?.addEventListener('click', publishStory);
@@ -83,12 +94,12 @@ function setupEventListeners() {
   // Stories list actions
   document.getElementById('refresh-stories')?.addEventListener('click', loadStories);
   document.getElementById('story-search')?.addEventListener('input', debounce(filterStories, 300));
+  document.getElementById('story-format-filter')?.addEventListener('change', loadStories);
   
   // Import/Export
   document.getElementById('import-btn')?.addEventListener('click', handleImport);
   document.getElementById('import-file')?.addEventListener('change', handleFileSelect);
   document.getElementById('export-all-btn')?.addEventListener('click', exportAllStories);
-  document.getElementById('export-template-btn')?.addEventListener('click', downloadTemplate);
   
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
@@ -211,7 +222,14 @@ async function loadStories() {
   container.innerHTML = '<div class="loading">Loading stories...</div>';
   
   try {
-    const data = await apiRequest(`${API.stories()}?limit=${state.limit}&offset=${(state.page - 1) * state.limit}`);
+    const formatFilter = document.getElementById('story-format-filter')?.value || '';
+    let url = `${API.stories()}?limit=${state.limit}&offset=${(state.page - 1) * state.limit}`;
+    
+    if (formatFilter) {
+      url += `&format=${encodeURIComponent(formatFilter)}`;
+    }
+    
+    const data = await apiRequest(url);
     
     state.stories = data.stories || [];
     renderStories(state.stories);
@@ -219,8 +237,11 @@ async function loadStories() {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
         <p>Error loading stories: ${error.message}</p>
-        <button onclick="seedSampleStories()" class="btn btn-primary" style="margin-top: 16px;">
-          🌱 Seed Sample Stories
+        <button onclick="seedSampleStories('mixed')" class="btn btn-primary" style="margin-top: 16px;">
+          🌱 Seed Level 1 Mixed Story
+        </button>
+        <button onclick="seedSampleStories('bilingual')" class="btn btn-secondary" style="margin-top: 8px;">
+          🌱 Seed Level 2+ Bilingual Story
         </button>
       </div>
     `;
@@ -443,7 +464,9 @@ function addWord(data = null) {
   const clone = template.content.cloneNode(true);
   const card = clone.querySelector('.word-card');
   
+  const wordId = data?.id || generateId();
   card.dataset.index = index;
+  card.dataset.wordId = wordId;
   card.querySelector('.word-number').textContent = `Word ${index + 1}`;
   
   // Setup remove button
@@ -451,16 +474,22 @@ function addWord(data = null) {
   
   // Fill data if provided
   if (data) {
-    card.querySelector('.word-arabic').value = data.arabic || '';
-    card.querySelector('.word-english').value = data.english || '';
+    card.querySelector('.word-arabic').value = data.arabic || data.arabicText || '';
+    card.querySelector('.word-english').value = data.english || data.englishMeaning || '';
     card.querySelector('.word-transliteration').value = data.transliteration || '';
     card.querySelector('.word-pos').value = data.partOfSpeech || '';
     card.querySelector('.word-root').value = data.rootLetters || '';
     card.querySelector('.word-example').value = data.exampleSentence || '';
   }
   
+  // Set the word ID display
+  const wordIdDisplay = card.querySelector('.word-id-display');
+  if (wordIdDisplay) {
+    wordIdDisplay.value = wordId;
+  }
+  
   container.appendChild(card);
-  state.words.push({ id: generateId() });
+  state.words.push({ id: wordId });
   
   document.getElementById('empty-words')?.classList.add('hidden');
 }
@@ -1146,7 +1175,7 @@ function renderWords(words) {
       <div class="word-meta">
         ${word.partOfSpeech ? `<span class="word-badge pos">${word.partOfSpeech}</span>` : ''}
         <span class="word-badge">${word.category || 'general'}</span>
-        ${word.rootLetters ? `<span class="word-badge">Root: ${escapeHtml(word.rootLetters)}</span>` : ''}
+        <span class="word-badge" style="background: #e3f2fd; color: #1976d2;">ID: ${word.id?.substring(0, 8)}...</span>
       </div>
       ${word.exampleSentence ? `<div class="word-example" dir="rtl">${escapeHtml(word.exampleSentence)}</div>` : ''}
       <div class="word-actions">
@@ -1302,34 +1331,33 @@ window.addContentPart = addContentPart;
 function onFormatChange() {
   const formatSelect = document.getElementById('story-format');
   const difficultySelect = document.getElementById('story-difficulty');
+  const formatInfo = document.getElementById('format-info');
+  const segmentsTitle = document.getElementById('segments-section-title');
   
   if (!formatSelect || !difficultySelect) return;
   
   const format = formatSelect.value;
   const difficulty = parseInt(difficultySelect.value);
+  const finalFormat = format === 'auto' ? (difficulty === 1 ? 'mixed' : 'bilingual') : format;
   
-  // Auto-suggest format based on difficulty
-  if (format === 'auto') {
-    if (difficulty === 1) {
-      showToast('💡 Level 1 recommended format: Mixed (English with Arabic words)', 'info');
+  // Update info text
+  if (formatInfo) {
+    if (finalFormat === 'mixed') {
+      formatInfo.innerHTML = '💡 <strong>Mixed Format:</strong> Best for beginners (Level 1). English text with embedded Arabic vocabulary words that users tap to learn. Users need to learn 20 words to unlock Level 2.';
     } else {
-      showToast('💡 Level 2+ recommended format: Bilingual (Full Arabic)', 'info');
+      formatInfo.innerHTML = '📖 <strong>Bilingual Format:</strong> Full Arabic text with English translation. For Level 2+ learners who have mastered basic vocabulary.';
     }
   }
   
-  // Clear segments when switching formats
-  const container = document.getElementById('segments-container');
-  if (container.children.length > 0) {
-    // Ask user if they want to clear segments
-    if (confirm('Switching formats will clear existing segments. Continue?')) {
-      container.innerHTML = '';
-      state.segments = [];
-      
-      if (format === 'mixed' || (format === 'auto' && difficulty === 1)) {
-        addMixedSegment();
-      } else {
-        addSegment();
-      }
+  // Update section title
+  if (segmentsTitle) {
+    segmentsTitle.textContent = finalFormat === 'mixed' ? '📝 Mixed Story Segments' : '📝 Bilingual Story Segments';
+  }
+  
+  // Auto-suggest format based on difficulty (only on manual change)
+  if (format !== 'auto' && window.event && window.event.type === 'change') {
+    if (difficulty === 1 && format === 'bilingual') {
+      showToast('⚠️ Level 1 stories work best with Mixed format for vocabulary building', 'warning');
     }
   }
 }

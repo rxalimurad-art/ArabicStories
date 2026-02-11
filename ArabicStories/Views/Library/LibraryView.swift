@@ -731,11 +731,7 @@ struct Shimmer: ViewModifier {
     }
 }
 
-extension View {
-    func shimmering() -> some View {
-        modifier(Shimmer())
-    }
-}
+
 
 // MARK: - Preview
 

@@ -5,6 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arabic Stories Admin</title>
   <link rel="stylesheet" href="admin.css">
+  <style>
+    /* Additional styles for mixed format */
+    .format-selector {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .format-selector label {
+      color: white;
+      font-weight: 600;
+    }
+    
+    .format-selector select {
+      background: rgba(255,255,255,0.9);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-left: 12px;
+    }
+    
+    .format-info {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 8px;
+    }
+    
+    .mixed-segment-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border: 2px solid #667eea;
+    }
+    
+    .content-part {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .content-part[data-type="arabicWord"] {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-color: #2196f3;
+    }
+    
+    .part-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .part-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #666;
+    }
+    
+    .content-part[data-type="arabicWord"] .part-label {
+      color: #1976d2;
+    }
+    
+    .remove-part {
+      background: #ff5252;
+      color: white;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .segment-actions {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+      padding: 12px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+    }
+    
+    .segment-actions button {
+      font-size: 13px;
+      padding: 8px 16px;
+    }
+    
+    .badge-format-mixed {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    
+    .badge-format-bilingual {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .template-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    
+    .template-options button {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -31,6 +142,11 @@
           <h2>📚 All Stories</h2>
           <div class="search-box">
             <input type="text" id="story-search" placeholder="Search stories...">
+            <select id="story-format-filter">
+              <option value="">All Formats</option>
+              <option value="mixed">🎯 Mixed (Level 1)</option>
+              <option value="bilingual">📖 Bilingual (Level 2+)</option>
+            </select>
             <button id="refresh-stories" class="btn btn-icon">🔄</button>
           </div>
         </div>
@@ -58,7 +174,18 @@
         </div>
 
         <form id="story-form" class="story-form">
-          <input type="hidden" id="story-id">
+          <!-- Story Format Selector -->
+          <div class="format-selector">
+            <label for="story-format">📖 Story Format</label>
+            <select id="story-format" onchange="onFormatChange()">
+              <option value="auto">🎯 Auto (Level 1 = Mixed, Level 2+ = Bilingual)</option>
+              <option value="mixed">🎯 Mixed Format - English with Arabic words (Level 1)</option>
+              <option value="bilingual">📖 Bilingual Format - Full Arabic + English (Level 2+)</option>
+            </select>
+            <div class="format-info" id="format-info">
+              💡 <strong>Mixed Format:</strong> Best for beginners. English text with embedded Arabic vocabulary words that users tap to learn.
+            </div>
+          </div>
           
           <!-- Basic Info Section -->
           <section class="form-section">
@@ -96,12 +223,12 @@
               </div>
               <div class="form-group">
                 <label for="story-difficulty">Difficulty Level *</label>
-                <select id="story-difficulty" required>
-                  <option value="1">1 - Beginner</option>
-                  <option value="2">2 - Elementary</option>
-                  <option value="3">3 - Intermediate</option>
-                  <option value="4">4 - Advanced</option>
-                  <option value="5">5 - Expert</option>
+                <select id="story-difficulty" required onchange="onFormatChange()">
+                  <option value="1">Level 1 - Beginner (Recommended: Mixed Format)</option>
+                  <option value="2">Level 2 - Elementary (Recommended: Bilingual)</option>
+                  <option value="3">Level 3 - Intermediate (Bilingual)</option>
+                  <option value="4">Level 4 - Advanced (Bilingual)</option>
+                  <option value="5">Level 5 - Expert (Bilingual)</option>
                 </select>
               </div>
             </div>
@@ -126,7 +253,7 @@
               </div>
               <div class="form-group">
                 <label for="story-tags">Tags (comma separated)</label>
-                <input type="text" id="story-tags" placeholder="animals, friendship, adventure">
+                <input type="text" id="story-tags" placeholder="animals, friendship, adventure, level1">
               </div>
             </div>
 
@@ -148,8 +275,11 @@
           <!-- Segments Section -->
           <section class="form-section">
             <div class="section-header">
-              <h3>📝 Story Segments</h3>
-              <button type="button" id="add-segment-btn" class="btn btn-small btn-primary">+ Add Segment</button>
+              <h3 id="segments-section-title">📝 Story Segments</h3>
+              <div>
+                <button type="button" id="add-segment-btn" class="btn btn-small btn-primary">+ Add Segment</button>
+                <button type="button" id="add-mixed-segment-btn" class="btn btn-small btn-secondary hidden">+ Add Mixed Segment</button>
+              </div>
             </div>
             
             <div id="segments-container">
@@ -174,6 +304,10 @@
             
             <div id="empty-words" class="empty-state">
               <p>No vocabulary words yet. Click "Add Word" to add words from the story.</p>
+            </div>
+            
+            <div class="form-hint" style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-radius: 8px;">
+              💡 <strong>Tip:</strong> For mixed format stories, add vocabulary words here first, then reference them by ID in the Arabic word parts.
             </div>
           </section>
         </form>
@@ -236,7 +370,7 @@
             
             <div class="form-group">
               <label for="import-json">Or paste JSON here</label>
-              <textarea id="import-json" rows="10" placeholder='{"title": "...", "segments": [...]}'></textarea>
+              <textarea id="import-json" rows="10" placeholder='{"title": "...", "format": "mixed", "mixedSegments": [...]}'></textarea>
             </div>
             
             <button id="import-btn" class="btn btn-primary">Import Story</button>
@@ -250,7 +384,27 @@
             <div class="form-group">
               <label>Export Options</label>
               <button id="export-all-btn" class="btn btn-secondary btn-block">Export All Stories</button>
-              <button id="export-template-btn" class="btn btn-secondary btn-block">Download Template</button>
+            </div>
+            
+            <div class="form-group">
+              <label>Download Templates</label>
+              <div class="template-options">
+                <button onclick="downloadTemplate('mixed')" class="btn btn-secondary">🎯 Mixed Format Template</button>
+                <button onclick="downloadTemplate('bilingual')" class="btn btn-secondary">📖 Bilingual Template</button>
+              </div>
+            </div>
+          </section>
+          
+          <section class="form-section">
+            <h3>🌱 Quick Seed</h3>
+            <p>Create sample stories instantly</p>
+            
+            <div class="form-group">
+              <label>Create Sample Story</label>
+              <div class="template-options">
+                <button onclick="seedSampleStories('mixed')" class="btn btn-primary">🎯 Level 1 Mixed Story</button>
+                <button onclick="seedSampleStories('bilingual')" class="btn btn-secondary">📖 Level 2+ Bilingual Story</button>
+              </div>
             </div>
           </section>
         </div>
@@ -435,6 +589,20 @@
           <input type="number" class="segment-audio-end" min="0" step="0.1" placeholder="0.0">
         </div>
       </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Grammar Note</label>
+          <input type="text" class="segment-grammar-note" placeholder="Optional grammar explanation">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Cultural Note</label>
+          <input type="text" class="segment-cultural-note" placeholder="Optional cultural context">
+        </div>
+      </div>
     </div>
   </template>
 
@@ -487,6 +655,13 @@
         <div class="form-group form-group-wide">
           <label>Example Sentence</label>
           <input type="text" class="word-example" dir="rtl" placeholder="Example usage">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group form-group-wide">
+          <label>Word ID (for referencing in mixed format)</label>
+          <input type="text" class="word-id-display" readonly placeholder="Will be generated automatically">
         </div>
       </div>
     </div>
