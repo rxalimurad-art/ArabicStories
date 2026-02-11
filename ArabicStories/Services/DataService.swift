@@ -122,13 +122,13 @@ class DataService {
     func saveStory(_ story: Story) async throws {
         try await firebaseService.saveStory(story)
         await localCache.saveStory(story)
-        await fetchAllStories() // Refresh
+        _ = await fetchAllStories() // Refresh
     }
     
     func deleteStory(_ story: Story) async throws {
         try await firebaseService.deleteStory(id: story.id.uuidString)
         await localCache.deleteStory(id: story.id)
-        await fetchAllStories() // Refresh
+        _ = await fetchAllStories() // Refresh
     }
     
     func toggleBookmark(_ story: Story) async {
@@ -153,15 +153,6 @@ class DataService {
     func fetchBookmarkedWords() async -> [Word] {
         let words = await fetchAllWords()
         return words.filter { $0.isBookmarked ?? false }
-    }
-    
-    func fetchWordsDueForReview() async -> [Word] {
-        let words = await fetchAllWords()
-        let now = Date()
-        return words.filter { word in
-            guard let nextReview = word.nextReviewDate else { return word.masteryLevel == .new }
-            return nextReview <= now
-        }
     }
     
     func toggleWordBookmark(_ word: Word) async {

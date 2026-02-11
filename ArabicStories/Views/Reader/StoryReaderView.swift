@@ -59,8 +59,7 @@ struct StoryReaderView: View {
                     isLearned: viewModel.isWordLearned(word.id.uuidString),
                     onClose: { viewModel.closeWordPopover() },
                     onBookmark: { viewModel.toggleWordBookmark(word) },
-                    onPlayAudio: { viewModel.playWordPronunciation(word) },
-                    onAddToFlashcards: { viewModel.addWordToFlashcards(word) }
+                    onPlayAudio: { viewModel.playWordPronunciation(word) }
                 )
                 .transition(.scale.combined(with: .opacity))
             }

@@ -268,11 +268,6 @@ class StoryReaderViewModel {
         // For now, just a placeholder
     }
     
-    func addWordToFlashcards(_ word: Word) {
-        // Implementation for adding word to flashcards
-        // Would add to a flashcard list in user progress
-    }
-    
     func playWordPronunciation(_ word: Word) {
         Task {
             await pronunciationService.playPronunciation(for: word)

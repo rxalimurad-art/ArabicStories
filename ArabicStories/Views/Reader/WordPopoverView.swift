@@ -13,19 +13,17 @@ struct WordPopoverView: View {
     let onClose: () -> Void
     let onBookmark: () -> Void
     let onPlayAudio: () -> Void
-    let onAddToFlashcards: () -> Void
     
     @State private var showExampleSentences = false
     @State private var dragOffset: CGSize = .zero
     
-    init(word: Word, position: CGPoint, isLearned: Bool, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void, onAddToFlashcards: @escaping () -> Void) {
+    init(word: Word, position: CGPoint, isLearned: Bool, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void) {
         self.word = word
         self.position = position
         self.isLearned = isLearned
         self.onClose = onClose
         self.onBookmark = onBookmark
         self.onPlayAudio = onPlayAudio
-        self.onAddToFlashcards = onAddToFlashcards
         
         print("🎯 WordPopoverView showing word:")
         print("   Arabic: '\(word.arabicText)'")
@@ -136,15 +134,6 @@ struct WordPopoverView: View {
                                 ) {
                                     onBookmark()
                                 }
-                                
-                                // Add to Flashcards
-                                ActionButton(
-                                    icon: "rectangle.stack.badge.plus",
-                                    title: "Flashcards",
-                                    color: .blue
-                                ) {
-                                    onAddToFlashcards()
-                                }
                             }
                             .padding(.vertical, 8)
                             
@@ -181,10 +170,6 @@ struct WordPopoverView: View {
                                 .background(Color(.secondarySystemBackground))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
-                            
-                            // SRS Status
-                            SRSStatusView(word: word)
-                                .padding(.top, 8)
                         }
                         .padding()
                     }
@@ -280,93 +265,6 @@ struct ExampleSentenceCard: View {
     }
 }
 
-// MARK: - SRS Status View
-
-struct SRSStatusView: View {
-    let word: Word
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            // Mastery Level
-            VStack(spacing: 4) {
-                Text("Level")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.secondary)
-                
-                HStack(spacing: 4) {
-                    Image(systemName: "star.fill")
-                        .font(.caption)
-                    Text(word.masteryLevel?.displayName ?? "")
-                        .font(.caption.weight(.semibold))
-                }
-                .foregroundStyle(masteryColor)
-            }
-            
-            Divider()
-                .frame(height: 30)
-            
-            // Review Count
-            VStack(spacing: 4) {
-                Text("Reviews")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.secondary)
-                
-                Text("\(word.reviewCount)")
-                    .font(.caption.weight(.semibold))
-            }
-            
-            Divider()
-                .frame(height: 30)
-            
-            // Next Review
-            VStack(spacing: 4) {
-                Text("Next Review")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.secondary)
-                
-                if let nextReview = word.nextReviewDate {
-                    Text(timeUntil(nextReview))
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(Color.hikayaTeal)
-                } else {
-                    Text("New")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.gray)
-                }
-            }
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-    }
-    
-    private var masteryColor: Color {
-        switch word.masteryLevel {
-        case .new: return .gray
-        case .learning: return .red
-        case .familiar: return .orange
-        case .mastered: return .blue
-        case .known: return .green
-        case .none:
-            return .black
-        }
-    }
-    
-    private func timeUntil(_ date: Date) -> String {
-        let now = Date()
-        let components = Calendar.current.dateComponents([.day, .hour], from: now, to: date)
-        
-        if let days = components.day, days > 0 {
-            return days == 1 ? "1 day" : "\(days) days"
-        } else if let hours = components.hour, hours > 0 {
-            return hours == 1 ? "1 hour" : "\(hours) hours"
-        } else {
-            return "Due"
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview {
@@ -394,8 +292,7 @@ struct SRSStatusView: View {
             isLearned: true,
             onClose: {},
             onBookmark: {},
-            onPlayAudio: {},
-            onAddToFlashcards: {}
+            onPlayAudio: {}
         )
     }
 }

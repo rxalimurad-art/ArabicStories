@@ -11,7 +11,6 @@ import SwiftUI
 class ProgressViewModel {
     // Dependencies
     private let dataService = DataService.shared
-    private let srsService = SRSService.shared
     
     // State
     var userProgress: UserProgress?
@@ -94,9 +93,9 @@ class ProgressViewModel {
         totalStories = stories.count
         completedStories = stories.filter { $0.isCompleted }.count
         
-        let stats = await srsService.getReviewStats()
-        totalWords = stats.totalWords
-        masteredWords = stats.masteredWords
+        let allWords = await dataService.fetchAllWords()
+        totalWords = allWords.count
+        masteredWords = allWords.filter { ($0.masteryLevel ?? .new) == .mastered || ($0.masteryLevel ?? .new) == .known }.count
     }
     
     func refresh() async {
