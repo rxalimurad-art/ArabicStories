@@ -16,6 +16,7 @@ const db = getFirestore();
 // Collection references
 const STORIES_COLLECTION = 'stories';
 const ADMIN_LOGS_COLLECTION = 'admin_logs';
+const WORDS_COLLECTION = 'words';
 
 // Create Express app
 const app = express();
@@ -391,6 +392,263 @@ app.post('/api/seed', async (req, res) => {
     console.error('Error seeding stories:', error);
     res.status(500).json({ error: error.message });
   }
+});
+
+/**
+ * Helper: Convert generic word data to Firestore format
+ */
+function formatWordForFirestore(wordData) {
+  const now = new Date().toISOString();
+  
+  return {
+    id: wordData.id || require('crypto').randomUUID(),
+    arabic: wordData.arabic || '',
+    english: wordData.english || '',
+    transliteration: wordData.transliteration || null,
+    partOfSpeech: wordData.partOfSpeech || null,
+    rootLetters: wordData.rootLetters || null,
+    exampleSentence: wordData.exampleSentence || null,
+    exampleSentenceTranslation: wordData.exampleSentenceTranslation || null,
+    difficulty: Math.min(Math.max(parseInt(wordData.difficulty) || 1, 1), 5),
+    tags: Array.isArray(wordData.tags) ? wordData.tags : [],
+    category: wordData.category || 'general',
+    isGeneric: true,
+    createdAt: wordData.createdAt || now,
+    updatedAt: now
+  };
+}
+
+// ============================================
+// GENERIC WORDS ROUTES
+// ============================================
+
+// List all generic words
+app.get('/api/words', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 50;
+    const offset = parseInt(req.query.offset) || 0;
+    const category = req.query.category;
+    const difficulty = req.query.difficulty;
+    const search = req.query.search;
+    
+    let query = db.collection(WORDS_COLLECTION).orderBy('createdAt', 'desc');
+    
+    if (category) {
+      query = query.where('category', '==', category);
+    }
+    if (difficulty) {
+      query = query.where('difficulty', '==', parseInt(difficulty));
+    }
+    
+    const snapshot = await query.limit(limit).offset(offset).get();
+    let words = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    // Simple search filter (client-side for now)
+    if (search) {
+      const searchLower = search.toLowerCase();
+      words = words.filter(w => 
+        w.arabic?.toLowerCase().includes(searchLower) ||
+        w.english?.toLowerCase().includes(searchLower) ||
+        w.transliteration?.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    res.json({
+      success: true,
+      count: words.length,
+      words
+    });
+  } catch (error) {
+    console.error('Error listing words:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create new generic word
+app.post('/api/words', async (req, res) => {
+  try {
+    const wordData = req.body;
+    
+    if (!wordData.arabic || !wordData.english) {
+      res.status(400).json({ 
+        error: 'Missing required fields: arabic and english are required' 
+      });
+      return;
+    }
+
+    const formattedWord = formatWordForFirestore(wordData);
+    await db.collection(WORDS_COLLECTION).doc(formattedWord.id).set(formattedWord);
+    
+    await logAdminAction('CREATE_WORD', { wordId: formattedWord.id, arabic: formattedWord.arabic }, req.ip);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Word created successfully',
+      word: formattedWord
+    });
+  } catch (error) {
+    console.error('Error creating word:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get single word
+app.get('/api/words/:id', async (req, res) => {
+  try {
+    const doc = await db.collection(WORDS_COLLECTION).doc(req.params.id).get();
+    
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Word not found' });
+      return;
+    }
+    
+    res.json({
+      success: true,
+      word: { id: doc.id, ...doc.data() }
+    });
+  } catch (error) {
+    console.error('Error getting word:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update word
+app.put('/api/words/:id', async (req, res) => {
+  try {
+    const wordId = req.params.id;
+    const wordData = req.body;
+    
+    const docRef = db.collection(WORDS_COLLECTION).doc(wordId);
+    const doc = await docRef.get();
+    
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Word not found' });
+      return;
+    }
+
+    const formattedWord = formatWordForFirestore({
+      ...wordData,
+      id: wordId,
+      createdAt: doc.data().createdAt
+    });
+    
+    await docRef.update(formattedWord);
+    await logAdminAction('UPDATE_WORD', { wordId, arabic: formattedWord.arabic }, req.ip);
+    
+    res.json({
+      success: true,
+      message: 'Word updated successfully',
+      word: formattedWord
+    });
+  } catch (error) {
+    console.error('Error updating word:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete word
+app.delete('/api/words/:id', async (req, res) => {
+  try {
+    const wordId = req.params.id;
+    
+    const docRef = db.collection(WORDS_COLLECTION).doc(wordId);
+    const doc = await docRef.get();
+    
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Word not found' });
+      return;
+    }
+
+    await docRef.delete();
+    await logAdminAction('DELETE_WORD', { wordId, arabic: doc.data().arabic }, req.ip);
+    
+    res.json({
+      success: true,
+      message: 'Word deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting word:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Bulk import words
+app.post('/api/words/bulk', async (req, res) => {
+  try {
+    const { words } = req.body;
+    
+    if (!Array.isArray(words) || words.length === 0) {
+      res.status(400).json({ error: 'words array is required and must not be empty' });
+      return;
+    }
+
+    const results = [];
+    const errors = [];
+    
+    for (const wordData of words) {
+      try {
+        if (!wordData.arabic || !wordData.english) {
+          errors.push({ wordData, error: 'Missing arabic or english' });
+          continue;
+        }
+        
+        const formattedWord = formatWordForFirestore(wordData);
+        await db.collection(WORDS_COLLECTION).doc(formattedWord.id).set(formattedWord);
+        results.push({ id: formattedWord.id, arabic: formattedWord.arabic });
+      } catch (err) {
+        errors.push({ wordData, error: err.message });
+      }
+    }
+    
+    await logAdminAction('BULK_IMPORT_WORDS', { count: results.length }, req.ip);
+    
+    res.status(201).json({
+      success: true,
+      message: `${results.length} words imported successfully`,
+      imported: results,
+      errors: errors.length > 0 ? errors : undefined
+    });
+  } catch (error) {
+    console.error('Error bulk importing words:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get word categories (for filtering)
+app.get('/api/words/categories/list', (req, res) => {
+  const categories = [
+    { value: 'general', label: 'General' },
+    { value: 'noun', label: 'Noun' },
+    { value: 'verb', label: 'Verb' },
+    { value: 'adjective', label: 'Adjective' },
+    { value: 'adverb', label: 'Adverb' },
+    { value: 'phrase', label: 'Phrase' },
+    { value: 'greeting', label: 'Greeting' },
+    { value: 'number', label: 'Number' },
+    { value: 'time', label: 'Time' },
+    { value: 'food', label: 'Food' },
+    { value: 'travel', label: 'Travel' },
+    { value: 'business', label: 'Business' }
+  ];
+  
+  res.json({ success: true, categories });
+});
+
+// Get parts of speech
+app.get('/api/words/parts-of-speech', (req, res) => {
+  const partsOfSpeech = [
+    { value: 'noun', label: 'Noun' },
+    { value: 'verb', label: 'Verb' },
+    { value: 'adjective', label: 'Adjective' },
+    { value: 'adverb', label: 'Adverb' },
+    { value: 'pronoun', label: 'Pronoun' },
+    { value: 'preposition', label: 'Preposition' },
+    { value: 'conjunction', label: 'Conjunction' },
+    { value: 'interjection', label: 'Interjection' },
+    { value: 'particle', label: 'Particle' }
+  ];
+  
+  res.json({ success: true, partsOfSpeech });
 });
 
 // Export the Express app as a Firebase Function

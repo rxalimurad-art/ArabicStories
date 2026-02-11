@@ -17,7 +17,11 @@ const API = {
   story: (id) => `${CONFIG.apiBaseUrl}/api/stories/${id}`,
   validate: () => `${CONFIG.apiBaseUrl}/api/stories/validate`,
   categories: () => `${CONFIG.apiBaseUrl}/api/categories`,
-  seed: () => `${CONFIG.apiBaseUrl}/api/seed`
+  seed: () => `${CONFIG.apiBaseUrl}/api/seed`,
+  words: () => `${CONFIG.apiBaseUrl}/api/words`,
+  word: (id) => `${CONFIG.apiBaseUrl}/api/words/${id}`,
+  wordCategories: () => `${CONFIG.apiBaseUrl}/api/words/categories/list`,
+  bulkWords: () => `${CONFIG.apiBaseUrl}/api/words/bulk`
 };
 
 // ============================================
@@ -31,7 +35,13 @@ const state = {
   words: [],
   storyToDelete: null,
   page: 1,
-  limit: 20
+  limit: 20,
+  // Words state
+  wordsList: [],
+  wordsPage: 1,
+  wordsLimit: 20,
+  wordToDelete: null,
+  wordCategories: []
 };
 
 // ============================================
@@ -87,6 +97,19 @@ function setupEventListeners() {
   // Pagination
   document.getElementById('prev-page')?.addEventListener('click', () => changePage(-1));
   document.getElementById('next-page')?.addEventListener('click', () => changePage(1));
+  
+  // Words view
+  document.getElementById('refresh-words')?.addEventListener('click', loadWords);
+  document.getElementById('add-word-main-btn')?.addEventListener('click', () => openWordModal());
+  document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
+  document.getElementById('word-category-filter')?.addEventListener('change', loadWords);
+  document.getElementById('word-difficulty-filter')?.addEventListener('change', loadWords);
+  document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
+  document.getElementById('word-next-page')?.addEventListener('click', () => changeWordsPage(1));
+  
+  // Word modal
+  document.getElementById('cancel-word')?.addEventListener('click', closeWordModal);
+  document.getElementById('save-word')?.addEventListener('click', saveWord);
 }
 
 // ============================================
@@ -172,6 +195,10 @@ function switchView(viewName) {
       } else {
         addSegment();
       }
+    }
+  } else if (viewName === 'words') {
+    if (state.wordsList.length === 0) {
+      loadWords();
     }
   }
 }
@@ -609,7 +636,12 @@ function promptDelete(storyId) {
 
 function closeDeleteModal() {
   state.storyToDelete = null;
+  state.wordToDelete = null;
   document.getElementById('delete-modal').classList.add('hidden');
+  // Reset the modal text back to default (story delete)
+  document.getElementById('delete-modal').querySelector('h3').textContent = '⚠️ Confirm Delete';
+  document.getElementById('delete-modal').querySelector('p').textContent = 'Are you sure you want to delete this story? This action cannot be undone.';
+  document.getElementById('confirm-delete').onclick = confirmDelete;
 }
 
 async function confirmDelete() {
@@ -814,8 +846,215 @@ function debounce(func, wait) {
   };
 }
 
+// ============================================
+// Words Management
+// ============================================
+async function loadWords() {
+  const container = document.getElementById('words-list');
+  container.innerHTML = '<div class="loading">Loading words...</div>';
+  
+  try {
+    const category = document.getElementById('word-category-filter')?.value || '';
+    const difficulty = document.getElementById('word-difficulty-filter')?.value || '';
+    
+    let url = `${API.words()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}`;
+    if (category) url += `&category=${encodeURIComponent(category)}`;
+    if (difficulty) url += `&difficulty=${encodeURIComponent(difficulty)}`;
+    
+    const data = await apiRequest(url);
+    
+    state.wordsList = data.words || [];
+    renderWords(state.wordsList);
+  } catch (error) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <p>Error loading words: ${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+function renderWords(words) {
+  const container = document.getElementById('words-list');
+  const searchQuery = document.getElementById('word-search')?.value.toLowerCase() || '';
+  
+  let filtered = words;
+  if (searchQuery) {
+    filtered = words.filter(w => 
+      w.arabic?.toLowerCase().includes(searchQuery) ||
+      w.english?.toLowerCase().includes(searchQuery) ||
+      w.transliteration?.toLowerCase().includes(searchQuery)
+    );
+  }
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <p>No words found. Create your first word!</p>
+        <button onclick="openWordModal()" class="btn btn-primary" style="margin-top: 16px;">
+          Add Word
+        </button>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(word => `
+    <div class="word-card-compact" data-id="${word.id}">
+      <div class="word-card-header">
+        <div class="word-arabic" dir="rtl">${escapeHtml(word.arabic)}</div>
+        <span class="word-badge difficulty-${word.difficulty || 1}">L${word.difficulty || 1}</span>
+      </div>
+      <div class="word-english">${escapeHtml(word.english)}</div>
+      ${word.transliteration ? `<div class="word-transliteration">${escapeHtml(word.transliteration)}</div>` : ''}
+      <div class="word-meta">
+        ${word.partOfSpeech ? `<span class="word-badge pos">${word.partOfSpeech}</span>` : ''}
+        <span class="word-badge">${word.category || 'general'}</span>
+        ${word.rootLetters ? `<span class="word-badge">Root: ${escapeHtml(word.rootLetters)}</span>` : ''}
+      </div>
+      ${word.exampleSentence ? `<div class="word-example" dir="rtl">${escapeHtml(word.exampleSentence)}</div>` : ''}
+      <div class="word-actions">
+        <button class="btn btn-small btn-secondary" onclick="editWord('${word.id}')">Edit</button>
+        <button class="btn btn-small btn-danger" onclick="promptDeleteWord('${word.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterWords() {
+  renderWords(state.wordsList);
+}
+
+function changeWordsPage(delta) {
+  state.wordsPage = Math.max(1, state.wordsPage + delta);
+  document.getElementById('word-page-info').textContent = `Page ${state.wordsPage}`;
+  loadWords();
+}
+
+function openWordModal(word = null) {
+  const modal = document.getElementById('word-modal');
+  const title = document.getElementById('word-modal-title');
+  const form = document.getElementById('word-form');
+  
+  if (word) {
+    title.textContent = '✏️ Edit Word';
+    document.getElementById('word-id').value = word.id || '';
+    document.getElementById('word-arabic-input').value = word.arabic || '';
+    document.getElementById('word-english-input').value = word.english || '';
+    document.getElementById('word-transliteration-input').value = word.transliteration || '';
+    document.getElementById('word-pos-input').value = word.partOfSpeech || '';
+    document.getElementById('word-root-input').value = word.rootLetters || '';
+    document.getElementById('word-difficulty-input').value = word.difficulty || 1;
+    document.getElementById('word-category-input').value = word.category || 'general';
+    document.getElementById('word-tags-input').value = (word.tags || []).join(', ');
+    document.getElementById('word-example-input').value = word.exampleSentence || '';
+    document.getElementById('word-example-translation-input').value = word.exampleSentenceTranslation || '';
+  } else {
+    title.textContent = '➕ Add New Word';
+    form.reset();
+    document.getElementById('word-id').value = '';
+    document.getElementById('word-difficulty-input').value = 1;
+    document.getElementById('word-category-input').value = 'general';
+  }
+  
+  modal.classList.remove('hidden');
+}
+
+function closeWordModal() {
+  document.getElementById('word-modal').classList.add('hidden');
+  document.getElementById('word-form').reset();
+}
+
+async function saveWord() {
+  const wordId = document.getElementById('word-id').value;
+  const wordData = {
+    id: wordId || undefined,
+    arabic: document.getElementById('word-arabic-input').value.trim(),
+    english: document.getElementById('word-english-input').value.trim(),
+    transliteration: document.getElementById('word-transliteration-input').value.trim() || null,
+    partOfSpeech: document.getElementById('word-pos-input').value || null,
+    rootLetters: document.getElementById('word-root-input').value.trim() || null,
+    difficulty: parseInt(document.getElementById('word-difficulty-input').value),
+    category: document.getElementById('word-category-input').value,
+    tags: document.getElementById('word-tags-input').value.split(',').map(t => t.trim()).filter(Boolean),
+    exampleSentence: document.getElementById('word-example-input').value.trim() || null,
+    exampleSentenceTranslation: document.getElementById('word-example-translation-input').value.trim() || null
+  };
+  
+  if (!wordData.arabic || !wordData.english) {
+    showToast('Arabic and English are required', 'error');
+    return;
+  }
+  
+  try {
+    const isUpdate = !!wordId;
+    const url = isUpdate ? API.word(wordId) : API.words();
+    const method = isUpdate ? 'PUT' : 'POST';
+    
+    await apiRequest(url, {
+      method,
+      body: JSON.stringify(wordData)
+    });
+    
+    showToast(isUpdate ? 'Word updated successfully' : 'Word created successfully', 'success');
+    closeWordModal();
+    loadWords();
+  } catch (error) {
+    showToast(`Failed to save word: ${error.message}`, 'error');
+  }
+}
+
+async function editWord(wordId) {
+  try {
+    const result = await apiRequest(API.word(wordId));
+    
+    if (result.word) {
+      openWordModal(result.word);
+    }
+  } catch (error) {
+    showToast(`Failed to load word: ${error.message}`, 'error');
+  }
+}
+
+function promptDeleteWord(wordId) {
+  state.wordToDelete = wordId;
+  
+  // Reuse the delete modal but update the message
+  const modal = document.getElementById('delete-modal');
+  modal.querySelector('h3').textContent = '⚠️ Confirm Delete Word';
+  modal.querySelector('p').textContent = 'Are you sure you want to delete this word? This action cannot be undone.';
+  
+  // Update confirm button to call confirmDeleteWord
+  const confirmBtn = document.getElementById('confirm-delete');
+  confirmBtn.onclick = confirmDeleteWord;
+  
+  modal.classList.remove('hidden');
+}
+
+async function confirmDeleteWord() {
+  if (!state.wordToDelete) return;
+  
+  try {
+    await apiRequest(API.word(state.wordToDelete), {
+      method: 'DELETE'
+    });
+    
+    showToast('Word deleted successfully', 'success');
+    closeDeleteModal();
+    loadWords();
+  } catch (error) {
+    showToast(`Failed to delete: ${error.message}`, 'error');
+  }
+  
+  // Reset the onclick handler back to story delete
+  document.getElementById('confirm-delete').onclick = confirmDelete;
+}
+
 // Make functions available globally for onclick handlers
 window.switchView = switchView;
 window.editStory = editStory;
 window.promptDelete = promptDelete;
 window.seedSampleStories = seedSampleStories;
+window.editWord = editWord;
+window.openWordModal = openWordModal;
+window.promptDeleteWord = promptDeleteWord;

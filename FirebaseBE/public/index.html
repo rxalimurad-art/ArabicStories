@@ -16,6 +16,7 @@
       <nav class="header-nav">
         <button class="nav-btn active" data-view="stories">📚 Stories</button>
         <button class="nav-btn" data-view="create">➕ New Story</button>
+        <button class="nav-btn" data-view="words">📝 Words</button>
         <button class="nav-btn" data-view="import">📤 Import</button>
       </nav>
       <div class="header-actions">
@@ -184,6 +185,39 @@
         </div>
       </div>
 
+      <!-- Words List View -->
+      <div id="words-view" class="view hidden">
+        <div class="view-header">
+          <h2>📝 Generic Words</h2>
+          <div class="search-box">
+            <input type="text" id="word-search" placeholder="Search words...">
+            <select id="word-category-filter">
+              <option value="">All Categories</option>
+            </select>
+            <select id="word-difficulty-filter">
+              <option value="">All Levels</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+            </select>
+            <button id="refresh-words" class="btn btn-icon">🔄</button>
+            <button id="add-word-main-btn" class="btn btn-primary">+ Add Word</button>
+          </div>
+        </div>
+        
+        <div id="words-list" class="words-grid">
+          <div class="loading">Loading words...</div>
+        </div>
+        
+        <div id="words-pagination" class="pagination hidden">
+          <button id="word-prev-page" class="btn btn-secondary">Previous</button>
+          <span id="word-page-info">Page 1</span>
+          <button id="word-next-page" class="btn btn-secondary">Next</button>
+        </div>
+      </div>
+
       <!-- Import/Export View -->
       <div id="import-view" class="view hidden">
         <div class="view-header">
@@ -234,6 +268,110 @@
         <div class="modal-actions">
           <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
           <button id="confirm-delete" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word Edit/Create Modal -->
+    <div id="word-modal" class="modal hidden">
+      <div class="modal-content modal-wide">
+        <h3 id="word-modal-title">➕ Add New Word</h3>
+        
+        <form id="word-form">
+          <input type="hidden" id="word-id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-arabic-input">Arabic *</label>
+              <input type="text" id="word-arabic-input" dir="rtl" required placeholder="كلمة">
+            </div>
+            <div class="form-group">
+              <label for="word-english-input">English *</label>
+              <input type="text" id="word-english-input" required placeholder="Translation">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-transliteration-input">Transliteration</label>
+              <input type="text" id="word-transliteration-input" placeholder="Transliteration">
+            </div>
+            <div class="form-group">
+              <label for="word-pos-input">Part of Speech</label>
+              <select id="word-pos-input">
+                <option value="">Select...</option>
+                <option value="noun">Noun</option>
+                <option value="verb">Verb</option>
+                <option value="adjective">Adjective</option>
+                <option value="adverb">Adverb</option>
+                <option value="preposition">Preposition</option>
+                <option value="pronoun">Pronoun</option>
+                <option value="particle">Particle</option>
+                <option value="interjection">Interjection</option>
+                <option value="conjunction">Conjunction</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-root-input">Root Letters</label>
+              <input type="text" id="word-root-input" dir="rtl" placeholder="أصل الكلمة">
+            </div>
+            <div class="form-group">
+              <label for="word-difficulty-input">Difficulty Level</label>
+              <select id="word-difficulty-input">
+                <option value="1">1 - Beginner</option>
+                <option value="2">2 - Elementary</option>
+                <option value="3">3 - Intermediate</option>
+                <option value="4">4 - Advanced</option>
+                <option value="5">5 - Expert</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-category-input">Category</label>
+              <select id="word-category-input">
+                <option value="general">General</option>
+                <option value="noun">Noun</option>
+                <option value="verb">Verb</option>
+                <option value="adjective">Adjective</option>
+                <option value="adverb">Adverb</option>
+                <option value="phrase">Phrase</option>
+                <option value="greeting">Greeting</option>
+                <option value="number">Number</option>
+                <option value="time">Time</option>
+                <option value="food">Food</option>
+                <option value="travel">Travel</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="word-tags-input">Tags (comma separated)</label>
+              <input type="text" id="word-tags-input" placeholder="common, daily, formal">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-example-input">Example Sentence (Arabic)</label>
+              <input type="text" id="word-example-input" dir="rtl" placeholder="Example usage">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-example-translation-input">Example Translation</label>
+              <input type="text" id="word-example-translation-input" placeholder="English translation">
+            </div>
+          </div>
+        </form>
+        
+        <div class="modal-actions">
+          <button id="cancel-word" class="btn btn-secondary">Cancel</button>
+          <button id="save-word" class="btn btn-primary">Save Word</button>
         </div>
       </div>
     </div>

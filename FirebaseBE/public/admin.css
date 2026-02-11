@@ -320,14 +320,25 @@ body {
 .search-box {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.search-box input {
+.search-box input,
+.search-box select {
   padding: 10px 16px;
   border: 1px solid var(--gray-300);
   border-radius: var(--radius-md);
-  min-width: 280px;
   font-size: 0.95rem;
+}
+
+.search-box input {
+  min-width: 200px;
+}
+
+#story-search {
+  min-width: 280px;
+}
 }
 
 .stories-grid {
@@ -634,6 +645,108 @@ body {
 }
 
 /* ============================================
+   Words Grid
+   ============================================ */
+.words-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.word-card-compact {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border: 1px solid var(--gray-200);
+}
+
+.word-card-compact:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.word-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.word-arabic {
+  font-size: 1.5rem;
+  color: var(--gray-900);
+  font-weight: 500;
+  direction: rtl;
+}
+
+.word-english {
+  font-size: 1rem;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+}
+
+.word-transliteration {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.word-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.word-badge {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.word-badge.pos {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.word-badge.difficulty-1 { background: #dcfce7; color: #166534; }
+.word-badge.difficulty-2 { background: #ccfbf1; color: #0f766e; }
+.word-badge.difficulty-3 { background: #dbeafe; color: #1e40af; }
+.word-badge.difficulty-4 { background: #ffedd5; color: #9a3412; }
+.word-badge.difficulty-5 { background: #fee2e2; color: #991b1b; }
+
+.word-example {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  direction: rtl;
+  padding: 8px;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+}
+
+.word-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.word-actions .btn {
+  flex: 1;
+}
+
+.modal-wide {
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ============================================
    Responsive
    ============================================ */
 @media (max-width: 768px) {
@@ -677,5 +790,9 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+  
+  .words-grid {
+    grid-template-columns: 1fr;
   }
 }
