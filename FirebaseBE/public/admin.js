@@ -1543,18 +1543,36 @@ window.switchAudioTab = switchAudioTab;
 // Bulk Words Import
 // ============================================
 function handleWordsFileSelect(e) {
+  console.log('handleWordsFileSelect called');
   const file = e.target.files[0];
-  if (!file) return;
+  if (!file) {
+    console.log('No file selected');
+    return;
+  }
   
+  console.log('File selected:', file.name);
   const reader = new FileReader();
   reader.onload = (event) => {
-    document.getElementById('import-words-json').value = event.target.result;
+    const textarea = document.getElementById('import-words-json');
+    if (textarea) {
+      textarea.value = event.target.result;
+      console.log('File loaded into textarea');
+    }
   };
   reader.readAsText(file);
 }
 
 async function handleImportWords() {
-  const jsonText = document.getElementById('import-words-json').value.trim();
+  console.log('handleImportWords called');
+  const jsonTextarea = document.getElementById('import-words-json');
+  if (!jsonTextarea) {
+    console.error('import-words-json textarea not found');
+    showToast('Error: Textarea not found', 'error');
+    return;
+  }
+  
+  const jsonText = jsonTextarea.value.trim();
+  console.log('JSON text length:', jsonText.length);
   
   if (!jsonText) {
     showToast('Please paste JSON or select a file', 'error');
@@ -1575,8 +1593,12 @@ async function handleImportWords() {
   
   // Show preview
   const preview = document.getElementById('import-words-preview');
-  preview.classList.remove('hidden');
-  preview.innerHTML = `<p>Importing ${words.length} words...</p>`;
+  if (!preview) {
+    console.error('import-words-preview element not found');
+  } else {
+    preview.classList.remove('hidden');
+    preview.innerHTML = `<p>Importing ${words.length} words...</p>`;
+  }
   
   // Normalize word data
   const normalizedWords = words.map(word => ({
@@ -1618,7 +1640,7 @@ async function handleImportWords() {
     }
     
     // Update progress
-    if (i % 5 === 0 || i === normalizedWords.length - 1) {
+    if (preview && (i % 5 === 0 || i === normalizedWords.length - 1)) {
       preview.innerHTML = `
         <p>Progress: ${i + 1}/${normalizedWords.length} words processed</p>
         <p style="color: var(--success);">✓ ${successCount} successful</p>
@@ -1628,20 +1650,22 @@ async function handleImportWords() {
   }
   
   // Show final results
-  preview.innerHTML = `
-    <div class="words-preview-list">
-      ${results.map(r => `
-        <div class="word-preview-item">
-          <span class="word-preview-arabic" dir="rtl">${r.word}</span>
-          <span class="word-preview-status ${r.status}">${r.status === 'success' ? '✓' : '✗'}</span>
-        </div>
-      `).join('')}
-    </div>
-    <p style="margin-top: 12px; text-align: center;">
-      <strong style="color: var(--success);">${successCount} imported</strong>
-      ${errorCount > 0 ? ` | <strong style="color: var(--danger);">${errorCount} failed</strong>` : ''}
-    </p>
-  `;
+  if (preview) {
+    preview.innerHTML = `
+      <div class="words-preview-list">
+        ${results.map(r => `
+          <div class="word-preview-item">
+            <span class="word-preview-arabic" dir="rtl">${r.word}</span>
+            <span class="word-preview-status ${r.status}">${r.status === 'success' ? '✓' : '✗'}</span>
+          </div>
+        `).join('')}
+      </div>
+      <p style="margin-top: 12px; text-align: center;">
+        <strong style="color: var(--success);">${successCount} imported</strong>
+        ${errorCount > 0 ? ` | <strong style="color: var(--danger);">${errorCount} failed</strong>` : ''}
+      </p>
+    `;
+  }
   
   showToast(`Imported ${successCount} words successfully${errorCount > 0 ? `, ${errorCount} failed` : ''}`, errorCount > 0 ? 'warning' : 'success');
   loadWords();
