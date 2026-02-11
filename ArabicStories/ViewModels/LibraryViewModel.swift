@@ -1,11 +1,11 @@
 //
 //  LibraryViewModel.swift
 //  Hikaya
-//  ViewModel for the Story Library view
+//  ViewModel for the Story Library view with level management
 //
 
 import Foundation
-
+import Combine
 
 @Observable
 class LibraryViewModel {
@@ -17,6 +17,12 @@ class LibraryViewModel {
     var filteredStories: [Story] = []
     var isLoading = false
     var errorMessage: String?
+    
+    // Level Management
+    var maxUnlockedLevel: Int = 1
+    var vocabularyProgressToLevel2: Double = 0.0
+    var vocabularyRemainingForLevel2: Int = 20
+    var showLevelUnlockAlert: Bool = false
     
     // Filter State
     var selectedDifficulty: Int? = nil
@@ -30,10 +36,23 @@ class LibraryViewModel {
     
     // Tasks
     private var searchTask: Task<Void, Never>?
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
+        // Listen for level unlock events
+        dataService.levelUnlockedPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] level in
+                if level == 2 {
+                    self?.showLevelUnlockAlert = true
+                    self?.maxUnlockedLevel = 2
+                }
+            }
+            .store(in: &cancellables)
+        
         Task {
             await loadStories()
+            await loadLevelProgress()
         }
     }
     
@@ -53,8 +72,15 @@ class LibraryViewModel {
         filteredStories = stories
     }
     
+    func loadLevelProgress() async {
+        maxUnlockedLevel = await dataService.getMaxUnlockedLevel()
+        vocabularyProgressToLevel2 = await dataService.vocabularyProgressToLevel2()
+        vocabularyRemainingForLevel2 = await dataService.vocabularyRemainingForLevel2()
+    }
+    
     func refresh() async {
         await loadStories()
+        await loadLevelProgress()
     }
     
     // MARK: - Search
@@ -118,6 +144,16 @@ class LibraryViewModel {
         }
     }
     
+    // MARK: - Level Management
+    
+    func canAccessLevel(_ level: Int) -> Bool {
+        return level <= maxUnlockedLevel
+    }
+    
+    func isLevelLocked(_ level: Int) -> Bool {
+        return level > maxUnlockedLevel
+    }
+    
     // MARK: - Computed Properties
     
     var hasActiveFilters: Bool {
@@ -143,5 +179,21 @@ class LibraryViewModel {
     var difficultyCounts: [Int: Int] {
         Dictionary(grouping: stories) { $0.difficultyLevel }
             .mapValues { $0.count }
+    }
+    
+    var level1Stories: [Story] {
+        stories.filter { $0.difficultyLevel == 1 }
+    }
+    
+    var level2PlusStories: [Story] {
+        stories.filter { $0.difficultyLevel >= 2 }
+    }
+    
+    var hasUnlockedLevel2: Bool {
+        maxUnlockedLevel >= 2
+    }
+    
+    var vocabularyProgressPercentage: Int {
+        Int(vocabularyProgressToLevel2 * 100)
     }
 }

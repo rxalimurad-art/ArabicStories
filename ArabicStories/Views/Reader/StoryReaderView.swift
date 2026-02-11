@@ -31,14 +31,38 @@ struct StoryReaderView: View {
                     onSettingsTap: { showingSettings = true }
                 )
                 
-                // Content
-                if let segment = viewModel.currentSegment {
-                    StoryContentView(
-                        segment: segment,
-                        viewModel: viewModel
+                // Vocabulary Progress Bar (for mixed format)
+                if viewModel.isMixedFormat && viewModel.totalVocabularyCount > 0 {
+                    VocabularyProgressBar(
+                        learnedCount: viewModel.learnedVocabularyCount,
+                        totalCount: viewModel.totalVocabularyCount,
+                        isNightMode: viewModel.isNightMode
                     )
+                    .padding(.horizontal)
+                }
+                
+                // Content based on format
+                if viewModel.isMixedFormat {
+                    // Mixed Format (Level 1) - English with Arabic words
+                    if let segment = viewModel.currentMixedSegment {
+                        MixedContentView(
+                            segment: segment,
+                            storyWords: story.words,
+                            viewModel: viewModel
+                        )
+                    } else {
+                        ContentUnavailableView("No Content", systemImage: "doc.text")
+                    }
                 } else {
-                    ContentUnavailableView("No Content", systemImage: "doc.text")
+                    // Bilingual Format (Level 2+) - Full Arabic with English
+                    if let segment = viewModel.currentSegment {
+                        BilingualContentView(
+                            segment: segment,
+                            viewModel: viewModel
+                        )
+                    } else {
+                        ContentUnavailableView("No Content", systemImage: "doc.text")
+                    }
                 }
                 
                 // Bottom Controls
@@ -52,16 +76,33 @@ struct StoryReaderView: View {
             }
             
             // Word Popover
-            if viewModel.showWordPopover, let word = viewModel.selectedWord {
-                WordPopoverView(
-                    word: word,
-                    position: viewModel.popoverPosition,
-                    isLearned: viewModel.isWordLearned(word.id.uuidString),
-                    onClose: { viewModel.closeWordPopover() },
-                    onBookmark: { viewModel.toggleWordBookmark(word) },
-                    onPlayAudio: { viewModel.playWordPronunciation(word) }
-                )
-                .transition(.scale.combined(with: .opacity))
+            if viewModel.showWordPopover {
+                if let mixedWord = viewModel.selectedMixedWord {
+                    // Mixed format word popover
+                    MixedWordPopoverView(
+                        mixedWord: mixedWord,
+                        isLearned: viewModel.isMixedWordLearned(mixedWord.wordId),
+                        position: viewModel.popoverPosition,
+                        onClose: { viewModel.closeWordPopover() },
+                        onPlayAudio: {
+                            if let word = viewModel.selectedWord {
+                                viewModel.playWordPronunciation(word)
+                            }
+                        }
+                    )
+                    .transition(.scale.combined(with: .opacity))
+                } else if let word = viewModel.selectedWord {
+                    // Bilingual format word popover
+                    WordPopoverView(
+                        word: word,
+                        position: viewModel.popoverPosition,
+                        isLearned: viewModel.isWordLearned(word.id.uuidString),
+                        onClose: { viewModel.closeWordPopover() },
+                        onBookmark: { viewModel.toggleWordBookmark(word) },
+                        onPlayAudio: { viewModel.playWordPronunciation(word) }
+                    )
+                    .transition(.scale.combined(with: .opacity))
+                }
             }
         }
         .navigationBarHidden(true)
@@ -71,6 +112,60 @@ struct StoryReaderView: View {
         .onAppear {
             viewModel.incrementViewCount()
         }
+    }
+}
+
+// MARK: - Vocabulary Progress Bar
+
+struct VocabularyProgressBar: View {
+    let learnedCount: Int
+    let totalCount: Int
+    let isNightMode: Bool
+    
+    var progress: Double {
+        guard totalCount > 0 else { return 0 }
+        return Double(learnedCount) / Double(totalCount)
+    }
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack {
+                Text("Words Learned")
+                    .font(.caption)
+                    .foregroundStyle(isNightMode ? .gray : .secondary)
+                
+                Spacer()
+                
+                Text("\(learnedCount)/\(totalCount)")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Color.hikayaTeal)
+            }
+            
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(isNightMode ? Color.white.opacity(0.1) : Color(.systemGray5))
+                        .frame(height: 6)
+                    
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.8)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * progress, height: 6)
+                }
+            }
+            .frame(height: 6)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isNightMode ? Color.white.opacity(0.05) : Color.white)
+        )
     }
 }
 
@@ -114,9 +209,228 @@ struct ReaderNavigationBar: View {
     }
 }
 
-// MARK: - Story Content View
+// MARK: - Mixed Content View (Level 1)
 
-struct StoryContentView: View {
+struct MixedContentView: View {
+    let segment: MixedContentSegment
+    let storyWords: [Word]?
+    var viewModel: StoryReaderViewModel
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                // Mixed Content - English with embedded Arabic words
+                MixedTextView(
+                    contentParts: segment.contentParts,
+                    storyWords: storyWords,
+                    fontSize: viewModel.fontSize,
+                    isNightMode: viewModel.isNightMode,
+                    onWordTap: { wordId, arabicText, transliteration, position in
+                        viewModel.handleMixedWordTap(
+                            wordId: wordId,
+                            arabicText: arabicText,
+                            transliteration: transliteration,
+                            position: position
+                        )
+                    }
+                )
+                
+                // Cultural Note
+                if let culturalNote = segment.culturalNote {
+                    NoteCard(
+                        title: "Cultural Note",
+                        content: culturalNote,
+                        icon: "globe",
+                        isNightMode: viewModel.isNightMode
+                    )
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Mixed Text View
+
+struct MixedTextView: View {
+    let contentParts: [MixedContentPart]
+    let storyWords: [Word]?
+    let fontSize: CGFloat
+    let isNightMode: Bool
+    let onWordTap: (String, String, String?, CGPoint) -> Void
+    
+    var body: some View {
+        FlowLayout(spacing: 6) {
+            ForEach(contentParts) { part in
+                switch part.type {
+                case .text:
+                    Text(part.text)
+                        .font(.system(size: fontSize))
+                        .foregroundStyle(isNightMode ? .white : .primary)
+                case .arabicWord:
+                    MixedArabicWordView(
+                        arabicText: part.text,
+                        transliteration: part.transliteration,
+                        wordId: part.wordId,
+                        isLearned: storyWords?.first { $0.id.uuidString == part.wordId } != nil,
+                        isNightMode: isNightMode,
+                        onTap: { position in
+                            onWordTap(
+                                part.wordId ?? "",
+                                part.text,
+                                part.transliteration,
+                                position
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Mixed Arabic Word View
+
+struct MixedArabicWordView: View {
+    let arabicText: String
+    let transliteration: String?
+    let wordId: String?
+    let isLearned: Bool
+    let isNightMode: Bool
+    let onTap: (CGPoint) -> Void
+    
+    @State private var tapPosition: CGPoint = .zero
+    
+    var body: some View {
+        VStack(spacing: 2) {
+            // Arabic text
+            Text(arabicText)
+                .font(.custom("NotoNaskhArabic", size: 18))
+                .fontWeight(.semibold)
+                .foregroundStyle(isNightMode ? Color.hikayaTeal : Color.hikayaTeal)
+            
+            // Transliteration (optional)
+            if let transliteration = transliteration {
+                Text(transliteration)
+                    .font(.caption2)
+                    .italic()
+                    .foregroundStyle(isNightMode ? .gray : .secondary)
+            }
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isLearned ? 
+                    (isNightMode ? Color.hikayaTeal.opacity(0.2) : Color.hikayaTeal.opacity(0.1)) :
+                    (isNightMode ? Color.white.opacity(0.05) : Color(.systemGray6))
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(isLearned ? Color.hikayaTeal.opacity(0.5) : Color.clear, lineWidth: 1.5)
+        )
+        .contentShape(Rectangle())
+        .onTapGesture { location in
+            tapPosition = location
+            onTap(location)
+        }
+        .scaleEffect(isLearned ? 1.02 : 1.0)
+        .animation(.spring(response: 0.3), value: isLearned)
+    }
+}
+
+// MARK: - Mixed Word Popover View
+
+struct MixedWordPopoverView: View {
+    let mixedWord: StoryReaderViewModel.MixedWordInfo
+    let isLearned: Bool
+    let position: CGPoint
+    let onClose: () -> Void
+    let onPlayAudio: () -> Void
+    
+    var body: some View {
+        ZStack {
+            // Backdrop
+            Color.black.opacity(0.3)
+                .ignoresSafeArea()
+                .onTapGesture(perform: onClose)
+            
+            // Popover
+            VStack(spacing: 16) {
+                // Arabic word
+                Text(mixedWord.arabicText)
+                    .font(.custom("NotoNaskhArabic", size: 36))
+                    .foregroundStyle(.primary)
+                
+                // Transliteration
+                if let transliteration = mixedWord.transliteration {
+                    Text(transliteration)
+                        .font(.subheadline)
+                        .italic()
+                        .foregroundStyle(.secondary)
+                }
+                
+                Divider()
+                
+                // English meaning
+                if let meaning = mixedWord.englishMeaning {
+                    Text(meaning)
+                        .font(.title3.weight(.medium))
+                        .foregroundStyle(Color.hikayaTeal)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text("Learn this word!")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                
+                // Learned indicator
+                if isLearned {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                        Text("Learned")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.green)
+                    }
+                    .padding(.top, 4)
+                }
+                
+                // Action buttons
+                HStack(spacing: 20) {
+                    Button(action: onPlayAudio) {
+                        Image(systemName: "speaker.wave.2.fill")
+                            .font(.title2)
+                            .foregroundStyle(Color.hikayaTeal)
+                            .frame(width: 44, height: 44)
+                            .background(Color.hikayaTeal.opacity(0.1))
+                            .clipShape(Circle())
+                    }
+                    
+                    Button(action: onClose) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.gray)
+                            .frame(width: 44, height: 44)
+                    }
+                }
+            }
+            .padding()
+            .frame(maxWidth: 300)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.15), radius: 20, x: 0, y: 10)
+            )
+            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+        }
+    }
+}
+
+// MARK: - Bilingual Content View (Level 2+)
+
+struct BilingualContentView: View {
     let segment: StorySegment
     var viewModel: StoryReaderViewModel
     
@@ -352,8 +666,8 @@ struct ReaderBottomBar: View {
                 Image(systemName: "chevron.right.circle.fill")
                     .font(.title2)
             }
-            .disabled(!canGoNext)
-            .opacity(canGoNext ? 1 : 0.3)
+            .disabled(false) // Allow tapping next even at end to complete
+            .opacity(canGoNext ? 1 : 0.5)
         }
         .foregroundStyle(Color.hikayaTeal)
         .padding()
@@ -434,17 +748,18 @@ struct ReaderSettingsView: View {
                         set: { _ in viewModel.toggleNightMode() }
                     ))
                     
-                    // Show English
-                    Toggle("Show Translation", isOn: Binding(
-                        get: { viewModel.showEnglish },
-                        set: { _ in viewModel.toggleEnglish() }
-                    ))
-                    
-                    // Show Transliteration
-                    Toggle("Show Transliteration", isOn: Binding(
-                        get: { viewModel.showTransliteration },
-                        set: { _ in viewModel.toggleTransliteration() }
-                    ))
+                    // Show English (only for bilingual)
+                    if !viewModel.isMixedFormat {
+                        Toggle("Show Translation", isOn: Binding(
+                            get: { viewModel.showEnglish },
+                            set: { _ in viewModel.toggleEnglish() }
+                        ))
+                        
+                        Toggle("Show Transliteration", isOn: Binding(
+                            get: { viewModel.showTransliteration },
+                            set: { _ in viewModel.toggleTransliteration() }
+                        ))
+                    }
                 }
                 
                 Section("Audio") {
@@ -465,6 +780,25 @@ struct ReaderSettingsView: View {
                         }
                     }
                     .foregroundStyle(Color.hikayaTeal)
+                }
+                
+                // Vocabulary info for mixed format
+                if viewModel.isMixedFormat && viewModel.totalVocabularyCount > 0 {
+                    Section("Vocabulary") {
+                        HStack {
+                            Text("Words in Story")
+                            Spacer()
+                            Text("\(viewModel.totalVocabularyCount)")
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("Words Learned")
+                            Spacer()
+                            Text("\(viewModel.learnedVocabularyCount)")
+                                .foregroundStyle(Color.hikayaTeal)
+                        }
+                    }
                 }
             }
             .navigationTitle("Reader Settings")
@@ -535,7 +869,8 @@ struct FlowLayout: Layout {
         titleArabic: "التاجر الحكيم",
         storyDescription: "A story about wisdom",
         author: "Traditional",
-        difficultyLevel: 1,
+        format: .bilingual,
+        difficultyLevel: 2,
         segments: [
             StorySegment(
                 index: 0,

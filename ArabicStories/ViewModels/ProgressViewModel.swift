@@ -1,7 +1,7 @@
 //
 //  ProgressViewModel.swift
 //  Hikaya
-//  ViewModel for user progress dashboard
+//  ViewModel for user progress dashboard with vocabulary tracking
 //
 
 import Foundation
@@ -19,6 +19,12 @@ class ProgressViewModel {
     var weakWords: [Word] = []
     var isLoading = false
     
+    // Level Management
+    var maxUnlockedLevel: Int = 1
+    var vocabularyProgressToLevel2: Double = 0.0
+    var vocabularyRemainingForLevel2: Int = 20
+    var showLevelUnlockAlert: Bool = false
+    
     // Statistics
     var totalStories: Int = 0
     var completedStories: Int = 0
@@ -27,6 +33,11 @@ class ProgressViewModel {
     var currentStreak: Int = 0
     var todayStudyMinutes: Int = 0
     var dailyGoalMinutes: Int = 15
+    
+    // Vocabulary Statistics
+    var totalVocabularyLearned: Int = 0
+    var totalVocabularyMastered: Int = 0
+    var vocabularyNeededForLevel2: Int = 20
     
     // Chart Data
     var weeklyStudyData: [StudyDayData] = []
@@ -57,6 +68,12 @@ class ProgressViewModel {
             currentStreak = progress.currentStreak
             todayStudyMinutes = progress.todayStudyMinutes
             dailyGoalMinutes = progress.dailyGoalMinutes
+            maxUnlockedLevel = progress.maxUnlockedLevel
+            vocabularyProgressToLevel2 = progress.vocabularyProgressToLevel2
+            vocabularyRemainingForLevel2 = progress.vocabularyRemainingForLevel2
+            totalVocabularyLearned = progress.totalVocabularyLearned
+            totalVocabularyMastered = progress.masteredVocabularyIds.count
+            vocabularyNeededForLevel2 = progress.vocabularyNeededForLevel2
             
             // Convert weekly data
             let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -67,7 +84,56 @@ class ProgressViewModel {
     }
     
     func loadAchievements() async {
-        achievements = Achievement.defaultAchievements
+        var achievementsList = Achievement.defaultAchievements
+        
+        // Update progress for vocabulary achievements
+        if let progress = userProgress {
+            for index in achievementsList.indices {
+                switch achievementsList[index].category {
+                case .vocabulary:
+                    if achievementsList[index].title == "Word Seeker" {
+                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 5)
+                    } else if achievementsList[index].title == "Vocabulary Builder" {
+                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 20)
+                    } else if achievementsList[index].title == "Level Up!" {
+                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 20)
+                    } else if achievementsList[index].title == "Word Collector" {
+                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 50)
+                    } else if achievementsList[index].title == "Lexicon Master" {
+                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 200)
+                    }
+                    
+                    // Check if should be unlocked
+                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                        achievementsList[index].isUnlocked = true
+                    }
+                    
+                case .stories:
+                    achievementsList[index].currentProgress = progress.storiesCompleted
+                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                        achievementsList[index].isUnlocked = true
+                    }
+                    
+                case .streak:
+                    achievementsList[index].currentProgress = progress.currentStreak
+                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                        achievementsList[index].isUnlocked = true
+                    }
+                    
+                case .time:
+                    let hours = Int(progress.totalReadingTime / 3600)
+                    achievementsList[index].currentProgress = hours
+                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                        achievementsList[index].isUnlocked = true
+                    }
+                    
+                default:
+                    break
+                }
+            }
+        }
+        
+        achievements = achievementsList
     }
     
     func loadRecentStories() async {
@@ -173,7 +239,7 @@ class ProgressViewModel {
             ),
             QuickStats(
                 label: "Words Learned",
-                value: "\(totalWords)",
+                value: "\(totalVocabularyLearned)",
                 icon: "textformat.abc",
                 color: .blue
             ),

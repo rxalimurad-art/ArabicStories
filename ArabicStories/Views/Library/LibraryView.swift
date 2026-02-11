@@ -1,11 +1,10 @@
 //
 //  LibraryView.swift
 //  Hikaya
-//  Story library with grid layout, filters, and search
+//  Story library with grid layout, filters, and level management
 //
 
 import SwiftUI
-
 
 struct LibraryView: View {
     @State private var viewModel = LibraryViewModel()
@@ -23,12 +22,26 @@ struct LibraryView: View {
                     }
                     .padding()
                     
-                    // Difficulty Filter
+                    // Level Progress Card (show when Level 2 is locked)
+                    if !viewModel.hasUnlockedLevel2 {
+                        LevelUnlockProgressCard(
+                            progress: viewModel.vocabularyProgressToLevel2,
+                            wordsLearned: viewModel.vocabularyProgressPercentage * 20 / 100,
+                            wordsNeeded: 20,
+                            remainingWords: viewModel.vocabularyRemainingForLevel2
+                        )
+                        .padding(.horizontal)
+                    }
+                    
+                    // Difficulty Filter with Lock Indicators
                     DifficultyFilterBar(
                         selectedLevel: viewModel.selectedDifficulty,
+                        maxUnlockedLevel: viewModel.maxUnlockedLevel,
                         counts: viewModel.difficultyCounts
                     ) { level in
-                        viewModel.setDifficulty(level)
+                        if viewModel.canAccessLevel(level ?? 1) {
+                            viewModel.setDifficulty(level)
+                        }
                     }
                     .padding(.horizontal)
                     
@@ -56,6 +69,7 @@ struct LibraryView: View {
                     } else {
                         StoryGridView(
                             stories: viewModel.stories,
+                            maxUnlockedLevel: viewModel.maxUnlockedLevel,
                             onBookmarkToggle: { story in
                                 Task {
                                     await viewModel.toggleBookmark(story)
@@ -67,13 +81,99 @@ struct LibraryView: View {
             }
             .navigationTitle("Hikaya")
             .navigationBarTitleDisplayMode(.large)
-            
-           
             .refreshable {
                 await viewModel.refresh()
             }
+            .alert("🎉 Level 2 Unlocked!", isPresented: $viewModel.showLevelUnlockAlert) {
+                Button("Continue", role: .cancel) {
+                    viewModel.showLevelUnlockAlert = false
+                }
+            } message: {
+                Text("Congratulations! You've learned enough Arabic vocabulary to start reading full Arabic stories.")
+            }
         }
         .environment(viewModel)
+    }
+}
+
+// MARK: - Level Unlock Progress Card
+
+struct LevelUnlockProgressCard: View {
+    let progress: Double
+    let wordsLearned: Int
+    let wordsNeeded: Int
+    let remainingWords: Int
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Unlock Level 2")
+                        .font(.headline.weight(.semibold))
+                    
+                    Text("Learn \(remainingWords) more word\(remainingWords == 1 ? "" : "s") to unlock full Arabic stories")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+                
+                Spacer()
+                
+                // Progress Ring
+                ZStack {
+                    Circle()
+                        .stroke(Color.hikayaTeal.opacity(0.2), lineWidth: 4)
+                        .frame(width: 44, height: 44)
+                    
+                    Circle()
+                        .trim(from: 0, to: progress)
+                        .stroke(Color.hikayaTeal, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .frame(width: 44, height: 44)
+                        .rotationEffect(.degrees(-90))
+                    
+                    Text("\(Int(progress * 100))%")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(Color.hikayaTeal)
+                }
+            }
+            
+            // Progress Bar
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 6)
+                    
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.7)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * progress, height: 6)
+                }
+            }
+            .frame(height: 6)
+            
+            HStack {
+                Text("\(wordsLearned) of \(wordsNeeded) words learned")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                
+                Spacer()
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.hikayaTeal.opacity(0.2), lineWidth: 1)
+        )
     }
 }
 
@@ -114,6 +214,7 @@ struct SearchBar: View {
 
 struct DifficultyFilterBar: View {
     let selectedLevel: Int?
+    let maxUnlockedLevel: Int
     let counts: [Int: Int]
     let onSelect: (Int?) -> Void
     
@@ -132,13 +233,16 @@ struct DifficultyFilterBar: View {
                 }
                 
                 ForEach(levels, id: \.self) { level in
+                    let isLocked = level > maxUnlockedLevel
                     FilterChip(
                         title: "L\(level)",
-                        
                         isSelected: selectedLevel == level,
-                        color: difficultyColor(for: level)
+                        color: difficultyColor(for: level),
+                        isLocked: isLocked
                     ) {
-                        onSelect(level)
+                        if !isLocked {
+                            onSelect(level)
+                        }
                     }
                 }
             }
@@ -166,11 +270,17 @@ struct FilterChip: View {
     var subtitle: String? = nil
     let isSelected: Bool
     let color: Color
+    var isLocked: Bool = false
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .font(.caption2)
+                }
+                
                 Text(title)
                     .font(.subheadline.weight(isSelected ? .semibold : .medium))
                 
@@ -183,11 +293,17 @@ struct FilterChip: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .background(isSelected ? color : Color(.systemBackground))
-            .foregroundStyle(isSelected ? .white : .primary)
+            .foregroundStyle(isSelected ? .white : (isLocked ? .secondary : .primary))
             .clipShape(Capsule())
             .shadow(color: color.opacity(isSelected ? 0.3 : 0.05), radius: 4, x: 0, y: 2)
+            .overlay(
+                Capsule()
+                    .stroke(isLocked ? Color.gray.opacity(0.3) : Color.clear, lineWidth: 1)
+            )
         }
         .buttonStyle(.plain)
+        .disabled(isLocked)
+        .opacity(isLocked ? 0.6 : 1)
     }
 }
 
@@ -242,6 +358,7 @@ struct FilterSortBar: View {
 
 struct StoryGridView: View {
     let stories: [Story]
+    let maxUnlockedLevel: Int
     let onBookmarkToggle: (Story) -> Void
     
     private let columns = [
@@ -282,6 +399,13 @@ struct StoryCard: View {
                 StoryCoverImage(url: story.coverImageURL)
                     .frame(height: 140)
                 
+                // Format Badge
+                if story.format == .mixed {
+                    FormatBadge(text: "Level 1", color: .green)
+                        .padding(8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
+                
                 // Bookmark Button
                 Button(action: onBookmarkTap) {
                     Image(systemName: story.isBookmarked ? "bookmark.fill" : "bookmark")
@@ -310,6 +434,18 @@ struct StoryCard: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
+                // Vocabulary count for mixed format
+                if story.format == .mixed, let words = story.words {
+                    HStack(spacing: 4) {
+                        Image(systemName: "character.book.closed")
+                            .font(.caption2)
+                        Text("\(story.learnedVocabularyCount)/\(words.count) words")
+                            .font(.caption2)
+                    }
+                    .foregroundStyle(Color.hikayaTeal)
+                    .padding(.top, 2)
+                }
+                
                 // Progress
                 if story.readingProgress > 0 {
                     StoryProgressBar(progress: story.readingProgress)
@@ -321,6 +457,23 @@ struct StoryCard: View {
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
+    }
+}
+
+// MARK: - Format Badge
+
+struct FormatBadge: View {
+    let text: String
+    let color: Color
+    
+    var body: some View {
+        Text(text)
+            .font(.caption2.weight(.bold))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(color.opacity(0.9))
+            .foregroundStyle(.white)
+            .clipShape(Capsule())
     }
 }
 
@@ -486,33 +639,8 @@ struct EmptyLibraryView: View {
     }
     
     private func seedSampleStories() async {
-        // This is a temporary function for testing
-        // In production, use the web admin panel
-        let sampleStory = Story(
-            title: "The Friendly Cat",
-            titleArabic: "القطة الودودة",
-            storyDescription: "A simple story about a friendly cat who helps a lost bird find its way home.",
-            storyDescriptionArabic: "قصة بسيطة عن قطة ودودة تساعد عصفوراً ضالاً في إيجاد طريقه إلى المنزل.",
-            author: "Hikaya Test",
-            difficultyLevel: 1,
-            category: .children,
-            tags: ["animals", "friendship"],
-            coverImageURL: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800",
-            segments: [
-                StorySegment(
-                    index: 0,
-                    arabicText: "في يوم مشمس، كانت هناك قطة صغيرة اسمها لولو.",
-                    englishText: "On a sunny day, there was a small cat named Lulu.",
-                    transliteration: "Fī yawm mushmis, kānat hunā qiṭṭa ṣaghīra ismuhā Lūlū."
-                ),
-                StorySegment(
-                    index: 1,
-                    arabicText: "سمعت لولو صوتاً ضعيفاً قادماً من الشجرة.",
-                    englishText: "Lulu heard a weak voice coming from the tree.",
-                    transliteration: "Samiʿat Lūlū ṣawtan ḍaʿīfan qādiman min al-shajara."
-                )
-            ]
-        )
+        // Seed a Level 1 mixed format story
+        let sampleStory = createSampleLevel1Story()
         
         do {
             try await FirebaseService.shared.saveStory(sampleStory)
@@ -520,11 +648,97 @@ struct EmptyLibraryView: View {
             print("Failed to seed: \(error)")
         }
     }
+    
+    private func createSampleLevel1Story() -> Story {
+        // Create vocabulary words
+        let words = [
+            Word(arabicText: "اللَّهُ", transliteration: "Allah", englishMeaning: "God", difficulty: 1),
+            Word(arabicText: "رَبِّ", transliteration: "Rabb", englishMeaning: "Lord", difficulty: 1),
+            Word(arabicText: "الْكِتَابُ", transliteration: "Al-Kitab", englishMeaning: "The Book", difficulty: 1),
+            Word(arabicText: "السَّلَامُ", transliteration: "As-Salaam", englishMeaning: "Peace", difficulty: 1),
+            Word(arabicText: "الصَّلَاةُ", transliteration: "As-Salah", englishMeaning: "Prayer", difficulty: 1)
+        ]
+        
+        // Create mixed content segments
+        let segments = [
+            MixedContentSegment(
+                index: 0,
+                contentParts: [
+                    .text("Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to "),
+                    .arabicWord("اللَّهُ", wordId: words[0].id.uuidString, transliteration: "(Allah)"),
+                    .text(", the Most Merciful, and calling upon his "),
+                    .arabicWord("رَبِّ", wordId: words[1].id.uuidString, transliteration: "(Rabb)"),
+                    .text(" for guidance.")
+                ]
+            ),
+            MixedContentSegment(
+                index: 1,
+                contentParts: [
+                    .text("Every day, Ahmad would open the "),
+                    .arabicWord("الْكِتَابُ", wordId: words[2].id.uuidString, transliteration: "(Al-Kitab)"),
+                    .text(" — the holy book sent by Allah — and read its beautiful verses. He learned that "),
+                    .arabicWord("السَّلَامُ", wordId: words[3].id.uuidString, transliteration: "(As-Salaam)"),
+                    .text(" (peace) comes only through submission to the One God.")
+                ]
+            )
+        ]
+        
+        return Story(
+            title: "Ahmad's Journey to Peace",
+            titleArabic: "رحلة أحمد إلى السلام",
+            storyDescription: "A beginner-friendly story about Ahmad's spiritual journey, introducing essential Arabic vocabulary.",
+            storyDescriptionArabic: "قصة مناسبة للمبتدئين عن الرحلة الروحية لأحمد، تقدم مفردات عربية أساسية.",
+            author: "Hikaya Learning",
+            format: .mixed,
+            difficultyLevel: 1,
+            category: .religious,
+            tags: ["beginner", "vocabulary", "spiritual"],
+            coverImageURL: "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
+            mixedSegments: segments,
+            words: words
+        )
+    }
+}
+
+// MARK: - Shimmer Effect Modifier
+
+struct Shimmer: ViewModifier {
+    @State private var phase: CGFloat = 0
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                GeometryReader { geometry in
+                    LinearGradient(
+                        colors: [
+                            .clear,
+                            .white.opacity(0.5),
+                            .clear
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: geometry.size.width * 2)
+                    .offset(x: -geometry.size.width + phase * geometry.size.width * 2)
+                }
+            )
+            .mask(content)
+            .onAppear {
+                withAnimation(.linear(duration: 1.5).repeatForever(autoreverses: false)) {
+                    phase = 1
+                }
+            }
+    }
+}
+
+extension View {
+    func shimmering() -> some View {
+        modifier(Shimmer())
+    }
 }
 
 // MARK: - Preview
 
 #Preview {
     LibraryView()
-       
 }

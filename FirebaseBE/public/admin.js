@@ -252,7 +252,10 @@ function renderStories(stories) {
         ${story.titleArabic ? `<div class="story-card-title-arabic" dir="rtl">${escapeHtml(story.titleArabic)}</div>` : ''}
         <div class="story-card-meta">
           <span class="story-card-badge badge-difficulty-${story.difficultyLevel}">
-            Level ${story.difficultyLevel}
+            L${story.difficultyLevel}
+          </span>
+          <span class="story-card-badge badge-format-${story.format || 'bilingual'}">
+            ${story.format === 'mixed' ? '🎯 Mixed' : '📖 Bilingual'}
           </span>
           <span class="story-card-badge badge-category">${story.category}</span>
         </div>
@@ -305,6 +308,7 @@ function addSegment(data = null) {
   const card = clone.querySelector('.segment-card');
   
   card.dataset.index = index;
+  card.dataset.segmentId = data?.id || generateId();
   card.querySelector('.segment-number').textContent = `Segment ${index + 1}`;
   
   // Setup remove button
@@ -320,12 +324,91 @@ function addSegment(data = null) {
   }
   
   container.appendChild(card);
-  state.segments.push({ id: generateId() });
+  state.segments.push({ id: card.dataset.segmentId });
   
   document.getElementById('empty-segments')?.classList.add('hidden');
   
   // Scroll to new segment
   card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Mixed format functions (for Level 1 stories)
+function addMixedSegment(data = null) {
+  const index = state.segments.length;
+  const container = document.getElementById('segments-container');
+  
+  // Create mixed segment card
+  const card = document.createElement('div');
+  card.className = 'mixed-segment-card segment-card';
+  card.dataset.index = index;
+  card.dataset.segmentId = data?.id || generateId();
+  
+  card.innerHTML = `
+    <div class="segment-header">
+      <span class="segment-number">Mixed Segment ${index + 1}</span>
+      <button type="button" class="remove-segment">Remove</button>
+    </div>
+    <div class="mixed-content-parts"></div>
+    <div class="segment-actions">
+      <button type="button" class="btn btn-small btn-secondary" onclick="addContentPart(${index}, 'text')">+ Text</button>
+      <button type="button" class="btn btn-small btn-secondary" onclick="addContentPart(${index}, 'arabicWord')">+ Arabic Word</button>
+    </div>
+    <div class="segment-notes">
+      <input type="text" class="segment-cultural-note" placeholder="Cultural note (optional)" 
+        value="${data?.culturalNote || ''}">
+    </div>
+  `;
+  
+  // Setup remove button
+  card.querySelector('.remove-segment').addEventListener('click', () => removeSegment(index));
+  
+  container.appendChild(card);
+  state.segments.push({ id: card.dataset.segmentId, type: 'mixed' });
+  
+  // Add content parts if data provided
+  if (data?.contentParts?.length > 0) {
+    const partsContainer = card.querySelector('.mixed-content-parts');
+    data.contentParts.forEach(part => addContentPartToContainer(partsContainer, part));
+  }
+  
+  document.getElementById('empty-segments')?.classList.add('hidden');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function addContentPart(segmentIndex, type) {
+  const container = document.querySelectorAll('.mixed-segment-card')[segmentIndex]?.querySelector('.mixed-content-parts');
+  if (container) {
+    addContentPartToContainer(container, { type });
+  }
+}
+
+function addContentPartToContainer(container, data = {}) {
+  const partDiv = document.createElement('div');
+  partDiv.className = 'content-part';
+  partDiv.dataset.type = data.type || 'text';
+  partDiv.dataset.partId = data.id || generateId();
+  
+  if (data.type === 'arabicWord') {
+    partDiv.innerHTML = `
+      <div class="part-header">
+        <span class="part-label">🎯 Arabic Word</span>
+        <button type="button" class="remove-part" onclick="this.parentElement.parentElement.remove()">×</button>
+      </div>
+      <input type="text" class="part-text" placeholder="Arabic text (e.g., اللَّهُ)" value="${data.text || ''}">
+      <input type="text" class="part-transliteration" placeholder="Transliteration (e.g., Allah)" value="${data.transliteration || ''}">
+      <input type="text" class="part-word-id" placeholder="Word ID (links to vocabulary)" value="${data.wordId || ''}">
+    `;
+  } else {
+    partDiv.innerHTML = `
+      <div class="part-header">
+        <span class="part-label">📝 Text</span>
+        <button type="button" class="remove-part" onclick="this.parentElement.parentElement.remove()">×</button>
+      </div>
+      <textarea class="part-text" rows="2" placeholder="English text...">${data.text || ''}</textarea>
+    `;
+  }
+  
+  container.appendChild(partDiv);
 }
 
 function removeSegment(index) {
@@ -407,21 +490,18 @@ function removeWord(index) {
 }
 
 function collectFormData() {
-  const segments = [];
-  document.querySelectorAll('.segment-card').forEach((card, idx) => {
-    segments.push({
-      index: idx,
-      arabicText: card.querySelector('.segment-arabic').value.trim(),
-      englishText: card.querySelector('.segment-english').value.trim(),
-      transliteration: card.querySelector('.segment-transliteration').value.trim() || null,
-      audioStartTime: parseFloat(card.querySelector('.segment-audio-start').value) || null,
-      audioEndTime: parseFloat(card.querySelector('.segment-audio-end').value) || null
-    });
-  });
+  const format = document.getElementById('story-format')?.value || 'bilingual';
+  const difficultyLevel = parseInt(document.getElementById('story-difficulty').value);
+  
+  // Auto-set format based on difficulty if not explicitly chosen
+  const finalFormat = format === 'auto' 
+    ? (difficultyLevel === 1 ? 'mixed' : 'bilingual')
+    : format;
   
   const words = [];
   document.querySelectorAll('.word-card').forEach(card => {
     words.push({
+      id: card.dataset.wordId || undefined,
       arabic: card.querySelector('.word-arabic').value.trim(),
       english: card.querySelector('.word-english').value.trim(),
       transliteration: card.querySelector('.word-transliteration').value.trim() || null,
@@ -431,21 +511,70 @@ function collectFormData() {
     });
   });
   
-  return {
+  const result = {
     id: document.getElementById('story-id').value || undefined,
     title: document.getElementById('story-title').value.trim(),
     titleArabic: document.getElementById('story-title-arabic').value.trim() || null,
     storyDescription: document.getElementById('story-desc').value.trim(),
     storyDescriptionArabic: document.getElementById('story-desc-arabic').value.trim() || null,
     author: document.getElementById('story-author').value.trim(),
-    difficultyLevel: parseInt(document.getElementById('story-difficulty').value),
+    format: finalFormat,
+    difficultyLevel: difficultyLevel,
     category: document.getElementById('story-category').value,
     tags: document.getElementById('story-tags').value.split(',').map(t => t.trim()).filter(Boolean),
     coverImageURL: document.getElementById('story-cover').value.trim() || null,
     audioNarrationURL: document.getElementById('story-audio').value.trim() || null,
-    segments,
     words: words.filter(w => w.arabic && w.english)
   };
+  
+  // Collect format-specific content
+  if (finalFormat === 'mixed') {
+    // Mixed format: English text with embedded Arabic words
+    result.mixedSegments = [];
+    document.querySelectorAll('.mixed-segment-card').forEach((card, idx) => {
+      const contentParts = [];
+      card.querySelectorAll('.content-part').forEach((part, partIdx) => {
+        const type = part.dataset.type || 'text';
+        const partData = {
+          id: part.dataset.partId || undefined,
+          type: type,
+          text: part.querySelector('.part-text').value.trim()
+        };
+        
+        if (type === 'arabicWord') {
+          partData.wordId = part.querySelector('.part-word-id').value || null;
+          partData.transliteration = part.querySelector('.part-transliteration').value.trim() || null;
+        }
+        
+        contentParts.push(partData);
+      });
+      
+      result.mixedSegments.push({
+        id: card.dataset.segmentId || undefined,
+        index: idx,
+        contentParts: contentParts,
+        culturalNote: card.querySelector('.segment-cultural-note')?.value.trim() || null
+      });
+    });
+  } else {
+    // Bilingual format: Full Arabic with English translation
+    result.segments = [];
+    document.querySelectorAll('.segment-card').forEach((card, idx) => {
+      result.segments.push({
+        id: card.dataset.segmentId || undefined,
+        index: idx,
+        arabicText: card.querySelector('.segment-arabic').value.trim(),
+        englishText: card.querySelector('.segment-english').value.trim(),
+        transliteration: card.querySelector('.segment-transliteration').value.trim() || null,
+        audioStartTime: parseFloat(card.querySelector('.segment-audio-start').value) || null,
+        audioEndTime: parseFloat(card.querySelector('.segment-audio-end').value) || null,
+        culturalNote: card.querySelector('.segment-cultural-note')?.value.trim() || null,
+        grammarNote: card.querySelector('.segment-grammar-note')?.value.trim() || null
+      });
+    });
+  }
+  
+  return result;
 }
 
 async function validateCurrentStory() {
@@ -593,14 +722,32 @@ function populateForm(data) {
   document.getElementById('story-cover').value = data.coverImageURL || '';
   document.getElementById('story-audio').value = data.audioNarrationURL || '';
   
-  // Clear and repopulate segments
-  document.getElementById('segments-container').innerHTML = '';
-  state.segments = [];
+  // Set format if available
+  const formatSelect = document.getElementById('story-format');
+  if (formatSelect && data.format) {
+    formatSelect.value = data.format;
+  }
   
-  if (data.segments?.length > 0) {
+  // Handle format-specific content
+  const format = data.format || 'bilingual';
+  
+  if (format === 'mixed' && data.mixedSegments?.length > 0) {
+    // Clear and repopulate mixed segments
+    document.getElementById('segments-container').innerHTML = '';
+    state.segments = [];
+    data.mixedSegments.forEach(seg => addMixedSegment(seg));
+  } else if (data.segments?.length > 0) {
+    // Clear and repopulate regular segments
+    document.getElementById('segments-container').innerHTML = '';
+    state.segments = [];
     data.segments.forEach(seg => addSegment(seg));
   } else {
-    addSegment();
+    // Default: add one empty segment
+    if (format === 'mixed') {
+      addMixedSegment();
+    } else {
+      addSegment();
+    }
   }
   
   // Clear and repopulate words
@@ -748,52 +895,141 @@ async function exportAllStories() {
   }
 }
 
-function downloadTemplate() {
-  const template = {
-    title: "Story Title",
-    titleArabic: "عنوان القصة",
-    storyDescription: "Brief description of the story",
-    storyDescriptionArabic: "وصف موجز للقصة",
-    author: "Author Name",
-    difficultyLevel: 1,
-    category: "children",
-    tags: ["tag1", "tag2"],
-    coverImageURL: "https://example.com/image.jpg",
-    segments: [
-      {
-        arabicText: "النص العربي",
-        englishText: "English translation",
-        transliteration: "Transliteration"
-      }
-    ],
-    words: [
-      {
-        arabic: "كلمة",
-        english: "word",
-        transliteration: "kalima",
-        partOfSpeech: "noun"
-      }
-    ]
-  };
+function downloadTemplate(type = 'bilingual') {
+  let template;
+  
+  if (type === 'mixed' || type === 'level1') {
+    // Mixed format template (Level 1)
+    template = {
+      title: "Ahmad's Journey to Peace",
+      titleArabic: "رحلة أحمد إلى السلام",
+      storyDescription: "A beginner-friendly story about Ahmad's spiritual journey, introducing essential Arabic vocabulary.",
+      storyDescriptionArabic: "قصة مناسبة للمبتدئين عن الرحلة الروحية لأحمد، تقدم مفردات عربية أساسية.",
+      author: "Author Name",
+      format: "mixed",
+      difficultyLevel: 1,
+      category: "religious",
+      tags: ["beginner", "vocabulary", "spiritual"],
+      coverImageURL: "https://example.com/image.jpg",
+      mixedSegments: [
+        {
+          contentParts: [
+            { type: "text", text: "Once upon a time, there was a young man who turned to " },
+            { type: "arabicWord", text: "اللَّهُ", transliteration: "(Allah)", wordId: "word-1" },
+            { type: "text", text: " for guidance." }
+          ],
+          culturalNote: "Allah is the Arabic word for God"
+        }
+      ],
+      words: [
+        {
+          id: "word-1",
+          arabic: "اللَّهُ",
+          english: "God - The one and only God in Islam",
+          transliteration: "Allah",
+          partOfSpeech: "noun",
+          difficulty: 1
+        }
+      ]
+    };
+  } else {
+    // Bilingual format template (Level 2+)
+    template = {
+      title: "Story Title",
+      titleArabic: "عنوان القصة",
+      storyDescription: "Brief description of the story",
+      storyDescriptionArabic: "وصف موجز للقصة",
+      author: "Author Name",
+      format: "bilingual",
+      difficultyLevel: 2,
+      category: "children",
+      tags: ["tag1", "tag2"],
+      coverImageURL: "https://example.com/image.jpg",
+      segments: [
+        {
+          arabicText: "النص العربي",
+          englishText: "English translation",
+          transliteration: "Transliteration",
+          culturalNote: "Optional cultural context"
+        }
+      ],
+      words: [
+        {
+          arabic: "كلمة",
+          english: "word",
+          transliteration: "kalima",
+          partOfSpeech: "noun"
+        }
+      ]
+    };
+  }
   
   const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'story-template.json';
+  a.download = `story-template-${template.format}.json`;
   a.click();
   
   URL.revokeObjectURL(url);
 }
 
-async function seedSampleStories() {
+async function seedSampleStories(type = 'bilingual') {
   try {
-    const result = await apiRequest(API.seed(), {
-      method: 'POST'
-    });
+    if (type === 'mixed' || type === 'level1') {
+      // Seed a mixed format Level 1 story
+      const mixedStory = {
+        title: "Ahmad's Journey to Peace",
+        titleArabic: "رحلة أحمد إلى السلام",
+        storyDescription: "A beginner-friendly story introducing essential Arabic vocabulary. Learn 20 key words to unlock Level 2!",
+        storyDescriptionArabic: "قصة للمبتدئين تقدم مفردات عربية أساسية. تعلم 20 كلمة لفتح المستوى الثاني!",
+        author: "Hikaya Learning",
+        format: "mixed",
+        difficultyLevel: 1,
+        category: "religious",
+        tags: ["beginner", "vocabulary", "spiritual", "level1"],
+        coverImageURL: "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
+        mixedSegments: [
+          {
+            contentParts: [
+              { type: "text", text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace. He turned to " },
+              { type: "arabicWord", text: "اللَّهُ", transliteration: "(Allah)", wordId: "word-allah" },
+              { type: "text", text: ", the Most Merciful." }
+            ],
+            culturalNote: "Allah is the Arabic word for God, used by Muslims and Arab Christians alike."
+          },
+          {
+            contentParts: [
+              { type: "text", text: "He opened the " },
+              { type: "arabicWord", text: "الْكِتَابُ", transliteration: "(Al-Kitab)", wordId: "word-kitab" },
+              { type: "text", text: " and learned that " },
+              { type: "arabicWord", text: "السَّلَامُ", transliteration: "(As-Salaam)", wordId: "word-salaam" },
+              { type: "text", text: " comes from submission to God." }
+            ]
+          }
+        ],
+        words: [
+          { id: "word-allah", arabic: "اللَّهُ", english: "God", transliteration: "Allah", difficulty: 1 },
+          { id: "word-kitab", arabic: "الْكِتَابُ", english: "The Book (Quran)", transliteration: "Al-Kitab", difficulty: 1 },
+          { id: "word-salaam", arabic: "السَّلَامُ", english: "Peace", transliteration: "As-Salaam", difficulty: 1 }
+        ]
+      };
+      
+      const result = await apiRequest(API.stories(), {
+        method: 'POST',
+        body: JSON.stringify(mixedStory)
+      });
+      
+      showToast('Level 1 mixed format story created!', 'success');
+    } else {
+      // Use default seed endpoint for bilingual stories
+      const result = await apiRequest(API.seed(), {
+        method: 'POST'
+      });
+      showToast(result.message, 'success');
+    }
     
-    showToast(result.message, 'success');
     loadStories();
   } catch (error) {
     showToast(`Failed to seed stories: ${error.message}`, 'error');
@@ -1058,3 +1294,44 @@ window.seedSampleStories = seedSampleStories;
 window.editWord = editWord;
 window.openWordModal = openWordModal;
 window.promptDeleteWord = promptDeleteWord;
+window.downloadTemplate = downloadTemplate;
+window.addMixedSegment = addMixedSegment;
+window.addContentPart = addContentPart;
+
+// Format switching for story form
+function onFormatChange() {
+  const formatSelect = document.getElementById('story-format');
+  const difficultySelect = document.getElementById('story-difficulty');
+  
+  if (!formatSelect || !difficultySelect) return;
+  
+  const format = formatSelect.value;
+  const difficulty = parseInt(difficultySelect.value);
+  
+  // Auto-suggest format based on difficulty
+  if (format === 'auto') {
+    if (difficulty === 1) {
+      showToast('💡 Level 1 recommended format: Mixed (English with Arabic words)', 'info');
+    } else {
+      showToast('💡 Level 2+ recommended format: Bilingual (Full Arabic)', 'info');
+    }
+  }
+  
+  // Clear segments when switching formats
+  const container = document.getElementById('segments-container');
+  if (container.children.length > 0) {
+    // Ask user if they want to clear segments
+    if (confirm('Switching formats will clear existing segments. Continue?')) {
+      container.innerHTML = '';
+      state.segments = [];
+      
+      if (format === 'mixed' || (format === 'auto' && difficulty === 1)) {
+        addMixedSegment();
+      } else {
+        addSegment();
+      }
+    }
+  }
+}
+
+window.onFormatChange = onFormatChange;

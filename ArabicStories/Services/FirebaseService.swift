@@ -30,7 +30,7 @@ class FirebaseService {
                 do {
                     let story = try convertToStory(doc.data(), id: doc.documentID)
                     stories.append(story)
-                    print("✅ Parsed story: \(story.title)")
+                    print("✅ Parsed story: \(story.title) [Format: \(story.format.rawValue)]")
                 } catch {
                     print("❌ Failed to parse story \(doc.documentID): \(error)")
                     print("   Data keys: \(doc.data().keys.sorted())")
@@ -167,7 +167,36 @@ class FirebaseService {
             jsonDict["downloadDate"] = dateFormatter.string(from: downloadDate.dateValue())
         }
         
-        // Convert segments
+        // Handle format field
+        if let formatString = data["format"] as? String {
+            jsonDict["format"] = formatString
+        } else {
+            // Default to bilingual if not specified
+            jsonDict["format"] = "bilingual"
+        }
+        
+        // Convert mixed segments (Level 1 format)
+        if let mixedSegments = data["mixedSegments"] as? [[String: Any]] {
+            jsonDict["mixedSegments"] = mixedSegments.map { segment -> [String: Any] in
+                var seg = segment
+                
+                // Convert content parts
+                if let contentParts = segment["contentParts"] as? [[String: Any]] {
+                    seg["contentParts"] = contentParts.map { part -> [String: Any] in
+                        var p = part
+                        // Ensure type is lowercase string
+                        if let type = part["type"] as? String {
+                            p["type"] = type.lowercased()
+                        }
+                        return p
+                    }
+                }
+                
+                return seg
+            }
+        }
+        
+        // Convert regular segments (Level 2+ format)
         if let segments = data["segments"] as? [[String: Any]] {
             jsonDict["segments"] = segments.map { segment -> [String: Any] in
                 var seg = segment
@@ -290,7 +319,25 @@ class FirebaseService {
     }
     
     private func convertToUserProgress(_ data: [String: Any]) throws -> UserProgress {
-        let jsonData = try JSONSerialization.data(withJSONObject: data)
+        var jsonDict = data
+        
+        // Handle Firestore timestamps in user progress
+        let dateFormatter = ISO8601DateFormatter()
+        
+        if let createdAt = data["createdAt"] as? Timestamp {
+            jsonDict["createdAt"] = dateFormatter.string(from: createdAt.dateValue())
+        }
+        if let updatedAt = data["updatedAt"] as? Timestamp {
+            jsonDict["updatedAt"] = dateFormatter.string(from: updatedAt.dateValue())
+        }
+        if let lastStudyDate = data["lastStudyDate"] as? Timestamp {
+            jsonDict["lastStudyDate"] = dateFormatter.string(from: lastStudyDate.dateValue())
+        }
+        if let streakFreezeDate = data["streakFreezeDate"] as? Timestamp {
+            jsonDict["streakFreezeDate"] = dateFormatter.string(from: streakFreezeDate.dateValue())
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return try decoder.decode(UserProgress.self, from: jsonData)

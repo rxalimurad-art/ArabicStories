@@ -6,6 +6,12 @@
 
 import Foundation
 
+// MARK: - Story Format Type
+enum StoryFormat: String, Codable, CaseIterable {
+    case mixed = "mixed"           // Level 1: English with Arabic words
+    case bilingual = "bilingual"   // Level 2+: Full Arabic with English translation
+}
+
 struct Story: Identifiable, Codable, Hashable {
     // MARK: - Identification
     var id: UUID
@@ -15,7 +21,8 @@ struct Story: Identifiable, Codable, Hashable {
     var storyDescriptionArabic: String?
     var author: String
     
-    // MARK: - Categorization
+    // MARK: - Story Format
+    var format: StoryFormat
     var difficultyLevel: Int
     var category: StoryCategory
     var tags: [String]?
@@ -24,8 +31,9 @@ struct Story: Identifiable, Codable, Hashable {
     var coverImageURL: String?
     var audioNarrationURL: String?
     
-    // MARK: - Content
-    var segments: [StorySegment]?
+    // MARK: - Content (Format-specific)
+    var segments: [StorySegment]?           // For bilingual format (Level 2+)
+    var mixedSegments: [MixedContentSegment]? // For mixed format (Level 1)
     var words: [Word]?
     var grammarNotes: [GrammarPoint]?
     
@@ -40,6 +48,7 @@ struct Story: Identifiable, Codable, Hashable {
     var currentSegmentIndex: Int
     var lastReadDate: Date?
     var completedWords: [String: Bool]?
+    var learnedWordIds: [String]?          // Track learned words for mixed format
     var isBookmarked: Bool
     var totalReadingTime: TimeInterval
     
@@ -60,12 +69,14 @@ struct Story: Identifiable, Codable, Hashable {
         case storyDescription
         case storyDescriptionArabic
         case author
+        case format
         case difficultyLevel
         case category
         case tags
         case coverImageURL
         case audioNarrationURL
         case segments
+        case mixedSegments
         case words
         case grammarNotes
         case isUserCreated
@@ -76,6 +87,7 @@ struct Story: Identifiable, Codable, Hashable {
         case currentSegmentIndex
         case lastReadDate
         case completedWords
+        case learnedWordIds
         case isBookmarked
         case totalReadingTime
         case viewCount
@@ -92,12 +104,14 @@ struct Story: Identifiable, Codable, Hashable {
         storyDescription: String,
         storyDescriptionArabic: String? = nil,
         author: String,
+        format: StoryFormat = .bilingual,
         difficultyLevel: Int,
         category: StoryCategory = .general,
         tags: [String]? = nil,
         coverImageURL: String? = nil,
         audioNarrationURL: String? = nil,
         segments: [StorySegment]? = nil,
+        mixedSegments: [MixedContentSegment]? = nil,
         words: [Word]? = nil,
         grammarNotes: [GrammarPoint]? = nil,
         isUserCreated: Bool = false,
@@ -111,12 +125,14 @@ struct Story: Identifiable, Codable, Hashable {
         self.storyDescription = storyDescription
         self.storyDescriptionArabic = storyDescriptionArabic
         self.author = author
+        self.format = format
         self.difficultyLevel = difficultyLevel
         self.category = category
         self.tags = tags
         self.coverImageURL = coverImageURL
         self.audioNarrationURL = audioNarrationURL
         self.segments = segments
+        self.mixedSegments = mixedSegments
         self.words = words
         self.grammarNotes = grammarNotes
         self.isUserCreated = isUserCreated
@@ -126,6 +142,7 @@ struct Story: Identifiable, Codable, Hashable {
         self.readingProgress = 0.0
         self.currentSegmentIndex = 0
         self.completedWords = [:]
+        self.learnedWordIds = []
         self.isBookmarked = false
         self.totalReadingTime = 0
         self.viewCount = 0
@@ -173,12 +190,33 @@ struct Story: Identifiable, Codable, Hashable {
     }
     
     var segmentCount: Int {
-        segments?.count ?? 0
+        switch format {
+        case .mixed:
+            return mixedSegments?.count ?? 0
+        case .bilingual:
+            return segments?.count ?? 0
+        }
     }
     
     var estimatedReadingTime: TimeInterval {
-        let totalWordCount = segments?.reduce(0) { $0 + $1.wordCount } ?? 0
-        return Double(totalWordCount) / 150.0 * 60.0
+        switch format {
+        case .mixed:
+            let totalWordCount = mixedSegments?.reduce(0) { $0 + $1.wordCount } ?? 0
+            return Double(totalWordCount) / 150.0 * 60.0
+        case .bilingual:
+            let totalWordCount = segments?.reduce(0) { $0 + $1.wordCount } ?? 0
+            return Double(totalWordCount) / 150.0 * 60.0
+        }
+    }
+    
+    // Vocabulary count for mixed format stories
+    var vocabularyCount: Int {
+        words?.count ?? 0
+    }
+    
+    // Learned vocabulary count
+    var learnedVocabularyCount: Int {
+        learnedWordIds?.count ?? 0
     }
     
     // MARK: - Progress Methods
@@ -193,15 +231,17 @@ struct Story: Identifiable, Codable, Hashable {
     }
     
     mutating func markWordAsLearned(_ wordId: String) {
-        if completedWords == nil {
-            completedWords = [:]
+        if learnedWordIds == nil {
+            learnedWordIds = []
         }
-        completedWords?[wordId] = true
+        if !(learnedWordIds?.contains(wordId) ?? false) {
+            learnedWordIds?.append(wordId)
+        }
         updatedAt = Date()
     }
     
     func isWordLearned(_ wordId: String) -> Bool {
-        completedWords?[wordId] ?? false
+        learnedWordIds?.contains(wordId) ?? false
     }
     
     mutating func incrementViewCount() {
@@ -213,6 +253,7 @@ struct Story: Identifiable, Codable, Hashable {
         readingProgress = 0.0
         currentSegmentIndex = 0
         completedWords = [:]
+        learnedWordIds = []
         totalReadingTime = 0
         updatedAt = Date()
     }
@@ -256,7 +297,7 @@ enum StoryCategory: String, Codable, CaseIterable {
     }
 }
 
-// MARK: - Story Segment
+// MARK: - Story Segment (Bilingual Format - Level 2+)
 
 struct StorySegment: Identifiable, Codable, Hashable {
     var id: UUID
@@ -324,6 +365,110 @@ struct StorySegment: Identifiable, Codable, Hashable {
             .filter { !$0.isEmpty }
             .count
     }
+}
+
+// MARK: - Mixed Content Segment (Level 1)
+
+struct MixedContentSegment: Identifiable, Codable, Hashable {
+    var id: UUID
+    var index: Int
+    
+    // Array of content parts - each part is either plain text or an Arabic word
+    var contentParts: [MixedContentPart]
+    
+    // Optional image for this segment
+    var imageURL: String?
+    
+    // Optional cultural note
+    var culturalNote: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case index
+        case contentParts
+        case imageURL
+        case culturalNote
+    }
+    
+    init(
+        id: UUID = UUID(),
+        index: Int,
+        contentParts: [MixedContentPart],
+        imageURL: String? = nil,
+        culturalNote: String? = nil
+    ) {
+        self.id = id
+        self.index = index
+        self.contentParts = contentParts
+        self.imageURL = imageURL
+        self.culturalNote = culturalNote
+    }
+    
+    // Computed property to get full text for reading time estimation
+    var wordCount: Int {
+        contentParts.reduce(0) { count, part in
+            switch part.type {
+            case .text:
+                return count + part.text.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }.count
+            case .arabicWord:
+                return count + 1
+            }
+        }
+    }
+    
+    // Get all unique Arabic word IDs in this segment
+    var arabicWordIds: [String] {
+        contentParts
+            .filter { $0.type == .arabicWord }
+            .compactMap { $0.wordId }
+    }
+}
+
+// MARK: - Mixed Content Part
+
+struct MixedContentPart: Identifiable, Codable, Hashable {
+    var id: UUID
+    var type: ContentPartType
+    var text: String              // The display text (English or Arabic)
+    var wordId: String?           // Reference to Word model (for Arabic words)
+    var transliteration: String?  // Optional transliteration for Arabic words
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case text
+        case wordId
+        case transliteration
+    }
+    
+    init(
+        id: UUID = UUID(),
+        type: ContentPartType,
+        text: String,
+        wordId: String? = nil,
+        transliteration: String? = nil
+    ) {
+        self.id = id
+        self.type = type
+        self.text = text
+        self.wordId = wordId
+        self.transliteration = transliteration
+    }
+    
+    // Convenience initializer for plain text
+    static func text(_ text: String) -> MixedContentPart {
+        MixedContentPart(type: .text, text: text)
+    }
+    
+    // Convenience initializer for Arabic words
+    static func arabicWord(_ arabic: String, wordId: String, transliteration: String? = nil) -> MixedContentPart {
+        MixedContentPart(type: .arabicWord, text: arabic, wordId: wordId, transliteration: transliteration)
+    }
+}
+
+enum ContentPartType: String, Codable {
+    case text = "text"
+    case arabicWord = "arabicWord"
 }
 
 // MARK: - Word Timing for Audio Sync

@@ -1,7 +1,7 @@
 //
 //  StoryReaderViewModel.swift
 //  Hikaya
-//  ViewModel for the Story Reader with audio sync
+//  ViewModel for the Story Reader with audio sync and mixed content support
 //
 
 import Foundation
@@ -31,6 +31,7 @@ class StoryReaderViewModel {
     var selectedWord: Word?
     var showWordPopover = false
     var popoverPosition: CGPoint = .zero
+    var selectedMixedWord: MixedWordInfo?  // For mixed format
     
     // Settings
     var fontSize: CGFloat = 20
@@ -43,6 +44,16 @@ class StoryReaderViewModel {
     private var genericWords: [Word] = []
     private var hasLoadedGenericWords = false
     
+    // Mixed format state
+    var learnedWordIdsInSession: Set<String> = []
+    
+    struct MixedWordInfo {
+        let wordId: String
+        let arabicText: String
+        let transliteration: String?
+        let englishMeaning: String?
+    }
+    
     init(story: Story) {
         self.story = story
         self.currentSegmentIndex = story.currentSegmentIndex
@@ -51,7 +62,9 @@ class StoryReaderViewModel {
         // Debug: Print story info
         print("📖 StoryReaderViewModel initialized")
         print("   Story: '\(story.title)'")
+        print("   Format: \(story.format.rawValue)")
         print("   Segments: \(story.segments?.count ?? 0)")
+        print("   Mixed Segments: \(story.mixedSegments?.count ?? 0)")
         print("   Words: \(story.words?.count ?? 0)")
         if let words = story.words {
             for word in words {
@@ -99,13 +112,26 @@ class StoryReaderViewModel {
     // MARK: - Computed Properties
     
     var currentSegment: StorySegment? {
-        guard let segments = story.segments,
+        guard story.format == .bilingual,
+              let segments = story.segments,
+              currentSegmentIndex < segments.count else { return nil }
+        return segments.sorted { $0.index < $1.index }[currentSegmentIndex]
+    }
+    
+    var currentMixedSegment: MixedContentSegment? {
+        guard story.format == .mixed,
+              let segments = story.mixedSegments,
               currentSegmentIndex < segments.count else { return nil }
         return segments.sorted { $0.index < $1.index }[currentSegmentIndex]
     }
     
     var totalSegments: Int {
-        story.segments?.count ?? 0
+        switch story.format {
+        case .mixed:
+            return story.mixedSegments?.count ?? 0
+        case .bilingual:
+            return story.segments?.count ?? 0
+        }
     }
     
     var readingProgress: Double {
@@ -121,10 +147,18 @@ class StoryReaderViewModel {
         currentSegmentIndex > 0
     }
     
+    var isMixedFormat: Bool {
+        story.format == .mixed
+    }
+    
     // MARK: - Navigation
     
     func goToNextSegment() async {
-        guard canGoNext else { return }
+        guard canGoNext else { 
+            // Mark story as completed when reaching the end
+            await completeStory()
+            return 
+        }
         currentSegmentIndex += 1
         await updateStoryProgress()
     }
@@ -180,7 +214,7 @@ class StoryReaderViewModel {
         }
     }
     
-    // MARK: - Word Interaction
+    // MARK: - Word Interaction (Bilingual Format)
     
     func handleWordTap(wordText: String, position: CGPoint) {
         print("👆 Word tapped: '\(wordText)'")
@@ -244,6 +278,7 @@ class StoryReaderViewModel {
     /// Show word details in popover
     private func showWordDetails(word: Word, position: CGPoint) {
         selectedWord = word
+        selectedMixedWord = nil
         popoverPosition = position
         showWordPopover = true
         
@@ -254,9 +289,56 @@ class StoryReaderViewModel {
             story = updatedStory
             
             Task {
+                // Save story progress and update global vocabulary
                 try? await dataService.saveStory(story)
+                let unlockedLevel2 = await dataService.recordVocabularyLearned(wordId: word.id.uuidString)
+                if unlockedLevel2 {
+                    print("🎉 Level 2 unlocked!")
+                }
             }
         }
+    }
+    
+    // MARK: - Mixed Format Word Interaction
+    
+    func handleMixedWordTap(wordId: String, arabicText: String, transliteration: String?, position: CGPoint) {
+        print("👆 Mixed format word tapped: '\(arabicText)' (ID: \(wordId))")
+        
+        // Find word details from story's vocabulary
+        let word = story.words?.first { $0.id.uuidString == wordId }
+        
+        let mixedInfo = MixedWordInfo(
+            wordId: wordId,
+            arabicText: arabicText,
+            transliteration: transliteration,
+            englishMeaning: word?.englishMeaning
+        )
+        
+        selectedMixedWord = mixedInfo
+        selectedWord = word
+        popoverPosition = position
+        showWordPopover = true
+        
+        // Mark as learned
+        if !learnedWordIdsInSession.contains(wordId) {
+            learnedWordIdsInSession.insert(wordId)
+            
+            var updatedStory = story
+            updatedStory.markWordAsLearned(wordId)
+            story = updatedStory
+            
+            Task {
+                try? await dataService.saveStory(story)
+                let unlockedLevel2 = await dataService.recordVocabularyLearned(wordId: wordId)
+                if unlockedLevel2 {
+                    print("🎉 Level 2 unlocked!")
+                }
+            }
+        }
+    }
+    
+    func isMixedWordLearned(_ wordId: String) -> Bool {
+        story.isWordLearned(wordId) || learnedWordIdsInSession.contains(wordId)
     }
     
     func isWordLearned(_ wordId: String) -> Bool {
@@ -277,6 +359,7 @@ class StoryReaderViewModel {
     func closeWordPopover() {
         showWordPopover = false
         selectedWord = nil
+        selectedMixedWord = nil
     }
     
     // MARK: - Progress
@@ -294,16 +377,21 @@ class StoryReaderViewModel {
         }
     }
     
-    func markAsCompleted() async {
+    private func completeStory() async {
         var updatedStory = story
         updatedStory.updateProgress(1.0)
         story = updatedStory
         
         do {
             try await dataService.saveStory(story)
+            await dataService.recordStoryCompleted(difficultyLevel: story.difficultyLevel)
         } catch {
-            print("Error marking complete: \(error)")
+            print("Error completing story: \(error)")
         }
+    }
+    
+    func markAsCompleted() async {
+        await completeStory()
     }
     
     // MARK: - Settings
@@ -325,6 +413,7 @@ class StoryReaderViewModel {
         updatedStory.resetProgress()
         story = updatedStory
         currentSegmentIndex = 0
+        learnedWordIdsInSession.removeAll()
         
         Task {
             try? await dataService.saveStory(story)
@@ -339,5 +428,21 @@ class StoryReaderViewModel {
         Task {
             try? await dataService.saveStory(story)
         }
+    }
+    
+    // MARK: - Vocabulary Progress
+    
+    var vocabularyProgress: Double {
+        guard let words = story.words, !words.isEmpty else { return 0 }
+        let learned = story.learnedVocabularyCount
+        return Double(learned) / Double(words.count)
+    }
+    
+    var learnedVocabularyCount: Int {
+        story.learnedVocabularyCount + learnedWordIdsInSession.count
+    }
+    
+    var totalVocabularyCount: Int {
+        story.vocabularyCount
     }
 }

@@ -6,7 +6,6 @@
 
 import SwiftUI
 
-
 struct ProgressDashboardView: View {
     @State private var viewModel = ProgressViewModel()
     
@@ -18,11 +17,19 @@ struct ProgressDashboardView: View {
                 
                 ScrollView {
                     VStack(spacing: 20) {
+                        // Level Status Card
+                        LevelStatusCard(viewModel: viewModel)
+                        
                         // Streak Card
                         StreakCard(viewModel: viewModel)
                         
                         // Quick Stats Grid
                         QuickStatsGrid(viewModel: viewModel)
+                        
+                        // Vocabulary Progress Card (if Level 2 not unlocked)
+                        if viewModel.maxUnlockedLevel < 2 {
+                            VocabularyProgressCard(viewModel: viewModel)
+                        }
                         
                         // Weekly Progress Chart
                         WeeklyProgressCard(viewModel: viewModel)
@@ -40,7 +47,88 @@ struct ProgressDashboardView: View {
             }
             .navigationTitle("Progress")
             .navigationBarTitleDisplayMode(.large)
+            .alert("🎉 Level 2 Unlocked!", isPresented: $viewModel.showLevelUnlockAlert) {
+                Button("Awesome!", role: .cancel) {}
+            } message: {
+                Text("You've learned \(viewModel.vocabularyNeededForLevel2) Arabic words! Level 2 with full Arabic stories is now available.")
+            }
         }
+    }
+}
+
+// MARK: - Level Status Card
+
+struct LevelStatusCard: View {
+    var viewModel: ProgressViewModel
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Current Level")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    
+                    Text("Level \(viewModel.maxUnlockedLevel)")
+                        .font(.title.weight(.bold))
+                        .foregroundStyle(Color.hikayaTeal)
+                }
+                
+                Spacer()
+                
+                // Level indicator
+                ZStack {
+                    Circle()
+                        .fill(Color.hikayaTeal.opacity(0.15))
+                        .frame(width: 60, height: 60)
+                    
+                    Image(systemName: viewModel.maxUnlockedLevel >= 2 ? "crown.fill" : "book.fill")
+                        .font(.system(size: 24))
+                        .foregroundStyle(Color.hikayaTeal)
+                }
+            }
+            
+            if viewModel.maxUnlockedLevel < 2 {
+                Divider()
+                
+                HStack {
+                    Image(systemName: "lock.open.fill")
+                        .foregroundStyle(Color.hikayaOrange)
+                    
+                    Text("Learn \(viewModel.vocabularyRemainingForLevel2) more words to unlock Level 2")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                }
+            } else {
+                Divider()
+                
+                HStack {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(.green)
+                    
+                    Text("Level 2 unlocked! Full Arabic stories available.")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                    
+                    Spacer()
+                }
+            }
+        }
+        .padding()
+        .background(
+            LinearGradient(
+                colors: [Color.hikayaTeal.opacity(0.1), Color.hikayaCream],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.hikayaTeal.opacity(0.2), lineWidth: 1)
+        )
     }
 }
 
@@ -169,6 +257,85 @@ struct QuickStatCard: View {
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+    }
+}
+
+// MARK: - Vocabulary Progress Card
+
+struct VocabularyProgressCard: View {
+    var viewModel: ProgressViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Vocabulary Progress")
+                        .font(.headline.weight(.semibold))
+                    
+                    Text("\(viewModel.totalVocabularyLearned) of \(viewModel.vocabularyNeededForLevel2) words to unlock Level 2")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                // Progress ring
+                ZStack {
+                    Circle()
+                        .stroke(Color.hikayaTeal.opacity(0.2), lineWidth: 6)
+                        .frame(width: 56, height: 56)
+                    
+                    Circle()
+                        .trim(from: 0, to: viewModel.vocabularyProgressToLevel2)
+                        .stroke(
+                            Color.hikayaTeal,
+                            style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                        )
+                        .frame(width: 56, height: 56)
+                        .rotationEffect(.degrees(-90))
+                    
+                    Text("\(Int(viewModel.vocabularyProgressToLevel2 * 100))%")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(Color.hikayaTeal)
+                }
+            }
+            
+            // Progress bar
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 12)
+                    
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.7)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * viewModel.vocabularyProgressToLevel2, height: 12)
+                }
+            }
+            .frame(height: 12)
+            
+            HStack {
+                Image(systemName: "lightbulb.fill")
+                    .foregroundStyle(Color.hikayaOrange)
+                    .font(.caption)
+                
+                Text("Tip: Tap Arabic words in Level 1 stories to learn them")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                Spacer()
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
     }
 }
 

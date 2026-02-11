@@ -45,19 +45,75 @@ async function logAdminAction(action, details, ip) {
 function formatStoryForFirestore(storyData) {
   const now = new Date().toISOString();
   
-  return {
+  // Determine format (mixed for Level 1, bilingual for Level 2+)
+  const format = storyData.format || 'bilingual';
+  const difficultyLevel = Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 5);
+  
+  // Use mixed format for Level 1 if not explicitly set
+  const finalFormat = format || (difficultyLevel === 1 ? 'mixed' : 'bilingual');
+  
+  const baseStory = {
     id: storyData.id || require('crypto').randomUUID(),
     title: storyData.title || '',
     titleArabic: storyData.titleArabic || null,
     storyDescription: storyData.storyDescription || '',
     storyDescriptionArabic: storyData.storyDescriptionArabic || null,
     author: storyData.author || 'Anonymous',
-    difficultyLevel: Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 5),
+    format: finalFormat,
+    difficultyLevel: difficultyLevel,
     category: storyData.category || 'general',
     tags: Array.isArray(storyData.tags) ? storyData.tags : [],
     coverImageURL: storyData.coverImageURL || null,
     audioNarrationURL: storyData.audioNarrationURL || null,
-    segments: (storyData.segments || []).map((seg, idx) => ({
+    isUserCreated: false,
+    isDownloaded: false,
+    downloadDate: null,
+    sourceURL: storyData.sourceURL || null,
+    readingProgress: 0,
+    currentSegmentIndex: 0,
+    completedWords: {},
+    learnedWordIds: [],
+    isBookmarked: false,
+    totalReadingTime: 0,
+    viewCount: 0,
+    completionCount: 0,
+    averageRating: null,
+    createdAt: storyData.createdAt || now,
+    updatedAt: now
+  };
+  
+  // Handle words/vocabulary (used in both formats)
+  baseStory.words = (storyData.words || []).map(word => ({
+    id: word.id || require('crypto').randomUUID(),
+    arabic: word.arabic || word.arabicText || '',
+    english: word.english || word.englishMeaning || '',
+    transliteration: word.transliteration || null,
+    partOfSpeech: word.partOfSpeech || null,
+    rootLetters: word.rootLetters || null,
+    exampleSentence: word.exampleSentence || null,
+    difficulty: word.difficulty || 1
+  }));
+  
+  // Handle format-specific content
+  if (finalFormat === 'mixed') {
+    // Mixed format (Level 1): English text with embedded Arabic words
+    baseStory.mixedSegments = (storyData.mixedSegments || []).map((seg, idx) => ({
+      id: seg.id || require('crypto').randomUUID(),
+      index: idx,
+      contentParts: (seg.contentParts || []).map(part => ({
+        id: part.id || require('crypto').randomUUID(),
+        type: part.type || 'text', // 'text' or 'arabicWord'
+        text: part.text || '',
+        wordId: part.wordId || null,
+        transliteration: part.transliteration || null
+      })),
+      imageURL: seg.imageURL || null,
+      culturalNote: seg.culturalNote || null
+    }));
+    baseStory.segments = []; // Empty for mixed format
+  } else {
+    // Bilingual format (Level 2+): Full Arabic with English translation
+    baseStory.segments = (storyData.segments || []).map((seg, idx) => ({
       id: seg.id || require('crypto').randomUUID(),
       index: idx,
       arabicText: seg.arabicText || '',
@@ -69,41 +125,22 @@ function formatStoryForFirestore(storyData) {
       imageURL: seg.imageURL || null,
       culturalNote: seg.culturalNote || null,
       grammarNote: seg.grammarNote || null
-    })),
-    words: (storyData.words || []).map(word => ({
-      id: word.id || require('crypto').randomUUID(),
-      arabic: word.arabic || '',
-      english: word.english || '',
-      transliteration: word.transliteration || null,
-      partOfSpeech: word.partOfSpeech || null,
-      rootLetters: word.rootLetters || null,
-      exampleSentence: word.exampleSentence || null,
-      difficulty: word.difficulty || 1
-    })),
-    grammarNotes: (storyData.grammarNotes || []).map(note => ({
-      id: note.id || require('crypto').randomUUID(),
-      title: note.title || '',
-      explanation: note.explanation || '',
-      exampleArabic: note.exampleArabic || '',
-      exampleEnglish: note.exampleEnglish || '',
-      ruleCategory: note.ruleCategory || 'general',
-      createdAt: now
-    })),
-    isUserCreated: false,
-    isDownloaded: false,
-    downloadDate: null,
-    sourceURL: storyData.sourceURL || null,
-    readingProgress: 0,
-    currentSegmentIndex: 0,
-    completedWords: {},
-    isBookmarked: false,
-    totalReadingTime: 0,
-    viewCount: 0,
-    completionCount: 0,
-    averageRating: null,
-    createdAt: storyData.createdAt || now,
-    updatedAt: now
-  };
+    }));
+    baseStory.mixedSegments = []; // Empty for bilingual format
+  }
+  
+  // Grammar notes (optional, mainly for Level 2+)
+  baseStory.grammarNotes = (storyData.grammarNotes || []).map(note => ({
+    id: note.id || require('crypto').randomUUID(),
+    title: note.title || '',
+    explanation: note.explanation || '',
+    exampleArabic: note.exampleArabic || '',
+    exampleEnglish: note.exampleEnglish || '',
+    ruleCategory: note.ruleCategory || 'general',
+    createdAt: now
+  }));
+  
+  return baseStory;
 }
 
 // ============================================
@@ -120,12 +157,18 @@ app.get('/api/stories', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 50;
     const offset = parseInt(req.query.offset) || 0;
+    const format = req.query.format; // Filter by format
     
-    const snapshot = await db.collection(STORIES_COLLECTION)
+    let query = db.collection(STORIES_COLLECTION)
       .orderBy('createdAt', 'desc')
       .limit(limit)
-      .offset(offset)
-      .get();
+      .offset(offset);
+    
+    if (format) {
+      query = query.where('format', '==', format);
+    }
+    
+    const snapshot = await query.get();
     
     const stories = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -140,9 +183,12 @@ app.get('/api/stories', async (req, res) => {
         title: s.title,
         titleArabic: s.titleArabic,
         author: s.author,
+        format: s.format,
         difficultyLevel: s.difficultyLevel,
         category: s.category,
-        segmentCount: s.segments?.length || 0,
+        segmentCount: s.format === 'mixed' 
+          ? (s.mixedSegments?.length || 0) 
+          : (s.segments?.length || 0),
         wordCount: s.words?.length || 0,
         createdAt: s.createdAt,
         updatedAt: s.updatedAt
@@ -169,7 +215,12 @@ app.post('/api/stories', async (req, res) => {
     const formattedStory = formatStoryForFirestore(storyData);
     await db.collection(STORIES_COLLECTION).doc(formattedStory.id).set(formattedStory);
     
-    await logAdminAction('CREATE_STORY', { storyId: formattedStory.id, title: formattedStory.title }, req.ip);
+    await logAdminAction('CREATE_STORY', { 
+      storyId: formattedStory.id, 
+      title: formattedStory.title,
+      format: formattedStory.format,
+      difficultyLevel: formattedStory.difficultyLevel
+    }, req.ip);
     
     res.status(201).json({
       success: true,
@@ -177,7 +228,10 @@ app.post('/api/stories', async (req, res) => {
       story: {
         id: formattedStory.id,
         title: formattedStory.title,
-        segmentCount: formattedStory.segments.length,
+        format: formattedStory.format,
+        segmentCount: formattedStory.format === 'mixed' 
+          ? formattedStory.mixedSegments.length 
+          : formattedStory.segments.length,
         wordCount: formattedStory.words.length
       }
     });
@@ -228,12 +282,20 @@ app.put('/api/stories/:id', async (req, res) => {
     });
     
     await docRef.update(formattedStory);
-    await logAdminAction('UPDATE_STORY', { storyId, title: formattedStory.title }, req.ip);
+    await logAdminAction('UPDATE_STORY', { 
+      storyId, 
+      title: formattedStory.title,
+      format: formattedStory.format 
+    }, req.ip);
     
     res.json({
       success: true,
       message: 'Story updated successfully',
-      story: { id: storyId, title: formattedStory.title }
+      story: { 
+        id: storyId, 
+        title: formattedStory.title,
+        format: formattedStory.format
+      }
     });
   } catch (error) {
     console.error('Error updating story:', error);
@@ -291,22 +353,44 @@ app.post('/api/stories/validate', async (req, res) => {
       warnings.push('Arabic description is recommended');
     }
 
-    if (!storyData.segments || storyData.segments.length === 0) {
-      errors.push('At least one story segment is required');
+    // Validate based on format
+    const format = storyData.format || 'bilingual';
+    
+    if (format === 'mixed') {
+      // Validate mixed format (Level 1)
+      if (!storyData.mixedSegments || storyData.mixedSegments.length === 0) {
+        errors.push('At least one mixed segment is required for Level 1 stories');
+      } else {
+        storyData.mixedSegments.forEach((seg, idx) => {
+          if (!seg.contentParts || seg.contentParts.length === 0) {
+            errors.push(`Segment ${idx + 1}: At least one content part is required`);
+          }
+        });
+      }
     } else {
-      storyData.segments.forEach((seg, idx) => {
-        if (!seg.arabicText || seg.arabicText.trim().length === 0) {
-          errors.push(`Segment ${idx + 1}: Arabic text is required`);
-        }
-        if (!seg.englishText || seg.englishText.trim().length === 0) {
-          errors.push(`Segment ${idx + 1}: English text is required`);
-        }
-      });
+      // Validate bilingual format (Level 2+)
+      if (!storyData.segments || storyData.segments.length === 0) {
+        errors.push('At least one story segment is required');
+      } else {
+        storyData.segments.forEach((seg, idx) => {
+          if (!seg.arabicText || seg.arabicText.trim().length === 0) {
+            errors.push(`Segment ${idx + 1}: Arabic text is required`);
+          }
+          if (!seg.englishText || seg.englishText.trim().length === 0) {
+            errors.push(`Segment ${idx + 1}: English text is required`);
+          }
+        });
+      }
     }
 
     const difficulty = parseInt(storyData.difficultyLevel);
     if (isNaN(difficulty) || difficulty < 1 || difficulty > 5) {
       errors.push('Difficulty level must be between 1 and 5');
+    }
+    
+    // Recommend mixed format for Level 1
+    if (difficulty === 1 && format !== 'mixed') {
+      warnings.push('Level 1 stories are recommended to use "mixed" format for vocabulary building');
     }
 
     res.json({
@@ -316,7 +400,10 @@ app.post('/api/stories/validate', async (req, res) => {
       warnings,
       summary: {
         title: storyData.title,
-        segmentCount: storyData.segments?.length || 0,
+        format: format,
+        segmentCount: format === 'mixed' 
+          ? (storyData.mixedSegments?.length || 0)
+          : (storyData.segments?.length || 0),
         wordCount: storyData.words?.length || 0,
         difficultyLevel: difficulty
       }
@@ -357,7 +444,8 @@ app.post('/api/seed', async (req, res) => {
         storyDescription: "A simple story about a friendly cat who helps a lost bird find its way home.",
         storyDescriptionArabic: "قصة بسيطة عن قطة ودودة تساعد عصفوراً ضالاً في إيجاد طريقه إلى المنزل.",
         author: "Hikaya Test",
-        difficultyLevel: 1,
+        format: "bilingual",
+        difficultyLevel: 2,
         category: "children",
         tags: ["animals", "friendship", "helping"],
         coverImageURL: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800",
@@ -380,7 +468,7 @@ app.post('/api/seed', async (req, res) => {
     for (const story of sampleStories) {
       const formatted = formatStoryForFirestore(story);
       await db.collection(STORIES_COLLECTION).doc(formatted.id).set(formatted);
-      results.push({ id: formatted.id, title: formatted.title });
+      results.push({ id: formatted.id, title: formatted.title, format: formatted.format });
     }
 
     res.json({
@@ -402,8 +490,8 @@ function formatWordForFirestore(wordData) {
   
   return {
     id: wordData.id || require('crypto').randomUUID(),
-    arabic: wordData.arabic || '',
-    english: wordData.english || '',
+    arabic: wordData.arabic || wordData.arabicText || '',
+    english: wordData.english || wordData.englishMeaning || '',
     transliteration: wordData.transliteration || null,
     partOfSpeech: wordData.partOfSpeech || null,
     rootLetters: wordData.rootLetters || null,
@@ -469,9 +557,15 @@ app.post('/api/words', async (req, res) => {
   try {
     const wordData = req.body;
     
-    if (!wordData.arabic || !wordData.english) {
+    if (!wordData.arabic && !wordData.arabicText) {
       res.status(400).json({ 
-        error: 'Missing required fields: arabic and english are required' 
+        error: 'Missing required fields: arabic is required' 
+      });
+      return;
+    }
+    if (!wordData.english && !wordData.englishMeaning) {
+      res.status(400).json({ 
+        error: 'Missing required fields: english is required' 
       });
       return;
     }
@@ -587,7 +681,7 @@ app.post('/api/words/bulk', async (req, res) => {
     
     for (const wordData of words) {
       try {
-        if (!wordData.arabic || !wordData.english) {
+        if ((!wordData.arabic && !wordData.arabicText) || (!wordData.english && !wordData.englishMeaning)) {
           errors.push({ wordData, error: 'Missing arabic or english' });
           continue;
         }

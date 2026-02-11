@@ -21,8 +21,31 @@ class DataService {
     var storiesPublisher = CurrentValueSubject<[Story], Never>([])
     var isLoadingPublisher = CurrentValueSubject<Bool, Never>(false)
     var errorPublisher = PassthroughSubject<Error, Never>()
+    var levelUnlockedPublisher = PassthroughSubject<Int, Never>()
     
     private init() {}
+    
+    // MARK: - Level Management
+    
+    func getMaxUnlockedLevel() async -> Int {
+        let progress = await fetchUserProgress()
+        return progress?.maxUnlockedLevel ?? 1
+    }
+    
+    func canAccessLevel(_ level: Int) async -> Bool {
+        let maxLevel = await getMaxUnlockedLevel()
+        return level <= maxLevel
+    }
+    
+    func vocabularyProgressToLevel2() async -> Double {
+        let progress = await fetchUserProgress()
+        return progress?.vocabularyProgressToLevel2 ?? 0.0
+    }
+    
+    func vocabularyRemainingForLevel2() async -> Int {
+        let progress = await fetchUserProgress()
+        return progress?.vocabularyRemainingForLevel2 ?? 20
+    }
     
     // MARK: - Story Operations
     
@@ -62,6 +85,10 @@ class DataService {
     ) async -> [Story] {
         var stories = await fetchAllStories()
         
+        // Filter by level access
+        let maxLevel = await getMaxUnlockedLevel()
+        stories = stories.filter { $0.difficultyLevel <= maxLevel }
+        
         // Filter
         if let difficulty = difficulty {
             stories = stories.filter { $0.difficultyLevel == difficulty }
@@ -98,6 +125,11 @@ class DataService {
         }
         
         return stories
+    }
+    
+    func fetchStoriesByFormat(_ format: StoryFormat) async -> [Story] {
+        let stories = await fetchAllStories()
+        return stories.filter { $0.format == format }
     }
     
     func fetchStory(id: UUID) async -> Story? {
@@ -160,6 +192,65 @@ class DataService {
         // This is a simplified implementation
     }
     
+    // MARK: - Vocabulary Learning
+    
+    func recordVocabularyLearned(wordId: String) async -> Bool {
+        guard var progress = await fetchUserProgress() else { return false }
+        
+        let unlockedLevel = progress.recordVocabularyLearned(wordId: wordId)
+        
+        do {
+            try await firebaseService.saveUserProgress(progress, userId: userId)
+            await localCache.saveUserProgress(progress)
+            
+            // Publish level unlock event if Level 2 was unlocked
+            if unlockedLevel {
+                levelUnlockedPublisher.send(2)
+            }
+            
+            return unlockedLevel
+        } catch {
+            errorPublisher.send(error)
+            return false
+        }
+    }
+    
+    func recordVocabularyMastered(wordId: String) async {
+        guard var progress = await fetchUserProgress() else { return }
+        
+        progress.recordVocabularyMastered(wordId: wordId)
+        
+        do {
+            try await firebaseService.saveUserProgress(progress, userId: userId)
+            await localCache.saveUserProgress(progress)
+        } catch {
+            errorPublisher.send(error)
+        }
+    }
+    
+    func getLearnedVocabularyIds() async -> [String] {
+        let progress = await fetchUserProgress()
+        return progress?.learnedVocabularyIds ?? []
+    }
+    
+    func getMasteredVocabularyIds() async -> [String] {
+        let progress = await fetchUserProgress()
+        return progress?.masteredVocabularyIds ?? []
+    }
+    
+    // MARK: - Story Progress with Vocabulary
+    
+    func markStoryWordAsLearned(storyId: UUID, wordId: String) async {
+        // Update story progress
+        if var story = await fetchStory(id: storyId) {
+            story.markWordAsLearned(wordId)
+            try? await saveStory(story)
+        }
+        
+        // Update global vocabulary progress
+        await recordVocabularyLearned(wordId: wordId)
+    }
+    
     // MARK: - User Progress Operations
     
     func fetchUserProgress() async -> UserProgress? {
@@ -185,6 +276,18 @@ class DataService {
     func recordStudySession(minutes: Int) async {
         guard var progress = await fetchUserProgress() else { return }
         progress.recordStudySession(minutes: minutes)
+        
+        do {
+            try await firebaseService.saveUserProgress(progress, userId: userId)
+            await localCache.saveUserProgress(progress)
+        } catch {
+            errorPublisher.send(error)
+        }
+    }
+    
+    func recordStoryCompleted(difficultyLevel: Int) async {
+        guard var progress = await fetchUserProgress() else { return }
+        progress.recordStoryCompleted(difficultyLevel: difficultyLevel)
         
         do {
             try await firebaseService.saveUserProgress(progress, userId: userId)

@@ -10,6 +10,10 @@ struct UserProgress: Identifiable, Codable {
     // MARK: - Singleton-like identifier
     var id: String
     
+    // MARK: - Level Unlocking
+    var maxUnlockedLevel: Int
+    var vocabularyNeededForLevel2: Int
+    
     // MARK: - Streak Tracking
     var currentStreak: Int
     var longestStreak: Int
@@ -22,9 +26,18 @@ struct UserProgress: Identifiable, Codable {
     var totalWordsMastered: Int
     var wordsUnderReview: Int
     
+    // MARK: - Vocabulary Tracking (for Level 1 -> Level 2 unlock)
+    var learnedVocabularyIds: [String]
+    var masteredVocabularyIds: [String]
+    var totalVocabularyLearned: Int {
+        learnedVocabularyIds.count
+    }
+    
     // MARK: - Story Statistics
     var storiesCompleted: Int
     var storiesInProgress: Int
+    var level1StoriesCompleted: Int
+    var level2StoriesCompleted: Int
     var totalReadingTime: TimeInterval
     var totalPagesRead: Int
     
@@ -42,14 +55,20 @@ struct UserProgress: Identifiable, Codable {
     
     init() {
         self.id = "user_progress"
+        self.maxUnlockedLevel = 1  // Start with Level 1 only
+        self.vocabularyNeededForLevel2 = 20  // Need 20 words to unlock Level 2
         self.currentStreak = 0
         self.longestStreak = 0
         self.streakFreezeUsed = false
         self.totalWordsLearned = 0
         self.totalWordsMastered = 0
         self.wordsUnderReview = 0
+        self.learnedVocabularyIds = []
+        self.masteredVocabularyIds = []
         self.storiesCompleted = 0
         self.storiesInProgress = 0
+        self.level1StoriesCompleted = 0
+        self.level2StoriesCompleted = 0
         self.totalReadingTime = 0
         self.totalPagesRead = 0
         self.dailyGoalMinutes = 15
@@ -60,7 +79,63 @@ struct UserProgress: Identifiable, Codable {
         self.updatedAt = Date()
     }
     
+    // MARK: - Level Management
+    
+    var canAccessLevel2: Bool {
+        totalVocabularyLearned >= vocabularyNeededForLevel2
+    }
+    
+    var vocabularyProgressToLevel2: Double {
+        min(Double(totalVocabularyLearned) / Double(vocabularyNeededForLevel2), 1.0)
+    }
+    
+    var vocabularyRemainingForLevel2: Int {
+        max(vocabularyNeededForLevel2 - totalVocabularyLearned, 0)
+    }
+    
+    mutating func checkAndUnlockLevel2() -> Bool {
+        if maxUnlockedLevel < 2 && canAccessLevel2 {
+            maxUnlockedLevel = 2
+            updatedAt = Date()
+            return true
+        }
+        return false
+    }
+    
+    // MARK: - Vocabulary Learning
+    
+    mutating func recordVocabularyLearned(wordId: String) -> Bool {
+        if !learnedVocabularyIds.contains(wordId) {
+            learnedVocabularyIds.append(wordId)
+            updatedAt = Date()
+            // Try to unlock Level 2
+            let unlocked = checkAndUnlockLevel2()
+            return unlocked
+        }
+        return false
+    }
+    
+    mutating func recordVocabularyMastered(wordId: String) {
+        if !masteredVocabularyIds.contains(wordId) {
+            masteredVocabularyIds.append(wordId)
+        }
+        if !learnedVocabularyIds.contains(wordId) {
+            learnedVocabularyIds.append(wordId)
+        }
+        updatedAt = Date()
+        checkAndUnlockLevel2()
+    }
+    
+    func hasLearnedVocabulary(_ wordId: String) -> Bool {
+        learnedVocabularyIds.contains(wordId)
+    }
+    
+    func hasMasteredVocabulary(_ wordId: String) -> Bool {
+        masteredVocabularyIds.contains(wordId)
+    }
+    
     // MARK: - Streak Management
+    
     mutating func recordStudySession(minutes: Int) {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -105,6 +180,7 @@ struct UserProgress: Identifiable, Codable {
     }
     
     // MARK: - Word Progress
+    
     mutating func recordWordLearned(wordId: String, isNew: Bool) {
         if isNew {
             totalWordsLearned += 1
@@ -129,8 +205,14 @@ struct UserProgress: Identifiable, Codable {
     }
     
     // MARK: - Story Progress
-    mutating func recordStoryCompleted() {
+    
+    mutating func recordStoryCompleted(difficultyLevel: Int) {
         storiesCompleted += 1
+        if difficultyLevel == 1 {
+            level1StoriesCompleted += 1
+        } else if difficultyLevel >= 2 {
+            level2StoriesCompleted += 1
+        }
         updatedAt = Date()
     }
     
@@ -240,6 +322,7 @@ enum AchievementCategory: String, Codable, CaseIterable {
     case time = "time"
     case mastery = "mastery"
     case social = "social"
+    case vocabulary = "vocabulary"
     
     var displayName: String {
         rawValue.capitalized
@@ -270,19 +353,30 @@ enum AchievementRarity: String, Codable, CaseIterable {
 
 extension Achievement {
     static let defaultAchievements: [Achievement] = [
+        // Streak achievements
         Achievement(title: "First Step", achievementDescription: "Complete your first study session", iconName: "figure.walk", category: .streak, requirement: 1, rarity: .common),
         Achievement(title: "Week Warrior", achievementDescription: "Maintain a 7-day streak", iconName: "flame.fill", category: .streak, requirement: 7, rarity: .rare),
         Achievement(title: "Month Master", achievementDescription: "Maintain a 30-day streak", iconName: "crown.fill", category: .streak, requirement: 30, rarity: .epic),
         Achievement(title: "Centurion", achievementDescription: "Maintain a 100-day streak", iconName: "star.circle.fill", category: .streak, requirement: 100, rarity: .legendary),
-        Achievement(title: "Word Collector", achievementDescription: "Learn 50 words", iconName: "textformat.abc", category: .words, requirement: 50, rarity: .common),
-        Achievement(title: "Vocabulary Builder", achievementDescription: "Learn 200 words", iconName: "book.fill", category: .words, requirement: 200, rarity: .rare),
-        Achievement(title: "Lexicon Master", achievementDescription: "Learn 500 words", iconName: "text.book.closed.fill", category: .words, requirement: 500, rarity: .epic),
+        
+        // Vocabulary achievements (new)
+        Achievement(title: "Word Seeker", achievementDescription: "Learn 5 Arabic words", iconName: "character", category: .vocabulary, requirement: 5, rarity: .common),
+        Achievement(title: "Vocabulary Builder", achievementDescription: "Learn 20 Arabic words", iconName: "textformat.abc", category: .vocabulary, requirement: 20, rarity: .rare),
+        Achievement(title: "Word Collector", achievementDescription: "Learn 50 words", iconName: "character.book.closed", category: .vocabulary, requirement: 50, rarity: .common),
+        Achievement(title: "Lexicon Master", achievementDescription: "Learn 200 words", iconName: "text.book.closed.fill", category: .vocabulary, requirement: 200, rarity: .epic),
+        Achievement(title: "Level Up!", achievementDescription: "Unlock Level 2 by learning 20 words", iconName: "arrow.up.circle.fill", category: .vocabulary, requirement: 20, rarity: .rare),
+        
+        // Story achievements
         Achievement(title: "Story Starter", achievementDescription: "Complete your first story", iconName: "book.open.fill", category: .stories, requirement: 1, rarity: .common),
         Achievement(title: "Bookworm", achievementDescription: "Complete 10 stories", iconName: "books.vertical.fill", category: .stories, requirement: 10, rarity: .rare),
         Achievement(title: "Literary Scholar", achievementDescription: "Complete 50 stories", iconName: "graduationcap.fill", category: .stories, requirement: 50, rarity: .epic),
+        
+        // Time achievements
         Achievement(title: "Dedicated Student", achievementDescription: "Study for 10 hours total", iconName: "clock.fill", category: .time, requirement: 10, rarity: .common),
         Achievement(title: "Time Keeper", achievementDescription: "Study for 50 hours total", iconName: "timer", category: .time, requirement: 50, rarity: .rare),
         Achievement(title: "Time Lord", achievementDescription: "Study for 200 hours total", iconName: "hourglass", category: .time, requirement: 200, rarity: .epic),
+        
+        // Mastery achievements
         Achievement(title: "Word Master", achievementDescription: "Master 100 words", iconName: "checkmark.seal.fill", category: .mastery, requirement: 100, rarity: .rare),
         Achievement(title: "Fluency Seeker", achievementDescription: "Master 500 words", iconName: "sparkles", category: .mastery, requirement: 500, rarity: .epic)
     ]
@@ -294,4 +388,20 @@ struct StudyDayData: Identifiable {
     let id = UUID()
     let day: String
     let minutes: Int
+}
+
+// MARK: - Level Unlock Info
+
+struct LevelUnlockInfo {
+    let level: Int
+    let requiredVocabulary: Int
+    let title: String
+    let description: String
+    
+    static let level2 = LevelUnlockInfo(
+        level: 2,
+        requiredVocabulary: 20,
+        title: "Level 2 Unlocked!",
+        description: "You've learned enough vocabulary to start reading full Arabic stories."
+    )
 }
