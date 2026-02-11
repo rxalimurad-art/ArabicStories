@@ -419,24 +419,6 @@ function addMixedSegment(data = null) {
   document.getElementById('empty-segments')?.classList.add('hidden');
   card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-    </div>
-  `;
-  
-  // Setup remove button
-  card.querySelector('.remove-segment').addEventListener('click', () => removeSegment(index));
-  
-  container.appendChild(card);
-  state.segments.push({ id: card.dataset.segmentId, type: 'mixed' });
-  
-  // Add content parts if data provided
-  if (data?.contentParts?.length > 0) {
-    const partsContainer = card.querySelector('.mixed-content-parts');
-    data.contentParts.forEach(part => addContentPartToContainer(partsContainer, part));
-  }
-  
-  document.getElementById('empty-segments')?.classList.add('hidden');
-  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
 
 function addContentPartToCard(card, data = {}) {
   const container = card.querySelector('.content-parts-container');
