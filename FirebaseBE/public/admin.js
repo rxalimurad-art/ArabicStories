@@ -104,6 +104,7 @@ function setupEventListeners() {
   // Bulk Words Import
   document.getElementById('import-words-btn')?.addEventListener('click', handleImportWords);
   document.getElementById('import-words-file')?.addEventListener('change', handleWordsFileSelect);
+  document.getElementById('download-words-template-btn')?.addEventListener('click', downloadWordsTemplate);
   
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
@@ -1561,6 +1562,7 @@ function handleWordsFileSelect(e) {
   };
   reader.readAsText(file);
 }
+window.handleWordsFileSelect = handleWordsFileSelect;
 
 async function handleImportWords() {
   console.log('handleImportWords called');
@@ -1670,6 +1672,7 @@ async function handleImportWords() {
   showToast(`Imported ${successCount} words successfully${errorCount > 0 ? `, ${errorCount} failed` : ''}`, errorCount > 0 ? 'warning' : 'success');
   loadWords();
 }
+window.handleImportWords = handleImportWords;
 
 function normalizePartOfSpeech(pos) {
   if (!pos) return null;
@@ -1744,5 +1747,3 @@ function downloadWordsTemplate() {
 }
 
 window.downloadWordsTemplate = downloadWordsTemplate;
-window.handleImportWords = handleImportWords;
-window.handleWordsFileSelect = handleWordsFileSelect;
