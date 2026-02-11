@@ -78,25 +78,19 @@ class StoryReaderViewModel {
     
     /// Check if a word has a meaning available (in story words or generic words)
     func hasMeaningAvailable(for wordText: String) -> Bool {
-        let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
+        let normalizedSearch = ArabicTextUtils.normalizeForMatching(wordText)
         
         // Check story words first
         if let storyWords = story.words {
             let hasStoryMatch = storyWords.contains { word in
-                let storyWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
-                return storyWord == cleanedWord || 
-                       storyWord.contains(cleanedWord) || 
-                       cleanedWord.contains(storyWord)
+                ArabicTextUtils.wordsMatch(word.arabicText, wordText)
             }
             if hasStoryMatch { return true }
         }
         
-        // Check generic words
+        // Check generic words with normalization
         let hasGenericMatch = genericWords.contains { word in
-            let genericWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
-            return genericWord == cleanedWord || 
-                   genericWord.contains(cleanedWord) || 
-                   cleanedWord.contains(genericWord)
+            ArabicTextUtils.wordsMatch(word.arabicText, wordText)
         }
         
         return hasGenericMatch
@@ -201,22 +195,22 @@ class StoryReaderViewModel {
             print("⚠️ Story has no words defined")
         }
         
-        // Find the word in the story's vocabulary first
-        let cleanedWord = wordText.trimmingCharacters(in: .punctuationCharacters)
-        print("🔍 Looking for match: '\(cleanedWord)'")
+        // Find the word in the story's vocabulary first (with Arabic normalization)
+        let normalizedSearch = ArabicTextUtils.normalizeForMatching(wordText)
+        print("🔍 Looking for match: '\(wordText)' (normalized: '\(normalizedSearch)')")
         
         if let word = story.words?.first(where: { 
-            $0.arabicText == cleanedWord || $0.arabicText.contains(cleanedWord)
+            ArabicTextUtils.wordsMatch($0.arabicText, wordText)
         }) {
             print("✅ Found word match in story: '\(word.arabicText)' = '\(word.englishMeaning)'")
             showWordDetails(word: word, position: position)
         } else {
-            print("❌ No word match found in story for '\(cleanedWord)'")
+            print("❌ No word match found in story for '\(wordText)'")
             print("🔍 Searching in generic words collection...")
             
             // Search in generic words
             Task {
-                await searchGenericWords(cleanedWord, position: position)
+                await searchGenericWords(wordText, position: position)
             }
         }
     }
@@ -233,7 +227,7 @@ class StoryReaderViewModel {
                 } else {
                     print("❌ No word match found in generic words for '\(arabicText)'")
                     
-                    // Create a placeholder word for unknown words
+                    // Show original tapped text (not normalized) in the popover
                     let unknownWord = Word(
                         arabicText: arabicText,
                         englishMeaning: "Unknown word",

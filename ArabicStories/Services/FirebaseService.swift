@@ -100,19 +100,15 @@ class FirebaseService {
         }
     }
     
-    /// Search generic words by Arabic text (partial match)
+    /// Search generic words by Arabic text (with normalization)
     func searchGenericWords(arabicText: String) async throws -> [Word] {
         print("🔍 Searching generic words for: '\(arabicText)'")
         
-        // Fetch all and filter client-side for partial matching
+        // Fetch all and filter client-side with Arabic normalization
         let allWords = try await fetchGenericWords()
-        let normalizedSearch = arabicText.trimmingCharacters(in: .punctuationCharacters)
         
         let matches = allWords.filter { word in
-            let normalizedWord = word.arabicText.trimmingCharacters(in: .punctuationCharacters)
-            return normalizedWord == normalizedSearch ||
-                   normalizedWord.contains(normalizedSearch) ||
-                   normalizedSearch.contains(normalizedWord)
+            ArabicTextUtils.wordsMatch(word.arabicText, arabicText)
         }
         
         print("✅ Found \(matches.count) matching generic words")
