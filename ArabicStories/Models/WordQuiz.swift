@@ -41,6 +41,7 @@ struct QuizQuestion: Identifiable, Codable {
         self.correctAnswer = correctAnswer
         self.options = options
         self.askedAt = askedAt
+        self.score = 0
     }
     
     mutating func answer(_ answer: String, responseTime: TimeInterval) {
