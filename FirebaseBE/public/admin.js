@@ -101,6 +101,10 @@ function setupEventListeners() {
   document.getElementById('import-file')?.addEventListener('change', handleFileSelect);
   document.getElementById('export-all-btn')?.addEventListener('click', exportAllStories);
   
+  // Bulk Words Import
+  document.getElementById('import-words-btn')?.addEventListener('click', handleImportWords);
+  document.getElementById('import-words-file')?.addEventListener('change', handleWordsFileSelect);
+  
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
   document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
@@ -1317,6 +1321,10 @@ function openWordModal(word = null) {
   const title = document.getElementById('word-modal-title');
   const form = document.getElementById('word-form');
   
+  // Reset audio tabs to URL mode
+  switchAudioTab('url');
+  document.getElementById('word-audio-file').value = '';
+  
   if (word) {
     title.textContent = '✏️ Edit Word';
     document.getElementById('word-id').value = word.id || '';
@@ -1327,7 +1335,6 @@ function openWordModal(word = null) {
     document.getElementById('word-root-input').value = word.rootLetters || '';
     document.getElementById('word-difficulty-input').value = word.difficulty || 1;
     document.getElementById('word-category-input').value = word.category || 'general';
-    document.getElementById('word-tags-input').value = (word.tags || []).join(', ');
     document.getElementById('word-example-input').value = word.exampleSentence || '';
     document.getElementById('word-example-translation-input').value = word.exampleSentenceTranslation || '';
     document.getElementById('word-audio-input').value = word.audioPronunciationURL || word.audioURL || '';
@@ -1349,6 +1356,21 @@ function closeWordModal() {
 
 async function saveWord() {
   const wordId = document.getElementById('word-id').value;
+  const audioFile = document.getElementById('word-audio-file').files[0];
+  
+  let audioURL = document.getElementById('word-audio-input').value.trim() || null;
+  
+  // If audio file is selected, upload it first
+  if (audioFile) {
+    try {
+      showToast('Uploading audio file...', 'info');
+      audioURL = await uploadAudioFile(audioFile);
+    } catch (error) {
+      showToast(`Failed to upload audio: ${error.message}`, 'error');
+      return;
+    }
+  }
+  
   const wordData = {
     id: wordId || undefined,
     arabic: document.getElementById('word-arabic-input').value.trim(),
@@ -1358,10 +1380,9 @@ async function saveWord() {
     rootLetters: document.getElementById('word-root-input').value.trim() || null,
     difficulty: parseInt(document.getElementById('word-difficulty-input').value),
     category: document.getElementById('word-category-input').value,
-    tags: document.getElementById('word-tags-input').value.split(',').map(t => t.trim()).filter(Boolean),
     exampleSentence: document.getElementById('word-example-input').value.trim() || null,
     exampleSentenceTranslation: document.getElementById('word-example-translation-input').value.trim() || null,
-    audioPronunciationURL: document.getElementById('word-audio-input').value.trim() || null
+    audioPronunciationURL: audioURL
   };
   
   if (!wordData.arabic || !wordData.english) {
@@ -1385,6 +1406,27 @@ async function saveWord() {
   } catch (error) {
     showToast(`Failed to save word: ${error.message}`, 'error');
   }
+}
+
+async function uploadAudioFile(file) {
+  // For now, we'll use a data URL approach for small files
+  // In production, you might want to use Firebase Storage
+  return new Promise((resolve, reject) => {
+    // Check file size (max 5MB for data URLs)
+    if (file.size > 5 * 1024 * 1024) {
+      reject(new Error('Audio file too large. Max 5MB allowed.'));
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      resolve(e.target.result);
+    };
+    reader.onerror = () => {
+      reject(new Error('Failed to read audio file'));
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 async function editWord(wordId) {
@@ -1480,3 +1522,203 @@ function onFormatChange() {
 }
 
 window.onFormatChange = onFormatChange;
+
+// ============================================
+// Audio Upload Tabs
+// ============================================
+function switchAudioTab(tab) {
+  // Update tab buttons
+  document.querySelectorAll('.audio-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  
+  // Show/hide panels
+  document.getElementById('audio-url-panel').classList.toggle('hidden', tab !== 'url');
+  document.getElementById('audio-upload-panel').classList.toggle('hidden', tab !== 'upload');
+}
+
+window.switchAudioTab = switchAudioTab;
+
+// ============================================
+// Bulk Words Import
+// ============================================
+function handleWordsFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    document.getElementById('import-words-json').value = event.target.result;
+  };
+  reader.readAsText(file);
+}
+
+async function handleImportWords() {
+  const jsonText = document.getElementById('import-words-json').value.trim();
+  
+  if (!jsonText) {
+    showToast('Please paste JSON or select a file', 'error');
+    return;
+  }
+  
+  let words;
+  try {
+    words = JSON.parse(jsonText);
+    if (!Array.isArray(words)) {
+      showToast('JSON must be an array of words', 'error');
+      return;
+    }
+  } catch (error) {
+    showToast('Invalid JSON format', 'error');
+    return;
+  }
+  
+  // Show preview
+  const preview = document.getElementById('import-words-preview');
+  preview.classList.remove('hidden');
+  preview.innerHTML = `<p>Importing ${words.length} words...</p>`;
+  
+  // Normalize word data
+  const normalizedWords = words.map(word => ({
+    arabic: word.arabic || word['Arabic with Araab'] || word.arabicText || '',
+    english: word.english || word.Meaning || word.englishMeaning || '',
+    transliteration: word.transliteration || word.Transliteration || '',
+    partOfSpeech: normalizePartOfSpeech(word.partOfSpeech || word.POS || ''),
+    rootLetters: word.rootLetters || word['Root Letters'] || null,
+    exampleSentence: word.exampleSentence || word['Example Usage (Arabic)'] || null,
+    exampleSentenceTranslation: word.exampleSentenceTranslation || word['Example Translation'] || null,
+    difficulty: parseInt(word.difficulty) || 1,
+    category: word.category || 'general'
+  }));
+  
+  // Validate required fields
+  const invalidWords = normalizedWords.filter(w => !w.arabic || !w.english);
+  if (invalidWords.length > 0) {
+    showToast(`${invalidWords.length} words missing required fields (arabic/english)`, 'error');
+    return;
+  }
+  
+  // Import words one by one
+  let successCount = 0;
+  let errorCount = 0;
+  const results = [];
+  
+  for (let i = 0; i < normalizedWords.length; i++) {
+    const word = normalizedWords[i];
+    try {
+      await apiRequest(API.words(), {
+        method: 'POST',
+        body: JSON.stringify(word)
+      });
+      successCount++;
+      results.push({ status: 'success', word: word.arabic });
+    } catch (error) {
+      errorCount++;
+      results.push({ status: 'error', word: word.arabic, error: error.message });
+    }
+    
+    // Update progress
+    if (i % 5 === 0 || i === normalizedWords.length - 1) {
+      preview.innerHTML = `
+        <p>Progress: ${i + 1}/${normalizedWords.length} words processed</p>
+        <p style="color: var(--success);">✓ ${successCount} successful</p>
+        ${errorCount > 0 ? `<p style="color: var(--danger);">✗ ${errorCount} failed</p>` : ''}
+      `;
+    }
+  }
+  
+  // Show final results
+  preview.innerHTML = `
+    <div class="words-preview-list">
+      ${results.map(r => `
+        <div class="word-preview-item">
+          <span class="word-preview-arabic" dir="rtl">${r.word}</span>
+          <span class="word-preview-status ${r.status}">${r.status === 'success' ? '✓' : '✗'}</span>
+        </div>
+      `).join('')}
+    </div>
+    <p style="margin-top: 12px; text-align: center;">
+      <strong style="color: var(--success);">${successCount} imported</strong>
+      ${errorCount > 0 ? ` | <strong style="color: var(--danger);">${errorCount} failed</strong>` : ''}
+    </p>
+  `;
+  
+  showToast(`Imported ${successCount} words successfully${errorCount > 0 ? `, ${errorCount} failed` : ''}`, errorCount > 0 ? 'warning' : 'success');
+  loadWords();
+}
+
+function normalizePartOfSpeech(pos) {
+  if (!pos) return null;
+  const posMap = {
+    'noun': 'noun',
+    'Noun': 'noun',
+    'verb': 'verb',
+    'Verb': 'verb',
+    'adj.': 'adjective',
+    'Adj.': 'adjective',
+    'adjective': 'adjective',
+    'Adjective': 'adjective',
+    'adv.': 'adverb',
+    'Adv.': 'adverb',
+    'adverb': 'adverb',
+    'Adverb': 'adverb',
+    'prep.': 'preposition',
+    'Prep.': 'preposition',
+    'preposition': 'preposition',
+    'pronoun': 'pronoun',
+    'Pronoun': 'pronoun',
+    'particle': 'particle',
+    'Particle': 'particle',
+    'conj.': 'conjunction',
+    'Conj.': 'conjunction',
+    'conjunction': 'conjunction',
+    'interjection': 'interjection',
+    'Interjection': 'interjection',
+    'proper noun': 'noun',
+    'Proper Noun': 'noun',
+    'noun (pl.)': 'noun',
+    'Noun (pl.)': 'noun',
+    'noun/adj.': 'noun',
+    'Noun/Adj.': 'noun'
+  };
+  return posMap[pos] || pos.toLowerCase();
+}
+
+function downloadWordsTemplate() {
+  const template = [
+    {
+      "arabic": "\u0643\u062a\u0627\u0628",
+      "transliteration": "kit\u0101b",
+      "english": "book",
+      "partOfSpeech": "noun",
+      "rootLetters": "\u0643 \u062a \u0628",
+      "exampleSentence": "\u0647\u0630\u0627 \u0643\u062a\u0627\u0628 \u062c\u0645\u064a\u0644",
+      "exampleSentenceTranslation": "This is a beautiful book",
+      "difficulty": 1,
+      "category": "general"
+    },
+    {
+      "arabic": "\u0642\u0644\u0645",
+      "transliteration": "qalam",
+      "english": "pen",
+      "partOfSpeech": "noun",
+      "rootLetters": "\u0642 \u0644 \u0645",
+      "difficulty": 1,
+      "category": "general"
+    }
+  ];
+  
+  const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'words-template.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+window.downloadWordsTemplate = downloadWordsTemplate;
+window.handleImportWords = handleImportWords;
+window.handleWordsFileSelect = handleWordsFileSelect;

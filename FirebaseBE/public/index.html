@@ -194,6 +194,108 @@
       border-radius: 20px;
       font-weight: 600;
     }
+    
+    /* Audio input tabs */
+    .audio-input-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .audio-tab {
+      flex: 1;
+      padding: 8px 16px;
+      border: 2px solid var(--gray-300);
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .audio-tab:hover {
+      border-color: var(--primary);
+    }
+    
+    .audio-tab.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+    
+    .audio-panel {
+      animation: fadeIn 0.2s ease;
+    }
+    
+    .upload-progress {
+      margin-top: 8px;
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    
+    /* Import words preview */
+    .words-preview-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 12px;
+    }
+    
+    .word-preview-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--gray-100);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .word-preview-arabic {
+      font-size: 18px;
+      font-weight: 600;
+      min-width: 100px;
+    }
+    
+    .word-preview-info {
+      flex: 1;
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    
+    .word-preview-status {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+    
+    .word-preview-status.pending {
+      background: var(--warning);
+      color: white;
+    }
+    
+    .word-preview-status.success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .word-preview-status.error {
+      background: var(--danger);
+      color: white;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -424,6 +526,26 @@
           </section>
 
           <section class="form-section">
+            <h3>📥 Bulk Import Words</h3>
+            <p>Import multiple words from JSON array</p>
+            
+            <div class="form-group">
+              <label for="import-words-file">Select JSON file</label>
+              <input type="file" id="import-words-file" accept=".json">
+              <small>JSON array of word objects</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="import-words-json">Or paste JSON here</label>
+              <textarea id="import-words-json" rows="8" placeholder='[{"arabic": "كتاب", "transliteration": "kitab", "english": "book", "partOfSpeech": "noun"}, ...]'></textarea>
+            </div>
+            
+            <button id="import-words-btn" class="btn btn-primary">Import Words</button>
+            <button onclick="downloadWordsTemplate()" class="btn btn-secondary" style="margin-left: 8px;">📋 Template</button>
+            <div id="import-words-preview" class="import-preview hidden"></div>
+          </section>
+
+          <section class="form-section">
             <h3>📤 Export Stories</h3>
             <p>Export all stories or selected story</p>
             
@@ -559,18 +681,25 @@
           
           <div class="form-row">
             <div class="form-group form-group-wide">
-              <label for="word-audio-input">Audio Pronunciation URL</label>
-              <input type="url" id="word-audio-input" placeholder="https://example.com/audio.mp3">
-              <small>Link to audio file for word pronunciation</small>
+              <label>Audio Pronunciation</label>
+              <div class="audio-input-tabs">
+                <button type="button" class="audio-tab active" data-tab="url" onclick="switchAudioTab('url')">🔗 URL</button>
+                <button type="button" class="audio-tab" data-tab="upload" onclick="switchAudioTab('upload')">📁 Upload</button>
+              </div>
+              <div id="audio-url-panel" class="audio-panel">
+                <input type="url" id="word-audio-input" placeholder="https://example.com/audio.mp3">
+                <small>Link to audio file for word pronunciation</small>
+              </div>
+              <div id="audio-upload-panel" class="audio-panel hidden">
+                <input type="file" id="word-audio-file" accept="audio/*">
+                <small>Upload audio file (MP3, WAV, M4A)</small>
+                <div id="audio-upload-progress" class="upload-progress hidden"></div>
+              </div>
             </div>
           </div>
           
           <div class="form-row">
-            <div class="form-group">
-              <label for="word-tags-input">Tags (comma separated)</label>
-              <input type="text" id="word-tags-input" placeholder="common, daily, formal">
-            </div>
-            <div class="form-group">
+            <div class="form-group form-group-wide">
               <label for="word-root-input">Root Letters</label>
               <input type="text" id="word-root-input" dir="rtl" placeholder="أصل الكلمة">
             </div>
