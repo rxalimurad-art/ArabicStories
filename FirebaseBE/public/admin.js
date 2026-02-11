@@ -882,27 +882,106 @@ async function handleImport() {
     const stories = Array.isArray(data) ? data : [data];
     
     let successCount = 0;
+    const errors = [];
     
     for (const story of stories) {
       try {
+        // Normalize field names and set defaults
+        const normalizedStory = normalizeStoryData(story);
+        
+        // Validate required fields
+        if (!normalizedStory.title) {
+          errors.push(`Story missing title`);
+          continue;
+        }
+        if (!normalizedStory.storyDescription) {
+          errors.push(`Story "${normalizedStory.title}" missing description`);
+          continue;
+        }
+        
         await apiRequest(API.stories(), {
           method: 'POST',
-          body: JSON.stringify(story)
+          body: JSON.stringify(normalizedStory)
         });
         successCount++;
       } catch (error) {
         console.error('Failed to import story:', story.title, error);
+        errors.push(`"${story.title || 'Untitled'}": ${error.message}`);
       }
     }
     
-    showToast(`Imported ${successCount}/${stories.length} stories`, 
-      successCount === stories.length ? 'success' : 'warning');
+    if (errors.length > 0) {
+      showToast(`Imported ${successCount}/${stories.length}. Errors: ${errors.join(', ')}`, 'warning');
+    } else {
+      showToast(`Imported ${successCount}/${stories.length} stories successfully!`, 'success');
+    }
     
-    switchView('stories');
-    loadStories();
+    if (successCount > 0) {
+      switchView('stories');
+      loadStories();
+    }
   } catch (error) {
     showToast(`Import failed: ${error.message}`, 'error');
   }
+}
+
+/**
+ * Normalize story data - handles field name variations and sets defaults
+ */
+function normalizeStoryData(story) {
+  const normalized = {
+    // Required fields with fallbacks
+    title: story.title || '',
+    storyDescription: story.storyDescription || story.description || story.desc || '',
+    author: story.author || story.authorName || 'Anonymous',
+    difficultyLevel: parseInt(story.difficultyLevel) || 1,
+    category: story.category || 'general',
+    
+    // Optional fields
+    titleArabic: story.titleArabic || story.arabicTitle || null,
+    storyDescriptionArabic: story.storyDescriptionArabic || story.arabicDescription || null,
+    tags: story.tags || [],
+    coverImageURL: story.coverImageURL || story.coverImage || story.imageURL || null,
+    audioNarrationURL: story.audioNarrationURL || story.audioURL || null,
+    
+    // Format handling
+    format: story.format || 'bilingual',
+    
+    // Format-specific content
+    segments: story.segments || [],
+    mixedSegments: story.mixedSegments || [],
+    words: normalizeWords(story.words || []),
+    grammarNotes: story.grammarNotes || []
+  };
+  
+  // Auto-detect format if not specified
+  if (!story.format) {
+    if (story.mixedSegments && story.mixedSegments.length > 0) {
+      normalized.format = 'mixed';
+    } else if (story.segments && story.segments.length > 0) {
+      normalized.format = 'bilingual';
+    }
+  }
+  
+  return normalized;
+}
+
+/**
+ * Normalize words data - handles field name variations
+ */
+function normalizeWords(words) {
+  if (!Array.isArray(words)) return [];
+  
+  return words.map(word => ({
+    id: word.id || generateId(),
+    arabic: word.arabic || word.arabicText || '',
+    english: word.english || word.englishMeaning || word.translation || '',
+    transliteration: word.transliteration || null,
+    partOfSpeech: word.partOfSpeech || word.pos || null,
+    rootLetters: word.rootLetters || word.root || null,
+    difficulty: parseInt(word.difficulty) || 1,
+    exampleSentence: word.exampleSentence || word.example || null
+  })).filter(w => w.arabic && w.english);
 }
 
 async function exportAllStories() {
@@ -1326,6 +1405,9 @@ window.promptDeleteWord = promptDeleteWord;
 window.downloadTemplate = downloadTemplate;
 window.addMixedSegment = addMixedSegment;
 window.addContentPart = addContentPart;
+window.handleImport = handleImport;
+window.normalizeStoryData = normalizeStoryData;
+window.normalizeWords = normalizeWords;
 
 // Format switching for story form
 function onFormatChange() {
