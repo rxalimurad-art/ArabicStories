@@ -508,9 +508,9 @@ struct LinkedWordButton: View {
     }
 }
 
-// MARK: - Mixed Arabic Word View
+// MARK: - Linked Mixed Word View (for story vocabulary links)
 
-struct MixedArabicWordView: View {
+struct LinkedMixedWordView: View {
     let arabicText: String
     let transliteration: String?
     let wordId: String?
