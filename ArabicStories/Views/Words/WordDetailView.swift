@@ -318,7 +318,6 @@ struct WordDetailView: View {
         case .mastered: return .blue
         case .known: return .green
         case .none: return .gray
-        default: return .gray
         }
     }
     

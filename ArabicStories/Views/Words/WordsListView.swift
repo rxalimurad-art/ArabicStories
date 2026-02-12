@@ -59,21 +59,21 @@ struct WordsListView: View {
     
     private var statsHeader: some View {
         HStack(spacing: 20) {
-            StatCard(
+            WordsStatCard(
                 title: "Total",
                 value: "\(viewModel.totalWords)",
                 icon: "book.fill",
                 color: .blue
             )
             
-            StatCard(
+            WordsStatCard(
                 title: "Mastered",
                 value: "\(viewModel.masteredCount)",
                 icon: "checkmark.circle.fill",
                 color: .green
             )
             
-            StatCard(
+            WordsStatCard(
                 title: "Avg Score",
                 value: "\(Int(viewModel.averageMastery))%",
                 icon: "chart.bar.fill",
@@ -277,7 +277,7 @@ struct WordListRow: View {
                             .clipShape(Capsule())
                     }
                     
-                    DifficultyBadge(level: word.difficulty)
+                    WordsDifficultyBadge(level: word.difficulty)
                 }
             }
             
@@ -299,7 +299,7 @@ struct WordListRow: View {
 
 // MARK: - Supporting Views
 
-struct StatCard: View {
+struct WordsStatCard: View {
     let title: String
     let value: String
     let icon: String
@@ -363,7 +363,7 @@ struct POSChip: View {
     }
 }
 
-struct DifficultyBadge: View {
+struct WordsDifficultyBadge: View {
     let level: Int
     
     var body: some View {
