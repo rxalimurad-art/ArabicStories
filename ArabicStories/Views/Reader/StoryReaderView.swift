@@ -343,23 +343,54 @@ struct MixedContentText: View {
     let onWordTap: (String, CGPoint) -> Void
     
     var body: some View {
-        // Parse text into segments
-        let segments = parseTextSegments(text)
+        // Build attributed string directly
+        let attributedString = buildAttributedString()
         
-        // Build view with proper wrapping
-        WrappingText(segments: segments, fontSize: fontSize, isNightMode: isNightMode)
-            .frame(maxWidth: .infinity, minHeight: 50)
+        Text(attributedString)
+            .font(.system(size: fontSize))
+            .lineSpacing(4)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
     }
     
-    private func parseTextSegments(_ text: String) -> [TextSegment] {
-        var segments: [TextSegment] = []
+    private func buildAttributedString() -> AttributedString {
+        var result = AttributedString(text)
+        result.font = .system(size: fontSize)
+        result.foregroundColor = isNightMode ? .white : .primary
+        
+        // Find and style Arabic words
+        let arabicWords = extractArabicWords(from: text)
+        
+        for word in arabicWords {
+            var searchPosition = result.startIndex
+            
+            while searchPosition < result.endIndex {
+                if let range = result.range(of: word, options: [], 
+                                            range: searchPosition..<result.endIndex) {
+                    if hasMeaningAvailable(word) {
+                        result[range].foregroundColor = Color.hikayaTeal
+                        result[range].font = .custom("NotoNaskhArabic", size: fontSize).bold()
+                    } else {
+                        result[range].font = .custom("NotoNaskhArabic", size: fontSize)
+                    }
+                    searchPosition = range.upperBound
+                } else {
+                    break
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    private func extractArabicWords(from text: String) -> [String] {
+        var words: [String] = []
         var currentIndex = text.startIndex
         
         while currentIndex < text.endIndex {
             let char = text[currentIndex]
             
             if ArabicTextUtils.isArabicCharacter(char) {
-                // Collect Arabic word (including diacritics)
                 var arabicWord = ""
                 var endIndex = currentIndex
                 
@@ -370,113 +401,16 @@ struct MixedContentText: View {
                     endIndex = text.index(after: endIndex)
                 }
                 
-                if !arabicWord.isEmpty {
-                    let hasMeaning = hasMeaningAvailable(arabicWord)
-                    segments.append(TextSegment(
-                        text: arabicWord,
-                        isArabic: true,
-                        hasMeaning: hasMeaning
-                    ))
+                if !arabicWord.isEmpty && !words.contains(arabicWord) {
+                    words.append(arabicWord)
                 }
                 currentIndex = endIndex
             } else {
-                // Collect non-Arabic text (including spaces)
-                var regularText = ""
-                var endIndex = currentIndex
-                
-                while endIndex < text.endIndex && 
-                      !ArabicTextUtils.isArabicCharacter(text[endIndex]) {
-                    regularText.append(text[endIndex])
-                    endIndex = text.index(after: endIndex)
-                }
-                
-                if !regularText.isEmpty {
-                    segments.append(TextSegment(
-                        text: regularText,
-                        isArabic: false,
-                        hasMeaning: false
-                    ))
-                }
-                currentIndex = endIndex
+                currentIndex = text.index(after: currentIndex)
             }
         }
         
-        return segments
-    }
-}
-
-// MARK: - Text Segment
-
-struct TextSegment: Identifiable {
-    let id = UUID()
-    let text: String
-    let isArabic: Bool
-    let hasMeaning: Bool
-}
-
-// MARK: - Wrapping Text View
-
-struct WrappingText: UIViewRepresentable {
-    let segments: [TextSegment]
-    let fontSize: CGFloat
-    let isNightMode: Bool
-    
-    func makeUIView(context: Context) -> WrappingTextView {
-        let textView = WrappingTextView()
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
-        textView.textContainer.lineFragmentPadding = 4
-        textView.textContainerInset = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        textView.textContainer.lineBreakMode = .byWordWrapping
-        textView.textContainer.maximumNumberOfLines = 0
-        return textView
-    }
-    
-    func updateUIView(_ textView: WrappingTextView, context: Context) {
-        let attributedString = NSMutableAttributedString()
-        
-        for segment in segments {
-            let font: UIFont
-            let color: UIColor
-            
-            if segment.isArabic {
-                if segment.hasMeaning {
-                    font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
-                    color = UIColor(Color.hikayaTeal)
-                } else {
-                    font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
-                    color = isNightMode ? .white : .label
-                }
-            } else {
-                font = UIFont.systemFont(ofSize: fontSize)
-                color = isNightMode ? .white : .label
-            }
-            
-            var attributes: [NSAttributedString.Key: Any] = [
-                .font: font,
-                .foregroundColor: color
-            ]
-            
-            let attributedSegment = NSAttributedString(string: segment.text, attributes: attributes)
-            attributedString.append(attributedSegment)
-        }
-        
-        textView.attributedText = attributedString
-        textView.invalidateIntrinsicContentSize()
-    }
-}
-
-// Custom UITextView that sizes itself properly
-class WrappingTextView: UITextView {
-    override var intrinsicContentSize: CGSize {
-        let size = sizeThatFits(CGSize(width: bounds.width, height: .greatestFiniteMagnitude))
-        return CGSize(width: UIView.noIntrinsicMetric, height: size.height)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        invalidateIntrinsicContentSize()
+        return words
     }
 }
 
