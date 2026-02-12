@@ -343,48 +343,22 @@ struct MixedContentText: View {
     let onWordTap: (String, CGPoint) -> Void
     
     var body: some View {
-        // Build text segments
-        let segments = parseText(text)
+        // Parse text into segments
+        let segments = parseTextSegments(text)
         
-        // Use FlowLayout for proper wrapping
-        FlowLayout(spacing: 2) {
-            ForEach(segments) { segment in
-                if segment.isArabic && hasMeaningAvailable(segment.text) {
-                    // Highlighted tappable Arabic word
-                    Text(segment.text)
-                        .font(.custom("NotoNaskhArabic", size: fontSize).bold())
-                        .foregroundStyle(Color.hikayaTeal)
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, 2)
-                        .background(Color.hikayaTeal.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                        .onTapGesture { location in
-                            onWordTap(segment.text, location)
-                        }
-                } else if segment.isArabic {
-                    // Regular Arabic word
-                    Text(segment.text)
-                        .font(.custom("NotoNaskhArabic", size: fontSize))
-                        .foregroundStyle(isNightMode ? .white : .primary)
-                } else {
-                    // English text (preserve spaces)
-                    Text(segment.text)
-                        .font(.system(size: fontSize))
-                        .foregroundStyle(isNightMode ? .white : .primary)
-                }
-            }
-        }
+        // Build view with proper wrapping
+        WrappingText(segments: segments, fontSize: fontSize, isNightMode: isNightMode)
     }
     
-    private func parseText(_ text: String) -> [MixedTextSegment] {
-        var segments: [MixedTextSegment] = []
+    private func parseTextSegments(_ text: String) -> [TextSegment] {
+        var segments: [TextSegment] = []
         var currentIndex = text.startIndex
         
         while currentIndex < text.endIndex {
             let char = text[currentIndex]
             
             if ArabicTextUtils.isArabicCharacter(char) {
-                // Start of Arabic word sequence
+                // Collect Arabic word (including diacritics)
                 var arabicWord = ""
                 var endIndex = currentIndex
                 
@@ -396,11 +370,16 @@ struct MixedContentText: View {
                 }
                 
                 if !arabicWord.isEmpty {
-                    segments.append(MixedTextSegment(text: arabicWord, isArabic: true))
+                    let hasMeaning = hasMeaningAvailable(arabicWord)
+                    segments.append(TextSegment(
+                        text: arabicWord,
+                        isArabic: true,
+                        hasMeaning: hasMeaning
+                    ))
                 }
                 currentIndex = endIndex
             } else {
-                // Start of non-Arabic text
+                // Collect non-Arabic text (including spaces)
                 var regularText = ""
                 var endIndex = currentIndex
                 
@@ -411,7 +390,11 @@ struct MixedContentText: View {
                 }
                 
                 if !regularText.isEmpty {
-                    segments.append(MixedTextSegment(text: regularText, isArabic: false))
+                    segments.append(TextSegment(
+                        text: regularText,
+                        isArabic: false,
+                        hasMeaning: false
+                    ))
                 }
                 currentIndex = endIndex
             }
@@ -421,15 +404,81 @@ struct MixedContentText: View {
     }
 }
 
-// MARK: - Mixed Text Segment
+// MARK: - Text Segment
 
-struct MixedTextSegment: Identifiable {
+struct TextSegment: Identifiable {
     let id = UUID()
     let text: String
     let isArabic: Bool
+    let hasMeaning: Bool
 }
 
+// MARK: - Wrapping Text View
 
+struct WrappingText: UIViewRepresentable {
+    let segments: [TextSegment]
+    let fontSize: CGFloat
+    let isNightMode: Bool
+    
+    func makeUIView(context: Context) -> UITextView {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainerInset = .zero
+        textView.delegate = context.coordinator
+        return textView
+    }
+    
+    func updateUIView(_ textView: UITextView, context: Context) {
+        let attributedString = NSMutableAttributedString()
+        
+        for segment in segments {
+            let font: UIFont
+            let color: UIColor
+            let backgroundColor: UIColor?
+            
+            if segment.isArabic {
+                if segment.hasMeaning {
+                    font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
+                    color = UIColor(Color.hikayaTeal)
+                    backgroundColor = UIColor(Color.hikayaTeal.opacity(0.1))
+                } else {
+                    font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
+                    color = isNightMode ? .white : .label
+                    backgroundColor = nil
+                }
+            } else {
+                font = UIFont.systemFont(ofSize: fontSize)
+                color = isNightMode ? .white : .label
+                backgroundColor = nil
+            }
+            
+            var attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: color
+            ]
+            
+            if let bgColor = backgroundColor {
+                attributes[.backgroundColor] = bgColor
+            }
+            
+            let attributedSegment = NSAttributedString(string: segment.text, attributes: attributes)
+            attributedString.append(attributedSegment)
+        }
+        
+        textView.attributedText = attributedString
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator: NSObject, UITextViewDelegate {
+        // Handle tap gestures if needed
+    }
+}
 
 // MARK: - Mixed Arabic Word View (Inline)
 
