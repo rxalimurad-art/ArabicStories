@@ -49,7 +49,8 @@ struct StoryReaderView: View {
                         MixedContentView(
                             segment: segment,
                             storyWords: story.words,
-                            viewModel: viewModel
+                            viewModel: viewModel,
+                            refreshTrigger: wordsLoadedRefresh
                         )
                     } else {
                         ContentUnavailableView("No Content", systemImage: "doc.text")
@@ -229,25 +230,32 @@ struct MixedContentView: View {
     let segment: MixedContentSegment
     let storyWords: [Word]?
     var viewModel: StoryReaderViewModel
+    var refreshTrigger: Bool = false
     
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Mixed Content - Simple text display
-                // Arabic words are linked by admin separately and managed in linkedWordIds
+                // Mixed Content - English text with interactive Arabic words
                 MixedTextView(
                     text: segment.text,
                     linkedWordIds: segment.linkedWordIds ?? [],
                     storyWords: storyWords,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
-                    onWordTap: { wordId, position in
+                    hasMeaningAvailable: { word in
+                        viewModel.hasMeaningAvailable(for: word)
+                    },
+                    onLinkedWordTap: { wordId, position in
                         viewModel.handleMixedWordTap(
                             wordId: wordId,
                             position: position
                         )
+                    },
+                    onGenericWordTap: { word, position in
+                        viewModel.handleWordTap(wordText: word, position: position)
                     }
                 )
+                .id(refreshTrigger)
                 
                 // Cultural Note
                 if let culturalNote = segment.culturalNote {
@@ -272,7 +280,9 @@ struct MixedTextView: View {
     let storyWords: [Word]?
     let fontSize: CGFloat
     let isNightMode: Bool
-    let onWordTap: (String, CGPoint) -> Void
+    let hasMeaningAvailable: (String) -> Bool
+    let onLinkedWordTap: (String, CGPoint) -> Void
+    let onGenericWordTap: (String, CGPoint) -> Void
     
     // Get linked words for this segment
     private var linkedWords: [Word] {
@@ -282,15 +292,42 @@ struct MixedTextView: View {
         }
     }
     
+    // Parse text into segments (regular text + Arabic words)
+    private var textSegments: [MixedTextSegment] {
+        parseMixedText(text)
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Main text content
-            Text(text)
-                .font(.system(size: fontSize))
-                .foregroundStyle(isNightMode ? .white : .primary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // Main text content with inline Arabic word highlighting
+            FlowLayout(spacing: 4) {
+                ForEach(textSegments) { segment in
+                    if segment.isArabic && hasMeaningAvailable(segment.text) {
+                        // Highlighted Arabic word (tappable)
+                        MixedArabicWordView(
+                            word: segment.text,
+                            fontSize: fontSize,
+                            isNightMode: isNightMode,
+                            hasMeaning: true,
+                            onTap: { position in
+                                onGenericWordTap(segment.text, position)
+                            }
+                        )
+                    } else if segment.isArabic {
+                        // Regular Arabic word (not in dictionary)
+                        Text(segment.text)
+                            .font(.custom("NotoNaskhArabic", size: fontSize))
+                            .foregroundStyle(isNightMode ? .white : .primary)
+                    } else {
+                        // Regular English text
+                        Text(segment.text)
+                            .font(.system(size: fontSize))
+                            .foregroundStyle(isNightMode ? .white : .primary)
+                    }
+                }
+            }
             
-            // Linked Arabic words section (if any)
+            // Linked Arabic words section (if any) - from story vocabulary
             if !linkedWords.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Tap words to learn:")
@@ -303,7 +340,7 @@ struct MixedTextView: View {
                                 word: word,
                                 isNightMode: isNightMode,
                                 onTap: { position in
-                                    onWordTap(word.id.uuidString, position)
+                                    onLinkedWordTap(word.id.uuidString, position)
                                 }
                             )
                         }
@@ -317,6 +354,112 @@ struct MixedTextView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(isNightMode ? Color.white.opacity(0.05) : Color.white)
         )
+    }
+    
+    // Parse text to identify Arabic words
+    private func parseMixedText(_ text: String) -> [MixedTextSegment] {
+        var segments: [MixedTextSegment] = []
+        var currentIndex = text.startIndex
+        
+        while currentIndex < text.endIndex {
+            let char = text[currentIndex]
+            
+            if ArabicTextUtils.isArabicCharacter(char) {
+                // Start of Arabic word
+                var arabicWord = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex && ArabicTextUtils.isArabicCharacter(text[endIndex]) {
+                    arabicWord.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !arabicWord.isEmpty {
+                    segments.append(MixedTextSegment(text: arabicWord, isArabic: true))
+                }
+                
+                currentIndex = endIndex
+            } else {
+                // Start of non-Arabic text
+                var regularText = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex && !ArabicTextUtils.isArabicCharacter(text[endIndex]) {
+                    regularText.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !regularText.isEmpty {
+                    segments.append(MixedTextSegment(text: regularText, isArabic: false))
+                }
+                
+                currentIndex = endIndex
+            }
+        }
+        
+        return segments
+    }
+}
+
+// MARK: - Mixed Text Segment
+
+struct MixedTextSegment: Identifiable {
+    let id = UUID()
+    let text: String
+    let isArabic: Bool
+}
+
+// MARK: - Mixed Arabic Word View (Inline)
+
+struct MixedArabicWordView: View {
+    let word: String
+    let fontSize: CGFloat
+    let isNightMode: Bool
+    let hasMeaning: Bool
+    let onTap: (CGPoint) -> Void
+    
+    @State private var tapPosition: CGPoint = .zero
+    
+    var body: some View {
+        Text(word)
+            .font(.custom("NotoNaskhArabic", size: fontSize))
+            .fontWeight(hasMeaning ? .semibold : .medium)
+            .foregroundStyle(textColor)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 4)
+            .background(backgroundView)
+            .overlay(overlayView)
+            .contentShape(Rectangle())
+            .onTapGesture { location in
+                tapPosition = location
+                onTap(location)
+            }
+    }
+    
+    private var textColor: Color {
+        if isNightMode {
+            return hasMeaning ? Color.hikayaTeal.opacity(0.9) : .white
+        } else {
+            return hasMeaning ? Color.hikayaTeal : .primary
+        }
+    }
+    
+    private var backgroundView: some View {
+        RoundedRectangle(cornerRadius: 4)
+            .fill(hasMeaning ? highlightBackgroundColor : Color.clear)
+    }
+    
+    private var overlayView: some View {
+        RoundedRectangle(cornerRadius: 4)
+            .stroke(hasMeaning ? borderColor : Color.clear, lineWidth: hasMeaning ? 1 : 0)
+    }
+    
+    private var highlightBackgroundColor: Color {
+        isNightMode ? Color.hikayaTeal.opacity(0.15) : Color.hikayaTeal.opacity(0.08)
+    }
+    
+    private var borderColor: Color {
+        isNightMode ? Color.hikayaTeal.opacity(0.5) : Color.hikayaTeal.opacity(0.4)
     }
 }
 
