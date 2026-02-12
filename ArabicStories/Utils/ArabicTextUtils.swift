@@ -31,6 +31,11 @@ enum ArabicTextUtils {
         return text.filter { !diacritics.contains($0) }
     }
     
+    /// Check if character is a diacritic
+    static func isDiacritic(_ char: Character) -> Bool {
+        return diacritics.contains(char)
+    }
+    
     // MARK: - Letter Normalization
     
     /// Normalize Arabic letter variants to standard forms
