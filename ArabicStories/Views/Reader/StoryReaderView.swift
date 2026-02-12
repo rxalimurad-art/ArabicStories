@@ -333,7 +333,7 @@ struct MixedTextView: View {
     }
 }
 
-// MARK: - Mixed Content Text (with inline highlighting)
+// MARK: - Mixed Content Text (Simple Approach)
 
 struct MixedContentText: View {
     let text: String
@@ -342,51 +342,52 @@ struct MixedContentText: View {
     let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
     
-    var body: some View {
-        // Parse text and build with inline highlighting
-        let segments = parseSegments(from: text)
-        
-        segmentsView(segments)
-            .frame(maxWidth: .infinity, alignment: .leading)
+    // Extract Arabic words that have meanings
+    private var arabicWordsWithMeanings: [String] {
+        extractArabicWords(from: text).filter { hasMeaningAvailable($0) }
     }
     
-    private func segmentsView(_ segments: [TextSegment]) -> some View {
-        // Use FlowLayout to arrange text segments with proper wrapping
-        FlowLayout(spacing: 0) {
-            ForEach(segments) { segment in
-                if segment.isArabic && segment.hasMeaning {
-                    // Highlighted Arabic word
-                    Text(segment.text)
-                        .font(.custom("NotoNaskhArabic", size: fontSize).bold())
-                        .foregroundColor(Color.hikayaTeal)
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, 2)
-                        .background(Color.hikayaTeal.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                } else if segment.isArabic {
-                    // Regular Arabic word
-                    Text(segment.text)
-                        .font(.custom("NotoNaskhArabic", size: fontSize))
-                        .foregroundColor(isNightMode ? .white : .primary)
-                } else {
-                    // English text
-                    Text(segment.text)
-                        .font(.system(size: fontSize))
-                        .foregroundColor(isNightMode ? .white : .primary)
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Simple text display - no inline highlighting
+            Text(text)
+                .font(.system(size: fontSize))
+                .lineSpacing(6)
+                .foregroundColor(isNightMode ? .white : .primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Show Arabic word chips below (if any have meanings)
+            if !arabicWordsWithMeanings.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Tap to learn:")
+                        .font(.caption)
+                        .foregroundStyle(isNightMode ? .gray : .secondary)
+                    
+                    FlowLayout(spacing: 8) {
+                        ForEach(arabicWordsWithMeanings, id: \.self) { word in
+                            MixedArabicWordChip(
+                                word: word,
+                                fontSize: fontSize,
+                                isNightMode: isNightMode,
+                                onTap: { position in
+                                    onWordTap(word, position)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
     }
     
-    private func parseSegments(from text: String) -> [TextSegment] {
-        var segments: [TextSegment] = []
+    private func extractArabicWords(from text: String) -> [String] {
+        var words: [String] = []
         var currentIndex = text.startIndex
         
         while currentIndex < text.endIndex {
             let char = text[currentIndex]
             
             if ArabicTextUtils.isArabicCharacter(char) {
-                // Collect Arabic word (including diacritics)
                 var arabicWord = ""
                 var endIndex = currentIndex
                 
@@ -397,48 +398,48 @@ struct MixedContentText: View {
                     endIndex = text.index(after: endIndex)
                 }
                 
-                if !arabicWord.isEmpty {
-                    let hasMeaning = hasMeaningAvailable(arabicWord)
-                    segments.append(TextSegment(
-                        text: arabicWord,
-                        isArabic: true,
-                        hasMeaning: hasMeaning
-                    ))
+                if !arabicWord.isEmpty && !words.contains(arabicWord) {
+                    words.append(arabicWord)
                 }
                 currentIndex = endIndex
             } else {
-                // Collect non-Arabic text (including spaces and newlines)
-                var regularText = ""
-                var endIndex = currentIndex
-                
-                while endIndex < text.endIndex && 
-                      !ArabicTextUtils.isArabicCharacter(text[endIndex]) {
-                    regularText.append(text[endIndex])
-                    endIndex = text.index(after: endIndex)
-                }
-                
-                if !regularText.isEmpty {
-                    segments.append(TextSegment(
-                        text: regularText,
-                        isArabic: false,
-                        hasMeaning: false
-                    ))
-                }
-                currentIndex = endIndex
+                currentIndex = text.index(after: currentIndex)
             }
         }
         
-        return segments
+        return words
     }
 }
 
-// MARK: - Text Segment
+// MARK: - Mixed Arabic Word Chip
 
-struct TextSegment: Identifiable {
-    let id = UUID()
-    let text: String
-    let isArabic: Bool
-    let hasMeaning: Bool
+struct MixedArabicWordChip: View {
+    let word: String
+    let fontSize: CGFloat
+    let isNightMode: Bool
+    let onTap: (CGPoint) -> Void
+    
+    @State private var tapPosition: CGPoint = .zero
+    
+    var body: some View {
+        Text(word)
+            .font(.custom("NotoNaskhArabic", size: fontSize).bold())
+            .foregroundColor(Color.hikayaTeal)
+            .padding(.vertical, 6)
+            .padding(.horizontal, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.hikayaTeal.opacity(0.15))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.hikayaTeal.opacity(0.4), lineWidth: 1)
+            )
+            .onTapGesture { location in
+                tapPosition = location
+                onTap(location)
+            }
+    }
 }
 
 // MARK: - Mixed Arabic Word View (Inline)
