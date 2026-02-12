@@ -49,6 +49,21 @@ class AudioService: NSObject {
     
     // MARK: - Playback Control
     
+    func loadAudio(from urlString: String, wordTimings: [WordTiming] = []) async throws {
+        // Check if it's a base64 data URI
+        if urlString.hasPrefix("data:audio") {
+            try await loadAudioFromBase64(urlString, wordTimings: wordTimings)
+            return
+        }
+        
+        // Regular URL
+        guard let url = URL(string: urlString) else {
+            throw AudioError.invalidURL
+        }
+        
+        try await loadAudio(from: url, wordTimings: wordTimings)
+    }
+    
     func loadAudio(from url: URL, wordTimings: [WordTiming] = []) async throws {
         stop()
         
@@ -70,6 +85,43 @@ class AudioService: NSObject {
         currentTime = 0
         progress = 0
         currentWordIndex = -1
+    }
+    
+    private func loadAudioFromBase64(_ dataURI: String, wordTimings: [WordTiming]) async throws {
+        stop()
+        
+        self.wordTimings = wordTimings
+        
+        // Parse data URI: data:audio/x-m4a;base64,AAAA...
+        guard let commaIndex = dataURI.firstIndex(of: ",") else {
+            throw AudioError.invalidBase64Data
+        }
+        
+        let base64String = String(dataURI[dataURI.index(after: commaIndex)...])
+        
+        guard let audioData = Data(base64Encoded: base64String) else {
+            throw AudioError.invalidBase64Data
+        }
+        
+        // Try to play directly from data
+        do {
+            player = try AVAudioPlayer(data: audioData)
+        } catch {
+            // If direct playback fails, save to temp file and try again
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("temp_audio_\(UUID().uuidString).m4a")
+            try audioData.write(to: tempURL)
+            player = try AVAudioPlayer(contentsOf: tempURL)
+        }
+        
+        player?.delegate = self
+        player?.prepareToPlay()
+        
+        duration = player?.duration ?? 0
+        currentTime = 0
+        progress = 0
+        currentWordIndex = -1
+        
+        print("✅ Loaded base64 audio, duration: \(duration)s")
     }
     
     func loadAudio(from data: Data, wordTimings: [WordTiming] = []) throws {
@@ -187,6 +239,14 @@ extension AudioService: AVAudioPlayerDelegate {
     }
 }
 
+// MARK: - Audio Errors
+
+enum AudioError: Error {
+    case invalidURL
+    case invalidBase64Data
+    case playbackFailed
+}
+
 // MARK: - Audio Speed
 
 enum AudioSpeed: Float, CaseIterable {
@@ -226,19 +286,58 @@ class PronunciationService {
             }
         }
         
-        // Try to download from remote
-        if let remoteURL = word.audioPronunciationURL,
-           let url = URL(string: remoteURL) {
-            do {
-                let (localURL, _) = try await URLSession.shared.download(from: url)
-                cachePronunciation(word: word, from: localURL)
-                
-                audioPlayer = try AVAudioPlayer(contentsOf: localURL)
-                audioPlayer?.play()
-            } catch {
-                print("Error downloading pronunciation: \(error)")
+        // Check if it's a base64 data URI
+        if let audioURL = word.audioPronunciationURL {
+            if audioURL.hasPrefix("data:audio") {
+                do {
+                    try await playBase64Audio(audioURL, for: word)
+                    return
+                } catch {
+                    print("Error playing base64 pronunciation: \(error)")
+                }
+            } else if let url = URL(string: audioURL) {
+                // Try to download from remote
+                do {
+                    let (localURL, _) = try await URLSession.shared.download(from: url)
+                    cachePronunciation(word: word, from: localURL)
+                    
+                    audioPlayer = try AVAudioPlayer(contentsOf: localURL)
+                    audioPlayer?.play()
+                } catch {
+                    print("Error downloading pronunciation: \(error)")
+                }
             }
         }
+    }
+    
+    private func playBase64Audio(_ dataURI: String, for word: Word) async throws {
+        // Parse data URI: data:audio/x-m4a;base64,AAAA...
+        guard let commaIndex = dataURI.firstIndex(of: ",") else {
+            throw AudioError.invalidBase64Data
+        }
+        
+        let base64String = String(dataURI[dataURI.index(after: commaIndex)...])
+        
+        guard let audioData = Data(base64Encoded: base64String) else {
+            throw AudioError.invalidBase64Data
+        }
+        
+        // Save to cache
+        let cacheURL = getCacheURL(for: word)
+        try audioData.write(to: cacheURL)
+        
+        // Play
+        audioPlayer = try AVAudioPlayer(data: audioData)
+        audioPlayer?.play()
+        
+        print("✅ Played base64 pronunciation for: \(word.arabicText)")
+    }
+    
+    private func getCacheURL(for word: Word) -> URL {
+        let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let pronunciationDir = cacheDir.appendingPathComponent("pronunciations", isDirectory: true)
+        try? FileManager.default.createDirectory(at: pronunciationDir, withIntermediateDirectories: true)
+        return pronunciationDir.appendingPathComponent("\(word.id.uuidString).m4a")
     }
     
     private func getLocalPronunciationURL(for word: Word) -> URL? {
