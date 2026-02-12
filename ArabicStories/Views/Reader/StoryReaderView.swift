@@ -343,64 +343,55 @@ struct MixedContentText: View {
     let onWordTap: (String, CGPoint) -> Void
     
     var body: some View {
-        // Build attributed string directly
-        let attributedString = buildAttributedString()
+        // Parse text and build with inline highlighting
+        let segments = parseSegments(from: text)
         
-        Text(attributedString)
-            .font(.system(size: fontSize))
-            .lineSpacing(4)
+        segmentsView(segments)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    @ViewBuilder
+    private func segmentsView(_ segments: [TextSegment]) -> some View {
+        // Build text with inline styling using Text composition
+        var result = Text("")
+        
+        for segment in segments {
+            let segmentText: Text
+            
+            if segment.isArabic && segment.hasMeaning {
+                // Highlighted Arabic word
+                segmentText = Text(segment.text)
+                    .font(.custom("NotoNaskhArabic", size: fontSize).bold())
+                    .foregroundColor(Color.hikayaTeal)
+            } else if segment.isArabic {
+                // Regular Arabic word
+                segmentText = Text(segment.text)
+                    .font(.custom("NotoNaskhArabic", size: fontSize))
+                    .foregroundColor(isNightMode ? .white : .primary)
+            } else {
+                // English text
+                segmentText = Text(segment.text)
+                    .font(.system(size: fontSize))
+                    .foregroundColor(isNightMode ? .white : .primary)
+            }
+            
+            result = result + segmentText
+        }
+        
+        result
+            .lineSpacing(4)
             .fixedSize(horizontal: false, vertical: true)
     }
     
-    private func buildAttributedString() -> AttributedString {
-        var result = AttributedString(text)
-        result.font = .system(size: fontSize)
-        result.foregroundColor = isNightMode ? .white : .primary
-        
-        // Find and style Arabic words using NSString for range support
-        let nsString = text as NSString
-        let arabicWords = extractArabicWords(from: text)
-        
-        for word in arabicWords {
-            var searchRange = NSRange(location: 0, length: nsString.length)
-            
-            while true {
-                let range = nsString.range(of: word, options: [], range: searchRange)
-                if range.location == NSNotFound {
-                    break
-                }
-                
-                // Convert NSRange to AttributedString.Range
-                if let attrStart = String.Index(utf16Offset: range.location, in: text),
-                   let attrEnd = String.Index(utf16Offset: range.location + range.length, in: text) {
-                    let attrRange = attrStart..<attrEnd
-                    
-                    if hasMeaningAvailable(word) {
-                        result[attrRange].foregroundColor = Color.hikayaTeal
-                        result[attrRange].font = .custom("NotoNaskhArabic", size: fontSize).bold()
-                    } else {
-                        result[attrRange].font = .custom("NotoNaskhArabic", size: fontSize)
-                    }
-                }
-                
-                // Move search range past this occurrence
-                searchRange = NSRange(location: range.location + range.length, 
-                                     length: nsString.length - (range.location + range.length))
-            }
-        }
-        
-        return result
-    }
-    
-    private func extractArabicWords(from text: String) -> [String] {
-        var words: [String] = []
+    private func parseSegments(from text: String) -> [TextSegment] {
+        var segments: [TextSegment] = []
         var currentIndex = text.startIndex
         
         while currentIndex < text.endIndex {
             let char = text[currentIndex]
             
             if ArabicTextUtils.isArabicCharacter(char) {
+                // Collect Arabic word (including diacritics)
                 var arabicWord = ""
                 var endIndex = currentIndex
                 
@@ -411,17 +402,48 @@ struct MixedContentText: View {
                     endIndex = text.index(after: endIndex)
                 }
                 
-                if !arabicWord.isEmpty && !words.contains(arabicWord) {
-                    words.append(arabicWord)
+                if !arabicWord.isEmpty {
+                    let hasMeaning = hasMeaningAvailable(arabicWord)
+                    segments.append(TextSegment(
+                        text: arabicWord,
+                        isArabic: true,
+                        hasMeaning: hasMeaning
+                    ))
                 }
                 currentIndex = endIndex
             } else {
-                currentIndex = text.index(after: currentIndex)
+                // Collect non-Arabic text (including spaces and newlines)
+                var regularText = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex && 
+                      !ArabicTextUtils.isArabicCharacter(text[endIndex]) {
+                    regularText.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !regularText.isEmpty {
+                    segments.append(TextSegment(
+                        text: regularText,
+                        isArabic: false,
+                        hasMeaning: false
+                    ))
+                }
+                currentIndex = endIndex
             }
         }
         
-        return words
+        return segments
     }
+}
+
+// MARK: - Text Segment
+
+struct TextSegment: Identifiable {
+    let id = UUID()
+    let text: String
+    let isArabic: Bool
+    let hasMeaning: Bool
 }
 
 // MARK: - Mixed Arabic Word View (Inline)
