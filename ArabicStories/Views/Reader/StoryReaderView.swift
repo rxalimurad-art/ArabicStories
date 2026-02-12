@@ -348,6 +348,7 @@ struct MixedContentText: View {
         
         // Build view with proper wrapping
         WrappingText(segments: segments, fontSize: fontSize, isNightMode: isNightMode)
+            .frame(maxWidth: .infinity, minHeight: 50)
     }
     
     private func parseTextSegments(_ text: String) -> [TextSegment] {
@@ -420,39 +421,36 @@ struct WrappingText: UIViewRepresentable {
     let fontSize: CGFloat
     let isNightMode: Bool
     
-    func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
+    func makeUIView(context: Context) -> WrappingTextView {
+        let textView = WrappingTextView()
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
-        textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = .zero
-        textView.delegate = context.coordinator
+        textView.textContainer.lineFragmentPadding = 4
+        textView.textContainerInset = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
+        textView.textContainer.lineBreakMode = .byWordWrapping
+        textView.textContainer.maximumNumberOfLines = 0
         return textView
     }
     
-    func updateUIView(_ textView: UITextView, context: Context) {
+    func updateUIView(_ textView: WrappingTextView, context: Context) {
         let attributedString = NSMutableAttributedString()
         
         for segment in segments {
             let font: UIFont
             let color: UIColor
-            let backgroundColor: UIColor?
             
             if segment.isArabic {
                 if segment.hasMeaning {
                     font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
                     color = UIColor(Color.hikayaTeal)
-                    backgroundColor = UIColor(Color.hikayaTeal.opacity(0.1))
                 } else {
                     font = UIFont(name: "NotoNaskhArabic", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
                     color = isNightMode ? .white : .label
-                    backgroundColor = nil
                 }
             } else {
                 font = UIFont.systemFont(ofSize: fontSize)
                 color = isNightMode ? .white : .label
-                backgroundColor = nil
             }
             
             var attributes: [NSAttributedString.Key: Any] = [
@@ -460,23 +458,25 @@ struct WrappingText: UIViewRepresentable {
                 .foregroundColor: color
             ]
             
-            if let bgColor = backgroundColor {
-                attributes[.backgroundColor] = bgColor
-            }
-            
             let attributedSegment = NSAttributedString(string: segment.text, attributes: attributes)
             attributedString.append(attributedSegment)
         }
         
         textView.attributedText = attributedString
+        textView.invalidateIntrinsicContentSize()
+    }
+}
+
+// Custom UITextView that sizes itself properly
+class WrappingTextView: UITextView {
+    override var intrinsicContentSize: CGSize {
+        let size = sizeThatFits(CGSize(width: bounds.width, height: .greatestFiniteMagnitude))
+        return CGSize(width: UIView.noIntrinsicMetric, height: size.height)
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-    
-    class Coordinator: NSObject, UITextViewDelegate {
-        // Handle tap gestures if needed
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        invalidateIntrinsicContentSize()
     }
 }
 
