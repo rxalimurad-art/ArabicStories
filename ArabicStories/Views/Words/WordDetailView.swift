@@ -419,14 +419,14 @@ struct SRSStatCard: View {
             englishMeaning: "city",
             partOfSpeech: .noun,
             rootLetters: "م د ن",
-            difficulty: 2,
             exampleSentences: [
                 ExampleSentence(
                     arabic: "القاهرة مدينة كبيرة.",
                     transliteration: "Al-qāhira madīna kabīra.",
                     english: "Cairo is a big city."
                 )
-            ]
+            ],
+            difficulty: 2
         ),
         stat: WordStat(
             wordId: UUID(),
