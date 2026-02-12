@@ -1,6 +1,6 @@
 //
 //  FirebaseService.swift
-//  Hikaya
+//  Arabicly
 //  Firebase Firestore integration for cloud data storage
 //
 

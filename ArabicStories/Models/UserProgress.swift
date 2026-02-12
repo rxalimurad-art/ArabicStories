@@ -1,6 +1,6 @@
 //
 //  UserProgress.swift
-//  Hikaya
+//  Arabicly
 //  User progress tracking - Firebase compatible (no SwiftData)
 //
 
@@ -41,6 +41,9 @@ struct UserProgress: Identifiable, Codable {
     var totalReadingTime: TimeInterval
     var totalPagesRead: Int
     
+    // MARK: - Story Completion Tracking for Level Unlock
+    var completedStoryIds: [String]
+    
     // MARK: - Session Tracking
     var dailyGoalMinutes: Int
     var todayStudyMinutes: Int
@@ -65,6 +68,7 @@ struct UserProgress: Identifiable, Codable {
         self.wordsUnderReview = 0
         self.learnedVocabularyIds = []
         self.masteredVocabularyIds = []
+        self.completedStoryIds = []
         self.storiesCompleted = 0
         self.storiesInProgress = 0
         self.level1StoriesCompleted = 0
@@ -93,8 +97,29 @@ struct UserProgress: Identifiable, Codable {
         max(vocabularyNeededForLevel2 - totalVocabularyLearned, 0)
     }
     
-    mutating func checkAndUnlockLevel2() -> Bool {
-        if maxUnlockedLevel < 2 && canAccessLevel2 {
+    /// Check if all stories in a level are completed
+    func areAllStoriesCompleted(level: Int, totalStoriesInLevel: Int) -> Bool {
+        // Count completed stories for this level
+        let completedInLevel = completedStoryIds.count
+        return completedInLevel >= totalStoriesInLevel && totalStoriesInLevel > 0
+    }
+    
+    /// Progress to unlock next level (based on story completion)
+    func storyProgressToUnlockLevel(level: Int, totalStoriesInLevel: Int) -> Double {
+        guard totalStoriesInLevel > 0 else { return 0 }
+        let completedInLevel = completedStoryIds.count
+        return min(Double(completedInLevel) / Double(totalStoriesInLevel), 1.0)
+    }
+    
+    /// Remaining stories to complete to unlock next level
+    func storiesRemainingToUnlockLevel(level: Int, totalStoriesInLevel: Int) -> Int {
+        guard totalStoriesInLevel > 0 else { return 0 }
+        let completedInLevel = completedStoryIds.count
+        return max(totalStoriesInLevel - completedInLevel, 0)
+    }
+    
+    mutating func checkAndUnlockLevel2(totalStoriesInLevel1: Int) -> Bool {
+        if maxUnlockedLevel < 2 && areAllStoriesCompleted(level: 1, totalStoriesInLevel: totalStoriesInLevel1) {
             maxUnlockedLevel = 2
             updatedAt = Date()
             return true
@@ -104,15 +129,12 @@ struct UserProgress: Identifiable, Codable {
     
     // MARK: - Vocabulary Learning
     
-    mutating func recordVocabularyLearned(wordId: String) -> Bool {
+    mutating func recordVocabularyLearned(wordId: String) {
         if !learnedVocabularyIds.contains(wordId) {
             learnedVocabularyIds.append(wordId)
             updatedAt = Date()
-            // Try to unlock Level 2
-            let unlocked = checkAndUnlockLevel2()
-            return unlocked
+            // Note: Level 2 is now unlocked by completing all Level 1 stories, not by vocabulary
         }
-        return false
     }
     
     mutating func recordVocabularyMastered(wordId: String) {
@@ -123,7 +145,7 @@ struct UserProgress: Identifiable, Codable {
             learnedVocabularyIds.append(wordId)
         }
         updatedAt = Date()
-        checkAndUnlockLevel2()
+        // Note: Level 2 is now unlocked by completing all Level 1 stories, not by vocabulary
     }
     
     func hasLearnedVocabulary(_ wordId: String) -> Bool {
@@ -206,7 +228,12 @@ struct UserProgress: Identifiable, Codable {
     
     // MARK: - Story Progress
     
-    mutating func recordStoryCompleted(difficultyLevel: Int) {
+    mutating func recordStoryCompleted(storyId: String, difficultyLevel: Int, totalStoriesInLevel1: Int) -> Bool {
+        // Track completed story ID if not already tracked
+        if !completedStoryIds.contains(storyId) {
+            completedStoryIds.append(storyId)
+        }
+        
         storiesCompleted += 1
         if difficultyLevel == 1 {
             level1StoriesCompleted += 1
@@ -214,6 +241,9 @@ struct UserProgress: Identifiable, Codable {
             level2StoriesCompleted += 1
         }
         updatedAt = Date()
+        
+        // Check if Level 2 should be unlocked
+        return checkAndUnlockLevel2(totalStoriesInLevel1: totalStoriesInLevel1)
     }
     
     mutating func recordStoryStarted() {
@@ -400,8 +430,8 @@ struct LevelUnlockInfo {
     
     static let level2 = LevelUnlockInfo(
         level: 2,
-        requiredVocabulary: 20,
+        requiredVocabulary: 0,  // No longer vocabulary-based
         title: "Level 2 Unlocked!",
-        description: "You've learned enough vocabulary to start reading full Arabic stories."
+        description: "You've completed all Level 1 stories and can now read full Arabic stories."
     )
 }

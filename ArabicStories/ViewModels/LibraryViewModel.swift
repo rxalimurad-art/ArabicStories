@@ -1,6 +1,6 @@
 //
 //  LibraryViewModel.swift
-//  Hikaya
+//  Arabicly
 //  ViewModel for the Story Library view with level management
 //
 
@@ -20,9 +20,13 @@ class LibraryViewModel {
     
     // Level Management
     var maxUnlockedLevel: Int = 1
-    var vocabularyProgressToLevel2: Double = 0.0
-    var vocabularyRemainingForLevel2: Int = 20
+    var storyProgressToLevel2: Double = 0.0
+    var storiesRemainingForLevel2: Int = 0
+    var totalLevel1Stories: Int = 0
+    var completedLevel1Stories: Int = 0
     var showLevelUnlockAlert: Bool = false
+    var showLockedLevelAlert: Bool = false
+    var lockedLevelTapped: Int? = nil
     
     // Filter State
     var selectedDifficulty: Int? = nil
@@ -51,8 +55,10 @@ class LibraryViewModel {
             .store(in: &cancellables)
         
         Task {
-            await loadStories()
             await loadLevelProgress()
+            // Default to showing current level
+            selectedDifficulty = maxUnlockedLevel
+            await loadStories()
         }
     }
     
@@ -74,8 +80,21 @@ class LibraryViewModel {
     
     func loadLevelProgress() async {
         maxUnlockedLevel = await dataService.getMaxUnlockedLevel()
-        vocabularyProgressToLevel2 = await dataService.vocabularyProgressToLevel2()
-        vocabularyRemainingForLevel2 = await dataService.vocabularyRemainingForLevel2()
+        
+        // Calculate story-based progress for Level 2 unlock
+        let allStories = await dataService.fetchAllStories()
+        let level1Stories = allStories.filter { $0.difficultyLevel == 1 }
+        let progress = await dataService.fetchUserProgress()
+        
+        totalLevel1Stories = level1Stories.count
+        completedLevel1Stories = level1Stories.filter { story in
+            progress?.completedStoryIds.contains(story.id.uuidString) ?? false
+        }.count
+        
+        storiesRemainingForLevel2 = totalLevel1Stories - completedLevel1Stories
+        storyProgressToLevel2 = totalLevel1Stories > 0 
+            ? Double(completedLevel1Stories) / Double(totalLevel1Stories) 
+            : 0
     }
     
     func refresh() async {
@@ -189,11 +208,33 @@ class LibraryViewModel {
         stories.filter { $0.difficultyLevel >= 2 }
     }
     
+    var lockedLevelMessage: String {
+        let remaining = storiesRemainingForLevel2
+        if remaining == 1 {
+            return "You're almost there! Complete 1 more story to unlock full Arabic reading."
+        } else if remaining > 0 {
+            return "Complete \(remaining) more stories to unlock full Arabic reading with Level 2."
+        } else {
+            return "Keep reading Level 1 stories to build your vocabulary first."
+        }
+    }
+    
+    var unlockProgressText: String {
+        let remaining = storiesRemainingForLevel2
+        if remaining == 1 {
+            return "Read 1 more story to unlock Level 2"
+        } else if remaining > 0 {
+            return "Read \(remaining) more stories to unlock Level 2"
+        } else {
+            return "Complete all Level 1 stories to unlock Level 2"
+        }
+    }
+    
     var hasUnlockedLevel2: Bool {
         maxUnlockedLevel >= 2
     }
     
-    var vocabularyProgressPercentage: Int {
-        Int(vocabularyProgressToLevel2 * 100)
+    var storyProgressPercentage: Int {
+        Int(storyProgressToLevel2 * 100)
     }
 }

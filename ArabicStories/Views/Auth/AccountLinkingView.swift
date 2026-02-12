@@ -1,6 +1,6 @@
 //
 //  AccountLinkingView.swift
-//  Hikaya
+//  Arabicly
 //  View for linking anonymous accounts to permanent auth methods
 //
 

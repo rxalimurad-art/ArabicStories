@@ -1,6 +1,6 @@
 //
 //  ArabicStoriesTests.swift
-//  Hikaya Tests
+//  Arabicly Tests
 //  Unit tests for data layer, models, and core functionality
 //
 
@@ -9,7 +9,7 @@ import SwiftData
 @testable import ArabicStories
 
 @MainActor
-final class HikayaTests: XCTestCase {
+final class ArabiclyTests: XCTestCase {
     
     // MARK: - Properties
     
@@ -376,7 +376,7 @@ final class HikayaTests: XCTestCase {
 
 // MARK: - Performance Tests
 
-extension HikayaTests {
+extension ArabiclyTests {
     
     func testStoryFetchingPerformance() throws {
         // Create test data

@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Hikaya
+//  Arabicly
 //  Legacy content view - redirects to MainTabView
 //
 

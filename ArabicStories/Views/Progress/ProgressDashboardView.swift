@@ -1,6 +1,6 @@
 //
 //  ProgressDashboardView.swift
-//  Hikaya
+//  Arabicly
 //  User progress dashboard with statistics and achievements
 //
 
@@ -50,7 +50,7 @@ struct ProgressDashboardView: View {
             .alert("🎉 Level 2 Unlocked!", isPresented: $viewModel.showLevelUnlockAlert) {
                 Button("Awesome!", role: .cancel) {}
             } message: {
-                Text("You've learned \(viewModel.vocabularyNeededForLevel2) Arabic words! Level 2 with full Arabic stories is now available.")
+                Text("You've completed all Level 1 stories! Level 2 with full Arabic stories is now available.")
             }
         }
     }
@@ -95,7 +95,7 @@ struct LevelStatusCard: View {
                     Image(systemName: "lock.open.fill")
                         .foregroundStyle(Color.hikayaOrange)
                     
-                    Text("Learn \(viewModel.vocabularyRemainingForLevel2) more words to unlock Level 2")
+                    Text("Complete \(viewModel.storiesRemainingForLevel2) more Level 1 stor\(viewModel.storiesRemainingForLevel2 == 1 ? "y" : "ies") to unlock Level 2")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
@@ -286,7 +286,7 @@ struct VocabularyProgressCard: View {
                         .frame(width: 56, height: 56)
                     
                     Circle()
-                        .trim(from: 0, to: viewModel.vocabularyProgressToLevel2)
+                        .trim(from: 0, to: viewModel.storyProgressToLevel2)
                         .stroke(
                             Color.hikayaTeal,
                             style: StrokeStyle(lineWidth: 6, lineCap: .round)
@@ -294,7 +294,7 @@ struct VocabularyProgressCard: View {
                         .frame(width: 56, height: 56)
                         .rotationEffect(.degrees(-90))
                     
-                    Text("\(Int(viewModel.vocabularyProgressToLevel2 * 100))%")
+                    Text("\(Int(viewModel.storyProgressToLevel2 * 100))%")
                         .font(.caption.weight(.bold))
                         .foregroundStyle(Color.hikayaTeal)
                 }
@@ -315,7 +315,7 @@ struct VocabularyProgressCard: View {
                                 endPoint: .trailing
                             )
                         )
-                        .frame(width: geometry.size.width * viewModel.vocabularyProgressToLevel2, height: 12)
+                        .frame(width: geometry.size.width * viewModel.storyProgressToLevel2, height: 12)
                 }
             }
             .frame(height: 12)
@@ -325,7 +325,7 @@ struct VocabularyProgressCard: View {
                     .foregroundStyle(Color.hikayaOrange)
                     .font(.caption)
                 
-                Text("Tip: Tap Arabic words in Level 1 stories to learn them")
+                Text("Tip: Complete all Level 1 stories to unlock Level 2")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 

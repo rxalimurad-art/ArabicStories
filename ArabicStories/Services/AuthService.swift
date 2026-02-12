@@ -1,6 +1,6 @@
 //
 //  AuthService.swift
-//  Hikaya
+//  Arabicly
 //  Authentication service handling all login methods
 //
 

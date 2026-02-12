@@ -1,6 +1,6 @@
 //
 //  StoryReaderViewModel.swift
-//  Hikaya
+//  Arabicly
 //  ViewModel for the Story Reader with audio sync and mixed content support
 //
 
@@ -57,7 +57,7 @@ class StoryReaderViewModel {
         let englishMeaning: String?
     }
     
-    init(story: Story) {
+    init(story: Story, wasReset: Bool = false) {
         self.story = story
         self.currentSegmentIndex = story.currentSegmentIndex
         setupAudioCallbacks()
@@ -69,9 +69,18 @@ class StoryReaderViewModel {
         print("   Segments: \(story.segments?.count ?? 0)")
         print("   Mixed Segments: \(story.mixedSegments?.count ?? 0)")
         print("   Words: \(story.words?.count ?? 0)")
+        print("   Was reset: \(wasReset)")
         if let words = story.words {
             for word in words {
                 print("   - Word: '\(word.arabicText)' = '\(word.englishMeaning)'")
+            }
+        }
+        
+        // If story was reset (completed and restarted), save the reset state
+        if wasReset {
+            Task {
+                try? await DataService.shared.saveStory(story)
+                print("✅ Saved reset story progress")
             }
         }
         
@@ -144,7 +153,8 @@ class StoryReaderViewModel {
     
     var readingProgress: Double {
         guard totalSegments > 0 else { return 0 }
-        return Double(currentSegmentIndex) / Double(totalSegments)
+        // Progress based on completed segments (current + 1) / total
+        return Double(currentSegmentIndex + 1) / Double(totalSegments)
     }
     
     var canGoNext: Bool {
@@ -299,10 +309,8 @@ class StoryReaderViewModel {
             Task {
                 // Save story progress and update global vocabulary
                 try? await dataService.saveStory(story)
-                let unlockedLevel2 = await dataService.recordVocabularyLearned(wordId: word.id.uuidString)
-                if unlockedLevel2 {
-                    print("🎉 Level 2 unlocked!")
-                }
+                await dataService.recordVocabularyLearned(wordId: word.id.uuidString)
+                // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
         }
     }
@@ -340,10 +348,8 @@ class StoryReaderViewModel {
             
             Task {
                 try? await dataService.saveStory(story)
-                let unlockedLevel2 = await dataService.recordVocabularyLearned(wordId: wordId)
-                if unlockedLevel2 {
-                    print("🎉 Level 2 unlocked!")
-                }
+                await dataService.recordVocabularyLearned(wordId: wordId)
+                // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
         }
     }
@@ -395,7 +401,13 @@ class StoryReaderViewModel {
         
         do {
             try await dataService.saveStory(story)
-            await dataService.recordStoryCompleted(difficultyLevel: story.difficultyLevel)
+            let unlocked = await dataService.recordStoryCompleted(
+                storyId: story.id.uuidString,
+                difficultyLevel: story.difficultyLevel
+            )
+            if unlocked {
+                print("🎉 Level 2 Unlocked!")
+            }
         } catch {
             print("Error completing story: \(error)")
         }

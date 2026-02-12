@@ -1,6 +1,6 @@
 //
 //  WordQuizViewModel.swift
-//  Hikaya
+//  Arabicly
 //  ViewModel for word quiz with adaptive learning
 //
 

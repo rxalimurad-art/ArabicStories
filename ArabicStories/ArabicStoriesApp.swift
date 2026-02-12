@@ -1,6 +1,6 @@
 //
 //  ArabicStoriesApp.swift
-//  Hikaya
+//  Arabicly
 //  Main app entry point with Firebase configuration
 //
 
@@ -9,7 +9,7 @@ import FirebaseCore
 import FirebaseAuth
 
 @main
-struct HikayaApp: App {
+struct ArabiclyApp: App {
     
     // Register app delegate for Firebase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

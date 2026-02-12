@@ -1,6 +1,6 @@
 //
 //  Story.swift
-//  Hikaya
+//  Arabicly
 //  Story model - Firebase compatible (no SwiftData)
 //
 
@@ -212,6 +212,49 @@ struct Story: Identifiable, Codable, Hashable {
     // Vocabulary count for mixed format stories
     var vocabularyCount: Int {
         words?.count ?? 0
+    }
+    
+    /// Count of unique Arabic words found in the story text
+    var arabicWordCount: Int {
+        let allText: String
+        switch format {
+        case .mixed:
+            allText = mixedSegments?.map { $0.text }.joined(separator: " ") ?? ""
+        case .bilingual:
+            allText = segments?.map { $0.arabicText }.joined(separator: " ") ?? ""
+        }
+        return extractArabicWords(from: allText).count
+    }
+    
+    /// Extract unique Arabic words from text
+    private func extractArabicWords(from text: String) -> [String] {
+        var words: [String] = []
+        var currentIndex = text.startIndex
+        
+        while currentIndex < text.endIndex {
+            let char = text[currentIndex]
+            
+            if ArabicTextUtils.isArabicCharacter(char) {
+                var arabicWord = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex &&
+                      (ArabicTextUtils.isArabicCharacter(text[endIndex]) ||
+                       ArabicTextUtils.isDiacritic(text[endIndex])) {
+                    arabicWord.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !arabicWord.isEmpty && !words.contains(arabicWord) {
+                    words.append(arabicWord)
+                }
+                currentIndex = endIndex
+            } else {
+                currentIndex = text.index(after: currentIndex)
+            }
+        }
+        
+        return words
     }
     
     // Learned vocabulary count

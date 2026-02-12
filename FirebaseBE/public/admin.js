@@ -517,8 +517,10 @@ function removeWord(index) {
 function collectFormData() {
   const format = document.getElementById('story-format')?.value || 'mixed';
   
+  const storyId = document.getElementById('story-id').value;
+  
   const result = {
-    id: document.getElementById('story-id').value || undefined,
+    id: storyId && storyId.trim() !== '' ? storyId : undefined,
     title: document.getElementById('story-title').value.trim(),
     titleArabic: document.getElementById('story-title-arabic').value.trim() || null,
     storyDescription: document.getElementById('story-desc').value.trim(),
@@ -639,6 +641,12 @@ function showValidationResults(result) {
 async function publishStory() {
   const data = collectFormData();
   
+  console.log('Publishing story:', { 
+    hasId: !!data.id, 
+    id: data.id,
+    title: data.title 
+  });
+  
   // First validate
   try {
     const validation = await apiRequest(API.validate(), {
@@ -750,10 +758,17 @@ function populateForm(data) {
 // ============================================
 async function editStory(storyId) {
   try {
+    console.log('Editing story:', storyId);
     const result = await apiRequest(API.story(storyId));
     
     if (result.story) {
+      console.log('Loaded story:', { id: result.story.id, title: result.story.title });
       populateForm(result.story);
+      
+      // Verify ID was set
+      const formId = document.getElementById('story-id').value;
+      console.log('Form ID after populate:', formId);
+      
       document.getElementById('form-title').textContent = '✏️ Edit Story';
       switchView('create');
     }
@@ -1049,7 +1064,7 @@ async function seedSampleStories(type = 'bilingual') {
         titleArabic: "رحلة أحمد إلى السلام",
         storyDescription: "A beginner-friendly story introducing essential Arabic vocabulary. Learn 20 key words to unlock Level 2!",
         storyDescriptionArabic: "قصة للمبتدئين تقدم مفردات عربية أساسية. تعلم 20 كلمة لفتح المستوى الثاني!",
-        author: "Hikaya Learning",
+        author: "Arabicly",
         format: "mixed",
         difficultyLevel: 1,
         category: "religious",

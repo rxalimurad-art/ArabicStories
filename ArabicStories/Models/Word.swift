@@ -1,6 +1,6 @@
 //
 //  Word.swift
-//  Hikaya
+//  Arabicly
 //  Word model - Firebase compatible (no SwiftData)
 //
 

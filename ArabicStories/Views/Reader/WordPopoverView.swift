@@ -1,6 +1,6 @@
 //
 //  WordPopoverView.swift
-//  Hikaya
+//  Arabicly
 //  Popover view showing word details on tap
 //
 

@@ -134,7 +134,7 @@ Use for Level 2+ stories with full Arabic text and English translation.
   "id": "ahmad-journey-v1",
   "title": "Ahmad's Journey to Peace",
   "storyDescription": "A beginner story about spiritual journey",
-  "author": "Hikaya Learning",
+  "author": "Arabicly",
   "format": "mixed",
   "difficultyLevel": 1,
   "category": "religious",
