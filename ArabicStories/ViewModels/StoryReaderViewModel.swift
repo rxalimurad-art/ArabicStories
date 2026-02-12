@@ -42,7 +42,10 @@ class StoryReaderViewModel {
     
     // Generic words cache for highlighting
     private var genericWords: [Word] = []
-    private var hasLoadedGenericWords = false
+    var hasLoadedGenericWords = false
+    
+    // Trigger UI refresh when generic words load
+    var onGenericWordsLoaded: (() -> Void)?
     
     // Mixed format state
     var learnedWordIdsInSession: Set<String> = []
@@ -84,6 +87,11 @@ class StoryReaderViewModel {
             genericWords = try await FirebaseService.shared.fetchGenericWords()
             hasLoadedGenericWords = true
             print("✅ Pre-loaded \(genericWords.count) generic words for highlighting")
+            
+            // Notify UI to refresh highlighting
+            await MainActor.run {
+                self.onGenericWordsLoaded?()
+            }
         } catch {
             print("❌ Failed to preload generic words: \(error)")
         }

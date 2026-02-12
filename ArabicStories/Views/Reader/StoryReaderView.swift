@@ -10,6 +10,7 @@ struct StoryReaderView: View {
     var story: Story
     @Bindable var viewModel: StoryReaderViewModel
     @State private var showingSettings = false
+    @State private var wordsLoadedRefresh = false  // Trigger refresh when generic words load
     @Environment(\.dismiss) private var dismiss
     
     init(story: Story) {
@@ -58,7 +59,8 @@ struct StoryReaderView: View {
                     if let segment = viewModel.currentSegment {
                         BilingualContentView(
                             segment: segment,
-                            viewModel: viewModel
+                            viewModel: viewModel,
+                            refreshTrigger: wordsLoadedRefresh
                         )
                     } else {
                         ContentUnavailableView("No Content", systemImage: "doc.text")
@@ -111,6 +113,18 @@ struct StoryReaderView: View {
         }
         .onAppear {
             viewModel.incrementViewCount()
+            // Set up callback for when generic words load
+            viewModel.onGenericWordsLoaded = {
+                wordsLoadedRefresh.toggle()
+            }
+        }
+        .onChange(of: wordsLoadedRefresh) { _, _ in
+            // Force refresh when generic words are loaded
+        }
+        .onChange(of: viewModel.hasLoadedGenericWords) { _, newValue in
+            if newValue {
+                wordsLoadedRefresh.toggle()
+            }
         }
     }
 }
@@ -495,6 +509,7 @@ struct MixedWordPopoverView: View {
 struct BilingualContentView: View {
     let segment: StorySegment
     var viewModel: StoryReaderViewModel
+    var refreshTrigger: Bool = false  // Forces refresh when generic words load
     
     var body: some View {
         ScrollView {
@@ -511,6 +526,7 @@ struct BilingualContentView: View {
                         viewModel.handleWordTap(wordText: word, position: position)
                     }
                 )
+                .id(refreshTrigger)  // Force re-render when generic words load
                 
                 // Transliteration (optional)
                 if viewModel.showTransliteration,
