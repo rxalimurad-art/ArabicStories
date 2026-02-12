@@ -17,23 +17,29 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
+            WordsListView()
+                .tabItem {
+                    Label("Words", systemImage: "textformat.abc")
+                }
+                .tag(1)
+            
             WordQuizView()
                 .tabItem {
                     Label("Quiz", systemImage: "checkmark.circle.fill")
                 }
-                .tag(1)
+                .tag(2)
             
             ProgressDashboardView()
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
-                .tag(2)
+                .tag(3)
             
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
-                .tag(3)
+                .tag(4)
         }
         .tint(.hikayaTeal)
     }
