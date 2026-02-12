@@ -350,37 +350,32 @@ struct MixedContentText: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
     
-    @ViewBuilder
     private func segmentsView(_ segments: [TextSegment]) -> some View {
-        // Build text with inline styling using Text composition
-        var result = Text("")
-        
-        for segment in segments {
-            let segmentText: Text
-            
-            if segment.isArabic && segment.hasMeaning {
-                // Highlighted Arabic word
-                segmentText = Text(segment.text)
-                    .font(.custom("NotoNaskhArabic", size: fontSize).bold())
-                    .foregroundColor(Color.hikayaTeal)
-            } else if segment.isArabic {
-                // Regular Arabic word
-                segmentText = Text(segment.text)
-                    .font(.custom("NotoNaskhArabic", size: fontSize))
-                    .foregroundColor(isNightMode ? .white : .primary)
-            } else {
-                // English text
-                segmentText = Text(segment.text)
-                    .font(.system(size: fontSize))
-                    .foregroundColor(isNightMode ? .white : .primary)
+        // Use FlowLayout to arrange text segments with proper wrapping
+        FlowLayout(spacing: 0) {
+            ForEach(segments) { segment in
+                if segment.isArabic && segment.hasMeaning {
+                    // Highlighted Arabic word
+                    Text(segment.text)
+                        .font(.custom("NotoNaskhArabic", size: fontSize).bold())
+                        .foregroundColor(Color.hikayaTeal)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 2)
+                        .background(Color.hikayaTeal.opacity(0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                } else if segment.isArabic {
+                    // Regular Arabic word
+                    Text(segment.text)
+                        .font(.custom("NotoNaskhArabic", size: fontSize))
+                        .foregroundColor(isNightMode ? .white : .primary)
+                } else {
+                    // English text
+                    Text(segment.text)
+                        .font(.system(size: fontSize))
+                        .foregroundColor(isNightMode ? .white : .primary)
+                }
             }
-            
-            result = result + segmentText
         }
-        
-        result
-            .lineSpacing(4)
-            .fixedSize(horizontal: false, vertical: true)
     }
     
     private func parseSegments(from text: String) -> [TextSegment] {
