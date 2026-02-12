@@ -68,13 +68,31 @@ class LibraryViewModel {
         isLoading = true
         defer { isLoading = false }
         
-        stories = await dataService.fetchStories(
+        let fetchedStories = await dataService.fetchStories(
             difficulty: selectedDifficulty,
             category: selectedCategory,
             searchQuery: searchQuery.isEmpty ? nil : searchQuery,
             sortBy: selectedSortOption
         )
         
+        // Check for duplicates
+        let storyIDs = fetchedStories.map { $0.id.uuidString }
+        let uniqueIDs = Set(storyIDs)
+        print("📚 LibraryViewModel: Loaded \(fetchedStories.count) stories, \(uniqueIDs.count) unique IDs")
+        if storyIDs.count != uniqueIDs.count {
+            print("⚠️ LibraryViewModel: DUPLICATE STORIES DETECTED!")
+            // Find duplicates
+            var seen: Set<String> = []
+            for id in storyIDs {
+                if seen.contains(id) {
+                    print("   Duplicate ID: \(id)")
+                } else {
+                    seen.insert(id)
+                }
+            }
+        }
+        
+        stories = fetchedStories
         filteredStories = stories
     }
     

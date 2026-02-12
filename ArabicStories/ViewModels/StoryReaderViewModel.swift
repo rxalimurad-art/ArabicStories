@@ -35,6 +35,7 @@ class StoryReaderViewModel {
     
     // Settings
     var fontSize: CGFloat = 20
+    var arabicFont: ArabicFont = .notoNaskh
     var isNightMode = false
     var showEnglish = true
     var showTransliteration = true
@@ -467,5 +468,47 @@ class StoryReaderViewModel {
     
     var totalVocabularyCount: Int {
         story.vocabularyCount
+    }
+}
+
+// MARK: - Arabic Font Options
+
+enum ArabicFont: String, CaseIterable, Identifiable {
+    case notoNaskh = "Noto Naskh Arabic"
+    case notoSans = "Noto Sans Arabic"
+    case scheherazade = "Scheherazade New"
+    case amiri = "Amiri"
+    case lateef = "Lateef"
+    
+    var id: String { rawValue }
+    
+    var fontName: String {
+        switch self {
+        case .notoNaskh:
+            return "NotoNaskhArabic"
+        case .notoSans:
+            return "NotoSansArabic"
+        case .scheherazade:
+            return "ScheherazadeNew"
+        case .amiri:
+            return "Amiri"
+        case .lateef:
+            return "Lateef"
+        }
+    }
+    
+    var swiftUIFont: Font {
+        switch self {
+        case .notoNaskh:
+            return .custom("NotoNaskhArabic", size: 20)
+        case .notoSans:
+            return .custom("NotoSansArabic", size: 20)
+        case .scheherazade:
+            return .custom("ScheherazadeNew", size: 20)
+        case .amiri:
+            return .custom("Amiri", size: 20)
+        case .lateef:
+            return .custom("Lateef", size: 20)
+        }
     }
 }

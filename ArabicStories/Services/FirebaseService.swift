@@ -24,21 +24,34 @@ class FirebaseService {
             let snapshot = try await db.collection("stories").getDocuments()
             print("✅ Got \(snapshot.documents.count) documents from Firestore")
             
+            // Log all document IDs to check for duplicates at Firestore level
+            let docIDs = snapshot.documents.map { $0.documentID }
+            let normalizedDocIDs = docIDs.map { $0.lowercased() }
+            let uniqueDocIDs = Set(normalizedDocIDs)
+            print("📄 Firestore document IDs: \(docIDs)")
+            print("📄 Normalized IDs: \(Array(uniqueDocIDs))")
+            if normalizedDocIDs.count != uniqueDocIDs.count {
+                print("⚠️ DUPLICATE DOCUMENT IDs IN FIRESTORE!")
+            }
+            
             var stories: [Story] = []
+            
             for doc in snapshot.documents {
                 print("📄 Processing document: \(doc.documentID)")
                 do {
                     let story = try convertToStory(doc.data(), id: doc.documentID)
                     stories.append(story)
-                    print("✅ Parsed story: \(story.title) [Format: \(story.format.rawValue)]")
+                    print("✅ Parsed story: '\(story.title)' [StoryID: \(story.id)]")
                 } catch {
                     print("❌ Failed to parse story \(doc.documentID): \(error)")
                     print("   Data keys: \(doc.data().keys.sorted())")
                 }
             }
             
-            print("📚 Returning \(stories.count) stories")
-            return stories
+            // Deduplicate stories by normalized ID
+            let uniqueStories = deduplicateStories(stories)
+            print("📚 Returning \(uniqueStories.count) unique stories from \(snapshot.documents.count) Firestore docs")
+            return uniqueStories
         } catch {
             print("❌ Firestore error: \(error)")
             throw error
@@ -46,18 +59,23 @@ class FirebaseService {
     }
     
     func fetchStory(id: String) async throws -> Story? {
-        let doc = try await db.collection("stories").document(id).getDocument()
+        // Use lowercase ID to ensure consistency
+        let doc = try await db.collection("stories").document(id.lowercased()).getDocument()
         guard let data = doc.data() else { return nil }
         return try convertToStory(data, id: doc.documentID)
     }
     
     func saveStory(_ story: Story) async throws {
         let data = try storyToDictionary(story)
-        try await db.collection("stories").document(story.id.uuidString).setData(data)
+        // Use lowercase ID to ensure consistency
+        let docID = story.id.uuidString.lowercased()
+        try await db.collection("stories").document(docID).setData(data)
+        print("💾 Saved story '\(story.title)' to Firestore document: \(docID)")
     }
     
     func deleteStory(id: String) async throws {
-        try await db.collection("stories").document(id).delete()
+        // Use lowercase ID to ensure consistency
+        try await db.collection("stories").document(id.lowercased()).delete()
     }
     
     // MARK: - Words
@@ -135,14 +153,37 @@ class FirebaseService {
             .whereField("title", isGreaterThanOrEqualTo: query)
             .whereField("title", isLessThanOrEqualTo: query + "\u{f8ff}")
             .getDocuments()
-        return snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) }
+        return deduplicateStories(snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) })
     }
     
     func fetchStoriesByDifficulty(level: Int) async throws -> [Story] {
         let snapshot = try await db.collection("stories")
             .whereField("difficultyLevel", isEqualTo: level)
             .getDocuments()
-        return snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) }
+        return deduplicateStories(snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) })
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func deduplicateStories(_ stories: [Story]) -> [Story] {
+        var seenIDs: Set<String> = []
+        var uniqueStories: [Story] = []
+        
+        for story in stories {
+            let id = story.id.uuidString.lowercased()
+            if !seenIDs.contains(id) {
+                seenIDs.insert(id)
+                uniqueStories.append(story)
+            } else {
+                print("  🗑️ Deduplicating story '\(story.title)' with ID \(id)")
+            }
+        }
+        
+        if uniqueStories.count < stories.count {
+            print("📊 Deduplicated: \(stories.count) -> \(uniqueStories.count) stories")
+        }
+        
+        return uniqueStories
     }
     
     // MARK: - Data Conversion Helpers
@@ -150,14 +191,30 @@ class FirebaseService {
     private func convertToStory(_ data: [String: Any], id: String) throws -> Story {
         var jsonDict = data
         
+        // Normalize ID to lowercase to handle case-insensitive UUIDs
+        let normalizedID = id.lowercased()
+        
         // Handle ID - Firestore document ID might not be a valid UUID
-        // If it's not a valid UUID, generate a new one
-        if UUID(uuidString: id) != nil {
-            jsonDict["id"] = id
+        // Use the Firestore ID directly if it's a valid UUID, otherwise create deterministic UUID
+        let finalUUID: UUID
+        if let validUUID = UUID(uuidString: normalizedID) {
+            finalUUID = validUUID
+            jsonDict["id"] = validUUID.uuidString.lowercased()
+            print("  📎 Firestore ID '\(id)' -> Normalized UUID: \(validUUID.uuidString.lowercased())")
         } else {
-            // Generate a deterministic UUID from the Firestore ID
-            jsonDict["id"] = UUID().uuidString
-            print("⚠️ Firestore document ID '\(id)' is not a valid UUID, generated new UUID")
+            // Create deterministic UUID from Firestore document ID
+            let hash = normalizedID.md5()
+            let uuidString = "\(hash.prefix(8))-\(hash.dropFirst(8).prefix(4))-4\(hash.dropFirst(12).prefix(3))-\(hash.dropFirst(15).prefix(4))-\(hash.dropFirst(19).prefix(12))"
+            if let generatedUUID = UUID(uuidString: uuidString) {
+                finalUUID = generatedUUID
+                jsonDict["id"] = uuidString
+                print("  📎 Firestore ID '\(id)' -> Generated UUID: \(uuidString)")
+            } else {
+                // Fallback - should never happen
+                finalUUID = UUID()
+                jsonDict["id"] = finalUUID.uuidString
+                print("  ⚠️ Firestore ID '\(id)' -> Fallback UUID: \(finalUUID)")
+            }
         }
         
         // Convert Firestore Timestamps to ISO8601 strings
@@ -404,5 +461,17 @@ class FirebaseService {
         encoder.dateEncodingStrategy = .iso8601
         let data = try encoder.encode(progress)
         return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+    }
+}
+
+// MARK: - String Extension for MD5 Hashing
+
+import CryptoKit
+
+extension String {
+    func md5() -> String {
+        let data = Data(self.utf8)
+        let hash = Insecure.MD5.hash(data: data)
+        return hash.map { String(format: "%02hhx", $0) }.joined()
     }
 }

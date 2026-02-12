@@ -115,6 +115,7 @@ struct StoryReaderView: View {
                         mixedWord: mixedWord,
                         isLearned: viewModel.isMixedWordLearned(mixedWord.wordId),
                         position: viewModel.popoverPosition,
+                        fontName: viewModel.arabicFont.fontName,
                         onClose: { viewModel.closeWordPopover() },
                         onPlayAudio: {
                             if let word = viewModel.selectedWord {
@@ -129,6 +130,7 @@ struct StoryReaderView: View {
                         word: word,
                         position: viewModel.popoverPosition,
                         isLearned: viewModel.isWordLearned(word.id.uuidString),
+                        fontName: viewModel.arabicFont.fontName,
                         onClose: { viewModel.closeWordPopover() },
                         onBookmark: { viewModel.toggleWordBookmark(word) },
                         onPlayAudio: { viewModel.playWordPronunciation(word) }
@@ -278,6 +280,7 @@ struct MixedContentView: View {
                     storyWords: storyWords,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
+                    fontName: viewModel.arabicFont.fontName,
                     hasMeaningAvailable: { word in
                         viewModel.hasMeaningAvailable(for: word)
                     },
@@ -317,6 +320,7 @@ struct MixedTextView: View {
     let storyWords: [Word]?
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onLinkedWordTap: (String, CGPoint) -> Void
     let onGenericWordTap: (String, CGPoint) -> Void
@@ -336,6 +340,7 @@ struct MixedTextView: View {
                 text: text,
                 fontSize: fontSize,
                 isNightMode: isNightMode,
+                fontName: fontName,
                 hasMeaningAvailable: hasMeaningAvailable,
                 onWordTap: onGenericWordTap
             )
@@ -352,6 +357,7 @@ struct MixedTextView: View {
                             LinkedWordButton(
                                 word: word,
                                 isNightMode: isNightMode,
+                                fontName: fontName,
                                 onTap: { position in
                                     onLinkedWordTap(word.id.uuidString, position)
                                 }
@@ -376,6 +382,7 @@ struct MixedContentText: View {
     let text: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
     
@@ -412,6 +419,7 @@ struct MixedContentText: View {
                                 word: word,
                                 fontSize: fontSize,
                                 isNightMode: isNightMode,
+                                fontName: fontName,
                                 onTap: { position in
                                     onWordTap(word, position)
                                 }
@@ -536,13 +544,14 @@ struct MixedArabicWordChip: View {
     let word: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize).bold())
+            .font(.custom(fontName, size: fontSize).bold())
             .foregroundColor(Color.hikayaTeal)
             .padding(.vertical, 6)
             .padding(.horizontal, 10)
@@ -568,13 +577,14 @@ struct MixedArabicWordView: View {
     let fontSize: CGFloat
     let isNightMode: Bool
     let hasMeaning: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize))
+            .font(.custom(fontName, size: fontSize))
             .fontWeight(hasMeaning ? .semibold : .medium)
             .foregroundStyle(textColor)
             .padding(.vertical, 2)
@@ -620,6 +630,7 @@ struct MixedArabicWordView: View {
 struct LinkedWordButton: View {
     let word: Word
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
@@ -628,7 +639,7 @@ struct LinkedWordButton: View {
         VStack(spacing: 4) {
             // Arabic text
             Text(word.arabicText)
-                .font(.custom("NotoNaskhArabic", size: 18))
+                .font(.custom(fontName, size: 18))
                 .fontWeight(.semibold)
             
             // Transliteration (if available)
@@ -671,6 +682,7 @@ struct LinkedMixedWordView: View {
     let wordId: String?
     let isLearned: Bool
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
@@ -679,7 +691,7 @@ struct LinkedMixedWordView: View {
         VStack(spacing: 2) {
             // Arabic text
             Text(arabicText)
-                .font(.custom("NotoNaskhArabic", size: 18))
+                .font(.custom(fontName, size: 18))
                 .fontWeight(.semibold)
                 .foregroundStyle(isNightMode ? Color.hikayaTeal : Color.hikayaTeal)
             
@@ -720,6 +732,7 @@ struct MixedWordPopoverView: View {
     let mixedWord: StoryReaderViewModel.MixedWordInfo
     let isLearned: Bool
     let position: CGPoint
+    let fontName: String
     let onClose: () -> Void
     let onPlayAudio: () -> Void
     
@@ -734,7 +747,7 @@ struct MixedWordPopoverView: View {
             VStack(spacing: 16) {
                 // Arabic word
                 Text(mixedWord.arabicText)
-                    .font(.custom("NotoNaskhArabic", size: 36))
+                    .font(.custom(fontName, size: 36))
                     .foregroundStyle(.primary)
                 
                 // Transliteration
@@ -817,6 +830,7 @@ struct BilingualContentView: View {
                     text: segment.arabicText,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
+                    fontName: viewModel.arabicFont.fontName,
                     hasMeaningAvailable: { word in
                         viewModel.hasMeaningAvailable(for: word)
                     },
@@ -873,6 +887,7 @@ struct ArabicTextView: View {
     let text: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
     
@@ -884,7 +899,8 @@ struct ArabicTextView: View {
                     word: word,
                     fontSize: fontSize,
                     isNightMode: isNightMode,
-                    hasMeaning: hasMeaningAvailable(word)
+                    hasMeaning: hasMeaningAvailable(word),
+                    fontName: fontName
                 )
                 .onTapGesture { location in
                     onWordTap(word, location)
@@ -902,10 +918,11 @@ struct ArabicWordView: View {
     let fontSize: CGFloat
     let isNightMode: Bool
     let hasMeaning: Bool
+    let fontName: String
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize))
+            .font(.custom(fontName, size: fontSize))
             .fontWeight(hasMeaning ? .semibold : .medium)
             .foregroundStyle(textColor)
             .padding(.vertical, 4)
@@ -1110,6 +1127,14 @@ struct ReaderSettingsView: View {
                             .font(.title2)
                     }
                     
+                    // Arabic Font Picker
+                    Picker("Arabic Font", selection: $viewModel.arabicFont) {
+                        ForEach(ArabicFont.allCases) { font in
+                            Text(font.rawValue)
+                                .tag(font)
+                        }
+                    }
+                    
                     // Night Mode
                     Toggle("Night Mode", isOn: Binding(
                         get: { viewModel.isNightMode },
@@ -1130,8 +1155,9 @@ struct ReaderSettingsView: View {
                     }
                 }
                 
-                Section("Audio") {
-                    Toggle("Auto-scroll with audio", isOn: $viewModel.autoScrollEnabled)
+                Section("Reading") {
+                    Toggle("Highlight Arabic Words", isOn: .constant(true))
+                        .disabled(true) // Coming soon
                 }
                 
                 Section("Story Progress") {
@@ -1140,14 +1166,6 @@ struct ReaderSettingsView: View {
                         dismiss()
                     }
                     .foregroundStyle(.red)
-                    
-                    Button("Mark as Completed") {
-                        Task {
-                            await viewModel.markAsCompleted()
-                            dismiss()
-                        }
-                    }
-                    .foregroundStyle(Color.hikayaTeal)
                 }
                 
                 // Vocabulary info for mixed format

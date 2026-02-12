@@ -90,6 +90,11 @@ struct LibraryView: View {
             }
             .navigationTitle("Arabicly")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    LevelBadge(level: viewModel.maxUnlockedLevel)
+                }
+            }
             .refreshable {
                 await viewModel.refresh()
             }
@@ -115,6 +120,39 @@ struct LibraryView: View {
             }
         }
         .environment(viewModel)
+    }
+}
+
+// MARK: - Level Badge
+
+struct LevelBadge: View {
+    let level: Int
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "crown.fill")
+                .font(.system(size: 14, weight: .semibold))
+            Text("Level \(level)")
+                .font(.subheadline.weight(.bold))
+        }
+        .foregroundStyle(levelColor )
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+//        .background(
+//            Capsule()
+//                .fill(levelColor)
+//        )
+    }
+    
+    private var levelColor: Color {
+        switch level {
+        case 1: return .green
+        case 2: return Color.hikayaTeal
+        case 3: return .blue
+        case 4: return .orange
+        case 5: return .red
+        default: return .gray
+        }
     }
 }
 
@@ -390,9 +428,11 @@ struct StoryGridView: View {
     
     // Split stories into pairs for 2-column layout
     private var storyPairs: [[Story]] {
-        stride(from: 0, to: stories.count, by: 2).map { index in
+        let pairs = stride(from: 0, to: stories.count, by: 2).map { index in
             Array(stories[index..<min(index + 2, stories.count)])
         }
+        print("📱 StoryGridView: Rendering \(stories.count) stories in \(pairs.count) rows")
+        return pairs
     }
     
     var body: some View {
@@ -474,19 +514,16 @@ struct StoryCard: View {
                 }
                 
                 // Progress
-                if story.readingProgress > 0 && !story.isCompleted {
-                    StoryProgressBar(progress: story.readingProgress)
-                        .padding(.top, 4)
-                } else if story.isCompleted {
-                    HStack(spacing: 4) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.green)
-                        Text("Completed")
-                            .font(.caption2)
-                            .foregroundStyle(.green)
+                if story.readingProgress > 0 {
+                    if story.isCompleted {
+                        // Show full progress bar for completed
+                        StoryProgressBar(progress: 1.0)
+                            .padding(.top, 4)
+                    } else {
+                        // Show partial progress
+                        StoryProgressBar(progress: story.readingProgress)
+                            .padding(.top, 4)
                     }
-                    .padding(.top, 2)
                 }
             }
             .padding(12)
@@ -549,7 +586,7 @@ struct StoryCoverImage: View {
                     case .success(let image):
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                     case .failure:
                         placeholder
                     @unknown default:
@@ -618,18 +655,30 @@ struct StoryProgressBar: View {
     let progress: Double
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(Color(.systemGray5))
-                    .frame(height: 4)
-                
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(Color.hikayaTeal)
-                    .frame(width: geometry.size.width * progress, height: 4)
+        VStack(alignment: .leading, spacing: 2) {
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 6)
+                    
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.8)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: max(geometry.size.width * progress, 4), height: 6)
+                }
             }
+            .frame(height: 6)
+            
+            Text("\(Int(progress * 100))%")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
-        .frame(height: 4)
     }
 }
 

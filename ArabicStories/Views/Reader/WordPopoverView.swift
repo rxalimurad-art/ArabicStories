@@ -10,6 +10,7 @@ struct WordPopoverView: View {
     let word: Word
     let position: CGPoint
     let isLearned: Bool
+    let fontName: String
     let onClose: () -> Void
     let onBookmark: () -> Void
     let onPlayAudio: () -> Void
@@ -17,10 +18,11 @@ struct WordPopoverView: View {
     @State private var showExampleSentences = false
     @State private var dragOffset: CGSize = .zero
     
-    init(word: Word, position: CGPoint, isLearned: Bool, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void) {
+    init(word: Word, position: CGPoint, isLearned: Bool, fontName: String, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void) {
         self.word = word
         self.position = position
         self.isLearned = isLearned
+        self.fontName = fontName
         self.onClose = onClose
         self.onBookmark = onBookmark
         self.onPlayAudio = onPlayAudio
@@ -58,7 +60,7 @@ struct WordPopoverView: View {
                         VStack(spacing: 16) {
                             // Arabic Word (Large)
                             Text(word.displayText)
-                                .font(.custom("NotoNaskhArabic", size: 48))
+                                .font(.custom(fontName, size: 48))
                                 .fontWeight(.bold)
                                 .foregroundStyle(.primary)
                             
@@ -290,6 +292,7 @@ struct ExampleSentenceCard: View {
             ),
             position: .zero,
             isLearned: true,
+            fontName: "NotoNaskhArabic",
             onClose: {},
             onBookmark: {},
             onPlayAudio: {}
