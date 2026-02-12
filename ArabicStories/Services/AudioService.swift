@@ -97,21 +97,25 @@ class AudioService: NSObject {
             throw AudioError.invalidBase64Data
         }
         
+        let mimeTypePart = String(dataURI[..<commaIndex])
         let base64String = String(dataURI[dataURI.index(after: commaIndex)...])
+        
+        // Extract file extension from MIME type
+        let fileExtension = extractFileExtension(from: mimeTypePart)
         
         guard let audioData = Data(base64Encoded: base64String) else {
             throw AudioError.invalidBase64Data
         }
         
-        // Try to play directly from data
-        do {
-            player = try AVAudioPlayer(data: audioData)
-        } catch {
-            // If direct playback fails, save to temp file and try again
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("temp_audio_\(UUID().uuidString).m4a")
-            try audioData.write(to: tempURL)
-            player = try AVAudioPlayer(contentsOf: tempURL)
-        }
+        // Save to temp file with correct extension
+        let tempURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("temp_audio_\(UUID().uuidString)")
+            .appendingPathExtension(fileExtension)
+        
+        try audioData.write(to: tempURL)
+        
+        // Load from file (more reliable for codec detection)
+        player = try AVAudioPlayer(contentsOf: tempURL)
         
         player?.delegate = self
         player?.prepareToPlay()
@@ -121,7 +125,30 @@ class AudioService: NSObject {
         progress = 0
         currentWordIndex = -1
         
-        print("✅ Loaded base64 audio, duration: \(duration)s")
+        print("✅ Loaded base64 audio (format: \(fileExtension)), duration: \(duration)s")
+    }
+    
+    private func extractFileExtension(from mimeTypePart: String) -> String {
+        // Parse "data:audio/x-m4a;base64" -> "m4a"
+        // Parse "data:audio/mpeg;base64" -> "mp3"
+        // Parse "data:audio/wav;base64" -> "wav"
+        
+        let lowercased = mimeTypePart.lowercased()
+        
+        if lowercased.contains("m4a") || lowercased.contains("mp4") || lowercased.contains("aac") {
+            return "m4a"
+        } else if lowercased.contains("mpeg") || lowercased.contains("mp3") {
+            return "mp3"
+        } else if lowercased.contains("wav") {
+            return "wav"
+        } else if lowercased.contains("caf") {
+            return "caf"
+        } else if lowercased.contains("aiff") {
+            return "aiff"
+        }
+        
+        // Default to m4a (AAC) which is most compatible
+        return "m4a"
     }
     
     func loadAudio(from data: Data, wordTimings: [WordTiming] = []) throws {
@@ -316,36 +343,62 @@ class PronunciationService {
             throw AudioError.invalidBase64Data
         }
         
+        let mimeTypePart = String(dataURI[..<commaIndex])
         let base64String = String(dataURI[dataURI.index(after: commaIndex)...])
+        
+        // Extract file extension from MIME type
+        let fileExtension = extractExtension(from: mimeTypePart)
         
         guard let audioData = Data(base64Encoded: base64String) else {
             throw AudioError.invalidBase64Data
         }
         
-        // Save to cache
-        let cacheURL = getCacheURL(for: word)
+        // Save to cache with correct extension
+        let cacheURL = getCacheURL(for: word, extension: fileExtension)
         try audioData.write(to: cacheURL)
         
-        // Play
-        audioPlayer = try AVAudioPlayer(data: audioData)
+        // Play from file URL (more reliable)
+        audioPlayer = try AVAudioPlayer(contentsOf: cacheURL)
         audioPlayer?.play()
         
-        print("✅ Played base64 pronunciation for: \(word.arabicText)")
+        print("✅ Played base64 pronunciation for: \(word.arabicText) (format: \(fileExtension))")
     }
     
-    private func getCacheURL(for word: Word) -> URL {
+    private func extractExtension(from mimeTypePart: String) -> String {
+        let lowercased = mimeTypePart.lowercased()
+        
+        if lowercased.contains("m4a") || lowercased.contains("mp4") || lowercased.contains("aac") {
+            return "m4a"
+        } else if lowercased.contains("mpeg") || lowercased.contains("mp3") {
+            return "mp3"
+        } else if lowercased.contains("wav") {
+            return "wav"
+        } else if lowercased.contains("caf") {
+            return "caf"
+        }
+        return "m4a"
+    }
+    
+    private func getCacheURL(for word: Word, extension ext: String) -> URL {
         let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let pronunciationDir = cacheDir.appendingPathComponent("pronunciations", isDirectory: true)
         try? FileManager.default.createDirectory(at: pronunciationDir, withIntermediateDirectories: true)
-        return pronunciationDir.appendingPathComponent("\(word.id.uuidString).m4a")
+        return pronunciationDir.appendingPathComponent("\(word.id.uuidString).\(ext)")
     }
     
     private func getLocalPronunciationURL(for word: Word) -> URL? {
         let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let pronunciationDir = cacheDir.appendingPathComponent("pronunciations", isDirectory: true)
         
-        let fileURL = pronunciationDir.appendingPathComponent("\(word.id.uuidString).mp3")
-        return FileManager.default.fileExists(atPath: fileURL.path) ? fileURL : nil
+        // Check for any supported audio format
+        let extensions = ["m4a", "mp3", "wav", "caf", "aiff"]
+        for ext in extensions {
+            let fileURL = pronunciationDir.appendingPathComponent("\(word.id.uuidString).\(ext)")
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                return fileURL
+            }
+        }
+        return nil
     }
     
     private func cachePronunciation(word: Word, from url: URL) {
