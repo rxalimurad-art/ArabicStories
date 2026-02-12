@@ -358,25 +358,35 @@ struct MixedContentText: View {
         result.font = .system(size: fontSize)
         result.foregroundColor = isNightMode ? .white : .primary
         
-        // Find and style Arabic words
+        // Find and style Arabic words using NSString for range support
+        let nsString = text as NSString
         let arabicWords = extractArabicWords(from: text)
         
         for word in arabicWords {
-            var searchPosition = result.startIndex
+            var searchRange = NSRange(location: 0, length: nsString.length)
             
-            while searchPosition < result.endIndex {
-                if let range = result.range(of: word, options: [], 
-                                            range: searchPosition..<result.endIndex) {
-                    if hasMeaningAvailable(word) {
-                        result[range].foregroundColor = Color.hikayaTeal
-                        result[range].font = .custom("NotoNaskhArabic", size: fontSize).bold()
-                    } else {
-                        result[range].font = .custom("NotoNaskhArabic", size: fontSize)
-                    }
-                    searchPosition = range.upperBound
-                } else {
+            while true {
+                let range = nsString.range(of: word, options: [], range: searchRange)
+                if range.location == NSNotFound {
                     break
                 }
+                
+                // Convert NSRange to AttributedString.Range
+                if let attrStart = String.Index(utf16Offset: range.location, in: text),
+                   let attrEnd = String.Index(utf16Offset: range.location + range.length, in: text) {
+                    let attrRange = attrStart..<attrEnd
+                    
+                    if hasMeaningAvailable(word) {
+                        result[attrRange].foregroundColor = Color.hikayaTeal
+                        result[attrRange].font = .custom("NotoNaskhArabic", size: fontSize).bold()
+                    } else {
+                        result[attrRange].font = .custom("NotoNaskhArabic", size: fontSize)
+                    }
+                }
+                
+                // Move search range past this occurrence
+                searchRange = NSRange(location: range.location + range.length, 
+                                     length: nsString.length - (range.location + range.length))
             }
         }
         
