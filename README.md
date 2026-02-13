@@ -1,4 +1,4 @@
-# Hikaya - Arabic Learning Through Stories
+# Arabicly - Arabic Learning Through Stories
 
 A beautiful iOS app for learning Arabic through interactive stories with Firebase cloud storage.
 

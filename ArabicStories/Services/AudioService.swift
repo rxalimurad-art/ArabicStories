@@ -1,6 +1,6 @@
 //
 //  AudioService.swift
-//  Hikaya
+//  Arabicly
 //  Audio narration with word-by-word highlighting support
 //
 

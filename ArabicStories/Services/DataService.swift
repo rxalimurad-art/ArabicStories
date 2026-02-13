@@ -1,6 +1,6 @@
 //
 //  DataService.swift
-//  Hikaya
+//  Arabicly
 //  Data layer using Firebase Firestore
 //
 
@@ -194,24 +194,18 @@ class DataService {
     
     // MARK: - Vocabulary Learning
     
-    func recordVocabularyLearned(wordId: String) async -> Bool {
-        guard var progress = await fetchUserProgress() else { return false }
+    func recordVocabularyLearned(wordId: String) async {
+        guard var progress = await fetchUserProgress() else { return }
         
-        let unlockedLevel = progress.recordVocabularyLearned(wordId: wordId)
+        progress.recordVocabularyLearned(wordId: wordId)
         
         do {
             try await firebaseService.saveUserProgress(progress, userId: userId)
             await localCache.saveUserProgress(progress)
             
-            // Publish level unlock event if Level 2 was unlocked
-            if unlockedLevel {
-                levelUnlockedPublisher.send(2)
-            }
-            
-            return unlockedLevel
+            // Note: Level 2 is now unlocked by completing all Level 1 stories, not vocabulary
         } catch {
             errorPublisher.send(error)
-            return false
         }
     }
     
@@ -285,15 +279,32 @@ class DataService {
         }
     }
     
-    func recordStoryCompleted(difficultyLevel: Int) async {
-        guard var progress = await fetchUserProgress() else { return }
-        progress.recordStoryCompleted(difficultyLevel: difficultyLevel)
+    func recordStoryCompleted(storyId: String, difficultyLevel: Int) async -> Bool {
+        guard var progress = await fetchUserProgress() else { return false }
+        
+        // Get total Level 1 stories count for unlock check
+        let allStories = await fetchAllStories()
+        let totalLevel1Stories = allStories.filter { $0.difficultyLevel == 1 }.count
+        
+        let unlocked = progress.recordStoryCompleted(
+            storyId: storyId,
+            difficultyLevel: difficultyLevel,
+            totalStoriesInLevel1: totalLevel1Stories
+        )
         
         do {
             try await firebaseService.saveUserProgress(progress, userId: userId)
             await localCache.saveUserProgress(progress)
+            
+            // Publish level unlock event if Level 2 was unlocked
+            if unlocked {
+                levelUnlockedPublisher.send(2)
+            }
+            
+            return unlocked
         } catch {
             errorPublisher.send(error)
+            return false
         }
     }
     

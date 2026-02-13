@@ -1,6 +1,6 @@
 //
 //  StoryReaderView.swift
-//  Hikaya
+//  Arabicly
 //  Bilingual story reader with tap-to-see-meaning feature
 //
 
@@ -14,8 +14,15 @@ struct StoryReaderView: View {
     @Environment(\.dismiss) private var dismiss
     
     init(story: Story) {
+        var story = story
+        var wasReset = false
+        // If story is completed, reset progress to start from beginning
+        if story.isCompleted {
+            story.resetProgress()
+            wasReset = true
+        }
         self.story = story
-        viewModel = StoryReaderViewModel(story: story)
+        viewModel = StoryReaderViewModel(story: story, wasReset: wasReset)
     }
     
     var body: some View {
@@ -42,40 +49,62 @@ struct StoryReaderView: View {
                     .padding(.horizontal)
                 }
                 
-                // Content based on format
-                if viewModel.isMixedFormat {
-                    // Mixed Format (Level 1) - English with Arabic words
-                    if let segment = viewModel.currentMixedSegment {
-                        MixedContentView(
-                            segment: segment,
-                            storyWords: story.words,
-                            viewModel: viewModel,
-                            refreshTrigger: wordsLoadedRefresh
-                        )
+                // Content area
+                VStack(spacing: 0) {
+                    // Content based on format
+                    if viewModel.isMixedFormat {
+                        // Mixed Format (Level 1) - English with Arabic words
+                        if let segment = viewModel.currentMixedSegment {
+                            MixedContentView(
+                                segment: segment,
+                                storyWords: story.words,
+                                viewModel: viewModel,
+                                refreshTrigger: wordsLoadedRefresh,
+                                onMarkAsDone: {
+                                    Task {
+                                        await viewModel.markAsCompleted()
+                                        dismiss()
+                                    }
+                                },
+                                onRepeat: {
+                                    viewModel.resetProgress()
+                                }
+                            )
+                        } else {
+                            ContentUnavailableView("No Content", systemImage: "doc.text")
+                        }
                     } else {
-                        ContentUnavailableView("No Content", systemImage: "doc.text")
+                        // Bilingual Format (Level 2+) - Full Arabic with English
+                        if let segment = viewModel.currentSegment {
+                            BilingualContentView(
+                                segment: segment,
+                                viewModel: viewModel,
+                                refreshTrigger: wordsLoadedRefresh
+                            )
+                        } else {
+                            ContentUnavailableView("No Content", systemImage: "doc.text")
+                        }
                     }
-                } else {
-                    // Bilingual Format (Level 2+) - Full Arabic with English
-                    if let segment = viewModel.currentSegment {
-                        BilingualContentView(
-                            segment: segment,
-                            viewModel: viewModel,
-                            refreshTrigger: wordsLoadedRefresh
-                        )
-                    } else {
-                        ContentUnavailableView("No Content", systemImage: "doc.text")
-                    }
+                    
+                    // Bottom Navigation Bar
+                    BottomNavigationBar(
+                        canGoNext: viewModel.canGoNext,
+                        canGoPrevious: viewModel.canGoPrevious,
+                        isNightMode: viewModel.isNightMode,
+                        onNext: { 
+                            Task { 
+                                if viewModel.canGoNext {
+                                    await viewModel.goToNextSegment()
+                                } else {
+                                    // On last slide - mark complete and dismiss
+                                    await viewModel.markAsCompleted()
+                                    dismiss()
+                                }
+                            }
+                        },
+                        onPrevious: { Task { await viewModel.goToPreviousSegment() } }
+                    )
                 }
-                
-                // Bottom Controls
-                ReaderBottomBar(
-                    viewModel: viewModel,
-                    canGoNext: viewModel.canGoNext,
-                    canGoPrevious: viewModel.canGoPrevious,
-                    onNext: { Task { await viewModel.goToNextSegment() } },
-                    onPrevious: { Task { await viewModel.goToPreviousSegment() } }
-                )
             }
             
             // Word Popover
@@ -86,6 +115,7 @@ struct StoryReaderView: View {
                         mixedWord: mixedWord,
                         isLearned: viewModel.isMixedWordLearned(mixedWord.wordId),
                         position: viewModel.popoverPosition,
+                        fontName: viewModel.arabicFont.fontName,
                         onClose: { viewModel.closeWordPopover() },
                         onPlayAudio: {
                             if let word = viewModel.selectedWord {
@@ -100,6 +130,7 @@ struct StoryReaderView: View {
                         word: word,
                         position: viewModel.popoverPosition,
                         isLearned: viewModel.isWordLearned(word.id.uuidString),
+                        fontName: viewModel.arabicFont.fontName,
                         onClose: { viewModel.closeWordPopover() },
                         onBookmark: { viewModel.toggleWordBookmark(word) },
                         onPlayAudio: { viewModel.playWordPronunciation(word) }
@@ -231,6 +262,13 @@ struct MixedContentView: View {
     let storyWords: [Word]?
     var viewModel: StoryReaderViewModel
     var refreshTrigger: Bool = false
+    var onMarkAsDone: () -> Void
+    var onRepeat: () -> Void
+    
+    // Check if this is the last segment
+    private var isLastSegment: Bool {
+        !viewModel.canGoNext
+    }
     
     var body: some View {
         ScrollView {
@@ -242,6 +280,7 @@ struct MixedContentView: View {
                     storyWords: storyWords,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
+                    fontName: viewModel.arabicFont.fontName,
                     hasMeaningAvailable: { word in
                         viewModel.hasMeaningAvailable(for: word)
                     },
@@ -266,6 +305,7 @@ struct MixedContentView: View {
                         isNightMode: viewModel.isNightMode
                     )
                 }
+                
             }
             .padding()
         }
@@ -280,6 +320,7 @@ struct MixedTextView: View {
     let storyWords: [Word]?
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onLinkedWordTap: (String, CGPoint) -> Void
     let onGenericWordTap: (String, CGPoint) -> Void
@@ -299,6 +340,7 @@ struct MixedTextView: View {
                 text: text,
                 fontSize: fontSize,
                 isNightMode: isNightMode,
+                fontName: fontName,
                 hasMeaningAvailable: hasMeaningAvailable,
                 onWordTap: onGenericWordTap
             )
@@ -315,6 +357,7 @@ struct MixedTextView: View {
                             LinkedWordButton(
                                 word: word,
                                 isNightMode: isNightMode,
+                                fontName: fontName,
                                 onTap: { position in
                                     onLinkedWordTap(word.id.uuidString, position)
                                 }
@@ -333,14 +376,20 @@ struct MixedTextView: View {
     }
 }
 
-// MARK: - Mixed Content Text (Simple Approach)
+// MARK: - Mixed Content Text with Bold Support
 
 struct MixedContentText: View {
     let text: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
+    
+    // Parsed text components (normal and bold)
+    private var parsedComponents: [TextComponent] {
+        parseTextWithBoldTags(text)
+    }
     
     // Extract Arabic words that have meanings
     private var arabicWordsWithMeanings: [String] {
@@ -349,12 +398,13 @@ struct MixedContentText: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Simple text display - no inline highlighting
-            Text(text)
-                .font(.system(size: fontSize))
-                .lineSpacing(6)
-                .foregroundColor(isNightMode ? .white : .primary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // Text with inline bold support
+            MixedFormattedText(
+                components: parsedComponents,
+                fontSize: fontSize,
+                isNightMode: isNightMode
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
             
             // Show Arabic word chips below (if any have meanings)
             if !arabicWordsWithMeanings.isEmpty {
@@ -369,6 +419,7 @@ struct MixedContentText: View {
                                 word: word,
                                 fontSize: fontSize,
                                 isNightMode: isNightMode,
+                                fontName: fontName,
                                 onTap: { position in
                                     onWordTap(word, position)
                                 }
@@ -380,22 +431,70 @@ struct MixedContentText: View {
         }
     }
     
-    private func extractArabicWords(from text: String) -> [String] {
-        var words: [String] = []
+    // Parse text into components, separating bold and normal text
+    private func parseTextWithBoldTags(_ text: String) -> [TextComponent] {
+        var components: [TextComponent] = []
         var currentIndex = text.startIndex
         
         while currentIndex < text.endIndex {
-            let char = text[currentIndex]
+            // Look for <b> tag
+            if let boldStartRange = text.range(of: "<b>", range: currentIndex..<text.endIndex) {
+                // Add text before <b> as normal
+                let beforeBold = String(text[currentIndex..<boldStartRange.lowerBound])
+                if !beforeBold.isEmpty {
+                    components.append(TextComponent(text: beforeBold, isBold: false))
+                }
+                
+                // Look for closing </b> tag
+                let searchStart = boldStartRange.upperBound
+                if let boldEndRange = text.range(of: "</b>", range: searchStart..<text.endIndex) {
+                    // Extract bold text
+                    let boldText = String(text[searchStart..<boldEndRange.lowerBound])
+                    if !boldText.isEmpty {
+                        components.append(TextComponent(text: boldText, isBold: true))
+                    }
+                    currentIndex = boldEndRange.upperBound
+                } else {
+                    // No closing tag, treat rest as normal
+                    let remaining = String(text[searchStart..<text.endIndex])
+                    if !remaining.isEmpty {
+                        components.append(TextComponent(text: remaining, isBold: false))
+                    }
+                    break
+                }
+            } else {
+                // No more <b> tags, add remaining text as normal
+                let remaining = String(text[currentIndex..<text.endIndex])
+                if !remaining.isEmpty {
+                    components.append(TextComponent(text: remaining, isBold: false))
+                }
+                break
+            }
+        }
+        
+        return components
+    }
+    
+    private func extractArabicWords(from text: String) -> [String] {
+        // Remove HTML-like tags for Arabic word extraction
+        let cleanText = text.replacingOccurrences(of: "<b>", with: "")
+                            .replacingOccurrences(of: "</b>", with: "")
+        
+        var words: [String] = []
+        var currentIndex = cleanText.startIndex
+        
+        while currentIndex < cleanText.endIndex {
+            let char = cleanText[currentIndex]
             
             if ArabicTextUtils.isArabicCharacter(char) {
                 var arabicWord = ""
                 var endIndex = currentIndex
                 
-                while endIndex < text.endIndex && 
-                      (ArabicTextUtils.isArabicCharacter(text[endIndex]) || 
-                       ArabicTextUtils.isDiacritic(text[endIndex])) {
-                    arabicWord.append(text[endIndex])
-                    endIndex = text.index(after: endIndex)
+                while endIndex < cleanText.endIndex && 
+                      (ArabicTextUtils.isArabicCharacter(cleanText[endIndex]) || 
+                       ArabicTextUtils.isDiacritic(cleanText[endIndex])) {
+                    arabicWord.append(cleanText[endIndex])
+                    endIndex = cleanText.index(after: endIndex)
                 }
                 
                 if !arabicWord.isEmpty && !words.contains(arabicWord) {
@@ -403,11 +502,39 @@ struct MixedContentText: View {
                 }
                 currentIndex = endIndex
             } else {
-                currentIndex = text.index(after: currentIndex)
+                currentIndex = cleanText.index(after: currentIndex)
             }
         }
         
         return words
+    }
+}
+
+// MARK: - Text Component
+
+struct TextComponent: Identifiable {
+    let id = UUID()
+    let text: String
+    let isBold: Bool
+}
+
+// MARK: - Mixed Formatted Text View
+
+struct MixedFormattedText: View {
+    let components: [TextComponent]
+    let fontSize: CGFloat
+    let isNightMode: Bool
+    
+    var body: some View {
+        // Build text by combining components
+        components.reduce(Text("")) { result, component in
+            let textPart = Text(component.text)
+                .font(.system(size: fontSize, weight: component.isBold ? .bold : .regular))
+            
+            return result + textPart
+        }
+        .lineSpacing(6)
+        .foregroundColor(isNightMode ? .white : .primary)
     }
 }
 
@@ -417,13 +544,14 @@ struct MixedArabicWordChip: View {
     let word: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize).bold())
+            .font(.custom(fontName, size: fontSize).bold())
             .foregroundColor(Color.hikayaTeal)
             .padding(.vertical, 6)
             .padding(.horizontal, 10)
@@ -449,13 +577,14 @@ struct MixedArabicWordView: View {
     let fontSize: CGFloat
     let isNightMode: Bool
     let hasMeaning: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize))
+            .font(.custom(fontName, size: fontSize))
             .fontWeight(hasMeaning ? .semibold : .medium)
             .foregroundStyle(textColor)
             .padding(.vertical, 2)
@@ -501,6 +630,7 @@ struct MixedArabicWordView: View {
 struct LinkedWordButton: View {
     let word: Word
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
@@ -509,7 +639,7 @@ struct LinkedWordButton: View {
         VStack(spacing: 4) {
             // Arabic text
             Text(word.arabicText)
-                .font(.custom("NotoNaskhArabic", size: 18))
+                .font(.custom(fontName, size: 18))
                 .fontWeight(.semibold)
             
             // Transliteration (if available)
@@ -541,6 +671,9 @@ struct LinkedWordButton: View {
     }
 }
 
+
+
+
 // MARK: - Linked Mixed Word View (for story vocabulary links)
 
 struct LinkedMixedWordView: View {
@@ -549,6 +682,7 @@ struct LinkedMixedWordView: View {
     let wordId: String?
     let isLearned: Bool
     let isNightMode: Bool
+    let fontName: String
     let onTap: (CGPoint) -> Void
     
     @State private var tapPosition: CGPoint = .zero
@@ -557,7 +691,7 @@ struct LinkedMixedWordView: View {
         VStack(spacing: 2) {
             // Arabic text
             Text(arabicText)
-                .font(.custom("NotoNaskhArabic", size: 18))
+                .font(.custom(fontName, size: 18))
                 .fontWeight(.semibold)
                 .foregroundStyle(isNightMode ? Color.hikayaTeal : Color.hikayaTeal)
             
@@ -598,6 +732,7 @@ struct MixedWordPopoverView: View {
     let mixedWord: StoryReaderViewModel.MixedWordInfo
     let isLearned: Bool
     let position: CGPoint
+    let fontName: String
     let onClose: () -> Void
     let onPlayAudio: () -> Void
     
@@ -612,7 +747,7 @@ struct MixedWordPopoverView: View {
             VStack(spacing: 16) {
                 // Arabic word
                 Text(mixedWord.arabicText)
-                    .font(.custom("NotoNaskhArabic", size: 36))
+                    .font(.custom(fontName, size: 36))
                     .foregroundStyle(.primary)
                 
                 // Transliteration
@@ -695,6 +830,7 @@ struct BilingualContentView: View {
                     text: segment.arabicText,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
+                    fontName: viewModel.arabicFont.fontName,
                     hasMeaningAvailable: { word in
                         viewModel.hasMeaningAvailable(for: word)
                     },
@@ -751,6 +887,7 @@ struct ArabicTextView: View {
     let text: String
     let fontSize: CGFloat
     let isNightMode: Bool
+    let fontName: String
     let hasMeaningAvailable: (String) -> Bool
     let onWordTap: (String, CGPoint) -> Void
     
@@ -762,7 +899,8 @@ struct ArabicTextView: View {
                     word: word,
                     fontSize: fontSize,
                     isNightMode: isNightMode,
-                    hasMeaning: hasMeaningAvailable(word)
+                    hasMeaning: hasMeaningAvailable(word),
+                    fontName: fontName
                 )
                 .onTapGesture { location in
                     onWordTap(word, location)
@@ -780,10 +918,11 @@ struct ArabicWordView: View {
     let fontSize: CGFloat
     let isNightMode: Bool
     let hasMeaning: Bool
+    let fontName: String
     
     var body: some View {
         Text(word)
-            .font(.custom("NotoNaskhArabic", size: fontSize))
+            .font(.custom(fontName, size: fontSize))
             .fontWeight(hasMeaning ? .semibold : .medium)
             .foregroundStyle(textColor)
             .padding(.vertical, 4)
@@ -893,78 +1032,70 @@ struct NoteCard: View {
     }
 }
 
-// MARK: - Reader Bottom Bar
+// MARK: - Bottom Navigation Bar
 
-struct ReaderBottomBar: View {
-    var viewModel: StoryReaderViewModel
+struct BottomNavigationBar: View {
     let canGoNext: Bool
     let canGoPrevious: Bool
+    let isNightMode: Bool
     let onNext: () -> Void
     let onPrevious: () -> Void
     
     var body: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 0) {
             // Previous Button
             Button(action: onPrevious) {
-                Image(systemName: "chevron.left.circle.fill")
-                    .font(.title2)
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.left")
+                        .font(.system(size: 16, weight: .semibold))
+                    Text("Previous")
+                        .font(.subheadline.weight(.medium))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(canGoPrevious 
+                            ? (isNightMode ? Color.white.opacity(0.12) : Color.white)
+                            : Color.gray.opacity(0.08))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(canGoPrevious 
+                            ? (isNightMode ? Color.white.opacity(0.25) : Color.gray.opacity(0.2))
+                            : Color.clear, lineWidth: 1)
+                )
+                .foregroundStyle(canGoPrevious 
+                    ? (isNightMode ? .white : .primary)
+                    : Color.gray.opacity(0.4))
             }
             .disabled(!canGoPrevious)
-            .opacity(canGoPrevious ? 1 : 0.3)
+            .padding(.leading, 16)
             
-            // Audio Controls
-            AudioControlView(viewModel: viewModel)
+            // Spacer
+            Spacer()
+                .frame(width: 12)
             
-            // Next Button
+            // Next/Finish Button
             Button(action: onNext) {
-                Image(systemName: "chevron.right.circle.fill")
-                    .font(.title2)
-            }
-            .disabled(false) // Allow tapping next even at end to complete
-            .opacity(canGoNext ? 1 : 0.5)
-        }
-        .foregroundStyle(Color.hikayaTeal)
-        .padding()
-        .background(viewModel.isNightMode ? Color.black : Color.hikayaCream)
-    }
-}
-
-// MARK: - Audio Control View
-
-struct AudioControlView: View {
-    var viewModel: StoryReaderViewModel
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            // Play/Pause
-            Button {
-                viewModel.togglePlayback()
-            } label: {
-                Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                    .font(.system(size: 44))
-            }
-            
-            // Speed Button
-            Menu {
-                ForEach(AudioSpeed.allCases, id: \.self) { speed in
-                    Button {
-                        viewModel.setPlaybackSpeed(speed)
-                    } label: {
-                        Text(speed.displayName)
-                        if viewModel.playbackSpeed == speed {
-                            Image(systemName: "checkmark")
-                        }
-                    }
+                HStack(spacing: 6) {
+                    Text(canGoNext ? "Continue" : "Complete")
+                        .font(.subheadline.weight(.semibold))
+                    Image(systemName: canGoNext ? "arrow.right" : "checkmark.circle.fill")
+                        .font(.system(size: 16, weight: .semibold))
                 }
-            } label: {
-                Text(viewModel.playbackSpeed.displayName)
-                    .font(.caption.weight(.medium))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.hikayaTeal.opacity(0.2))
-                    .clipShape(Capsule())
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.hikayaTeal)
+                )
+                .foregroundStyle(.white)
             }
+            .padding(.trailing, 16)
         }
+        .padding(.vertical, 12)
+        .background(isNightMode ? Color.black : Color.hikayaCream)
     }
 }
 
@@ -996,6 +1127,14 @@ struct ReaderSettingsView: View {
                             .font(.title2)
                     }
                     
+                    // Arabic Font Picker
+                    Picker("Arabic Font", selection: $viewModel.arabicFont) {
+                        ForEach(ArabicFont.allCases) { font in
+                            Text(font.rawValue)
+                                .tag(font)
+                        }
+                    }
+                    
                     // Night Mode
                     Toggle("Night Mode", isOn: Binding(
                         get: { viewModel.isNightMode },
@@ -1016,8 +1155,9 @@ struct ReaderSettingsView: View {
                     }
                 }
                 
-                Section("Audio") {
-                    Toggle("Auto-scroll with audio", isOn: $viewModel.autoScrollEnabled)
+                Section("Reading") {
+                    Toggle("Highlight Arabic Words", isOn: .constant(true))
+                        .disabled(true) // Coming soon
                 }
                 
                 Section("Story Progress") {
@@ -1026,14 +1166,6 @@ struct ReaderSettingsView: View {
                         dismiss()
                     }
                     .foregroundStyle(.red)
-                    
-                    Button("Mark as Completed") {
-                        Task {
-                            await viewModel.markAsCompleted()
-                            dismiss()
-                        }
-                    }
-                    .foregroundStyle(Color.hikayaTeal)
                 }
                 
                 // Vocabulary info for mixed format

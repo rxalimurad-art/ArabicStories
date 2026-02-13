@@ -1,6 +1,6 @@
 //
 //  PhoneAuthView.swift
-//  Hikaya
+//  Arabicly
 //  Phone number authentication view
 //
 

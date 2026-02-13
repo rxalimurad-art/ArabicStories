@@ -1,6 +1,6 @@
 //
 //  MainTabView.swift
-//  Hikaya
+//  Arabicly
 //  Main tab navigation for the app
 //
 

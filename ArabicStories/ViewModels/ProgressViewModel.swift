@@ -1,6 +1,6 @@
 //
 //  ProgressViewModel.swift
-//  Hikaya
+//  Arabicly
 //  ViewModel for user progress dashboard with vocabulary tracking
 //
 
@@ -21,13 +21,15 @@ class ProgressViewModel {
     
     // Level Management
     var maxUnlockedLevel: Int = 1
-    var vocabularyProgressToLevel2: Double = 0.0
-    var vocabularyRemainingForLevel2: Int = 20
+    var storyProgressToLevel2: Double = 0.0
+    var storiesRemainingForLevel2: Int = 0
     var showLevelUnlockAlert: Bool = false
     
     // Statistics
     var totalStories: Int = 0
     var completedStories: Int = 0
+    var totalLevel1Stories: Int = 0
+    var completedLevel1Stories: Int = 0
     var totalWords: Int = 0
     var masteredWords: Int = 0
     var currentStreak: Int = 0
@@ -69,11 +71,22 @@ class ProgressViewModel {
             todayStudyMinutes = progress.todayStudyMinutes
             dailyGoalMinutes = progress.dailyGoalMinutes
             maxUnlockedLevel = progress.maxUnlockedLevel
-            vocabularyProgressToLevel2 = progress.vocabularyProgressToLevel2
-            vocabularyRemainingForLevel2 = progress.vocabularyRemainingForLevel2
             totalVocabularyLearned = progress.totalVocabularyLearned
             totalVocabularyMastered = progress.masteredVocabularyIds.count
             vocabularyNeededForLevel2 = progress.vocabularyNeededForLevel2
+            
+            // Calculate story-based progress for Level 2
+            let allStories = await dataService.fetchAllStories()
+            let level1Stories = allStories.filter { $0.difficultyLevel == 1 }
+            totalLevel1Stories = level1Stories.count
+            completedLevel1Stories = level1Stories.filter { story in
+                progress.completedStoryIds.contains(story.id.uuidString)
+            }.count
+            
+            storiesRemainingForLevel2 = totalLevel1Stories - completedLevel1Stories
+            storyProgressToLevel2 = totalLevel1Stories > 0 
+                ? Double(completedLevel1Stories) / Double(totalLevel1Stories) 
+                : 0
             
             // Convert weekly data
             let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

@@ -1,6 +1,6 @@
 //
 //  Color+Extensions.swift
-//  Hikaya
+//  Arabicly
 //  App color palette and extensions
 //
 

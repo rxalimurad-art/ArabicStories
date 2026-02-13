@@ -52,8 +52,13 @@ function formatStoryForFirestore(storyData) {
   // Use mixed format for Level 1 if not explicitly set
   const finalFormat = format || (difficultyLevel === 1 ? 'mixed' : 'bilingual');
   
+  // Preserve existing ID or generate new one only for new stories
+  const storyId = storyData.id && storyData.id.trim() !== '' 
+    ? storyData.id 
+    : require('crypto').randomUUID();
+  
   const baseStory = {
-    id: storyData.id || require('crypto').randomUUID(),
+    id: storyId,
     title: storyData.title || '',
     titleArabic: storyData.titleArabic || null,
     storyDescription: storyData.storyDescription || '',
@@ -301,6 +306,12 @@ app.put('/api/stories/:id', async (req, res) => {
     const storyId = req.params.id;
     const storyData = req.body;
     
+    console.log('UPDATE STORY REQUEST:', {
+      paramId: storyId,
+      bodyId: storyData.id,
+      title: storyData.title
+    });
+    
     const docRef = db.collection(STORIES_COLLECTION).doc(storyId);
     const doc = await docRef.get();
     
@@ -309,13 +320,21 @@ app.put('/api/stories/:id', async (req, res) => {
       return;
     }
 
-    const formattedStory = formatStoryForFirestore({
+    const dataToFormat = {
       ...storyData,
       id: storyId,
       createdAt: doc.data().createdAt
-    });
+    };
+    console.log('Data to format:', { id: dataToFormat.id, title: dataToFormat.title });
     
-    await docRef.update(formattedStory);
+    const formattedStory = formatStoryForFirestore(dataToFormat);
+    console.log('Formatted story ID:', formattedStory.id);
+    
+    // Remove id from update data since we're updating by doc reference
+    const { id, ...updateData } = formattedStory;
+    console.log('Updating doc:', storyId, 'with data id:', id);
+    
+    await docRef.update(updateData);
     await logAdminAction('UPDATE_STORY', { 
       storyId, 
       title: formattedStory.title,
@@ -477,7 +496,7 @@ app.post('/api/seed', async (req, res) => {
         titleArabic: "القطة الودودة",
         storyDescription: "A simple story about a friendly cat who helps a lost bird find its way home.",
         storyDescriptionArabic: "قصة بسيطة عن قطة ودودة تساعد عصفوراً ضالاً في إيجاد طريقه إلى المنزل.",
-        author: "Hikaya Test",
+        author: "Arabicly",
         format: "bilingual",
         difficultyLevel: 2,
         category: "children",

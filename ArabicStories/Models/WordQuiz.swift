@@ -1,6 +1,6 @@
 //
 //  WordQuiz.swift
-//  Hikaya
+//  Arabicly
 //  Word quiz model with scoring and spaced repetition
 //
 

@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  Hikaya
+//  Arabicly
 //  App settings and preferences
 //
 
@@ -143,7 +143,7 @@ struct SettingsView: View {
                 
                 // Acknowledgments
                 Section {
-                    Text("Hikaya uses the SM-2 algorithm for spaced repetition. Arabic text rendered with Noto Naskh Arabic.")
+                    Text("Arabicly uses the SM-2 algorithm for spaced repetition. Arabic text rendered with Noto Naskh Arabic.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

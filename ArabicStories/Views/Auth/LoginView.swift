@@ -1,6 +1,6 @@
 //
 //  LoginView.swift
-//  Hikaya
+//  Arabicly
 //  Authentication screen with multiple login options
 //
 
@@ -87,7 +87,7 @@ struct LoginView: View {
                     .foregroundStyle(.white)
             }
             
-            Text("Hikaya")
+            Text("Arabicly")
                 .font(.system(size: 36, weight: .bold, design: .serif))
                 .foregroundStyle(Color.hikayaDeepTeal)
             

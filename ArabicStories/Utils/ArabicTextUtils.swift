@@ -1,6 +1,6 @@
 //
 //  ArabicTextUtils.swift
-//  Hikaya
+//  Arabicly
 //  Arabic text normalization and utilities
 //
 

@@ -1,6 +1,6 @@
 //
 //  WordQuizView.swift
-//  Hikaya
+//  Arabicly
 //  Interactive word quiz with scoring
 //
 
