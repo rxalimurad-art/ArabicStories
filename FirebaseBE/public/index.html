@@ -457,7 +457,7 @@
             
             <div class="form-group">
               <label for="import-words-json">Or paste JSON here</label>
-              <textarea id="import-words-json" rows="8" placeholder='[{"arabic": "كتاب", "transliteration": "kitab", "english": "book", "partOfSpeech": "noun"}, ...]'></textarea>
+              <textarea id="import-words-json" rows="8" placeholder='[{"rank": 1, "arabicText": "فِى", "buckwalter": "fiY", "englishMeaning": "In", "morphology": {"partOfSpeech": "P"}, ...]'></textarea>
             </div>
             
             <button id="import-words-btn" class="btn btn-primary">Import Words</button>
@@ -522,38 +522,192 @@
         <form id="word-form">
           <input type="hidden" id="word-id">
           
+          <!-- Core Fields -->
           <div class="form-row">
             <div class="form-group">
-              <label for="word-arabic-input">Arabic *</label>
-              <input type="text" id="word-arabic-input" dir="rtl" required placeholder="كلمة">
+              <label for="word-arabic-input">Arabic Text *</label>
+              <input type="text" id="word-arabic-input" dir="rtl" required placeholder="فِى">
+              <small>Arabic with diacritics (Uthmani script)</small>
             </div>
             <div class="form-group">
-              <label for="word-english-input">English *</label>
-              <input type="text" id="word-english-input" required placeholder="Translation">
+              <label for="word-english-input">English Meaning *</label>
+              <input type="text" id="word-english-input" required placeholder="In">
             </div>
           </div>
           
           <div class="form-row">
             <div class="form-group">
-              <label for="word-transliteration-input">Transliteration</label>
-              <input type="text" id="word-transliteration-input" placeholder="Transliteration">
+              <label for="word-buckwalter-input">Buckwalter</label>
+              <input type="text" id="word-buckwalter-input" placeholder="fiY">
+              <small>Buckwalter transliteration</small>
             </div>
             <div class="form-group">
               <label for="word-pos-input">Part of Speech</label>
               <select id="word-pos-input">
                 <option value="">Select...</option>
-                <option value="noun">Noun</option>
-                <option value="verb">Verb</option>
-                <option value="adjective">Adjective</option>
-                <option value="adverb">Adverb</option>
-                <option value="preposition">Preposition</option>
-                <option value="pronoun">Pronoun</option>
-                <option value="particle">Particle</option>
-                <option value="interjection">Interjection</option>
-                <option value="conjunction">Conjunction</option>
+                <option value="N">N - Noun (اسم)</option>
+                <option value="V">V - Verb (فعل)</option>
+                <option value="P">P - Preposition (حرف جر)</option>
+                <option value="PN">PN - Proper Noun (اسم علم)</option>
+                <option value="ADJ">ADJ - Adjective (صفة)</option>
+                <option value="ADV">ADV - Adverb (ظرف)</option>
+                <option value="PRO">PRO - Pronoun (ضمير)</option>
+                <option value="CONJ">CONJ - Conjunction (حرف عطف)</option>
+                <option value="NEG">NEG - Negative particle</option>
+                <option value="COND">COND - Conditional particle</option>
+                <option value="REL">REL - Relative pronoun</option>
+                <option value="DEM">DEM - Demonstrative pronoun</option>
+                <option value="T">T - Time adverb</option>
+                <option value="LOC">LOC - Location adverb</option>
+                <option value="INTG">INTG - Interrogative</option>
+                <option value="VOC">VOC - Vocative particle</option>
+                <option value="CERT">CERT - Particle of certainty</option>
+                <option value="EMPH">EMPH - Emphatic particle</option>
+                <option value="EXH">EXH - Exhortation particle</option>
+                <option value="EXL">EXL - Exclamation particle</option>
+                <option value="IMPV">IMPV - Imperative particle</option>
+                <option value="PRP">PRP - Purpose particle</option>
+                <option value="REM">REM - Resumption particle</option>
+                <option value="RES">RES - Restriction particle</option>
+                <option value="RSLT">RSLT - Result particle</option>
+                <option value="SUP">SUP - Supplemental particle</option>
+                <option value="AMD">AMD - Amendment particle</option>
+                <option value="ANS">ANS - Answer particle</option>
+                <option value="AVR">AVR - Aversion particle</option>
+                <option value="CAUS">CAUS - Causative particle</option>
+                <option value="COM">COM - Comitative particle</option>
+                <option value="EQ">EQ - Equalization particle</option>
+                <option value="EXP">EXP - Exceptive particle</option>
+                <option value="FUT">FUT - Future particle</option>
+                <option value="INC">INC - Incitement particle</option>
+                <option value="RET">RET - Retraction particle</option>
+                <option value="SUB">SUB - Subordinating conjunction</option>
+                <option value="SUR">SUR - Surprise particle</option>
               </select>
             </div>
           </div>
+          
+          <!-- Root Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-root-input">Root (Arabic)</label>
+              <input type="text" id="word-root-input" dir="rtl" placeholder="قول">
+              <small>3-4 Arabic root letters</small>
+            </div>
+            <div class="form-group">
+              <label for="word-root-transliteration-input">Root Transliteration</label>
+              <input type="text" id="word-root-transliteration-input" placeholder="qwl">
+              <small>Root in Latin letters</small>
+            </div>
+          </div>
+          
+          <!-- Statistics -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-rank-input">Rank</label>
+              <input type="number" id="word-rank-input" placeholder="1" min="1">
+              <small>Frequency rank (1 = most frequent)</small>
+            </div>
+            <div class="form-group">
+              <label for="word-occurrence-count-input">Occurrence Count</label>
+              <input type="number" id="word-occurrence-count-input" placeholder="1098" min="0">
+              <small>Total occurrences in Quran</small>
+            </div>
+          </div>
+          
+          <!-- Morphology Details -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-lemma-input">Lemma</label>
+              <input type="text" id="word-lemma-input" dir="rtl" placeholder="Dictionary form">
+            </div>
+            <div class="form-group">
+              <label for="word-form-input">Form</label>
+              <select id="word-form-input">
+                <option value="">Select...</option>
+                <option value="1">Form I</option>
+                <option value="2">Form II</option>
+                <option value="3">Form III</option>
+                <option value="4">Form IV</option>
+                <option value="5">Form V</option>
+                <option value="6">Form VI</option>
+                <option value="7">Form VII</option>
+                <option value="8">Form VIII</option>
+                <option value="9">Form IX</option>
+                <option value="10">Form X</option>
+                <option value="11">Form XI</option>
+                <option value="12">Form XII</option>
+              </select>
+              <small>Verb form (for verbs)</small>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-tense-input">Tense</label>
+              <select id="word-tense-input">
+                <option value="">Select...</option>
+                <option value="Perfect">Perfect</option>
+                <option value="Imperfect">Imperfect</option>
+                <option value="Imperative">Imperative</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="word-gender-input">Gender</label>
+              <select id="word-gender-input">
+                <option value="">Select...</option>
+                <option value="Masculine">Masculine</option>
+                <option value="Feminine">Feminine</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-number-input">Number</label>
+              <select id="word-number-input">
+                <option value="">Select...</option>
+                <option value="Singular">Singular</option>
+                <option value="Dual">Dual</option>
+                <option value="Plural">Plural</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="word-case-input">Grammatical Case</label>
+              <select id="word-case-input">
+                <option value="">Select...</option>
+                <option value="Nominative">Nominative (مرفوع)</option>
+                <option value="Accusative">Accusative (منصوب)</option>
+                <option value="Genitive">Genitive (مجرور)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-pos-description-input">POS Description (Arabic)</label>
+              <input type="text" id="word-pos-description-input" dir="rtl" placeholder="حرف جر">
+            </div>
+            <div class="form-group">
+              <label for="word-passive-input">Passive Voice</label>
+              <select id="word-passive-input">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-breakdown-input">Morphological Breakdown</label>
+              <input type="text" id="word-breakdown-input" placeholder="فِى[P]">
+              <small>Full morphological breakdown string</small>
+            </div>
+          </div>
+          
+          <!-- Legacy Fields (for backward compatibility) -->
+          <hr style="margin: 24px 0; border: 1px solid var(--gray-200);">
+          <p style="color: var(--gray-600); font-size: 14px; margin-bottom: 16px;">⚙️ Additional Fields (Optional)</p>
           
           <div class="form-row">
             <div class="form-group">
@@ -615,13 +769,6 @@
                 <small>Upload audio file (MP3, WAV, M4A)</small>
                 <div id="audio-upload-progress" class="upload-progress hidden"></div>
               </div>
-            </div>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group form-group-wide">
-              <label for="word-root-input">Root Letters</label>
-              <input type="text" id="word-root-input" dir="rtl" placeholder="أصل الكلمة">
             </div>
           </div>
         </form>

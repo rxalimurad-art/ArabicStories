@@ -1310,12 +1310,35 @@ function openWordModal(word = null) {
   if (word) {
     title.textContent = '✏️ Edit Word';
     document.getElementById('word-id').value = word.id || '';
-    // Support both new schema (arabicText, englishMeaning) and old schema (arabic, english)
+    
+    // Core fields
     document.getElementById('word-arabic-input').value = word.arabicText || word.arabic || '';
     document.getElementById('word-english-input').value = word.englishMeaning || word.english || '';
-    document.getElementById('word-transliteration-input').value = word.buckwalter || word.transliteration || '';
+    document.getElementById('word-buckwalter-input').value = word.buckwalter || word.transliteration || '';
+    
+    // POS
     document.getElementById('word-pos-input').value = word.morphology?.partOfSpeech || word.partOfSpeech || '';
+    
+    // Root
     document.getElementById('word-root-input').value = word.root?.arabic || word.rootLetters || '';
+    document.getElementById('word-root-transliteration-input').value = word.root?.transliteration || '';
+    
+    // Statistics
+    document.getElementById('word-rank-input').value = word.rank || '';
+    document.getElementById('word-occurrence-count-input').value = word.occurrenceCount || '';
+    
+    // Morphology details
+    document.getElementById('word-lemma-input').value = word.morphology?.lemma || '';
+    document.getElementById('word-form-input').value = word.morphology?.form || '';
+    document.getElementById('word-tense-input').value = word.morphology?.tense || '';
+    document.getElementById('word-gender-input').value = word.morphology?.gender || '';
+    document.getElementById('word-number-input').value = word.morphology?.number || '';
+    document.getElementById('word-case-input').value = word.morphology?.grammaticalCase || '';
+    document.getElementById('word-pos-description-input').value = word.morphology?.posDescription || '';
+    document.getElementById('word-passive-input').value = word.morphology?.passive ? 'true' : 'false';
+    document.getElementById('word-breakdown-input').value = word.morphology?.breakdown || '';
+    
+    // Legacy fields
     document.getElementById('word-difficulty-input').value = word.difficulty || 1;
     document.getElementById('word-category-input').value = word.category || 'general';
     document.getElementById('word-example-input').value = word.exampleSentence || '';
@@ -1327,6 +1350,7 @@ function openWordModal(word = null) {
     document.getElementById('word-id').value = '';
     document.getElementById('word-difficulty-input').value = 1;
     document.getElementById('word-category-input').value = 'general';
+    document.getElementById('word-passive-input').value = 'false';
   }
   
   modal.classList.remove('hidden');
@@ -1364,27 +1388,31 @@ async function saveWord() {
     // Core fields (quran_words schema)
     arabicText: arabicText,
     arabicWithoutDiacritics: arabicText, // Same as arabicText if not provided separately
-    buckwalter: document.getElementById('word-transliteration-input').value.trim() || null,
+    buckwalter: document.getElementById('word-buckwalter-input').value.trim() || null,
     englishMeaning: englishMeaning,
     
     // Root (nested object)
     root: {
       arabic: document.getElementById('word-root-input').value.trim() || null,
-      transliteration: null // Can be derived from arabic if needed
+      transliteration: document.getElementById('word-root-transliteration-input').value.trim() || null
     },
+    
+    // Statistics
+    rank: parseInt(document.getElementById('word-rank-input').value) || null,
+    occurrenceCount: parseInt(document.getElementById('word-occurrence-count-input').value) || 0,
     
     // Morphology (nested object)
     morphology: {
       partOfSpeech: document.getElementById('word-pos-input').value || null,
-      posDescription: null,
-      lemma: null,
-      form: null,
-      tense: null,
-      gender: null,
-      number: null,
-      grammaticalCase: null,
-      passive: false,
-      breakdown: null
+      posDescription: document.getElementById('word-pos-description-input').value.trim() || null,
+      lemma: document.getElementById('word-lemma-input').value.trim() || null,
+      form: document.getElementById('word-form-input').value || null,
+      tense: document.getElementById('word-tense-input').value || null,
+      gender: document.getElementById('word-gender-input').value || null,
+      number: document.getElementById('word-number-input').value || null,
+      grammaticalCase: document.getElementById('word-case-input').value || null,
+      passive: document.getElementById('word-passive-input').value === 'true',
+      breakdown: document.getElementById('word-breakdown-input').value.trim() || null
     },
     
     // Legacy fields for backward compatibility
@@ -1670,10 +1698,10 @@ async function handleImportWords() {
         body: JSON.stringify(word)
       });
       successCount++;
-      results.push({ status: 'success', word: word.arabic });
+      results.push({ status: 'success', word: word.arabicText || word.arabic });
     } catch (error) {
       errorCount++;
-      results.push({ status: 'error', word: word.arabic, error: error.message });
+      results.push({ status: 'error', word: word.arabicText || word.arabic, error: error.message });
     }
     
     // Update progress
