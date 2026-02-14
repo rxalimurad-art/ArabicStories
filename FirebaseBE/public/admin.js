@@ -118,8 +118,9 @@ function setupEventListeners() {
   document.getElementById('refresh-words')?.addEventListener('click', loadWords);
   document.getElementById('add-word-main-btn')?.addEventListener('click', () => openWordModal());
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
-  document.getElementById('word-category-filter')?.addEventListener('change', loadWords);
-  document.getElementById('word-difficulty-filter')?.addEventListener('change', loadWords);
+  document.getElementById('word-pos-filter')?.addEventListener('change', loadWords);
+  document.getElementById('word-form-filter')?.addEventListener('change', loadWords);
+  document.getElementById('word-sort')?.addEventListener('change', loadWords);
   document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
   document.getElementById('word-next-page')?.addEventListener('click', () => changeWordsPage(1));
   
@@ -1205,12 +1206,13 @@ async function loadWords() {
   container.innerHTML = '<div class="loading">Loading words...</div>';
   
   try {
-    const category = document.getElementById('word-category-filter')?.value || '';
-    const difficulty = document.getElementById('word-difficulty-filter')?.value || '';
+    const pos = document.getElementById('word-pos-filter')?.value || '';
+    const form = document.getElementById('word-form-filter')?.value || '';
+    const sort = document.getElementById('word-sort')?.value || 'rank';
     
-    let url = `${API.words()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}`;
-    if (category) url += `&category=${encodeURIComponent(category)}`;
-    if (difficulty) url += `&difficulty=${encodeURIComponent(difficulty)}`;
+    let url = `${API.words()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}&sort=${sort}`;
+    if (pos) url += `&pos=${encodeURIComponent(pos)}`;
+    if (form) url += `&form=${encodeURIComponent(form)}`;
     
     const data = await apiRequest(url);
     

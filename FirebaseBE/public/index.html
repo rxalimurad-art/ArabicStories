@@ -390,19 +390,37 @@
       <!-- Words List View -->
       <div id="words-view" class="view hidden">
         <div class="view-header">
-          <h2>📝 General Words</h2>
+          <h2>📖 Quran Words</h2>
           <div class="search-box">
-            <input type="text" id="word-search" placeholder="Search words...">
-            <select id="word-category-filter">
-              <option value="">All Categories</option>
+            <input type="text" id="word-search" placeholder="Search Arabic, English, or Buckwalter...">
+            <select id="word-pos-filter">
+              <option value="">All POS</option>
+              <option value="N">N - Noun</option>
+              <option value="V">V - Verb</option>
+              <option value="P">P - Preposition</option>
+              <option value="PN">PN - Proper Noun</option>
+              <option value="ADJ">ADJ - Adjective</option>
+              <option value="ADV">ADV - Adverb</option>
+              <option value="PRO">PRO - Pronoun</option>
+              <option value="CONJ">CONJ - Conjunction</option>
             </select>
-            <select id="word-difficulty-filter">
-              <option value="">All Levels</option>
-              <option value="1">Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
+            <select id="word-form-filter">
+              <option value="">All Forms</option>
+              <option value="1">Form I</option>
+              <option value="2">Form II</option>
+              <option value="3">Form III</option>
+              <option value="4">Form IV</option>
+              <option value="5">Form V</option>
+              <option value="6">Form VI</option>
+              <option value="7">Form VII</option>
+              <option value="8">Form VIII</option>
+              <option value="9">Form IX</option>
+              <option value="10">Form X</option>
+            </select>
+            <select id="word-sort">
+              <option value="rank">Sort by Rank</option>
+              <option value="occurrenceCount">Sort by Occurrences</option>
+              <option value="arabicText">Sort by Arabic</option>
             </select>
             <button id="refresh-words" class="btn btn-icon">🔄</button>
             <button id="add-word-main-btn" class="btn btn-primary">+ Add Word</button>
