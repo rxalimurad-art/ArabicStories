@@ -619,6 +619,63 @@ app.get('/api/quran-words/:id', async (req, res) => {
   }
 });
 
+// Update quran word
+app.put('/api/quran-words/:id', async (req, res) => {
+  try {
+    const wordId = req.params.id;
+    const wordData = req.body;
+    
+    const docRef = db.collection('quran_words').doc(wordId);
+    const doc = await docRef.get();
+    
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Word not found' });
+      return;
+    }
+    
+    // Validate required fields
+    if (!wordData.arabicText || !wordData.englishMeaning) {
+      res.status(400).json({ error: 'arabicText and englishMeaning are required' });
+      return;
+    }
+    
+    const updateData = {
+      arabicText: wordData.arabicText,
+      arabicWithoutDiacritics: wordData.arabicWithoutDiacritics || wordData.arabicText,
+      buckwalter: wordData.buckwalter || null,
+      englishMeaning: wordData.englishMeaning,
+      root: wordData.root || { arabic: null, transliteration: null },
+      rank: wordData.rank || null,
+      occurrenceCount: wordData.occurrenceCount || 0,
+      morphology: wordData.morphology || {
+        partOfSpeech: null,
+        posDescription: null,
+        lemma: null,
+        form: null,
+        tense: null,
+        gender: null,
+        number: null,
+        grammaticalCase: null,
+        passive: false,
+        breakdown: null
+      },
+      updatedAt: new Date().toISOString()
+    };
+    
+    await docRef.update(updateData);
+    await logAdminAction('UPDATE_QURAN_WORD', { wordId, arabicText: updateData.arabicText }, req.ip);
+    
+    res.json({
+      success: true,
+      message: 'Word updated successfully',
+      word: { id: wordId, ...updateData }
+    });
+  } catch (error) {
+    console.error('Error updating quran word:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Search quran words by Arabic text
 app.get('/api/quran-words/search/:text', async (req, res) => {
   try {

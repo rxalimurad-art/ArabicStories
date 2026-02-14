@@ -43,7 +43,7 @@ const state = {
   // Words state
   wordsList: [],
   wordsPage: 1,
-  wordsLimit: 20,
+  wordsLimit: 100,
   wordToDelete: null,
   wordCategories: []
 };
@@ -116,14 +116,21 @@ function setupEventListeners() {
   document.getElementById('prev-page')?.addEventListener('click', () => changePage(-1));
   document.getElementById('next-page')?.addEventListener('click', () => changePage(1));
   
-  // Words view (read-only from quran_words collection)
+  // Words view
   document.getElementById('refresh-words')?.addEventListener('click', loadWords);
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
   document.getElementById('word-pos-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-form-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-sort')?.addEventListener('change', loadWords);
+  document.getElementById('word-limit')?.addEventListener('change', (e) => {
+    state.wordsLimit = parseInt(e.target.value);
+    loadWords();
+  });
   document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
   document.getElementById('word-next-page')?.addEventListener('click', () => changeWordsPage(1));
+  
+  // Word modal
+  document.getElementById('cancel-word')?.addEventListener('click', closeWordModal);
 }
 
 // ============================================
@@ -1196,7 +1203,7 @@ function debounce(func, wait) {
 }
 
 // ============================================
-// Quran Words Management (Read-only from quran_words collection)
+// Quran Words Management (from quran_words collection)
 // ============================================
 async function loadWords() {
   const container = document.getElementById('words-list');
@@ -1206,8 +1213,9 @@ async function loadWords() {
     const pos = document.getElementById('word-pos-filter')?.value || '';
     const form = document.getElementById('word-form-filter')?.value || '';
     const sort = document.getElementById('word-sort')?.value || 'rank';
+    const limit = parseInt(document.getElementById('word-limit')?.value) || state.wordsLimit;
     
-    let url = `${API.quranWords()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}&sort=${sort}`;
+    let url = `${API.quranWords()}?limit=${limit}&offset=${(state.wordsPage - 1) * limit}&sort=${sort}`;
     if (pos) url += `&pos=${encodeURIComponent(pos)}`;
     if (form) url += `&form=${encodeURIComponent(form)}`;
     
@@ -1256,7 +1264,7 @@ function renderWords(words) {
     const rank = word.rank || 0;
     
     return `
-    <div class="word-card-compact" data-id="${word.id}">
+    <div class="word-card-compact" data-id="${word.id}" onclick="viewWordDetails('${word.id}')" style="cursor: pointer;">
       <div class="word-card-header">
         <div class="word-arabic" dir="rtl">${escapeHtml(arabicText)}</div>
         <span class="word-badge rank">#${rank}</span>
@@ -1284,9 +1292,139 @@ function changeWordsPage(delta) {
   loadWords();
 }
 
-// Word modal functions removed - quran_words collection is read-only
+// Word modal functions
+async function viewWordDetails(wordId) {
+  try {
+    const result = await apiRequest(API.quranWord(wordId));
+    if (result.word) {
+      openWordModal(result.word);
+    }
+  } catch (error) {
+    showToast(`Failed to load word: ${error.message}`, 'error');
+  }
+}
 
-// Word editing functions removed - quran_words collection is read-only
+function openWordModal(word = null) {
+  const modal = document.getElementById('word-modal');
+  const title = document.getElementById('word-modal-title');
+  const editBtn = document.getElementById('edit-word-btn');
+  const saveBtn = document.getElementById('save-word-btn');
+  
+  // Reset to view mode
+  setWordFormReadonly(true);
+  editBtn.classList.remove('hidden');
+  saveBtn.classList.add('hidden');
+  
+  if (word) {
+    title.textContent = `📖 Word #${word.rank || 'N/A'} - ${word.arabicText || ''}`;
+    document.getElementById('word-id').value = word.id || '';
+    
+    // Core fields
+    document.getElementById('word-arabic-input').value = word.arabicText || '';
+    document.getElementById('word-english-input').value = word.englishMeaning || '';
+    document.getElementById('word-buckwalter-input').value = word.buckwalter || '';
+    
+    // POS
+    document.getElementById('word-pos-input').value = word.morphology?.partOfSpeech || '';
+    
+    // Root
+    document.getElementById('word-root-input').value = word.root?.arabic || '';
+    document.getElementById('word-root-transliteration-input').value = word.root?.transliteration || '';
+    
+    // Statistics
+    document.getElementById('word-rank-input').value = word.rank || '';
+    document.getElementById('word-occurrence-count-input').value = word.occurrenceCount || '';
+    
+    // Morphology details
+    document.getElementById('word-lemma-input').value = word.morphology?.lemma || '';
+    document.getElementById('word-form-input').value = word.morphology?.form || '';
+    document.getElementById('word-tense-input').value = word.morphology?.tense || '';
+    document.getElementById('word-gender-input').value = word.morphology?.gender || '';
+    document.getElementById('word-number-input').value = word.morphology?.number || '';
+    document.getElementById('word-case-input').value = word.morphology?.grammaticalCase || '';
+    document.getElementById('word-pos-description-input').value = word.morphology?.posDescription || '';
+    document.getElementById('word-passive-input').value = word.morphology?.passive ? 'Yes' : 'No';
+    document.getElementById('word-breakdown-input').value = word.morphology?.breakdown || '';
+  }
+  
+  modal.classList.remove('hidden');
+}
+
+function setWordFormReadonly(readonly) {
+  const inputs = document.querySelectorAll('#word-form input');
+  inputs.forEach(input => {
+    input.readOnly = readonly;
+    if (readonly) {
+      input.style.background = 'var(--gray-100)';
+    } else {
+      input.style.background = 'white';
+    }
+  });
+}
+
+function enableWordEdit() {
+  setWordFormReadonly(false);
+  document.getElementById('edit-word-btn').classList.add('hidden');
+  document.getElementById('save-word-btn').classList.remove('hidden');
+  document.getElementById('word-modal-title').textContent = '✏️ Edit Word';
+}
+
+function closeWordModal() {
+  document.getElementById('word-modal').classList.add('hidden');
+  document.getElementById('word-form').reset();
+  setWordFormReadonly(true);
+}
+
+async function saveWord() {
+  const wordId = document.getElementById('word-id').value;
+  
+  const wordData = {
+    arabicText: document.getElementById('word-arabic-input').value.trim(),
+    arabicWithoutDiacritics: document.getElementById('word-arabic-input').value.trim(),
+    buckwalter: document.getElementById('word-buckwalter-input').value.trim() || null,
+    englishMeaning: document.getElementById('word-english-input').value.trim(),
+    
+    root: {
+      arabic: document.getElementById('word-root-input').value.trim() || null,
+      transliteration: document.getElementById('word-root-transliteration-input').value.trim() || null
+    },
+    
+    rank: parseInt(document.getElementById('word-rank-input').value) || null,
+    occurrenceCount: parseInt(document.getElementById('word-occurrence-count-input').value) || 0,
+    
+    morphology: {
+      partOfSpeech: document.getElementById('word-pos-input').value || null,
+      posDescription: document.getElementById('word-pos-description-input').value.trim() || null,
+      lemma: document.getElementById('word-lemma-input').value.trim() || null,
+      form: document.getElementById('word-form-input').value || null,
+      tense: document.getElementById('word-tense-input').value || null,
+      gender: document.getElementById('word-gender-input').value || null,
+      number: document.getElementById('word-number-input').value || null,
+      grammaticalCase: document.getElementById('word-case-input').value || null,
+      passive: document.getElementById('word-passive-input').value.toLowerCase() === 'yes' || 
+               document.getElementById('word-passive-input').value.toLowerCase() === 'true',
+      breakdown: document.getElementById('word-breakdown-input').value.trim() || null
+    }
+  };
+  
+  if (!wordData.arabicText || !wordData.englishMeaning) {
+    showToast('Arabic and English are required', 'error');
+    return;
+  }
+  
+  try {
+    await apiRequest(API.quranWord(wordId), {
+      method: 'PUT',
+      body: JSON.stringify(wordData)
+    });
+    
+    showToast('Word updated successfully', 'success');
+    closeWordModal();
+    loadWords();
+  } catch (error) {
+    showToast(`Failed to save word: ${error.message}`, 'error');
+  }
+}
 
 // ============================================
 // Quran Statistics
@@ -1338,6 +1476,9 @@ window.addContentPart = addContentPart;
 window.handleImport = handleImport;
 window.normalizeStoryData = normalizeStoryData;
 window.normalizeWords = normalizeWords;
+window.viewWordDetails = viewWordDetails;
+window.enableWordEdit = enableWordEdit;
+window.saveWord = saveWord;
 
 // Format switching for story form
 function onFormatChange() {

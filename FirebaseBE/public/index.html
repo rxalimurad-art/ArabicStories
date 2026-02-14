@@ -423,6 +423,12 @@
               <option value="arabicText">Sort by Arabic</option>
             </select>
             <button id="refresh-words" class="btn btn-icon">🔄</button>
+            <select id="word-limit">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+              <option value="500">500</option>
+            </select>
           </div>
         </div>
         
@@ -520,6 +526,122 @@
     </div>
 
 
+
+    <!-- Word View/Edit Modal -->
+    <div id="word-modal" class="modal hidden">
+      <div class="modal-content modal-wide">
+        <h3 id="word-modal-title">📖 Word Details</h3>
+        
+        <form id="word-form">
+          <input type="hidden" id="word-id">
+          
+          <!-- Core Fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-arabic-input">Arabic Text</label>
+              <input type="text" id="word-arabic-input" dir="rtl" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-english-input">English Meaning</label>
+              <input type="text" id="word-english-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-buckwalter-input">Buckwalter</label>
+              <input type="text" id="word-buckwalter-input" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-pos-input">Part of Speech</label>
+              <input type="text" id="word-pos-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <!-- Root Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-root-input">Root (Arabic)</label>
+              <input type="text" id="word-root-input" dir="rtl" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-root-transliteration-input">Root Transliteration</label>
+              <input type="text" id="word-root-transliteration-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <!-- Statistics -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-rank-input">Rank</label>
+              <input type="number" id="word-rank-input" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-occurrence-count-input">Occurrence Count</label>
+              <input type="number" id="word-occurrence-count-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <!-- Morphology Details -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-lemma-input">Lemma</label>
+              <input type="text" id="word-lemma-input" dir="rtl" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-form-input">Form</label>
+              <input type="text" id="word-form-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-tense-input">Tense</label>
+              <input type="text" id="word-tense-input" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-gender-input">Gender</label>
+              <input type="text" id="word-gender-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-number-input">Number</label>
+              <input type="text" id="word-number-input" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-case-input">Grammatical Case</label>
+              <input type="text" id="word-case-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="word-pos-description-input">POS Description</label>
+              <input type="text" id="word-pos-description-input" dir="rtl" readonly style="background: var(--gray-100);">
+            </div>
+            <div class="form-group">
+              <label for="word-passive-input">Passive Voice</label>
+              <input type="text" id="word-passive-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-breakdown-input">Morphological Breakdown</label>
+              <input type="text" id="word-breakdown-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+        </form>
+        
+        <div class="modal-actions">
+          <button id="cancel-word" class="btn btn-secondary">Close</button>
+          <button id="edit-word-btn" class="btn btn-primary" onclick="enableWordEdit()">✏️ Edit</button>
+          <button id="save-word-btn" class="btn btn-primary hidden" onclick="saveWord()">💾 Save</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal hidden">
