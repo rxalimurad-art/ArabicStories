@@ -18,10 +18,14 @@ const API = {
   validate: () => `${CONFIG.apiBaseUrl}/api/stories/validate`,
   categories: () => `${CONFIG.apiBaseUrl}/api/categories`,
   seed: () => `${CONFIG.apiBaseUrl}/api/seed`,
-  words: () => `${CONFIG.apiBaseUrl}/api/words`,
-  word: (id) => `${CONFIG.apiBaseUrl}/api/words/${id}`,
-  wordCategories: () => `${CONFIG.apiBaseUrl}/api/words/categories/list`,
-  bulkWords: () => `${CONFIG.apiBaseUrl}/api/words/bulk`
+  // Quran data endpoints (read-only)
+  quranWords: () => `${CONFIG.apiBaseUrl}/api/quran-words`,
+  quranWord: (id) => `${CONFIG.apiBaseUrl}/api/quran-words/${id}`,
+  quranWordSearch: (text) => `${CONFIG.apiBaseUrl}/api/quran-words/search/${encodeURIComponent(text)}`,
+  quranStats: () => `${CONFIG.apiBaseUrl}/api/quran-stats`,
+  quranRoots: () => `${CONFIG.apiBaseUrl}/api/quran-roots`,
+  quranRoot: (id) => `${CONFIG.apiBaseUrl}/api/quran-roots/${id}`,
+  quranRootWords: (root) => `${CONFIG.apiBaseUrl}/api/quran-roots/${encodeURIComponent(root)}/words`
 };
 
 // ============================================
@@ -101,10 +105,8 @@ function setupEventListeners() {
   document.getElementById('import-file')?.addEventListener('change', handleFileSelect);
   document.getElementById('export-all-btn')?.addEventListener('click', exportAllStories);
   
-  // Bulk Words Import
-  document.getElementById('import-words-btn')?.addEventListener('click', handleImportWords);
-  document.getElementById('import-words-file')?.addEventListener('change', handleWordsFileSelect);
-  document.getElementById('download-words-template-btn')?.addEventListener('click', downloadWordsTemplate);
+  // Quran Stats
+  loadQuranStats();
   
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
@@ -114,19 +116,14 @@ function setupEventListeners() {
   document.getElementById('prev-page')?.addEventListener('click', () => changePage(-1));
   document.getElementById('next-page')?.addEventListener('click', () => changePage(1));
   
-  // Words view
+  // Words view (read-only from quran_words collection)
   document.getElementById('refresh-words')?.addEventListener('click', loadWords);
-  document.getElementById('add-word-main-btn')?.addEventListener('click', () => openWordModal());
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
   document.getElementById('word-pos-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-form-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-sort')?.addEventListener('change', loadWords);
   document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
   document.getElementById('word-next-page')?.addEventListener('click', () => changeWordsPage(1));
-  
-  // Word modal
-  document.getElementById('cancel-word')?.addEventListener('click', closeWordModal);
-  document.getElementById('save-word')?.addEventListener('click', saveWord);
 }
 
 // ============================================
@@ -1199,18 +1196,18 @@ function debounce(func, wait) {
 }
 
 // ============================================
-// Words Management
+// Quran Words Management (Read-only from quran_words collection)
 // ============================================
 async function loadWords() {
   const container = document.getElementById('words-list');
-  container.innerHTML = '<div class="loading">Loading words...</div>';
+  container.innerHTML = '<div class="loading">Loading Quran words...</div>';
   
   try {
     const pos = document.getElementById('word-pos-filter')?.value || '';
     const form = document.getElementById('word-form-filter')?.value || '';
     const sort = document.getElementById('word-sort')?.value || 'rank';
     
-    let url = `${API.words()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}&sort=${sort}`;
+    let url = `${API.quranWords()}?limit=${state.wordsLimit}&offset=${(state.wordsPage - 1) * state.wordsLimit}&sort=${sort}`;
     if (pos) url += `&pos=${encodeURIComponent(pos)}`;
     if (form) url += `&form=${encodeURIComponent(form)}`;
     
@@ -1237,55 +1234,42 @@ function renderWords(words) {
       w.arabicText?.toLowerCase().includes(searchQuery) ||
       w.arabicWithoutDiacritics?.toLowerCase().includes(searchQuery) ||
       w.englishMeaning?.toLowerCase().includes(searchQuery) ||
-      w.buckwalter?.toLowerCase().includes(searchQuery) ||
-      // Legacy field names for backward compatibility
-      w.arabic?.toLowerCase().includes(searchQuery) ||
-      w.english?.toLowerCase().includes(searchQuery) ||
-      w.transliteration?.toLowerCase().includes(searchQuery)
+      w.buckwalter?.toLowerCase().includes(searchQuery)
     );
   }
   
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
-        <p>No words found. Create your first word!</p>
-        <button onclick="openWordModal()" class="btn btn-primary" style="margin-top: 16px;">
-          Add Word
-        </button>
+        <p>No words found.</p>
       </div>
     `;
     return;
   }
   
   container.innerHTML = filtered.map(word => {
-    // Support both new schema (arabicText, englishMeaning) and old schema (arabic, english)
-    const arabicText = word.arabicText || word.arabic || '';
-    const englishMeaning = word.englishMeaning || word.english || '';
-    const transliteration = word.buckwalter || word.transliteration || '';
-    const pos = word.morphology?.partOfSpeech || word.partOfSpeech || '';
-    const rootArabic = word.root?.arabic || word.rootLetters || '';
-    const rank = word.rank || word.difficulty || 1;
+    const arabicText = word.arabicText || '';
+    const englishMeaning = word.englishMeaning || '';
+    const transliteration = word.buckwalter || '';
+    const pos = word.morphology?.partOfSpeech || '';
+    const rootArabic = word.root?.arabic || '';
+    const rank = word.rank || 0;
     
     return `
     <div class="word-card-compact" data-id="${word.id}">
       <div class="word-card-header">
-        <div class="word-arabic" dir="rtl">${escapeHtml(arabicText)} ${word.audioPronunciationURL || word.audioURL ? '🔊' : ''}</div>
-        <span class="word-badge difficulty-${word.difficulty || 1}">L${word.difficulty || 1}</span>
+        <div class="word-arabic" dir="rtl">${escapeHtml(arabicText)}</div>
+        <span class="word-badge rank">#${rank}</span>
       </div>
       <div class="word-english">${escapeHtml(englishMeaning)}</div>
       ${transliteration ? `<div class="word-transliteration">${escapeHtml(transliteration)}</div>` : ''}
       <div class="word-meta">
-        ${pos ? `<span class="word-badge pos">${pos}</span>` : ''}
-        ${rootArabic ? `<span class="word-badge root" dir="rtl">${escapeHtml(rootArabic)}</span>` : ''}
-        ${word.occurrenceCount ? `<span class="word-badge count">${word.occurrenceCount}x</span>` : ''}
-        ${word.rank ? `<span class="word-badge rank">#${word.rank}</span>` : ''}
-        <span class="word-badge">${word.category || 'general'}</span>
+        ${pos ? `<span class="word-badge pos" title="Part of Speech">${pos}</span>` : ''}
+        ${rootArabic ? `<span class="word-badge root" dir="rtl" title="Root">${escapeHtml(rootArabic)}</span>` : ''}
+        ${word.occurrenceCount ? `<span class="word-badge count" title="Occurrences">${word.occurrenceCount}x</span>` : ''}
+        ${word.morphology?.form ? `<span class="word-badge form" title="Form">Form ${word.morphology.form}</span>` : ''}
       </div>
-      ${word.exampleSentence ? `<div class="word-example" dir="rtl">💡 ${escapeHtml(word.exampleSentence)}</div>` : ''}
-      <div class="word-actions">
-        <button class="btn btn-small btn-secondary" onclick="editWord('${word.id}')">Edit</button>
-        <button class="btn btn-small btn-danger" onclick="promptDeleteWord('${word.id}')">Delete</button>
-      </div>
+      ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
     </div>
   `}).join('');
 }
@@ -1300,219 +1284,47 @@ function changeWordsPage(delta) {
   loadWords();
 }
 
-function openWordModal(word = null) {
-  const modal = document.getElementById('word-modal');
-  const title = document.getElementById('word-modal-title');
-  const form = document.getElementById('word-form');
-  
-  // Reset audio tabs to URL mode
-  switchAudioTab('url');
-  document.getElementById('word-audio-file').value = '';
-  
-  if (word) {
-    title.textContent = '✏️ Edit Word';
-    document.getElementById('word-id').value = word.id || '';
-    
-    // Core fields
-    document.getElementById('word-arabic-input').value = word.arabicText || word.arabic || '';
-    document.getElementById('word-english-input').value = word.englishMeaning || word.english || '';
-    document.getElementById('word-buckwalter-input').value = word.buckwalter || word.transliteration || '';
-    
-    // POS
-    document.getElementById('word-pos-input').value = word.morphology?.partOfSpeech || word.partOfSpeech || '';
-    
-    // Root
-    document.getElementById('word-root-input').value = word.root?.arabic || word.rootLetters || '';
-    document.getElementById('word-root-transliteration-input').value = word.root?.transliteration || '';
-    
-    // Statistics
-    document.getElementById('word-rank-input').value = word.rank || '';
-    document.getElementById('word-occurrence-count-input').value = word.occurrenceCount || '';
-    
-    // Morphology details
-    document.getElementById('word-lemma-input').value = word.morphology?.lemma || '';
-    document.getElementById('word-form-input').value = word.morphology?.form || '';
-    document.getElementById('word-tense-input').value = word.morphology?.tense || '';
-    document.getElementById('word-gender-input').value = word.morphology?.gender || '';
-    document.getElementById('word-number-input').value = word.morphology?.number || '';
-    document.getElementById('word-case-input').value = word.morphology?.grammaticalCase || '';
-    document.getElementById('word-pos-description-input').value = word.morphology?.posDescription || '';
-    document.getElementById('word-passive-input').value = word.morphology?.passive ? 'true' : 'false';
-    document.getElementById('word-breakdown-input').value = word.morphology?.breakdown || '';
-    
-    // Legacy fields
-    document.getElementById('word-difficulty-input').value = word.difficulty || 1;
-    document.getElementById('word-category-input').value = word.category || 'general';
-    document.getElementById('word-example-input').value = word.exampleSentence || '';
-    document.getElementById('word-example-translation-input').value = word.exampleSentenceTranslation || '';
-    document.getElementById('word-audio-input').value = word.audioPronunciationURL || word.audioURL || '';
-  } else {
-    title.textContent = '➕ Add New Word';
-    form.reset();
-    document.getElementById('word-id').value = '';
-    document.getElementById('word-difficulty-input').value = 1;
-    document.getElementById('word-category-input').value = 'general';
-    document.getElementById('word-passive-input').value = 'false';
-  }
-  
-  modal.classList.remove('hidden');
-}
+// Word modal functions removed - quran_words collection is read-only
 
-function closeWordModal() {
-  document.getElementById('word-modal').classList.add('hidden');
-  document.getElementById('word-form').reset();
-}
+// Word editing functions removed - quran_words collection is read-only
 
-async function saveWord() {
-  const wordId = document.getElementById('word-id').value;
-  const audioFile = document.getElementById('word-audio-file').files[0];
-  
-  let audioURL = document.getElementById('word-audio-input').value.trim() || null;
-  
-  // If audio file is selected, upload it first
-  if (audioFile) {
-    try {
-      showToast('Uploading audio file...', 'info');
-      audioURL = await uploadAudioFile(audioFile);
-    } catch (error) {
-      showToast(`Failed to upload audio: ${error.message}`, 'error');
-      return;
-    }
-  }
-  
-  // Build word data using new quran_words schema
-  const arabicText = document.getElementById('word-arabic-input').value.trim();
-  const englishMeaning = document.getElementById('word-english-input').value.trim();
-  
-  const wordData = {
-    id: wordId || undefined,
-    
-    // Core fields (quran_words schema)
-    arabicText: arabicText,
-    arabicWithoutDiacritics: arabicText, // Same as arabicText if not provided separately
-    buckwalter: document.getElementById('word-buckwalter-input').value.trim() || null,
-    englishMeaning: englishMeaning,
-    
-    // Root (nested object)
-    root: {
-      arabic: document.getElementById('word-root-input').value.trim() || null,
-      transliteration: document.getElementById('word-root-transliteration-input').value.trim() || null
-    },
-    
-    // Statistics
-    rank: parseInt(document.getElementById('word-rank-input').value) || null,
-    occurrenceCount: parseInt(document.getElementById('word-occurrence-count-input').value) || 0,
-    
-    // Morphology (nested object)
-    morphology: {
-      partOfSpeech: document.getElementById('word-pos-input').value || null,
-      posDescription: document.getElementById('word-pos-description-input').value.trim() || null,
-      lemma: document.getElementById('word-lemma-input').value.trim() || null,
-      form: document.getElementById('word-form-input').value || null,
-      tense: document.getElementById('word-tense-input').value || null,
-      gender: document.getElementById('word-gender-input').value || null,
-      number: document.getElementById('word-number-input').value || null,
-      grammaticalCase: document.getElementById('word-case-input').value || null,
-      passive: document.getElementById('word-passive-input').value === 'true',
-      breakdown: document.getElementById('word-breakdown-input').value.trim() || null
-    },
-    
-    // Legacy fields for backward compatibility
-    difficulty: parseInt(document.getElementById('word-difficulty-input').value),
-    category: document.getElementById('word-category-input').value,
-    exampleSentence: document.getElementById('word-example-input').value.trim() || null,
-    exampleSentenceTranslation: document.getElementById('word-example-translation-input').value.trim() || null,
-    audioPronunciationURL: audioURL
-  };
-  
-  if (!wordData.arabicText || !wordData.englishMeaning) {
-    showToast('Arabic and English are required', 'error');
-    return;
-  }
+// ============================================
+// Quran Statistics
+// ============================================
+async function loadQuranStats() {
+  const container = document.getElementById('quran-stats-container');
+  if (!container) return;
   
   try {
-    const isUpdate = !!wordId;
-    const url = isUpdate ? API.word(wordId) : API.words();
-    const method = isUpdate ? 'PUT' : 'POST';
+    const data = await apiRequest(API.quranStats());
+    const stats = data.stats;
     
-    await apiRequest(url, {
-      method,
-      body: JSON.stringify(wordData)
-    });
-    
-    showToast(isUpdate ? 'Word updated successfully' : 'Word created successfully', 'success');
-    closeWordModal();
-    loadWords();
+    container.innerHTML = `
+      <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
+          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.totalUniqueWords?.toLocaleString() || 0}</div>
+          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Unique Words</div>
+        </div>
+        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
+          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.totalTokens?.toLocaleString() || 0}</div>
+          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Total Tokens</div>
+        </div>
+        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
+          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.uniqueRoots?.toLocaleString() || 0}</div>
+          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Unique Roots</div>
+        </div>
+        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
+          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.wordsWithRoots?.toLocaleString() || 0}</div>
+          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Words with Roots</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; color: var(--gray-600); font-size: 12px;">
+        Generated: ${stats.generatedAt || 'N/A'} | Version: ${stats.version || 'N/A'}
+      </div>
+    `;
   } catch (error) {
-    showToast(`Failed to save word: ${error.message}`, 'error');
+    container.innerHTML = `<p style="color: var(--danger);">Error loading statistics: ${error.message}</p>`;
   }
-}
-
-async function uploadAudioFile(file) {
-  // For now, we'll use a data URL approach for small files
-  // In production, you might want to use Firebase Storage
-  return new Promise((resolve, reject) => {
-    // Check file size (max 5MB for data URLs)
-    if (file.size > 5 * 1024 * 1024) {
-      reject(new Error('Audio file too large. Max 5MB allowed.'));
-      return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      resolve(e.target.result);
-    };
-    reader.onerror = () => {
-      reject(new Error('Failed to read audio file'));
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function editWord(wordId) {
-  try {
-    const result = await apiRequest(API.word(wordId));
-    
-    if (result.word) {
-      openWordModal(result.word);
-    }
-  } catch (error) {
-    showToast(`Failed to load word: ${error.message}`, 'error');
-  }
-}
-
-function promptDeleteWord(wordId) {
-  state.wordToDelete = wordId;
-  
-  // Reuse the delete modal but update the message
-  const modal = document.getElementById('delete-modal');
-  modal.querySelector('h3').textContent = '⚠️ Confirm Delete Word';
-  modal.querySelector('p').textContent = 'Are you sure you want to delete this word? This action cannot be undone.';
-  
-  // Update confirm button to call confirmDeleteWord
-  const confirmBtn = document.getElementById('confirm-delete');
-  confirmBtn.onclick = confirmDeleteWord;
-  
-  modal.classList.remove('hidden');
-}
-
-async function confirmDeleteWord() {
-  if (!state.wordToDelete) return;
-  
-  try {
-    await apiRequest(API.word(state.wordToDelete), {
-      method: 'DELETE'
-    });
-    
-    showToast('Word deleted successfully', 'success');
-    closeDeleteModal();
-    loadWords();
-  } catch (error) {
-    showToast(`Failed to delete: ${error.message}`, 'error');
-  }
-  
-  // Reset the onclick handler back to story delete
-  document.getElementById('confirm-delete').onclick = confirmDelete;
 }
 
 // Make functions available globally for onclick handlers
@@ -1520,9 +1332,6 @@ window.switchView = switchView;
 window.editStory = editStory;
 window.promptDelete = promptDelete;
 window.seedSampleStories = seedSampleStories;
-window.editWord = editWord;
-window.openWordModal = openWordModal;
-window.promptDeleteWord = promptDeleteWord;
 window.downloadTemplate = downloadTemplate;
 window.addMixedSegment = addMixedSegment;
 window.addContentPart = addContentPart;
@@ -1579,265 +1388,4 @@ function switchAudioTab(tab) {
 
 window.switchAudioTab = switchAudioTab;
 
-// ============================================
-// Bulk Words Import
-// ============================================
-function handleWordsFileSelect(e) {
-  console.log('handleWordsFileSelect called');
-  const file = e.target.files[0];
-  if (!file) {
-    console.log('No file selected');
-    return;
-  }
-  
-  console.log('File selected:', file.name);
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    const textarea = document.getElementById('import-words-json');
-    if (textarea) {
-      textarea.value = event.target.result;
-      console.log('File loaded into textarea');
-    }
-  };
-  reader.readAsText(file);
-}
-window.handleWordsFileSelect = handleWordsFileSelect;
 
-async function handleImportWords() {
-  console.log('handleImportWords called');
-  const jsonTextarea = document.getElementById('import-words-json');
-  if (!jsonTextarea) {
-    console.error('import-words-json textarea not found');
-    showToast('Error: Textarea not found', 'error');
-    return;
-  }
-  
-  const jsonText = jsonTextarea.value.trim();
-  console.log('JSON text length:', jsonText.length);
-  
-  if (!jsonText) {
-    showToast('Please paste JSON or select a file', 'error');
-    return;
-  }
-  
-  let words;
-  try {
-    words = JSON.parse(jsonText);
-    if (!Array.isArray(words)) {
-      showToast('JSON must be an array of words', 'error');
-      return;
-    }
-  } catch (error) {
-    showToast('Invalid JSON format', 'error');
-    return;
-  }
-  
-  // Show preview
-  const preview = document.getElementById('import-words-preview');
-  if (!preview) {
-    console.error('import-words-preview element not found');
-  } else {
-    preview.classList.remove('hidden');
-    preview.innerHTML = `<p>Importing ${words.length} words...</p>`;
-  }
-  
-  // Normalize word data - updated for quran_words schema
-  const normalizedWords = words.map(word => ({
-    // Core fields (quran_words schema)
-    arabicText: word.arabicText || word.arabic || word['Arabic with Araab'] || '',
-    arabicWithoutDiacritics: word.arabicWithoutDiacritics || word.arabic || '',
-    buckwalter: word.buckwalter || word.transliteration || word.Transliteration || '',
-    englishMeaning: word.englishMeaning || word.english || word.Meaning || '',
-    
-    // Root (nested object)
-    root: {
-      arabic: word.root?.arabic || word.rootLetters || word['Root Letters'] || null,
-      transliteration: word.root?.transliteration || null
-    },
-    
-    // Morphology (nested object)
-    morphology: {
-      partOfSpeech: normalizePartOfSpeech(word.morphology?.partOfSpeech || word.partOfSpeech || word.POS || ''),
-      posDescription: word.morphology?.posDescription || null,
-      lemma: word.morphology?.lemma || null,
-      form: word.morphology?.form || null,
-      tense: word.morphology?.tense || null,
-      gender: word.morphology?.gender || null,
-      number: word.morphology?.number || null,
-      grammaticalCase: word.morphology?.grammaticalCase || null,
-      passive: word.morphology?.passive || false,
-      breakdown: word.morphology?.breakdown || null
-    },
-    
-    // Statistics
-    rank: parseInt(word.rank) || null,
-    occurrenceCount: parseInt(word.occurrenceCount) || 0,
-    
-    // Legacy fields for backward compatibility
-    exampleSentence: word.exampleSentence || word['Example Usage (Arabic)'] || null,
-    exampleSentenceTranslation: word.exampleSentenceTranslation || word['Example Translation'] || null,
-    difficulty: parseInt(word.difficulty) || 1,
-    category: word.category || 'general'
-  }));
-  
-  // Validate required fields (using new schema field names)
-  const invalidWords = normalizedWords.filter(w => !w.arabicText || !w.englishMeaning);
-  if (invalidWords.length > 0) {
-    showToast(`${invalidWords.length} words missing required fields (arabic/english)`, 'error');
-    return;
-  }
-  
-  // Import words one by one
-  let successCount = 0;
-  let errorCount = 0;
-  const results = [];
-  
-  for (let i = 0; i < normalizedWords.length; i++) {
-    const word = normalizedWords[i];
-    try {
-      await apiRequest(API.words(), {
-        method: 'POST',
-        body: JSON.stringify(word)
-      });
-      successCount++;
-      results.push({ status: 'success', word: word.arabicText || word.arabic });
-    } catch (error) {
-      errorCount++;
-      results.push({ status: 'error', word: word.arabicText || word.arabic, error: error.message });
-    }
-    
-    // Update progress
-    if (preview && (i % 5 === 0 || i === normalizedWords.length - 1)) {
-      preview.innerHTML = `
-        <p>Progress: ${i + 1}/${normalizedWords.length} words processed</p>
-        <p style="color: var(--success);">✓ ${successCount} successful</p>
-        ${errorCount > 0 ? `<p style="color: var(--danger);">✗ ${errorCount} failed</p>` : ''}
-      `;
-    }
-  }
-  
-  // Show final results
-  if (preview) {
-    preview.innerHTML = `
-      <div class="words-preview-list">
-        ${results.map(r => `
-          <div class="word-preview-item">
-            <span class="word-preview-arabic" dir="rtl">${r.word}</span>
-            <span class="word-preview-status ${r.status}">${r.status === 'success' ? '✓' : '✗'}</span>
-          </div>
-        `).join('')}
-      </div>
-      <p style="margin-top: 12px; text-align: center;">
-        <strong style="color: var(--success);">${successCount} imported</strong>
-        ${errorCount > 0 ? ` | <strong style="color: var(--danger);">${errorCount} failed</strong>` : ''}
-      </p>
-    `;
-  }
-  
-  showToast(`Imported ${successCount} words successfully${errorCount > 0 ? `, ${errorCount} failed` : ''}`, errorCount > 0 ? 'warning' : 'success');
-  loadWords();
-}
-window.handleImportWords = handleImportWords;
-
-function normalizePartOfSpeech(pos) {
-  if (!pos) return null;
-  const posMap = {
-    'noun': 'noun',
-    'Noun': 'noun',
-    'verb': 'verb',
-    'Verb': 'verb',
-    'adj.': 'adjective',
-    'Adj.': 'adjective',
-    'adjective': 'adjective',
-    'Adjective': 'adjective',
-    'adv.': 'adverb',
-    'Adv.': 'adverb',
-    'adverb': 'adverb',
-    'Adverb': 'adverb',
-    'prep.': 'preposition',
-    'Prep.': 'preposition',
-    'preposition': 'preposition',
-    'pronoun': 'pronoun',
-    'Pronoun': 'pronoun',
-    'particle': 'particle',
-    'Particle': 'particle',
-    'conj.': 'conjunction',
-    'Conj.': 'conjunction',
-    'conjunction': 'conjunction',
-    'interjection': 'interjection',
-    'Interjection': 'interjection',
-    'proper noun': 'noun',
-    'Proper Noun': 'noun',
-    'noun (pl.)': 'noun',
-    'Noun (pl.)': 'noun',
-    'noun/adj.': 'noun',
-    'Noun/Adj.': 'noun'
-  };
-  return posMap[pos] || pos.toLowerCase();
-}
-
-function downloadWordsTemplate() {
-  // Template using new quran_words schema from FIRESTORE_SCHEMA.md
-  const template = [
-    {
-      "rank": 1,
-      "arabicText": "\u0641\u0650\u0649",
-      "arabicWithoutDiacritics": "\u0641\u0649",
-      "buckwalter": "fiY",
-      "englishMeaning": "In",
-      "root": {
-        "arabic": null,
-        "transliteration": "N/A"
-      },
-      "morphology": {
-        "partOfSpeech": "P",
-        "posDescription": "\u062d\u0631\u0641 \u062c\u0631",
-        "lemma": "\u0641\u0650\u064a",
-        "form": null,
-        "tense": null,
-        "gender": null,
-        "number": "Plural",
-        "grammaticalCase": null,
-        "passive": false,
-        "breakdown": "\u0641\u0650\u0649[P]"
-      },
-      "occurrenceCount": 1098
-    },
-    {
-      "rank": 15,
-      "arabicText": "\u0642\u064e\u0627\u0644\u064e",
-      "arabicWithoutDiacritics": "\u0642\u0627\u0644",
-      "buckwalter": "qaAla",
-      "englishMeaning": "said",
-      "root": {
-        "arabic": "\u0642\u0648\u0644",
-        "transliteration": "qwl"
-      },
-      "morphology": {
-        "partOfSpeech": "V",
-        "posDescription": "\u0641\u0639\u0644",
-        "lemma": "\u0642\u0627\u0644\u064e",
-        "form": "1",
-        "tense": "Perfect",
-        "gender": null,
-        "number": null,
-        "grammaticalCase": null,
-        "passive": false,
-        "breakdown": "\u0642\u064e\u0627\u0644\u064e[V]"
-      },
-      "occurrenceCount": 412
-    }
-  ];
-  
-  const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'words-template.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-window.downloadWordsTemplate = downloadWordsTemplate;

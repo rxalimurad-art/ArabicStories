@@ -16,7 +16,6 @@ const db = getFirestore();
 // Collection references
 const STORIES_COLLECTION = 'stories';
 const ADMIN_LOGS_COLLECTION = 'admin_logs';
-const WORDS_COLLECTION = 'words';
 
 // Create Express app
 const app = express();
@@ -87,16 +86,31 @@ function formatStoryForFirestore(storyData) {
     updatedAt: now
   };
   
-  // Handle words/vocabulary (used in both formats)
+  // Handle words/vocabulary - now references quran_words collection
   baseStory.words = (storyData.words || []).map(word => ({
     id: word.id || require('crypto').randomUUID(),
-    arabic: word.arabic || word.arabicText || '',
-    english: word.english || word.englishMeaning || '',
-    transliteration: word.transliteration || null,
-    partOfSpeech: word.partOfSpeech || null,
-    rootLetters: word.rootLetters || null,
-    exampleSentence: word.exampleSentence || null,
-    difficulty: word.difficulty || 1
+    arabicText: word.arabicText || word.arabic || '',
+    arabicWithoutDiacritics: word.arabicWithoutDiacritics || word.arabic || '',
+    buckwalter: word.buckwalter || word.transliteration || null,
+    englishMeaning: word.englishMeaning || word.english || '',
+    root: {
+      arabic: word.root?.arabic || word.rootLetters || null,
+      transliteration: word.root?.transliteration || null
+    },
+    morphology: {
+      partOfSpeech: word.morphology?.partOfSpeech || word.partOfSpeech || null,
+      posDescription: word.morphology?.posDescription || null,
+      lemma: word.morphology?.lemma || null,
+      form: word.morphology?.form || null,
+      tense: word.morphology?.tense || null,
+      gender: word.morphology?.gender || null,
+      number: word.morphology?.number || null,
+      grammaticalCase: word.morphology?.grammaticalCase || null,
+      passive: word.morphology?.passive || false,
+      breakdown: word.morphology?.breakdown || null
+    },
+    rank: word.rank || null,
+    occurrenceCount: word.occurrenceCount || 0
   }));
   
   // Handle format-specific content
@@ -535,65 +549,44 @@ app.post('/api/seed', async (req, res) => {
   }
 });
 
-/**
- * Helper: Convert generic word data to Firestore format
- */
-function formatWordForFirestore(wordData) {
-  const now = new Date().toISOString();
-  
-  return {
-    id: wordData.id || require('crypto').randomUUID(),
-    arabic: wordData.arabic || wordData.arabicText || '',
-    english: wordData.english || wordData.englishMeaning || '',
-    transliteration: wordData.transliteration || null,
-    partOfSpeech: wordData.partOfSpeech || null,
-    rootLetters: wordData.rootLetters || null,
-    exampleSentence: wordData.exampleSentence || null,
-    exampleSentenceTranslation: wordData.exampleSentenceTranslation || null,
-    audioPronunciationURL: wordData.audioPronunciationURL || wordData.audioURL || null,
-    difficulty: Math.min(Math.max(parseInt(wordData.difficulty) || 1, 1), 5),
-    tags: Array.isArray(wordData.tags) ? wordData.tags : [],
-    category: wordData.category || 'general',
-    isGeneric: true,
-    createdAt: wordData.createdAt || now,
-    updatedAt: now
-  };
-}
-
 // ============================================
-// GENERIC WORDS ROUTES
+// QURAN WORDS ROUTES (quran_words collection)
 // ============================================
 
-// List all generic words
-app.get('/api/words', async (req, res) => {
+// List all quran words
+app.get('/api/quran-words', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 50;
     const offset = parseInt(req.query.offset) || 0;
-    const category = req.query.category;
-    const difficulty = req.query.difficulty;
-    const search = req.query.search;
+    const pos = req.query.pos;
+    const form = req.query.form;
+    const sort = req.query.sort || 'rank';
+    const root = req.query.root;
     
-    let query = db.collection(WORDS_COLLECTION).orderBy('createdAt', 'desc');
+    let query = db.collection('quran_words');
     
-    if (category) {
-      query = query.where('category', '==', category);
+    // Apply filters
+    if (pos) {
+      query = query.where('morphology.partOfSpeech', '==', pos);
     }
-    if (difficulty) {
-      query = query.where('difficulty', '==', parseInt(difficulty));
+    if (form) {
+      query = query.where('morphology.form', '==', form);
+    }
+    if (root) {
+      query = query.where('root.arabic', '==', root);
+    }
+    
+    // Apply sorting
+    if (sort === 'occurrenceCount') {
+      query = query.orderBy('occurrenceCount', 'desc');
+    } else if (sort === 'arabicText') {
+      query = query.orderBy('arabicText');
+    } else {
+      query = query.orderBy('rank');
     }
     
     const snapshot = await query.limit(limit).offset(offset).get();
-    let words = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    
-    // Simple search filter (client-side for now)
-    if (search) {
-      const searchLower = search.toLowerCase();
-      words = words.filter(w => 
-        w.arabic?.toLowerCase().includes(searchLower) ||
-        w.english?.toLowerCase().includes(searchLower) ||
-        w.transliteration?.toLowerCase().includes(searchLower)
-      );
-    }
+    const words = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     res.json({
       success: true,
@@ -601,49 +594,15 @@ app.get('/api/words', async (req, res) => {
       words
     });
   } catch (error) {
-    console.error('Error listing words:', error);
+    console.error('Error listing quran words:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Create new generic word
-app.post('/api/words', async (req, res) => {
+// Get single quran word
+app.get('/api/quran-words/:id', async (req, res) => {
   try {
-    const wordData = req.body;
-    
-    if (!wordData.arabic && !wordData.arabicText) {
-      res.status(400).json({ 
-        error: 'Missing required fields: arabic is required' 
-      });
-      return;
-    }
-    if (!wordData.english && !wordData.englishMeaning) {
-      res.status(400).json({ 
-        error: 'Missing required fields: english is required' 
-      });
-      return;
-    }
-
-    const formattedWord = formatWordForFirestore(wordData);
-    await db.collection(WORDS_COLLECTION).doc(formattedWord.id).set(formattedWord);
-    
-    await logAdminAction('CREATE_WORD', { wordId: formattedWord.id, arabic: formattedWord.arabic }, req.ip);
-    
-    res.status(201).json({
-      success: true,
-      message: 'Word created successfully',
-      word: formattedWord
-    });
-  } catch (error) {
-    console.error('Error creating word:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Get single word
-app.get('/api/words/:id', async (req, res) => {
-  try {
-    const doc = await db.collection(WORDS_COLLECTION).doc(req.params.id).get();
+    const doc = await db.collection('quran_words').doc(req.params.id).get();
     
     if (!doc.exists) {
       res.status(404).json({ error: 'Word not found' });
@@ -655,148 +614,141 @@ app.get('/api/words/:id', async (req, res) => {
       word: { id: doc.id, ...doc.data() }
     });
   } catch (error) {
-    console.error('Error getting word:', error);
+    console.error('Error getting quran word:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Update word
-app.put('/api/words/:id', async (req, res) => {
+// Search quran words by Arabic text
+app.get('/api/quran-words/search/:text', async (req, res) => {
   try {
-    const wordId = req.params.id;
-    const wordData = req.body;
+    const searchText = req.params.text;
+    const limit = parseInt(req.query.limit) || 20;
     
-    const docRef = db.collection(WORDS_COLLECTION).doc(wordId);
-    const doc = await docRef.get();
+    // Search by arabicText (with diacritics) or arabicWithoutDiacritics
+    const snapshot = await db.collection('quran_words')
+      .where('arabicWithoutDiacritics', '>=', searchText)
+      .where('arabicWithoutDiacritics', '<=', searchText + '\uf8ff')
+      .limit(limit)
+      .get();
     
-    if (!doc.exists) {
-      res.status(404).json({ error: 'Word not found' });
-      return;
-    }
-
-    const formattedWord = formatWordForFirestore({
-      ...wordData,
-      id: wordId,
-      createdAt: doc.data().createdAt
-    });
-    
-    await docRef.update(formattedWord);
-    await logAdminAction('UPDATE_WORD', { wordId, arabic: formattedWord.arabic }, req.ip);
+    const words = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     
     res.json({
       success: true,
-      message: 'Word updated successfully',
-      word: formattedWord
+      count: words.length,
+      words
     });
   } catch (error) {
-    console.error('Error updating word:', error);
+    console.error('Error searching quran words:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Delete word
-app.delete('/api/words/:id', async (req, res) => {
+// ============================================
+// QURAN STATS ROUTES (quran_stats collection)
+// ============================================
+
+// Get statistics
+app.get('/api/quran-stats', async (req, res) => {
   try {
-    const wordId = req.params.id;
-    
-    const docRef = db.collection(WORDS_COLLECTION).doc(wordId);
-    const doc = await docRef.get();
+    const doc = await db.collection('quran_stats').doc('summary').get();
     
     if (!doc.exists) {
-      res.status(404).json({ error: 'Word not found' });
+      res.status(404).json({ error: 'Statistics not found' });
       return;
     }
-
-    await docRef.delete();
-    await logAdminAction('DELETE_WORD', { wordId, arabic: doc.data().arabic }, req.ip);
     
     res.json({
       success: true,
-      message: 'Word deleted successfully'
+      stats: { id: doc.id, ...doc.data() }
     });
   } catch (error) {
-    console.error('Error deleting word:', error);
+    console.error('Error getting quran stats:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Bulk import words
-app.post('/api/words/bulk', async (req, res) => {
+// ============================================
+// QURAN ROOTS ROUTES (quran_roots collection)
+// ============================================
+
+// List all quran roots
+app.get('/api/quran-roots', async (req, res) => {
   try {
-    const { words } = req.body;
+    const limit = parseInt(req.query.limit) || 50;
+    const offset = parseInt(req.query.offset) || 0;
+    const sort = req.query.sort || 'totalOccurrences';
     
-    if (!Array.isArray(words) || words.length === 0) {
-      res.status(400).json({ error: 'words array is required and must not be empty' });
+    let query = db.collection('quran_roots');
+    
+    // Apply sorting
+    if (sort === 'derivativeCount') {
+      query = query.orderBy('derivativeCount', 'desc');
+    } else if (sort === 'root') {
+      query = query.orderBy('root');
+    } else {
+      query = query.orderBy('totalOccurrences', 'desc');
+    }
+    
+    const snapshot = await query.limit(limit).offset(offset).get();
+    const roots = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    res.json({
+      success: true,
+      count: roots.length,
+      roots
+    });
+  } catch (error) {
+    console.error('Error listing quran roots:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get single quran root
+app.get('/api/quran-roots/:id', async (req, res) => {
+  try {
+    const doc = await db.collection('quran_roots').doc(req.params.id).get();
+    
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Root not found' });
       return;
     }
-
-    const results = [];
-    const errors = [];
     
-    for (const wordData of words) {
-      try {
-        if ((!wordData.arabic && !wordData.arabicText) || (!wordData.english && !wordData.englishMeaning)) {
-          errors.push({ wordData, error: 'Missing arabic or english' });
-          continue;
-        }
-        
-        const formattedWord = formatWordForFirestore(wordData);
-        await db.collection(WORDS_COLLECTION).doc(formattedWord.id).set(formattedWord);
-        results.push({ id: formattedWord.id, arabic: formattedWord.arabic });
-      } catch (err) {
-        errors.push({ wordData, error: err.message });
-      }
-    }
-    
-    await logAdminAction('BULK_IMPORT_WORDS', { count: results.length }, req.ip);
-    
-    res.status(201).json({
+    res.json({
       success: true,
-      message: `${results.length} words imported successfully`,
-      imported: results,
-      errors: errors.length > 0 ? errors : undefined
+      root: { id: doc.id, ...doc.data() }
     });
   } catch (error) {
-    console.error('Error bulk importing words:', error);
+    console.error('Error getting quran root:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get word categories (for filtering)
-app.get('/api/words/categories/list', (req, res) => {
-  const categories = [
-    { value: 'general', label: 'General' },
-    { value: 'noun', label: 'Noun' },
-    { value: 'verb', label: 'Verb' },
-    { value: 'adjective', label: 'Adjective' },
-    { value: 'adverb', label: 'Adverb' },
-    { value: 'phrase', label: 'Phrase' },
-    { value: 'greeting', label: 'Greeting' },
-    { value: 'number', label: 'Number' },
-    { value: 'time', label: 'Time' },
-    { value: 'food', label: 'Food' },
-    { value: 'travel', label: 'Travel' },
-    { value: 'business', label: 'Business' }
-  ];
-  
-  res.json({ success: true, categories });
-});
-
-// Get parts of speech
-app.get('/api/words/parts-of-speech', (req, res) => {
-  const partsOfSpeech = [
-    { value: 'noun', label: 'Noun' },
-    { value: 'verb', label: 'Verb' },
-    { value: 'adjective', label: 'Adjective' },
-    { value: 'adverb', label: 'Adverb' },
-    { value: 'pronoun', label: 'Pronoun' },
-    { value: 'preposition', label: 'Preposition' },
-    { value: 'conjunction', label: 'Conjunction' },
-    { value: 'interjection', label: 'Interjection' },
-    { value: 'particle', label: 'Particle' }
-  ];
-  
-  res.json({ success: true, partsOfSpeech });
+// Get words by root
+app.get('/api/quran-roots/:root/words', async (req, res) => {
+  try {
+    const rootText = req.params.root;
+    const limit = parseInt(req.query.limit) || 50;
+    
+    const snapshot = await db.collection('quran_words')
+      .where('root.arabic', '==', rootText)
+      .orderBy('rank')
+      .limit(limit)
+      .get();
+    
+    const words = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    res.json({
+      success: true,
+      root: rootText,
+      count: words.length,
+      words
+    });
+  } catch (error) {
+    console.error('Error getting words by root:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Export the Express app as a Firebase Function
