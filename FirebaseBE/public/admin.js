@@ -468,13 +468,35 @@ function addWord(data = null) {
   // Setup remove button
   card.querySelector('.remove-word').addEventListener('click', () => removeWord(index));
   
-  // Fill data if provided
+  // Fill data if provided (using new quran_words schema)
   if (data) {
-    card.querySelector('.word-arabic').value = data.arabic || data.arabicText || '';
-    card.querySelector('.word-english').value = data.english || data.englishMeaning || '';
-    card.querySelector('.word-transliteration').value = data.transliteration || '';
-    card.querySelector('.word-pos').value = data.partOfSpeech || '';
-    card.querySelector('.word-root').value = data.rootLetters || '';
+    // Core fields
+    card.querySelector('.word-arabic').value = data.arabicText || data.arabic || '';
+    card.querySelector('.word-english').value = data.englishMeaning || data.english || '';
+    card.querySelector('.word-transliteration').value = data.buckwalter || data.transliteration || '';
+    
+    // Morphology fields
+    card.querySelector('.word-pos').value = data.morphology?.partOfSpeech || data.partOfSpeech || '';
+    
+    // Root fields
+    card.querySelector('.word-root').value = data.root?.arabic || data.rootLetters || '';
+    
+    // Additional fields (if form elements exist)
+    const posDescEl = card.querySelector('.word-pos-description');
+    if (posDescEl) posDescEl.value = data.morphology?.posDescription || '';
+    
+    const lemmaEl = card.querySelector('.word-lemma');
+    if (lemmaEl) lemmaEl.value = data.morphology?.lemma || '';
+    
+    const formEl = card.querySelector('.word-form');
+    if (formEl) formEl.value = data.morphology?.form || '';
+    
+    const rankEl = card.querySelector('.word-rank');
+    if (rankEl) rankEl.value = data.rank || '';
+    
+    const countEl = card.querySelector('.word-occurrence-count');
+    if (countEl) countEl.value = data.occurrenceCount || '';
+    
     card.querySelector('.word-example').value = data.exampleSentence || '';
   }
   
@@ -954,20 +976,48 @@ function normalizeStoryData(story) {
 
 /**
  * Normalize words data - handles field name variations
+ * Updated for quran_words schema from corpQuran/FIRESTORE_SCHEMA.md
  */
 function normalizeWords(words) {
   if (!Array.isArray(words)) return [];
   
   return words.map(word => ({
     id: word.id || generateId(),
-    arabic: word.arabic || word.arabicText || '',
-    english: word.english || word.englishMeaning || word.translation || '',
-    transliteration: word.transliteration || null,
-    partOfSpeech: word.partOfSpeech || word.pos || null,
-    rootLetters: word.rootLetters || word.root || null,
+    // Core Arabic text fields
+    arabicText: word.arabicText || word.arabic || '',
+    arabicWithoutDiacritics: word.arabicWithoutDiacritics || word.arabic || '',
+    buckwalter: word.buckwalter || word.transliteration || null,
+    englishMeaning: word.englishMeaning || word.english || word.translation || '',
+    
+    // Root information (nested object)
+    root: {
+      arabic: word.root?.arabic || word.rootLetters || word.root || null,
+      transliteration: word.root?.transliteration || null
+    },
+    
+    // Morphology (nested object)
+    morphology: {
+      partOfSpeech: word.morphology?.partOfSpeech || word.partOfSpeech || word.pos || null,
+      posDescription: word.morphology?.posDescription || null,
+      lemma: word.morphology?.lemma || null,
+      form: word.morphology?.form || null,
+      tense: word.morphology?.tense || null,
+      gender: word.morphology?.gender || null,
+      number: word.morphology?.number || null,
+      grammaticalCase: word.morphology?.grammaticalCase || null,
+      passive: word.morphology?.passive || false,
+      breakdown: word.morphology?.breakdown || null
+    },
+    
+    // Statistics
+    rank: parseInt(word.rank) || null,
+    occurrenceCount: parseInt(word.occurrenceCount) || 0,
+    
+    // Legacy fields for backward compatibility
     difficulty: parseInt(word.difficulty) || 1,
+    category: word.category || 'general',
     exampleSentence: word.exampleSentence || word.example || null
-  })).filter(w => w.arabic && w.english);
+  })).filter(w => w.arabicText && w.englishMeaning);
 }
 
 async function exportAllStories() {
@@ -1182,6 +1232,11 @@ function renderWords(words) {
   let filtered = words;
   if (searchQuery) {
     filtered = words.filter(w => 
+      w.arabicText?.toLowerCase().includes(searchQuery) ||
+      w.arabicWithoutDiacritics?.toLowerCase().includes(searchQuery) ||
+      w.englishMeaning?.toLowerCase().includes(searchQuery) ||
+      w.buckwalter?.toLowerCase().includes(searchQuery) ||
+      // Legacy field names for backward compatibility
       w.arabic?.toLowerCase().includes(searchQuery) ||
       w.english?.toLowerCase().includes(searchQuery) ||
       w.transliteration?.toLowerCase().includes(searchQuery)
@@ -1200,18 +1255,29 @@ function renderWords(words) {
     return;
   }
   
-  container.innerHTML = filtered.map(word => `
+  container.innerHTML = filtered.map(word => {
+    // Support both new schema (arabicText, englishMeaning) and old schema (arabic, english)
+    const arabicText = word.arabicText || word.arabic || '';
+    const englishMeaning = word.englishMeaning || word.english || '';
+    const transliteration = word.buckwalter || word.transliteration || '';
+    const pos = word.morphology?.partOfSpeech || word.partOfSpeech || '';
+    const rootArabic = word.root?.arabic || word.rootLetters || '';
+    const rank = word.rank || word.difficulty || 1;
+    
+    return `
     <div class="word-card-compact" data-id="${word.id}">
       <div class="word-card-header">
-        <div class="word-arabic" dir="rtl">${escapeHtml(word.arabic)} ${word.audioPronunciationURL || word.audioURL ? '🔊' : ''}</div>
+        <div class="word-arabic" dir="rtl">${escapeHtml(arabicText)} ${word.audioPronunciationURL || word.audioURL ? '🔊' : ''}</div>
         <span class="word-badge difficulty-${word.difficulty || 1}">L${word.difficulty || 1}</span>
       </div>
-      <div class="word-english">${escapeHtml(word.english)}</div>
-      ${word.transliteration ? `<div class="word-transliteration">${escapeHtml(word.transliteration)}</div>` : ''}
+      <div class="word-english">${escapeHtml(englishMeaning)}</div>
+      ${transliteration ? `<div class="word-transliteration">${escapeHtml(transliteration)}</div>` : ''}
       <div class="word-meta">
-        ${word.partOfSpeech ? `<span class="word-badge pos">${word.partOfSpeech}</span>` : ''}
+        ${pos ? `<span class="word-badge pos">${pos}</span>` : ''}
+        ${rootArabic ? `<span class="word-badge root" dir="rtl">${escapeHtml(rootArabic)}</span>` : ''}
+        ${word.occurrenceCount ? `<span class="word-badge count">${word.occurrenceCount}x</span>` : ''}
+        ${word.rank ? `<span class="word-badge rank">#${word.rank}</span>` : ''}
         <span class="word-badge">${word.category || 'general'}</span>
-        <span class="word-badge" style="background: #e3f2fd; color: #1976d2;">ID: ${word.id?.substring(0, 8)}...</span>
       </div>
       ${word.exampleSentence ? `<div class="word-example" dir="rtl">💡 ${escapeHtml(word.exampleSentence)}</div>` : ''}
       <div class="word-actions">
@@ -1219,7 +1285,7 @@ function renderWords(words) {
         <button class="btn btn-small btn-danger" onclick="promptDeleteWord('${word.id}')">Delete</button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function filterWords() {
@@ -1244,11 +1310,12 @@ function openWordModal(word = null) {
   if (word) {
     title.textContent = '✏️ Edit Word';
     document.getElementById('word-id').value = word.id || '';
-    document.getElementById('word-arabic-input').value = word.arabic || '';
-    document.getElementById('word-english-input').value = word.english || '';
-    document.getElementById('word-transliteration-input').value = word.transliteration || '';
-    document.getElementById('word-pos-input').value = word.partOfSpeech || '';
-    document.getElementById('word-root-input').value = word.rootLetters || '';
+    // Support both new schema (arabicText, englishMeaning) and old schema (arabic, english)
+    document.getElementById('word-arabic-input').value = word.arabicText || word.arabic || '';
+    document.getElementById('word-english-input').value = word.englishMeaning || word.english || '';
+    document.getElementById('word-transliteration-input').value = word.buckwalter || word.transliteration || '';
+    document.getElementById('word-pos-input').value = word.morphology?.partOfSpeech || word.partOfSpeech || '';
+    document.getElementById('word-root-input').value = word.root?.arabic || word.rootLetters || '';
     document.getElementById('word-difficulty-input').value = word.difficulty || 1;
     document.getElementById('word-category-input').value = word.category || 'general';
     document.getElementById('word-example-input').value = word.exampleSentence || '';
@@ -1287,13 +1354,40 @@ async function saveWord() {
     }
   }
   
+  // Build word data using new quran_words schema
+  const arabicText = document.getElementById('word-arabic-input').value.trim();
+  const englishMeaning = document.getElementById('word-english-input').value.trim();
+  
   const wordData = {
     id: wordId || undefined,
-    arabic: document.getElementById('word-arabic-input').value.trim(),
-    english: document.getElementById('word-english-input').value.trim(),
-    transliteration: document.getElementById('word-transliteration-input').value.trim() || null,
-    partOfSpeech: document.getElementById('word-pos-input').value || null,
-    rootLetters: document.getElementById('word-root-input').value.trim() || null,
+    
+    // Core fields (quran_words schema)
+    arabicText: arabicText,
+    arabicWithoutDiacritics: arabicText, // Same as arabicText if not provided separately
+    buckwalter: document.getElementById('word-transliteration-input').value.trim() || null,
+    englishMeaning: englishMeaning,
+    
+    // Root (nested object)
+    root: {
+      arabic: document.getElementById('word-root-input').value.trim() || null,
+      transliteration: null // Can be derived from arabic if needed
+    },
+    
+    // Morphology (nested object)
+    morphology: {
+      partOfSpeech: document.getElementById('word-pos-input').value || null,
+      posDescription: null,
+      lemma: null,
+      form: null,
+      tense: null,
+      gender: null,
+      number: null,
+      grammaticalCase: null,
+      passive: false,
+      breakdown: null
+    },
+    
+    // Legacy fields for backward compatibility
     difficulty: parseInt(document.getElementById('word-difficulty-input').value),
     category: document.getElementById('word-category-input').value,
     exampleSentence: document.getElementById('word-example-input').value.trim() || null,
@@ -1301,7 +1395,7 @@ async function saveWord() {
     audioPronunciationURL: audioURL
   };
   
-  if (!wordData.arabic || !wordData.english) {
+  if (!wordData.arabicText || !wordData.englishMeaning) {
     showToast('Arabic and English are required', 'error');
     return;
   }
@@ -1517,21 +1611,47 @@ async function handleImportWords() {
     preview.innerHTML = `<p>Importing ${words.length} words...</p>`;
   }
   
-  // Normalize word data
+  // Normalize word data - updated for quran_words schema
   const normalizedWords = words.map(word => ({
-    arabic: word.arabic || word['Arabic with Araab'] || word.arabicText || '',
-    english: word.english || word.Meaning || word.englishMeaning || '',
-    transliteration: word.transliteration || word.Transliteration || '',
-    partOfSpeech: normalizePartOfSpeech(word.partOfSpeech || word.POS || ''),
-    rootLetters: word.rootLetters || word['Root Letters'] || null,
+    // Core fields (quran_words schema)
+    arabicText: word.arabicText || word.arabic || word['Arabic with Araab'] || '',
+    arabicWithoutDiacritics: word.arabicWithoutDiacritics || word.arabic || '',
+    buckwalter: word.buckwalter || word.transliteration || word.Transliteration || '',
+    englishMeaning: word.englishMeaning || word.english || word.Meaning || '',
+    
+    // Root (nested object)
+    root: {
+      arabic: word.root?.arabic || word.rootLetters || word['Root Letters'] || null,
+      transliteration: word.root?.transliteration || null
+    },
+    
+    // Morphology (nested object)
+    morphology: {
+      partOfSpeech: normalizePartOfSpeech(word.morphology?.partOfSpeech || word.partOfSpeech || word.POS || ''),
+      posDescription: word.morphology?.posDescription || null,
+      lemma: word.morphology?.lemma || null,
+      form: word.morphology?.form || null,
+      tense: word.morphology?.tense || null,
+      gender: word.morphology?.gender || null,
+      number: word.morphology?.number || null,
+      grammaticalCase: word.morphology?.grammaticalCase || null,
+      passive: word.morphology?.passive || false,
+      breakdown: word.morphology?.breakdown || null
+    },
+    
+    // Statistics
+    rank: parseInt(word.rank) || null,
+    occurrenceCount: parseInt(word.occurrenceCount) || 0,
+    
+    // Legacy fields for backward compatibility
     exampleSentence: word.exampleSentence || word['Example Usage (Arabic)'] || null,
     exampleSentenceTranslation: word.exampleSentenceTranslation || word['Example Translation'] || null,
     difficulty: parseInt(word.difficulty) || 1,
     category: word.category || 'general'
   }));
   
-  // Validate required fields
-  const invalidWords = normalizedWords.filter(w => !w.arabic || !w.english);
+  // Validate required fields (using new schema field names)
+  const invalidWords = normalizedWords.filter(w => !w.arabicText || !w.englishMeaning);
   if (invalidWords.length > 0) {
     showToast(`${invalidWords.length} words missing required fields (arabic/english)`, 'error');
     return;
@@ -1627,26 +1747,55 @@ function normalizePartOfSpeech(pos) {
 }
 
 function downloadWordsTemplate() {
+  // Template using new quran_words schema from FIRESTORE_SCHEMA.md
   const template = [
     {
-      "arabic": "\u0643\u062a\u0627\u0628",
-      "transliteration": "kit\u0101b",
-      "english": "book",
-      "partOfSpeech": "noun",
-      "rootLetters": "\u0643 \u062a \u0628",
-      "exampleSentence": "\u0647\u0630\u0627 \u0643\u062a\u0627\u0628 \u062c\u0645\u064a\u0644",
-      "exampleSentenceTranslation": "This is a beautiful book",
-      "difficulty": 1,
-      "category": "general"
+      "rank": 1,
+      "arabicText": "\u0641\u0650\u0649",
+      "arabicWithoutDiacritics": "\u0641\u0649",
+      "buckwalter": "fiY",
+      "englishMeaning": "In",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "morphology": {
+        "partOfSpeech": "P",
+        "posDescription": "\u062d\u0631\u0641 \u062c\u0631",
+        "lemma": "\u0641\u0650\u064a",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": "Plural",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "\u0641\u0650\u0649[P]"
+      },
+      "occurrenceCount": 1098
     },
     {
-      "arabic": "\u0642\u0644\u0645",
-      "transliteration": "qalam",
-      "english": "pen",
-      "partOfSpeech": "noun",
-      "rootLetters": "\u0642 \u0644 \u0645",
-      "difficulty": 1,
-      "category": "general"
+      "rank": 15,
+      "arabicText": "\u0642\u064e\u0627\u0644\u064e",
+      "arabicWithoutDiacritics": "\u0642\u0627\u0644",
+      "buckwalter": "qaAla",
+      "englishMeaning": "said",
+      "root": {
+        "arabic": "\u0642\u0648\u0644",
+        "transliteration": "qwl"
+      },
+      "morphology": {
+        "partOfSpeech": "V",
+        "posDescription": "\u0641\u0639\u0644",
+        "lemma": "\u0642\u0627\u0644\u064e",
+        "form": "1",
+        "tense": "Perfect",
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "\u0642\u064e\u0627\u0644\u064e[V]"
+      },
+      "occurrenceCount": 412
     }
   ];
   

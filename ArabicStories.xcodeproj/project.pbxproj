@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5FAE15D62F3FADF700434675 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5FAE15D52F3FADF700434675 /* GoogleSignInSwift */; };
 		FA909DB32F3BB509007A6918 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FA909DB22F3BB509007A6918 /* FirebaseAnalytics */; };
 		FA909DB52F3BB509007A6918 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA909DB42F3BB509007A6918 /* FirebaseAnalyticsCore */; };
 		FA909DB72F3BB509007A6918 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FA909DB62F3BB509007A6918 /* FirebaseAuth */; };
@@ -24,9 +25,22 @@
 		5F32C7C32F3B4BFD00CFF0AB /* ArabicStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArabicStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5FAE15D82F3FAE7600434675 /* Exceptions for "ArabicStories" folder in "ArabicStories" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5F32C7C22F3B4BFD00CFF0AB /* ArabicStories */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5F32C7C52F3B4BFD00CFF0AB /* ArabicStories */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5FAE15D82F3FAE7600434675 /* Exceptions for "ArabicStories" folder in "ArabicStories" target */,
+			);
 			path = ArabicStories;
 			sourceTree = "<group>";
 		};
@@ -40,6 +54,7 @@
 				FA909DBB2F3BB509007A6918 /* FirebaseDatabase in Frameworks */,
 				FA909DBF2F3BB509007A6918 /* FirebaseFunctions in Frameworks */,
 				FA909DC52F3BB509007A6918 /* FirebaseMessaging in Frameworks */,
+				5FAE15D62F3FADF700434675 /* GoogleSignInSwift in Frameworks */,
 				FA909DB32F3BB509007A6918 /* FirebaseAnalytics in Frameworks */,
 				FA909DC32F3BB509007A6918 /* FirebaseInstallations in Frameworks */,
 				FA909DC12F3BB509007A6918 /* FirebaseInAppMessaging-Beta in Frameworks */,
@@ -101,6 +116,7 @@
 				FA909DC22F3BB509007A6918 /* FirebaseInstallations */,
 				FA909DC42F3BB509007A6918 /* FirebaseMessaging */,
 				FA909DC62F3BB509007A6918 /* FirebaseStorage */,
+				5FAE15D52F3FADF700434675 /* GoogleSignInSwift */,
 			);
 			productName = ArabicStories;
 			productReference = 5F32C7C32F3B4BFD00CFF0AB /* ArabicStories.app */;
@@ -132,6 +148,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FA909DB12F3BB509007A6918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5FAE15D42F3FADF700434675 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5F32C7C42F3B4BFD00CFF0AB /* Products */;
@@ -296,6 +313,7 @@
 				DEVELOPMENT_TEAM = TDTJJT9YLY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArabicStories/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -331,6 +349,7 @@
 				DEVELOPMENT_TEAM = TDTJJT9YLY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArabicStories/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -379,6 +398,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5FAE15D42F3FADF700434675 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		FA909DB12F3BB509007A6918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -390,6 +417,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5FAE15D52F3FADF700434675 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5FAE15D42F3FADF700434675 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		FA909DB22F3BB509007A6918 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA909DB12F3BB509007A6918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

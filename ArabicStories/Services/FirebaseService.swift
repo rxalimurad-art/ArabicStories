@@ -462,6 +462,54 @@ class FirebaseService {
         let data = try encoder.encode(progress)
         return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
     }
+    
+    // MARK: - Story Progress (User-Specific)
+    
+    func fetchStoryProgress(storyId: String, userId: String) async throws -> StoryProgress? {
+        let doc = try await db.collection("users").document(userId)
+            .collection("storyProgress").document(storyId).getDocument()
+        
+        guard let data = doc.data() else { return nil }
+        return try convertToStoryProgress(data)
+    }
+    
+    func saveStoryProgress(_ progress: StoryProgress) async throws {
+        let data = try storyProgressToDictionary(progress)
+        try await db.collection("users").document(progress.userId)
+            .collection("storyProgress").document(progress.storyId).setData(data)
+    }
+    
+    private func convertToStoryProgress(_ data: [String: Any]) throws -> StoryProgress {
+        var jsonDict = data
+        
+        // Handle Firestore timestamps
+        let dateFormatter = ISO8601DateFormatter()
+        
+        if let lastReadDate = data["lastReadDate"] as? Timestamp {
+            jsonDict["lastReadDate"] = dateFormatter.string(from: lastReadDate.dateValue())
+        }
+        if let completionDate = data["completionDate"] as? Timestamp {
+            jsonDict["completionDate"] = dateFormatter.string(from: completionDate.dateValue())
+        }
+        if let startedAt = data["startedAt"] as? Timestamp {
+            jsonDict["startedAt"] = dateFormatter.string(from: startedAt.dateValue())
+        }
+        if let updatedAt = data["updatedAt"] as? Timestamp {
+            jsonDict["updatedAt"] = dateFormatter.string(from: updatedAt.dateValue())
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(StoryProgress.self, from: jsonData)
+    }
+    
+    private func storyProgressToDictionary(_ progress: StoryProgress) throws -> [String: Any] {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(progress)
+        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+    }
 }
 
 // MARK: - String Extension for MD5 Hashing

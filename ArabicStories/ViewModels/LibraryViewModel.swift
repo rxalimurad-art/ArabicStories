@@ -15,6 +15,7 @@ class LibraryViewModel {
     // State
     var stories: [Story] = []
     var filteredStories: [Story] = []
+    var storyProgress: [String: StoryProgress] = [:] // Key: storyId
     var isLoading = false
     var errorMessage: String?
     
@@ -62,6 +63,24 @@ class LibraryViewModel {
         }
     }
     
+    // MARK: - Story Progress Helpers
+    
+    func getStoryProgress(_ storyId: UUID) -> StoryProgress? {
+        return storyProgress[storyId.uuidString]
+    }
+    
+    func isStoryCompleted(_ storyId: UUID) -> Bool {
+        return storyProgress[storyId.uuidString]?.isCompleted ?? false
+    }
+    
+    func isStoryBookmarked(_ storyId: UUID) -> Bool {
+        return storyProgress[storyId.uuidString]?.isBookmarked ?? false
+    }
+    
+    func getReadingProgress(_ storyId: UUID) -> Double {
+        return storyProgress[storyId.uuidString]?.readingProgress ?? 0.0
+    }
+    
     // MARK: - Data Loading
     
     func loadStories() async {
@@ -94,19 +113,34 @@ class LibraryViewModel {
         
         stories = fetchedStories
         filteredStories = stories
+        
+        // Fetch user-specific progress for all stories
+        await loadStoryProgress()
+    }
+    
+    func loadStoryProgress() async {
+        // Fetch story progress for all displayed stories
+        for story in stories {
+            if let progress = await dataService.fetchStoryProgress(storyId: story.id) {
+                storyProgress[story.id.uuidString] = progress
+            }
+        }
     }
     
     func loadLevelProgress() async {
         maxUnlockedLevel = await dataService.getMaxUnlockedLevel()
         
-        // Calculate story-based progress for Level 2 unlock
+        // Calculate story-based progress for Level 2 unlock using user-specific story progress
         let allStories = await dataService.fetchAllStories()
         let level1Stories = allStories.filter { $0.difficultyLevel == 1 }
-        let progress = await dataService.fetchUserProgress()
+        
+        // Fetch all story progress for the user
+        let allProgress = await dataService.getAllStoryProgress()
+        let completedStoryIds = Set(allProgress.filter { $0.isCompleted }.map { $0.storyId })
         
         totalLevel1Stories = level1Stories.count
         completedLevel1Stories = level1Stories.filter { story in
-            progress?.completedStoryIds.contains(story.id.uuidString) ?? false
+            completedStoryIds.contains(story.id.uuidString)
         }.count
         
         storiesRemainingForLevel2 = totalLevel1Stories - completedLevel1Stories
@@ -168,8 +202,18 @@ class LibraryViewModel {
     // MARK: - Actions
     
     func toggleBookmark(_ story: Story) async {
-        await dataService.toggleBookmark(story)
-        await loadStories()
+        await dataService.toggleStoryBookmark(storyId: story.id)
+        // Update local cache
+        if var progress = storyProgress[story.id.uuidString] {
+            progress.toggleBookmark()
+            storyProgress[story.id.uuidString] = progress
+        } else {
+            // Create new progress if doesn't exist
+            let newProgress = await dataService.fetchStoryProgress(storyId: story.id)
+            if let newProgress = newProgress {
+                storyProgress[story.id.uuidString] = newProgress
+            }
+        }
     }
     
     func deleteStory(_ story: Story) async {
@@ -202,15 +246,22 @@ class LibraryViewModel {
     }
     
     var bookmarkedStories: [Story] {
-        stories.filter { $0.isBookmarked }
+        stories.filter { isStoryBookmarked($0.id) }
     }
     
     var inProgressStories: [Story] {
-        stories.filter { $0.isInProgress }.sorted { ($0.lastReadDate ?? .distantPast) > ($1.lastReadDate ?? .distantPast) }
+        stories.filter { 
+            let progress = getReadingProgress($0.id)
+            return progress > 0 && progress < 1.0 
+        }.sorted { 
+            let date1 = storyProgress[$0.id.uuidString]?.lastReadDate ?? .distantPast
+            let date2 = storyProgress[$1.id.uuidString]?.lastReadDate ?? .distantPast
+            return date1 > date2
+        }
     }
     
     var completedStories: [Story] {
-        stories.filter { $0.isCompleted }
+        stories.filter { isStoryCompleted($0.id) }
     }
     
     var difficultyCounts: [Int: Int] {

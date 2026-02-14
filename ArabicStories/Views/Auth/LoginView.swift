@@ -1,7 +1,7 @@
 //
 //  LoginView.swift
 //  Arabicly
-//  Authentication screen with multiple login options
+//  Enhanced authentication screen with AppIcon logo
 //
 
 import SwiftUI
@@ -9,38 +9,45 @@ import AuthenticationServices
 
 struct LoginView: View {
     @State private var authService = AuthService.shared
-    @State private var showPhoneAuth = false
     @State private var showError = false
-    @State private var animateGradient = false
+    @State private var contentOffset: CGFloat = 30
+    
+    // Theme colors
+    private let primaryTeal = Color(red: 0.18, green: 0.55, blue: 0.55)
+    private let darkTeal = Color(red: 0.12, green: 0.42, blue: 0.42)
+    private let lightTeal = Color(red: 0.28, green: 0.65, blue: 0.65)
     
     var body: some View {
         ZStack {
-            // Animated gradient background
+            // Teal theme background
             backgroundGradient
             
-            ScrollView {
-                VStack(spacing: 32) {
-                    // Logo and title
-                    headerSection
-                    
-                    // Login options
-                    loginOptionsSection
-                    
-                    // Anonymous option
-                    anonymousSection
-                    
-                    // Terms
-                    termsSection
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 60)
-                .padding(.bottom, 32)
+            // Decorative elements
+            decorativeCircles
+            
+            VStack(spacing: 0) {
+                // Logo and title
+                headerSection
+                
+                Spacer()
+                
+                // Login options
+                authSection
+                .padding(.bottom, 20)
+                
+                // Anonymous option
+                anonymousSection
+                .padding(.bottom, 24)
+                
+                // Terms
+                termsSection
+                .padding(.bottom, 16)
             }
+            .padding(.horizontal, 28)
+            .offset(y: contentOffset)
+            .opacity(contentOffset == 0 ? 1 : 0)
         }
         .loadingOverlay(isLoading: authService.isLoading)
-        .sheet(isPresented: $showPhoneAuth) {
-            PhoneAuthView()
-        }
         .alert("Error", isPresented: $showError) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -51,60 +58,89 @@ struct LoginView: View {
                 showError = true
             }
         }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.5)) {
+                contentOffset = 0
+            }
+        }
     }
     
     // MARK: - Background Gradient
     private var backgroundGradient: some View {
         LinearGradient(
             colors: [
-                Color.hikayaCream,
-                Color.hikayaSand.opacity(0.5),
-                Color.hikayaCream
+                darkTeal,
+                primaryTeal,
+                lightTeal
             ],
-            startPoint: animateGradient ? .topLeading : .bottomLeading,
-            endPoint: animateGradient ? .bottomTrailing : .topTrailing
+            startPoint: .top,
+            endPoint: .bottom
         )
         .ignoresSafeArea()
-        .onAppear {
-            withAnimation(.linear(duration: 8).repeatForever(autoreverses: true)) {
-                animateGradient.toggle()
-            }
+    }
+    
+    // MARK: - Decorative Circles
+    private var decorativeCircles: some View {
+        ZStack {
+            Circle()
+                .fill(Color.white.opacity(0.03))
+                .frame(width: 350, height: 350)
+                .offset(x: 150, y: -150)
+            
+            Circle()
+                .fill(Color.white.opacity(0.05))
+                .frame(width: 200, height: 200)
+                .offset(x: -120, y: 50)
+            
+            Circle()
+                .fill(Color.white.opacity(0.03))
+                .frame(width: 280, height: 280)
+                .offset(x: 100, y: 350)
         }
     }
     
     // MARK: - Header Section
     private var headerSection: some View {
         VStack(spacing: 16) {
-            // App icon
-            ZStack {
-                Circle()
-                    .fill(Color.hikayaTeal.gradient)
-                    .frame(width: 100, height: 100)
-                    .shadow(color: Color.hikayaTeal.opacity(0.3), radius: 20, x: 0, y: 10)
-                
-                Image(systemName: "book.fill")
-                    .font(.system(size: 44))
+            // App Icon with glow
+            Image("AppIcon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .shadow(
+                    color: Color.black.opacity(0.3),
+                    radius: 20,
+                    x: 0,
+                    y: 10
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.white.opacity(0.2), lineWidth: 2)
+                )
+            
+            // App name
+            VStack(spacing: 6) {
+                Text("Arabicly")
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
+                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 4)
+                
+                Text("Learn Arabic through stories")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(Color.white.opacity(0.85))
             }
-            
-            Text("Arabicly")
-                .font(.system(size: 36, weight: .bold, design: .serif))
-                .foregroundStyle(Color.hikayaDeepTeal)
-            
-            Text("Learn Arabic through stories")
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(.secondary)
         }
-        .padding(.top, 40)
+        .padding(.top, 60)
     }
     
-    // MARK: - Login Options Section
-    private var loginOptionsSection: some View {
+    // MARK: - Auth Section (Apple + Google)
+    private var authSection: some View {
         VStack(spacing: 16) {
             Text("Sign in to save your progress")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .padding(.bottom, 8)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.white.opacity(0.9))
+                .padding(.bottom, 4)
             
             // Sign in with Apple
             SignInWithAppleButton(
@@ -116,67 +152,44 @@ struct LoginView: View {
                     handleAppleSignIn(result)
                 }
             )
-            .signInWithAppleButtonStyle(.black)
-            .frame(height: 54)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .signInWithAppleButtonStyle(.white)
+            .frame(height: 50)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
             .disabled(authService.isLoading)
+            
+            // Divider
+            HStack(spacing: 12) {
+                Rectangle()
+                    .fill(Color.white.opacity(0.3))
+                    .frame(height: 1)
+                Text("or")
+                    .font(.caption)
+                    .foregroundStyle(Color.white.opacity(0.7))
+                Rectangle()
+                    .fill(Color.white.opacity(0.3))
+                    .frame(height: 1)
+            }
             
             // Google Sign In
             Button {
-                Task {
-                    do {
-                        // Get the root view controller
-                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                              let rootViewController = windowScene.windows.first?.rootViewController else {
-                            return
-                        }
-                        try await authService.signInWithGoogle(presenting: rootViewController)
-                    } catch {
-                        // Handle error
-                    }
-                }
+                signInWithGoogle()
             } label: {
-                HStack {
-                    Image(systemName: "g.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(.red)
+                HStack(spacing: 12) {
+                    Image("google_logo")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(Color.red)
                     
                     Text("Continue with Google")
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.black)
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(Color(.systemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                )
-            }
-            .disabled(authService.isLoading)
-            
-            // Phone Sign In
-            Button {
-                showPhoneAuth = true
-            } label: {
-                HStack {
-                    Image(systemName: "phone.fill")
-                        .font(.title3)
-                        .foregroundStyle(Color.hikayaTeal)
-                    
-                    Text("Continue with Phone")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.primary)
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(Color(.systemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                )
+                .frame(height: 50)
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
             }
             .disabled(authService.isLoading)
         }
@@ -186,7 +199,8 @@ struct LoginView: View {
     private var anonymousSection: some View {
         VStack(spacing: 12) {
             Divider()
-                .padding(.vertical, 8)
+                .background(Color.white.opacity(0.2))
+                .padding(.vertical, 4)
             
             Button {
                 Task {
@@ -197,43 +211,50 @@ struct LoginView: View {
                     }
                 }
             } label: {
-                HStack {
-                    Image(systemName: "person.fill.questionmark")
+                HStack(spacing: 10) {
+                    Image(systemName: "person.fill")
                         .font(.title3)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.white)
                     
                     Text("Continue as Guest")
                         .font(.system(size: 17, weight: .medium))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.white)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
+                .background(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color.white.opacity(0.12))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1.5)
+                )
             }
             .disabled(authService.isLoading)
             
             Text("You can link your account later in Settings")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.white.opacity(0.6))
                 .multilineTextAlignment(.center)
         }
     }
     
     // MARK: - Terms Section
     private var termsSection: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             Text("By continuing, you agree to our")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.white.opacity(0.6))
             
             HStack(spacing: 4) {
                 Link("Terms of Service", destination: URL(string: "https://hikaya.app/terms")!)
                 Text("and")
                 Link("Privacy Policy", destination: URL(string: "https://hikaya.app/privacy")!)
             }
-            .font(.caption)
-            .foregroundStyle(Color.hikayaTeal)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(Color.white.opacity(0.9))
         }
-        .padding(.top, 16)
     }
     
     // MARK: - Apple Sign In Handler
@@ -246,6 +267,21 @@ struct LoginView: View {
                 case .failure(let error):
                     print("Apple sign in error: \(error.localizedDescription)")
                 }
+            } catch {
+                // Error handled by auth service
+            }
+        }
+    }
+    
+    // MARK: - Google Sign In Handler
+    private func signInWithGoogle() {
+        Task {
+            do {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                      let rootViewController = windowScene.windows.first?.rootViewController else {
+                    return
+                }
+                try await authService.signInWithGoogle(presenting: rootViewController)
             } catch {
                 // Error handled by auth service
             }

@@ -180,10 +180,12 @@ struct SettingsView: View {
     }
     
     private func signOut() {
-        do {
-            try authService.signOut()
-        } catch {
-            print("Error signing out: \(error.localizedDescription)")
+        Task {
+            do {
+                try await authService.signOut()
+            } catch {
+                print("Error signing out: \(error.localizedDescription)")
+            }
         }
     }
     

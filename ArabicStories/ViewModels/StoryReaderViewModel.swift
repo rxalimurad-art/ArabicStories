@@ -51,6 +51,11 @@ class StoryReaderViewModel {
     // Mixed format state
     var learnedWordIdsInSession: Set<String> = []
     
+    // Reading Time Tracking
+    private var readingSessionStartTime: Date?
+    private var currentSessionDuration: TimeInterval = 0
+    private var readingTimer: Timer?
+    
     struct MixedWordInfo {
         let wordId: String
         let arabicText: String
@@ -60,7 +65,7 @@ class StoryReaderViewModel {
     
     init(story: Story, wasReset: Bool = false) {
         self.story = story
-        self.currentSegmentIndex = story.currentSegmentIndex
+        self.currentSegmentIndex = 0 // Default to start
         setupAudioCallbacks()
         
         // Debug: Print story info
@@ -77,11 +82,20 @@ class StoryReaderViewModel {
             }
         }
         
-        // If story was reset (completed and restarted), save the reset state
-        if wasReset {
-            Task {
-                try? await DataService.shared.saveStory(story)
-                print("✅ Saved reset story progress")
+        // Load user-specific progress
+        Task {
+            if let progress = await DataService.shared.fetchStoryProgress(storyId: story.id) {
+                // If story is completed and not being reset, start from beginning
+                if progress.isCompleted && !wasReset {
+                    // Keep at 0 (start over)
+                    print("📖 Story completed, starting from beginning")
+                } else {
+                    // Resume from saved progress
+                    await MainActor.run {
+                        self.currentSegmentIndex = progress.currentSegmentIndex
+                    }
+                    print("📖 Resumed from segment \(progress.currentSegmentIndex)")
+                }
             }
         }
         
@@ -380,37 +394,32 @@ class StoryReaderViewModel {
         selectedMixedWord = nil
     }
     
-    // MARK: - Progress
+    // MARK: - Progress (User-Specific)
     
     private func updateStoryProgress() async {
-        var updatedStory = story
-        updatedStory.currentSegmentIndex = currentSegmentIndex
-        updatedStory.updateProgress(readingProgress)
-        story = updatedStory
-        
-        do {
-            try await dataService.saveStory(story)
-        } catch {
-            print("Error saving progress: \(error)")
-        }
+        // Save to user-specific story progress
+        await dataService.updateStoryProgress(
+            storyId: story.id,
+            readingProgress: readingProgress,
+            currentSegmentIndex: currentSegmentIndex
+        )
     }
     
     private func completeStory() async {
-        var updatedStory = story
-        updatedStory.updateProgress(1.0)
-        story = updatedStory
+        // Save completion to user-specific story progress
+        await dataService.updateStoryProgress(
+            storyId: story.id,
+            readingProgress: 1.0,
+            currentSegmentIndex: currentSegmentIndex
+        )
         
-        do {
-            try await dataService.saveStory(story)
-            let unlocked = await dataService.recordStoryCompleted(
-                storyId: story.id.uuidString,
-                difficultyLevel: story.difficultyLevel
-            )
-            if unlocked {
-                print("🎉 Level 2 Unlocked!")
-            }
-        } catch {
-            print("Error completing story: \(error)")
+        // Record story completion in user progress
+        let unlocked = await dataService.recordStoryCompleted(
+            storyId: story.id.uuidString,
+            difficultyLevel: story.difficultyLevel
+        )
+        if unlocked {
+            print("🎉 Level 2 Unlocked!")
         }
     }
     
@@ -433,14 +442,19 @@ class StoryReaderViewModel {
     }
     
     func resetProgress() {
-        var updatedStory = story
-        updatedStory.resetProgress()
-        story = updatedStory
         currentSegmentIndex = 0
         learnedWordIdsInSession.removeAll()
         
         Task {
-            try? await dataService.saveStory(story)
+            // Reset user-specific story progress
+            var storyProgress = await dataService.fetchStoryProgress(storyId: story.id)
+                ?? StoryProgress(storyId: story.id.uuidString, userId: "")
+            storyProgress.reset()
+            try? await dataService.updateStoryProgress(
+                storyId: story.id,
+                readingProgress: 0.0,
+                currentSegmentIndex: 0
+            )
         }
     }
     
@@ -468,6 +482,68 @@ class StoryReaderViewModel {
     
     var totalVocabularyCount: Int {
         story.vocabularyCount
+    }
+    
+    // MARK: - Reading Time Tracking
+    
+    /// Start tracking reading time for this session
+    func startReadingSession() {
+        guard readingSessionStartTime == nil else { return }
+        readingSessionStartTime = Date()
+        currentSessionDuration = 0
+        
+        // Start a timer to update current session duration every second
+        readingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.currentSessionDuration += 1
+        }
+        
+        print("⏱️ Started reading session for '\(story.title)'")
+    }
+    
+    /// Stop tracking and save accumulated reading time
+    func stopReadingSession() async {
+        guard let startTime = readingSessionStartTime else { return }
+        
+        // Invalidate timer
+        readingTimer?.invalidate()
+        readingTimer = nil
+        
+        // Calculate elapsed time
+        let elapsed = Date().timeIntervalSince(startTime)
+        
+        // Reset session tracking
+        readingSessionStartTime = nil
+        currentSessionDuration = 0
+        
+        // Save to user-specific story progress and user progress
+        await dataService.updateStoryProgress(
+            storyId: story.id,
+            readingTime: elapsed
+        )
+        // Also record to user progress for dashboard stats
+        await dataService.recordReadingTime(storyId: story.id, timeInterval: elapsed)
+        print("⏱️ Saved reading time: \(Int(elapsed))s")
+    }
+    
+    /// Get formatted reading time for display
+    var formattedReadingTime: String {
+        let totalSeconds = Int(story.totalReadingTime + currentSessionDuration)
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+        
+        if hours > 0 {
+            return String(format: "%dh %dm", hours, minutes)
+        } else if minutes > 0 {
+            return String(format: "%dm %ds", minutes, seconds)
+        } else {
+            return String(format: "%ds", seconds)
+        }
+    }
+    
+    /// Get total reading time in seconds
+    var totalReadingTimeSeconds: TimeInterval {
+        story.totalReadingTime + currentSessionDuration
     }
 }
 

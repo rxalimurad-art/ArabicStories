@@ -5,9 +5,11 @@
 //
 
 import Foundation
+import FirebaseCore
 import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
+import GoogleSignIn
 
 @Observable
 class AuthService {
@@ -124,69 +126,45 @@ class AuthService {
         isLoading = true
         defer { isLoading = false }
         
-        // Note: Google Sign In requires GoogleSignIn SDK
-        // This is a placeholder implementation
-        // You need to: pod 'GoogleSignIn' and import GoogleSignIn
-        
-        // Example implementation (commented out until GoogleSignIn is added):
-        /*
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             throw AuthError.configurationError
         }
         
+        // Create Google Sign In configuration
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
-        let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
-        
-        guard let idToken = result.user.idToken?.tokenString else {
-            throw AuthError.invalidCredentials
-        }
-        
-        let credential = GoogleAuthProvider.credential(
-            withIDToken: idToken,
-            accessToken: result.user.accessToken.tokenString
-        )
-        
-        let authResult = try await Auth.auth().signIn(with: credential)
-        print("🔐 Google sign in successful: \(authResult.user.uid)")
-        */
-        
-        // For now, throw an error indicating Google Sign In needs setup
-        throw AuthError.notImplemented("Google Sign In requires GoogleSignIn SDK. Run: pod 'GoogleSignIn'")
-    }
-    
-    // MARK: - Phone Sign In
-    func sendPhoneVerificationCode(phoneNumber: String) async throws -> String {
-        isLoading = true
-        defer { isLoading = false }
-        
         do {
-            let verificationID = try await PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil)
-            print("🔐 Phone verification code sent to: \(phoneNumber)")
-            return verificationID
+            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
+            
+            guard let idToken = result.user.idToken?.tokenString else {
+                throw AuthError.invalidCredentials
+            }
+            
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken,
+                accessToken: result.user.accessToken.tokenString
+            )
+            
+            let authResult = try await Auth.auth().signIn(with: credential)
+            
+            // Update display name if available
+            if let profile = result.user.profile {
+                let displayName = [profile.givenName, profile.familyName]
+                    .compactMap { $0 }
+                    .joined(separator: " ")
+                
+                if !displayName.isEmpty {
+                    let changeRequest = authResult.user.createProfileChangeRequest()
+                    changeRequest.displayName = displayName
+                    try await changeRequest.commitChanges()
+                }
+            }
+            
+            print("🔐 Google sign in successful: \(authResult.user.uid)")
         } catch {
             authError = error.localizedDescription
-            print("❌ Phone verification failed: \(error.localizedDescription)")
-            throw error
-        }
-    }
-    
-    func verifyPhoneCode(verificationID: String, verificationCode: String) async throws {
-        isLoading = true
-        defer { isLoading = false }
-        
-        let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: verificationID,
-            verificationCode: verificationCode
-        )
-        
-        do {
-            let result = try await Auth.auth().signIn(with: credential)
-            print("🔐 Phone sign in successful: \(result.user.uid)")
-        } catch {
-            authError = error.localizedDescription
-            print("❌ Phone sign in failed: \(error.localizedDescription)")
+            print("❌ Google sign in failed: \(error.localizedDescription)")
             throw error
         }
     }
@@ -249,56 +227,58 @@ class AuthService {
     }
     
     func linkGoogleAccount(presenting: UIViewController) async throws {
-        guard Auth.auth().currentUser != nil else {
+        guard let user = Auth.auth().currentUser else {
             throw AuthError.notAuthenticated
         }
         
         isLoading = true
         defer { isLoading = false }
         
-        // Similar to signInWithGoogle but use user.link(with: credential)
-        throw AuthError.notImplemented("Google Sign In requires GoogleSignIn SDK")
-    }
-    
-    func linkPhoneNumber(phoneNumber: String) async throws -> String {
-        guard Auth.auth().currentUser != nil else {
-            throw AuthError.notAuthenticated
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            throw AuthError.configurationError
         }
         
-        return try await sendPhoneVerificationCode(phoneNumber: phoneNumber)
-    }
-    
-    func confirmLinkPhoneNumber(verificationID: String, verificationCode: String) async throws {
-        guard let user = Auth.auth().currentUser else {
-            throw AuthError.notAuthenticated
-        }
-        
-        let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: verificationID,
-            verificationCode: verificationCode
-        )
+        // Create Google Sign In configuration
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
         
         do {
-            let result = try await user.link(with: credential)
-            print("🔐 Phone number linked: \(result.user.uid)")
+            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenting)
+            
+            guard let idToken = result.user.idToken?.tokenString else {
+                throw AuthError.invalidCredentials
+            }
+            
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken,
+                accessToken: result.user.accessToken.tokenString
+            )
+            
+            let linkResult = try await user.link(with: credential)
+            print("🔐 Google account linked: \(linkResult.user.uid)")
         } catch let error as NSError {
             if error.code == AuthErrorCode.credentialAlreadyInUse.rawValue {
                 throw AuthError.alreadyLinked
             }
+            authError = error.localizedDescription
+            print("❌ Google account linking failed: \(error.localizedDescription)")
             throw error
         }
     }
     
     // MARK: - Sign Out
-    func signOut() throws {
+    func signOut() async throws {
         do {
-            try Auth.auth().signOut()
-            print("🔐 Signed out successfully")
+            // Clear local cache before signing out
+            await LocalCache.shared.switchUser("anonymous")
             
-            // Sign in anonymously after sign out to maintain user experience
-            Task {
-                try? await signInAnonymously()
-            }
+            // Sign out from Firebase
+            try Auth.auth().signOut()
+            
+            // Sign out from Google
+            GIDSignIn.sharedInstance.signOut()
+            
+            print("🔐 Signed out successfully")
         } catch {
             print("❌ Sign out failed: \(error.localizedDescription)")
             throw error
@@ -316,9 +296,6 @@ class AuthService {
         do {
             try await user.delete()
             print("🔐 Account deleted")
-            
-            // Sign in anonymously after deletion
-            try? await signInAnonymously()
         } catch {
             print("❌ Account deletion failed: \(error.localizedDescription)")
             throw error
@@ -396,7 +373,6 @@ enum AuthError: LocalizedError {
     case configurationError
     case notAuthenticated
     case alreadyLinked
-    case notImplemented(String)
     
     var errorDescription: String? {
         switch self {
@@ -408,8 +384,6 @@ enum AuthError: LocalizedError {
             return "User not authenticated"
         case .alreadyLinked:
             return "This account is already linked to another user"
-        case .notImplemented(let message):
-            return message
         }
     }
 }

@@ -7,6 +7,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 
 @main
 struct ArabiclyApp: App {
@@ -38,6 +39,10 @@ struct RootView: View {
     }
 }
 
+#Preview("Root View (Login)") {
+    RootView()
+}
+
 // MARK: - App Delegate
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -45,18 +50,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         
-        // Initialize anonymous auth if no user exists
-        // The auth state listener in AuthService will handle the UI updates
-        if Auth.auth().currentUser == nil {
-            Task {
-                do {
-                    try await AuthService.shared.signInAnonymously()
-                } catch {
-                    print("Initial anonymous auth error: \(error)")
-                }
-            }
-        }
+        // Do NOT auto-login user - show login screen instead
+        // User must explicitly choose to continue as guest or sign in
         
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        // Handle Google Sign In callback
+        return GIDSignIn.sharedInstance.handle(url)
     }
 }

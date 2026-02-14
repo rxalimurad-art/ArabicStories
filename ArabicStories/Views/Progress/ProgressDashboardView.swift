@@ -413,7 +413,8 @@ struct ContinueReadingSection: View {
             
             LazyVStack(spacing: 10) {
                 ForEach(viewModel.continueReadingStories.prefix(3)) { story in
-                    ContinueReadingCard(story: story)
+                    let progress = viewModel.getStoryProgress(story.id)
+                    ContinueReadingCard(story: story, progress: progress)
                 }
             }
         }
@@ -428,6 +429,11 @@ struct ContinueReadingSection: View {
 
 struct ContinueReadingCard: View {
     let story: Story
+    let progress: StoryProgress?
+    
+    private var readingProgress: Double {
+        progress?.readingProgress ?? 0.0
+    }
     
     var body: some View {
         NavigationLink(value: story) {
@@ -442,7 +448,7 @@ struct ContinueReadingCard: View {
                         .font(.subheadline.weight(.semibold))
                         .lineLimit(1)
                     
-                    Text("\(Int(story.readingProgress * 100))% complete")
+                    Text("\(Int(readingProgress * 100))% complete")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
@@ -455,7 +461,7 @@ struct ContinueReadingCard: View {
                             
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Color.hikayaTeal)
-                                .frame(width: geometry.size.width * story.readingProgress, height: 3)
+                                .frame(width: geometry.size.width * readingProgress, height: 3)
                         }
                     }
                     .frame(height: 3)

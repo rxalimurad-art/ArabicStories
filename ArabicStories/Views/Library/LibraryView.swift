@@ -425,6 +425,7 @@ struct FilterSortBar: View {
 struct StoryGridView: View {
     let stories: [Story]
     let maxUnlockedLevel: Int
+    @Environment(LibraryViewModel.self) private var viewModel
     
     // Split stories into pairs for 2-column layout
     private var storyPairs: [[Story]] {
@@ -441,8 +442,9 @@ struct StoryGridView: View {
                 ForEach(Array(storyPairs.enumerated()), id: \.offset) { index, pair in
                     HStack(spacing: 16) {
                         ForEach(pair) { story in
+                            let progress = viewModel.getStoryProgress(story.id)
                             NavigationLink(value: story) {
-                                StoryCard(story: story)
+                                StoryCard(story: story, progress: progress)
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(.plain)
@@ -468,6 +470,19 @@ struct StoryGridView: View {
 
 struct StoryCard: View {
     let story: Story
+    let progress: StoryProgress?
+    
+    private var isCompleted: Bool {
+        progress?.isCompleted ?? false
+    }
+    
+    private var isBookmarked: Bool {
+        progress?.isBookmarked ?? false
+    }
+    
+    private var readingProgress: Double {
+        progress?.readingProgress ?? 0.0
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -477,10 +492,22 @@ struct StoryCard: View {
                     .frame(height: 140)
                 
                 // Completed Badge
-                if story.isCompleted {
+                if isCompleted {
                     CompletionBadge()
                         .padding(8)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
+                
+                // Bookmark Badge
+                if isBookmarked {
+                    Image(systemName: "bookmark.fill")
+                        .font(.caption2)
+                        .foregroundStyle(.white)
+                        .padding(6)
+                        .background(Color.hikayaOrange)
+                        .clipShape(Circle())
+                        .padding(8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 }
                 
                 // Difficulty Badge
@@ -514,14 +541,14 @@ struct StoryCard: View {
                 }
                 
                 // Progress
-                if story.readingProgress > 0 {
-                    if story.isCompleted {
+                if readingProgress > 0 {
+                    if isCompleted {
                         // Show full progress bar for completed
                         StoryProgressBar(progress: 1.0)
                             .padding(.top, 4)
                     } else {
                         // Show partial progress
-                        StoryProgressBar(progress: story.readingProgress)
+                        StoryProgressBar(progress: readingProgress)
                             .padding(.top, 4)
                     }
                 }

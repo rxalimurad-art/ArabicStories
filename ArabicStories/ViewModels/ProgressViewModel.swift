@@ -16,6 +16,7 @@ class ProgressViewModel {
     var userProgress: UserProgress?
     var achievements: [Achievement] = []
     var recentStories: [Story] = []
+    var storyProgress: [String: StoryProgress] = [:] // Key: storyId
     var weakWords: [Word] = []
     var isLoading = false
     
@@ -75,12 +76,17 @@ class ProgressViewModel {
             totalVocabularyMastered = progress.masteredVocabularyIds.count
             vocabularyNeededForLevel2 = progress.vocabularyNeededForLevel2
             
-            // Calculate story-based progress for Level 2
+            // Calculate story-based progress for Level 2 using user-specific story progress
             let allStories = await dataService.fetchAllStories()
             let level1Stories = allStories.filter { $0.difficultyLevel == 1 }
+            
+            // Fetch all story progress to get completed stories
+            let allStoryProgress = await dataService.getAllStoryProgress()
+            let completedStoryIds = Set(allStoryProgress.filter { $0.isCompleted }.map { $0.storyId })
+            
             totalLevel1Stories = level1Stories.count
             completedLevel1Stories = level1Stories.filter { story in
-                progress.completedStoryIds.contains(story.id.uuidString)
+                completedStoryIds.contains(story.id.uuidString)
             }.count
             
             storiesRemainingForLevel2 = totalLevel1Stories - completedLevel1Stories
@@ -150,11 +156,27 @@ class ProgressViewModel {
     }
     
     func loadRecentStories() async {
-        recentStories = await dataService.fetchStories(
-            sortBy: .recentlyRead
-        ).filter { $0.lastReadDate != nil }
-        .prefix(5)
-        .map { $0 }
+        // Fetch all story progress and get stories with progress
+        let allStoryProgress = await dataService.getAllStoryProgress()
+        
+        // Store progress in dictionary
+        storyProgress = Dictionary(uniqueKeysWithValues: allStoryProgress.map { ($0.storyId, $0) })
+        
+        let storyIdsWithProgress = allStoryProgress
+            .filter { $0.lastReadDate != nil }
+            .sorted { ($0.lastReadDate ?? .distantPast) > ($1.lastReadDate ?? .distantPast) }
+            .prefix(5)
+            .map { $0.storyId }
+        
+        // Fetch the actual stories
+        var stories: [Story] = []
+        for storyId in storyIdsWithProgress {
+            if let uuid = UUID(uuidString: storyId),
+               let story = await dataService.fetchStory(id: uuid) {
+                stories.append(story)
+            }
+        }
+        recentStories = stories
     }
     
     func loadWeakWords() async {
@@ -170,7 +192,10 @@ class ProgressViewModel {
     func loadStatistics() async {
         let stories = await dataService.fetchAllStories()
         totalStories = stories.count
-        completedStories = stories.filter { $0.isCompleted }.count
+        
+        // Get completed stories count from user-specific story progress
+        let allStoryProgress = await dataService.getAllStoryProgress()
+        completedStories = allStoryProgress.filter { $0.isCompleted }.count
         
         let allWords = await dataService.fetchAllWords()
         totalWords = allWords.count
@@ -179,6 +204,12 @@ class ProgressViewModel {
     
     func refresh() async {
         await loadData()
+    }
+    
+    // MARK: - Story Progress Helpers
+    
+    func getStoryProgress(_ storyId: UUID) -> StoryProgress? {
+        return storyProgress[storyId.uuidString]
     }
     
     // MARK: - Actions
@@ -230,7 +261,12 @@ class ProgressViewModel {
     }
     
     var continueReadingStories: [Story] {
-        recentStories.filter { $0.isInProgress }
+        // Filter stories that are in progress (readingProgress > 0 && < 1)
+        recentStories.filter { story in
+            let progress = storyProgress[story.id.uuidString]
+            let readingProgress = progress?.readingProgress ?? 0.0
+            return readingProgress > 0 && readingProgress < 1.0
+        }
     }
     
     var weeklyTotalMinutes: Int {

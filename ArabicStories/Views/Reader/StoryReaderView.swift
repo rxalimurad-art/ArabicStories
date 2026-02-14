@@ -14,15 +14,8 @@ struct StoryReaderView: View {
     @Environment(\.dismiss) private var dismiss
     
     init(story: Story) {
-        var story = story
-        var wasReset = false
-        // If story is completed, reset progress to start from beginning
-        if story.isCompleted {
-            story.resetProgress()
-            wasReset = true
-        }
         self.story = story
-        viewModel = StoryReaderViewModel(story: story, wasReset: wasReset)
+        viewModel = StoryReaderViewModel(story: story, wasReset: false)
     }
     
     var body: some View {
@@ -145,9 +138,15 @@ struct StoryReaderView: View {
         }
         .onAppear {
             viewModel.incrementViewCount()
+            viewModel.startReadingSession() // Start tracking reading time
             // Set up callback for when generic words load
             viewModel.onGenericWordsLoaded = {
                 wordsLoadedRefresh.toggle()
+            }
+        }
+        .onDisappear {
+            Task {
+                await viewModel.stopReadingSession() // Save reading time when leaving
             }
         }
         .onChange(of: wordsLoadedRefresh) { _, _ in
