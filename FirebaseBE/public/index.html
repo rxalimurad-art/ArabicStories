@@ -446,10 +446,16 @@
           <div class="loading">Loading words...</div>
         </div>
         
-        <div id="words-pagination" class="pagination hidden">
-          <button id="word-prev-page" class="btn btn-secondary">Previous</button>
-          <span id="word-page-info">Page 1</span>
-          <button id="word-next-page" class="btn btn-secondary">Next</button>
+        <div id="words-pagination" class="pagination" style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; padding: 16px; background: white; border-radius: 12px; box-shadow: var(--shadow-sm);">
+          <button id="word-first-page" class="btn btn-secondary" title="First Page">⏮️ First</button>
+          <button id="word-prev-page" class="btn btn-secondary" title="Previous Page">◀️ Prev</button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>Page</span>
+            <input type="number" id="word-page-input" value="1" min="1" style="width: 60px; text-align: center; padding: 8px; border: 2px solid var(--gray-300); border-radius: 8px;">
+            <span id="word-page-of">of 1</span>
+          </div>
+          <button id="word-next-page" class="btn btn-secondary" title="Next Page">Next ▶️</button>
+          <button id="word-last-page" class="btn btn-secondary" title="Last Page">Last ⏭️</button>
         </div>
       </div>
 
@@ -484,10 +490,16 @@
           <div class="loading">Loading roots...</div>
         </div>
         
-        <div id="roots-pagination" class="pagination hidden">
-          <button id="root-prev-page" class="btn btn-secondary">Previous</button>
-          <span id="root-page-info">Page 1</span>
-          <button id="root-next-page" class="btn btn-secondary">Next</button>
+        <div id="roots-pagination" class="pagination" style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; padding: 16px; background: white; border-radius: 12px; box-shadow: var(--shadow-sm);">
+          <button id="root-first-page" class="btn btn-secondary" title="First Page">⏮️ First</button>
+          <button id="root-prev-page" class="btn btn-secondary" title="Previous Page">◀️ Prev</button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>Page</span>
+            <input type="number" id="root-page-input" value="1" min="1" style="width: 60px; text-align: center; padding: 8px; border: 2px solid var(--gray-300); border-radius: 8px;">
+            <span id="root-page-of">of 1</span>
+          </div>
+          <button id="root-next-page" class="btn btn-secondary" title="Next Page">Next ▶️</button>
+          <button id="root-last-page" class="btn btn-secondary" title="Last Page">Last ⏭️</button>
         </div>
       </div>
 

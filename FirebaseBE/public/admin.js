@@ -135,8 +135,16 @@ function setupEventListeners() {
     state.rootsPage = 1;
     loadRoots();
   });
+  
+  // Roots pagination
+  document.getElementById('root-first-page')?.addEventListener('click', () => goToRootsPage(1));
   document.getElementById('root-prev-page')?.addEventListener('click', () => changeRootsPage(-1));
   document.getElementById('root-next-page')?.addEventListener('click', () => changeRootsPage(1));
+  document.getElementById('root-last-page')?.addEventListener('click', () => goToRootsPage(getMaxRootsPage()));
+  document.getElementById('root-page-input')?.addEventListener('change', (e) => {
+    const page = parseInt(e.target.value) || 1;
+    goToRootsPage(page);
+  });
   
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
@@ -148,7 +156,7 @@ function setupEventListeners() {
   
   // Words view
   document.getElementById('refresh-words')?.addEventListener('click', () => {
-    totalQuranWordsCount = 0; // Reset to force recount
+    totalQuranWordsCount = 0;
     loadWords();
   });
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
@@ -158,11 +166,19 @@ function setupEventListeners() {
   document.getElementById('word-limit')?.addEventListener('change', (e) => {
     const val = e.target.value;
     state.wordsLimit = val === 'all' ? 20000 : parseInt(val);
-    state.wordsPage = 1; // Reset to first page
+    state.wordsPage = 1;
     loadWords();
   });
+  
+  // Words pagination
+  document.getElementById('word-first-page')?.addEventListener('click', () => goToWordsPage(1));
   document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
   document.getElementById('word-next-page')?.addEventListener('click', () => changeWordsPage(1));
+  document.getElementById('word-last-page')?.addEventListener('click', () => goToWordsPage(getMaxWordsPage()));
+  document.getElementById('word-page-input')?.addEventListener('change', (e) => {
+    const page = parseInt(e.target.value) || 1;
+    goToWordsPage(page);
+  });
   
   // Word modal
   document.getElementById('cancel-word')?.addEventListener('click', closeWordModal);
@@ -1313,6 +1329,7 @@ async function loadWords() {
     
     renderWords(state.wordsList);
     updateWordsCountDisplay();
+    updateWordsPaginationUI();
   } catch (error) {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
@@ -1380,19 +1397,48 @@ function filterWords() {
   renderWords(state.wordsList);
 }
 
-function changeWordsPage(delta) {
+function getMaxWordsPage() {
+  const limitSelect = document.getElementById('word-limit')?.value || '100';
+  if (limitSelect === 'all') return 1;
+  const limit = parseInt(limitSelect);
+  return Math.max(1, Math.ceil(totalQuranWordsCount / limit));
+}
+
+function goToWordsPage(page) {
   const limitSelect = document.getElementById('word-limit')?.value || '100';
   if (limitSelect === 'all') {
     showToast('Pagination is disabled when showing all words', 'info');
     return;
   }
   
-  const limit = parseInt(limitSelect);
-  const maxPage = Math.ceil(totalQuranWordsCount / limit);
-  
-  state.wordsPage = Math.max(1, Math.min(state.wordsPage + delta, maxPage));
-  document.getElementById('word-page-info').textContent = `Page ${state.wordsPage} of ${maxPage}`;
+  const maxPage = getMaxWordsPage();
+  state.wordsPage = Math.max(1, Math.min(page, maxPage));
+  updateWordsPaginationUI();
   loadWords();
+}
+
+function changeWordsPage(delta) {
+  goToWordsPage(state.wordsPage + delta);
+}
+
+function updateWordsPaginationUI() {
+  const maxPage = getMaxWordsPage();
+  const pageInput = document.getElementById('word-page-input');
+  const pageOf = document.getElementById('word-page-of');
+  
+  if (pageInput) pageInput.value = state.wordsPage;
+  if (pageOf) pageOf.textContent = `of ${maxPage}`;
+  
+  // Update button states
+  const firstBtn = document.getElementById('word-first-page');
+  const prevBtn = document.getElementById('word-prev-page');
+  const nextBtn = document.getElementById('word-next-page');
+  const lastBtn = document.getElementById('word-last-page');
+  
+  if (firstBtn) firstBtn.disabled = state.wordsPage <= 1;
+  if (prevBtn) prevBtn.disabled = state.wordsPage <= 1;
+  if (nextBtn) nextBtn.disabled = state.wordsPage >= maxPage;
+  if (lastBtn) lastBtn.disabled = state.wordsPage >= maxPage;
 }
 
 // Word modal functions
@@ -1559,6 +1605,7 @@ async function loadRoots() {
     
     renderRoots(state.rootsList);
     updateRootsCountDisplay();
+    updateRootsPaginationUI();
   } catch (error) {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
@@ -1627,19 +1674,48 @@ function filterRoots() {
   renderRoots(state.rootsList);
 }
 
-function changeRootsPage(delta) {
+function getMaxRootsPage() {
+  const limitSelect = document.getElementById('root-limit')?.value || '100';
+  if (limitSelect === 'all') return 1;
+  const limit = parseInt(limitSelect);
+  return Math.max(1, Math.ceil(totalQuranRootsCount / limit));
+}
+
+function goToRootsPage(page) {
   const limitSelect = document.getElementById('root-limit')?.value || '100';
   if (limitSelect === 'all') {
     showToast('Pagination is disabled when showing all roots', 'info');
     return;
   }
   
-  const limit = parseInt(limitSelect);
-  const maxPage = Math.ceil(totalQuranRootsCount / limit);
-  
-  state.rootsPage = Math.max(1, Math.min(state.rootsPage + delta, maxPage));
-  document.getElementById('root-page-info').textContent = `Page ${state.rootsPage} of ${maxPage}`;
+  const maxPage = getMaxRootsPage();
+  state.rootsPage = Math.max(1, Math.min(page, maxPage));
+  updateRootsPaginationUI();
   loadRoots();
+}
+
+function changeRootsPage(delta) {
+  goToRootsPage(state.rootsPage + delta);
+}
+
+function updateRootsPaginationUI() {
+  const maxPage = getMaxRootsPage();
+  const pageInput = document.getElementById('root-page-input');
+  const pageOf = document.getElementById('root-page-of');
+  
+  if (pageInput) pageInput.value = state.rootsPage;
+  if (pageOf) pageOf.textContent = `of ${maxPage}`;
+  
+  // Update button states
+  const firstBtn = document.getElementById('root-first-page');
+  const prevBtn = document.getElementById('root-prev-page');
+  const nextBtn = document.getElementById('root-next-page');
+  const lastBtn = document.getElementById('root-last-page');
+  
+  if (firstBtn) firstBtn.disabled = state.rootsPage <= 1;
+  if (prevBtn) prevBtn.disabled = state.rootsPage <= 1;
+  if (nextBtn) nextBtn.disabled = state.rootsPage >= maxPage;
+  if (lastBtn) lastBtn.disabled = state.rootsPage >= maxPage;
 }
 
 function updateRootsCountDisplay() {
@@ -1713,6 +1789,8 @@ window.viewWordDetails = viewWordDetails;
 window.enableWordEdit = enableWordEdit;
 window.saveWord = saveWord;
 window.filterRoots = filterRoots;
+window.goToWordsPage = goToWordsPage;
+window.goToRootsPage = goToRootsPage;
 
 // Format switching for story form
 function onFormatChange() {
