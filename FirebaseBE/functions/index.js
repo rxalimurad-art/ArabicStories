@@ -556,12 +556,18 @@ app.post('/api/seed', async (req, res) => {
 // List all quran words
 app.get('/api/quran-words', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 50;
+    let limit = parseInt(req.query.limit) || 50;
     const offset = parseInt(req.query.offset) || 0;
     const pos = req.query.pos;
     const form = req.query.form;
     const sort = req.query.sort || 'rank';
     const root = req.query.root;
+    
+    // Cap limit at 20000 to prevent performance issues
+    // (quran_words has ~19,000 documents)
+    if (limit > 20000) {
+      limit = 20000;
+    }
     
     let query = db.collection('quran_words');
     
@@ -591,6 +597,7 @@ app.get('/api/quran-words', async (req, res) => {
     res.json({
       success: true,
       count: words.length,
+      total: 18994, // Known total count
       words
     });
   } catch (error) {
@@ -733,9 +740,14 @@ app.get('/api/quran-stats', async (req, res) => {
 // List all quran roots
 app.get('/api/quran-roots', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 50;
+    let limit = parseInt(req.query.limit) || 50;
     const offset = parseInt(req.query.offset) || 0;
     const sort = req.query.sort || 'totalOccurrences';
+    
+    // Cap limit at 2000 to prevent performance issues
+    if (limit > 2000) {
+      limit = 2000;
+    }
     
     let query = db.collection('quran_roots');
     
@@ -754,6 +766,7 @@ app.get('/api/quran-roots', async (req, res) => {
     res.json({
       success: true,
       count: roots.length,
+      total: 1651, // Known total count
       roots
     });
   } catch (error) {

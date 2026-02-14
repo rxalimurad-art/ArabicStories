@@ -227,7 +227,8 @@
       <nav class="header-nav">
         <button class="nav-btn active" data-view="stories">📚 Stories</button>
         <button class="nav-btn" data-view="create">➕ New Story</button>
-        <button class="nav-btn" data-view="words">📝 Words</button>
+        <button class="nav-btn" data-view="words">📖 Words</button>
+        <button class="nav-btn" data-view="roots">🌳 Roots</button>
         <button class="nav-btn" data-view="import">📤 Import</button>
       </nav>
       <div class="header-actions">
@@ -428,8 +429,17 @@
               <option value="100" selected>100</option>
               <option value="200">200</option>
               <option value="500">500</option>
+              <option value="1000">1000</option>
+              <option value="5000">5000</option>
+              <option value="10000">10000</option>
+              <option value="all">Show All</option>
             </select>
           </div>
+        </div>
+        
+        <div id="words-count-display" style="margin: 16px 0; padding: 12px 16px; background: var(--gray-100); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="words-count-text">Loading count...</span>
+          <span id="words-showing-text"></span>
         </div>
         
         <div id="words-list" class="words-grid">
@@ -440,6 +450,44 @@
           <button id="word-prev-page" class="btn btn-secondary">Previous</button>
           <span id="word-page-info">Page 1</span>
           <button id="word-next-page" class="btn btn-secondary">Next</button>
+        </div>
+      </div>
+
+      <!-- Quran Roots View -->
+      <div id="roots-view" class="view hidden">
+        <div class="view-header">
+          <h2>🌳 Quran Roots</h2>
+          <div class="search-box">
+            <input type="text" id="root-search" placeholder="Search roots...">
+            <select id="root-sort">
+              <option value="totalOccurrences">Sort by Occurrences</option>
+              <option value="derivativeCount">Sort by Derivatives</option>
+              <option value="root">Sort by Root</option>
+            </select>
+            <select id="root-limit">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+              <option value="500">500</option>
+              <option value="all">Show All</option>
+            </select>
+            <button id="refresh-roots" class="btn btn-icon">🔄</button>
+          </div>
+        </div>
+        
+        <div id="roots-count-display" style="margin: 16px 0; padding: 12px 16px; background: var(--gray-100); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="roots-count-text">Loading roots...</span>
+          <span id="roots-showing-text"></span>
+        </div>
+        
+        <div id="roots-list" class="words-grid">
+          <div class="loading">Loading roots...</div>
+        </div>
+        
+        <div id="roots-pagination" class="pagination hidden">
+          <button id="root-prev-page" class="btn btn-secondary">Previous</button>
+          <span id="root-page-info">Page 1</span>
+          <button id="root-next-page" class="btn btn-secondary">Next</button>
         </div>
       </div>
 

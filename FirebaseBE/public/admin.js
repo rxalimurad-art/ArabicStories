@@ -44,6 +44,10 @@ const state = {
   wordsList: [],
   wordsPage: 1,
   wordsLimit: 100,
+  // Roots state
+  rootsList: [],
+  rootsPage: 1,
+  rootsLimit: 100,
   wordToDelete: null,
   wordCategories: []
 };
@@ -58,6 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApp() {
   setupEventListeners();
   loadStories();
+  
+  // Prefetch Quran stats for word count
+  fetchQuranWordsCount();
+  
+  // Prefetch roots count (from stats)
+  apiRequest(API.quranStats()).then(data => {
+    if (data.stats?.uniqueRoots) {
+      totalQuranRootsCount = data.stats.uniqueRoots;
+    }
+  }).catch(() => {});
   
   // Load any saved draft
   const hasDraft = localStorage.getItem('storyDraft');
@@ -108,6 +122,22 @@ function setupEventListeners() {
   // Quran Stats
   loadQuranStats();
   
+  // Roots view
+  document.getElementById('refresh-roots')?.addEventListener('click', () => {
+    totalQuranRootsCount = 0;
+    loadRoots();
+  });
+  document.getElementById('root-search')?.addEventListener('input', debounce(filterRoots, 300));
+  document.getElementById('root-sort')?.addEventListener('change', loadRoots);
+  document.getElementById('root-limit')?.addEventListener('change', (e) => {
+    const val = e.target.value;
+    state.rootsLimit = val === 'all' ? 2000 : parseInt(val);
+    state.rootsPage = 1;
+    loadRoots();
+  });
+  document.getElementById('root-prev-page')?.addEventListener('click', () => changeRootsPage(-1));
+  document.getElementById('root-next-page')?.addEventListener('click', () => changeRootsPage(1));
+  
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
   document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
@@ -117,13 +147,18 @@ function setupEventListeners() {
   document.getElementById('next-page')?.addEventListener('click', () => changePage(1));
   
   // Words view
-  document.getElementById('refresh-words')?.addEventListener('click', loadWords);
+  document.getElementById('refresh-words')?.addEventListener('click', () => {
+    totalQuranWordsCount = 0; // Reset to force recount
+    loadWords();
+  });
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
   document.getElementById('word-pos-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-form-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-sort')?.addEventListener('change', loadWords);
   document.getElementById('word-limit')?.addEventListener('change', (e) => {
-    state.wordsLimit = parseInt(e.target.value);
+    const val = e.target.value;
+    state.wordsLimit = val === 'all' ? 20000 : parseInt(val);
+    state.wordsPage = 1; // Reset to first page
     loadWords();
   });
   document.getElementById('word-prev-page')?.addEventListener('click', () => changeWordsPage(-1));
@@ -220,6 +255,14 @@ function switchView(viewName) {
   } else if (viewName === 'words') {
     if (state.wordsList.length === 0) {
       loadWords();
+    } else {
+      updateWordsCountDisplay();
+    }
+  } else if (viewName === 'roots') {
+    if (state.rootsList.length === 0) {
+      loadRoots();
+    } else {
+      updateRootsCountDisplay();
     }
   }
 }
@@ -1205,15 +1248,55 @@ function debounce(func, wait) {
 // ============================================
 // Quran Words Management (from quran_words collection)
 // ============================================
+let totalQuranWordsCount = 0;
+
+async function fetchQuranWordsCount() {
+  try {
+    const stats = await apiRequest(API.quranStats());
+    totalQuranWordsCount = stats.stats?.totalUniqueWords || 0;
+    updateWordsCountDisplay();
+  } catch (error) {
+    console.error('Error fetching word count:', error);
+    totalQuranWordsCount = 0;
+  }
+}
+
+function updateWordsCountDisplay() {
+  const countText = document.getElementById('words-count-text');
+  const showingText = document.getElementById('words-showing-text');
+  
+  if (countText) {
+    countText.textContent = `Total Quran Words: ${totalQuranWordsCount.toLocaleString()}`;
+  }
+  
+  if (showingText && state.wordsList) {
+    const limitSelect = document.getElementById('word-limit');
+    const limitValue = limitSelect?.value || '100';
+    const offset = (state.wordsPage - 1) * (limitValue === 'all' ? totalQuranWordsCount : parseInt(limitValue));
+    const end = Math.min(offset + state.wordsList.length, totalQuranWordsCount);
+    showingText.textContent = `Showing ${offset + 1}-${end} of ${totalQuranWordsCount.toLocaleString()}`;
+  }
+}
+
 async function loadWords() {
   const container = document.getElementById('words-list');
   container.innerHTML = '<div class="loading">Loading Quran words...</div>';
+  
+  // Fetch total count if not already fetched
+  if (totalQuranWordsCount === 0) {
+    await fetchQuranWordsCount();
+  }
   
   try {
     const pos = document.getElementById('word-pos-filter')?.value || '';
     const form = document.getElementById('word-form-filter')?.value || '';
     const sort = document.getElementById('word-sort')?.value || 'rank';
-    const limit = parseInt(document.getElementById('word-limit')?.value) || state.wordsLimit;
+    const limitSelect = document.getElementById('word-limit')?.value || '100';
+    const limit = limitSelect === 'all' ? 20000 : parseInt(limitSelect);
+    
+    if (limitSelect === 'all') {
+      container.innerHTML = '<div class="loading">Loading all Quran words... This may take a moment.</div>';
+    }
     
     let url = `${API.quranWords()}?limit=${limit}&offset=${(state.wordsPage - 1) * limit}&sort=${sort}`;
     if (pos) url += `&pos=${encodeURIComponent(pos)}`;
@@ -1222,7 +1305,14 @@ async function loadWords() {
     const data = await apiRequest(url);
     
     state.wordsList = data.words || [];
+    
+    // Update total count from API response if available
+    if (data.total) {
+      totalQuranWordsCount = data.total;
+    }
+    
     renderWords(state.wordsList);
+    updateWordsCountDisplay();
   } catch (error) {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
@@ -1242,7 +1332,8 @@ function renderWords(words) {
       w.arabicText?.toLowerCase().includes(searchQuery) ||
       w.arabicWithoutDiacritics?.toLowerCase().includes(searchQuery) ||
       w.englishMeaning?.toLowerCase().includes(searchQuery) ||
-      w.buckwalter?.toLowerCase().includes(searchQuery)
+      w.buckwalter?.toLowerCase().includes(searchQuery) ||
+      w.root?.arabic?.toLowerCase().includes(searchQuery)
     );
   }
   
@@ -1261,23 +1352,26 @@ function renderWords(words) {
     const transliteration = word.buckwalter || '';
     const pos = word.morphology?.partOfSpeech || '';
     const rootArabic = word.root?.arabic || '';
+    const rootTrans = word.root?.transliteration || '';
     const rank = word.rank || 0;
+    const count = word.occurrenceCount || 0;
     
     return `
-    <div class="word-card-compact" data-id="${word.id}" onclick="viewWordDetails('${word.id}')" style="cursor: pointer;">
-      <div class="word-card-header">
-        <div class="word-arabic" dir="rtl">${escapeHtml(arabicText)}</div>
-        <span class="word-badge rank">#${rank}</span>
+    <div class="word-card-compact" data-id="${word.id}" onclick="viewWordDetails('${word.id}')" style="cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <div class="word-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div class="word-rank" style="font-size: 12px; color: var(--gray-500); font-weight: 600;">#${rank}</div>
+        <div class="word-arabic" dir="rtl" style="font-size: 22px; font-weight: 600; color: var(--primary); flex: 1; text-align: center;">${escapeHtml(arabicText)}</div>
+        ${count > 0 ? `<div class="word-count" style="font-size: 11px; color: var(--success); font-weight: 600;">${count}x</div>` : ''}
       </div>
-      <div class="word-english">${escapeHtml(englishMeaning)}</div>
-      ${transliteration ? `<div class="word-transliteration">${escapeHtml(transliteration)}</div>` : ''}
-      <div class="word-meta">
-        ${pos ? `<span class="word-badge pos" title="Part of Speech">${pos}</span>` : ''}
-        ${rootArabic ? `<span class="word-badge root" dir="rtl" title="Root">${escapeHtml(rootArabic)}</span>` : ''}
-        ${word.occurrenceCount ? `<span class="word-badge count" title="Occurrences">${word.occurrenceCount}x</span>` : ''}
-        ${word.morphology?.form ? `<span class="word-badge form" title="Form">Form ${word.morphology.form}</span>` : ''}
+      <div class="word-english" style="font-size: 14px; color: var(--gray-700); margin-bottom: 4px;">${escapeHtml(englishMeaning)}</div>
+      ${transliteration ? `<div class="word-transliteration" style="font-size: 12px; color: var(--gray-500); font-style: italic; margin-bottom: 8px;">${escapeHtml(transliteration)}</div>` : ''}
+      <div class="word-meta" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+        ${pos ? `<span class="word-badge pos" title="Part of Speech" style="background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${pos}</span>` : ''}
+        ${rootArabic ? `<span class="word-badge root" dir="rtl" title="Root: ${rootTrans}" style="background: #f3e5f5; color: #6a1b9a; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${escapeHtml(rootArabic)}</span>` : ''}
+        ${word.morphology?.form ? `<span class="word-badge form" title="Form" style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">Form ${word.morphology.form}</span>` : ''}
+        ${word.morphology?.tense ? `<span class="word-badge tense" title="Tense" style="background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${word.morphology.tense}</span>` : ''}
       </div>
-      ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
+      ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl" style="font-size: 12px; color: var(--gray-600); margin-top: 6px; border-top: 1px solid var(--gray-200); padding-top: 6px;">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
     </div>
   `}).join('');
 }
@@ -1287,8 +1381,17 @@ function filterWords() {
 }
 
 function changeWordsPage(delta) {
-  state.wordsPage = Math.max(1, state.wordsPage + delta);
-  document.getElementById('word-page-info').textContent = `Page ${state.wordsPage}`;
+  const limitSelect = document.getElementById('word-limit')?.value || '100';
+  if (limitSelect === 'all') {
+    showToast('Pagination is disabled when showing all words', 'info');
+    return;
+  }
+  
+  const limit = parseInt(limitSelect);
+  const maxPage = Math.ceil(totalQuranWordsCount / limit);
+  
+  state.wordsPage = Math.max(1, Math.min(state.wordsPage + delta, maxPage));
+  document.getElementById('word-page-info').textContent = `Page ${state.wordsPage} of ${maxPage}`;
   loadWords();
 }
 
@@ -1427,6 +1530,136 @@ async function saveWord() {
 }
 
 // ============================================
+// Quran Roots Management
+// ============================================
+let totalQuranRootsCount = 0;
+
+async function loadRoots() {
+  const container = document.getElementById('roots-list');
+  container.innerHTML = '<div class="loading">Loading Quran roots...</div>';
+  
+  try {
+    const sort = document.getElementById('root-sort')?.value || 'totalOccurrences';
+    const limitSelect = document.getElementById('root-limit')?.value || '100';
+    const limit = limitSelect === 'all' ? 2000 : parseInt(limitSelect);
+    
+    if (limitSelect === 'all') {
+      container.innerHTML = '<div class="loading">Loading all Quran roots... This may take a moment.</div>';
+    }
+    
+    let url = `${API.quranRoots()}?limit=${limit}&offset=${(state.rootsPage - 1) * limit}&sort=${sort}`;
+    
+    const data = await apiRequest(url);
+    
+    state.rootsList = data.roots || [];
+    
+    if (data.total) {
+      totalQuranRootsCount = data.total;
+    }
+    
+    renderRoots(state.rootsList);
+    updateRootsCountDisplay();
+  } catch (error) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <p>Error loading roots: ${error.message}</p>
+      </div>
+    `;
+  }
+}
+
+function renderRoots(roots) {
+  const container = document.getElementById('roots-list');
+  const searchQuery = document.getElementById('root-search')?.value.toLowerCase() || '';
+  
+  let filtered = roots;
+  if (searchQuery) {
+    filtered = roots.filter(r => 
+      r.root?.toLowerCase().includes(searchQuery) ||
+      r.transliteration?.toLowerCase().includes(searchQuery) ||
+      r.sampleDerivatives?.some(d => d.toLowerCase().includes(searchQuery))
+    );
+  }
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <p>No roots found.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(root => {
+    const rootArabic = root.root || '';
+    const rootTrans = root.transliteration || '';
+    const derivatives = root.sampleDerivatives || [];
+    
+    return `
+    <div class="root-card-compact" data-id="${root.id}" style="background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+      <div class="root-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #e3f2fd; padding-bottom: 12px;">
+        <div class="root-arabic" dir="rtl" style="font-size: 28px; font-weight: 700; color: var(--primary);">${escapeHtml(rootArabic)}</div>
+        <div class="root-trans" style="font-size: 14px; color: var(--gray-600); font-style: italic;">${escapeHtml(rootTrans)}</div>
+      </div>
+      <div class="root-stats" style="display: flex; gap: 16px; margin-bottom: 12px;">
+        <div class="root-stat" style="text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #1565c0;">${root.derivativeCount || 0}</div>
+          <div style="font-size: 11px; color: var(--gray-500);">Derivatives</div>
+        </div>
+        <div class="root-stat" style="text-align: center;">
+          <div style="font-size: 20px; font-weight: 700; color: #2e7d32;">${root.totalOccurrences?.toLocaleString() || 0}</div>
+          <div style="font-size: 11px; color: var(--gray-500);">Occurrences</div>
+        </div>
+      </div>
+      ${derivatives.length > 0 ? `
+      <div class="root-derivatives" style="margin-top: 12px;">
+        <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 6px;">Sample derivatives:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;" dir="rtl">
+          ${derivatives.map(d => `<span style="background: #f5f5f5; padding: 4px 8px; border-radius: 6px; font-size: 13px; color: var(--gray-700);">${escapeHtml(d)}</span>`).join('')}
+        </div>
+      </div>
+      ` : ''}
+    </div>
+  `}).join('');
+}
+
+function filterRoots() {
+  renderRoots(state.rootsList);
+}
+
+function changeRootsPage(delta) {
+  const limitSelect = document.getElementById('root-limit')?.value || '100';
+  if (limitSelect === 'all') {
+    showToast('Pagination is disabled when showing all roots', 'info');
+    return;
+  }
+  
+  const limit = parseInt(limitSelect);
+  const maxPage = Math.ceil(totalQuranRootsCount / limit);
+  
+  state.rootsPage = Math.max(1, Math.min(state.rootsPage + delta, maxPage));
+  document.getElementById('root-page-info').textContent = `Page ${state.rootsPage} of ${maxPage}`;
+  loadRoots();
+}
+
+function updateRootsCountDisplay() {
+  const countText = document.getElementById('roots-count-text');
+  const showingText = document.getElementById('roots-showing-text');
+  
+  if (countText) {
+    countText.textContent = `Total Quran Roots: ${totalQuranRootsCount.toLocaleString()}`;
+  }
+  
+  if (showingText && state.rootsList) {
+    const limitSelect = document.getElementById('root-limit')?.value || '100';
+    const limit = limitSelect === 'all' ? totalQuranRootsCount : parseInt(limitSelect);
+    const offset = (state.rootsPage - 1) * limit;
+    const end = Math.min(offset + state.rootsList.length, totalQuranRootsCount);
+    showingText.textContent = `Showing ${offset + 1}-${end} of ${totalQuranRootsCount.toLocaleString()}`;
+  }
+}
+
+// ============================================
 // Quran Statistics
 // ============================================
 async function loadQuranStats() {
@@ -1479,6 +1712,7 @@ window.normalizeWords = normalizeWords;
 window.viewWordDetails = viewWordDetails;
 window.enableWordEdit = enableWordEdit;
 window.saveWord = saveWord;
+window.filterRoots = filterRoots;
 
 // Format switching for story form
 function onFormatChange() {
