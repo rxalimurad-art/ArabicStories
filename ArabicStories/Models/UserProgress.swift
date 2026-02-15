@@ -418,6 +418,7 @@ struct StudyDayData: Identifiable {
     let id = UUID()
     let day: String
     let minutes: Int
+    var isToday: Bool = false
 }
 
 // MARK: - Level Unlock Info

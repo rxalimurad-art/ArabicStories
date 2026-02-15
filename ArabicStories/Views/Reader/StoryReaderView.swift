@@ -28,6 +28,7 @@ struct StoryReaderView: View {
                 ReaderNavigationBar(
                     progress: viewModel.readingProgress,
                     isNightMode: viewModel.isNightMode,
+                    readingTime: story.estimatedReadingTime,
                     onBackTap: { dismiss() },
                     onSettingsTap: { showingSettings = true }
                 )
@@ -136,6 +137,13 @@ struct StoryReaderView: View {
         .sheet(isPresented: $showingSettings) {
             ReaderSettingsView(viewModel: viewModel)
         }
+        .sheet(isPresented: $viewModel.showQuranWordDetail) {
+            if let quranWord = viewModel.selectedQuranWord {
+                QuranWordDetailView(word: quranWord)
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
+        }
         .onAppear {
             viewModel.incrementViewCount()
             viewModel.startReadingSession() // Start tracking reading time
@@ -152,7 +160,7 @@ struct StoryReaderView: View {
         .onChange(of: wordsLoadedRefresh) { _, _ in
             // Force refresh when generic words are loaded
         }
-        .onChange(of: viewModel.hasLoadedGenericWords) { _, newValue in
+        .onChange(of: viewModel.hasLoadedQuranWords) { _, newValue in
             if newValue {
                 wordsLoadedRefresh.toggle()
             }
@@ -219,8 +227,18 @@ struct VocabularyProgressBar: View {
 struct ReaderNavigationBar: View {
     let progress: Double
     let isNightMode: Bool
+    let readingTime: TimeInterval
     let onBackTap: () -> Void
     let onSettingsTap: () -> Void
+    
+    private var formattedReadingTime: String {
+        let minutes = Int(readingTime / 60)
+        if minutes < 1 {
+            return "< 1 min"
+        } else {
+            return "\(minutes) min"
+        }
+    }
     
     var body: some View {
         HStack(spacing: 16) {
@@ -229,7 +247,7 @@ struct ReaderNavigationBar: View {
                     .font(.title3.weight(.semibold))
             }
             
-            // Progress Bar
+            // Progress Bar with Reading Time
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 2)
@@ -242,6 +260,15 @@ struct ReaderNavigationBar: View {
                 }
             }
             .frame(height: 4)
+            
+            // Reading Time
+            HStack(spacing: 4) {
+                Image(systemName: "clock")
+                    .font(.caption)
+                Text(formattedReadingTime)
+                    .font(.caption.weight(.medium))
+            }
+            .foregroundStyle(isNightMode ? .gray : .secondary)
             
             Button(action: onSettingsTap) {
                 Image(systemName: "textformat.size")

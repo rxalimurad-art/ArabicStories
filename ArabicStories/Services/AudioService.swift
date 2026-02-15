@@ -274,6 +274,91 @@ enum AudioError: Error {
     case playbackFailed
 }
 
+// MARK: - Sound Effects
+
+class SoundEffectService {
+    static let shared = SoundEffectService()
+    
+    private var correctPlayer: AVAudioPlayer?
+    private var wrongPlayer: AVAudioPlayer?
+    private var isAudioSessionActive = false
+    
+    private init() {
+        setupAudioSession()
+        loadSounds()
+    }
+    
+    private func setupAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
+            try session.setActive(true)
+            isAudioSessionActive = true
+            print("🔊 SoundEffectService: Audio session configured")
+        } catch {
+            print("🔊 SoundEffectService: Audio session error: \(error)")
+        }
+    }
+    
+    private func loadSounds() {
+        // Load correct sound
+        if let correctURL = Bundle.main.url(forResource: "correct", withExtension: "mp3") {
+            print("🔊 Found correct.mp3 at: \(correctURL)")
+            do {
+                correctPlayer = try AVAudioPlayer(contentsOf: correctURL)
+                correctPlayer?.volume = 1.0
+                correctPlayer?.prepareToPlay()
+                print("✅ Loaded correct.mp3, duration: \(correctPlayer?.duration ?? 0)s")
+            } catch {
+                print("❌ Error loading correct.mp3: \(error)")
+            }
+        } else {
+            print("❌ correct.mp3 not found in bundle")
+        }
+        
+        // Load wrong sound
+        if let wrongURL = Bundle.main.url(forResource: "wrong", withExtension: "mp3") {
+            print("🔊 Found wrong.mp3 at: \(wrongURL)")
+            do {
+                wrongPlayer = try AVAudioPlayer(contentsOf: wrongURL)
+                wrongPlayer?.volume = 1.0
+                wrongPlayer?.prepareToPlay()
+                print("✅ Loaded wrong.mp3, duration: \(wrongPlayer?.duration ?? 0)s")
+            } catch {
+                print("❌ Error loading wrong.mp3: \(error)")
+            }
+        } else {
+            print("❌ wrong.mp3 not found in bundle")
+        }
+    }
+    
+    func playCorrect() {
+        print("🔊 Playing CORRECT sound (player exists: \(correctPlayer != nil))")
+        guard let player = correctPlayer else {
+            print("❌ Correct player is nil!")
+            return
+        }
+        player.stop()
+        player.currentTime = 0
+        player.volume = 1.0
+        let played = player.play()
+        print("🔊 Correct played: \(played)")
+    }
+    
+    func playWrong() {
+        print("🔊 Playing WRONG sound (player exists: \(wrongPlayer != nil))")
+        guard let player = wrongPlayer else {
+            print("❌ Wrong player is nil!")
+            return
+        }
+        player.stop()
+        player.currentTime = 0
+        player.volume = 1.0
+        let played = player.play()
+        print("🔊 Wrong played: \(played)")
+    }
+}
+
 // MARK: - Audio Speed
 
 enum AudioSpeed: Float, CaseIterable {

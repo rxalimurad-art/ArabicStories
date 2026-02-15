@@ -11,24 +11,28 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
+            // Tab 1: Learn - Stories for reading
             LibraryView()
                 .tabItem {
-                    Label("Library", systemImage: "book.fill")
+                    Label("Learn", systemImage: "book.fill")
                 }
                 .tag(0)
             
-            LearnView()
+            // Tab 2: Words - My Words (from stories) + All Words (reference)
+            WordsTabView(selectedTab: $selectedTab)
                 .tabItem {
-                    Label("Learn", systemImage: "graduationcap.fill")
+                    Label("Words", systemImage: "text.book.closed")
                 }
                 .tag(1)
             
+            // Tab 3: Progress - Stats, streaks, Quran completion
             ProgressDashboardView()
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
                 .tag(2)
             
+            // Tab 4: Settings
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")

@@ -260,6 +260,10 @@ class LibraryViewModel {
         }
     }
     
+    var continueReadingStory: Story? {
+        inProgressStories.first
+    }
+    
     var completedStories: [Story] {
         stories.filter { isStoryCompleted($0.id) }
     }

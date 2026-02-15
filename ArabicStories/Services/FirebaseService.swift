@@ -90,9 +90,212 @@ class FirebaseService {
         try await db.collection("stories").document(storyId).collection("words").document(word.id.uuidString).setData(data)
     }
     
-    // MARK: - Generic Words
+    // MARK: - Quran Words (quran_words collection)
     
-    /// Fetch all generic words from the 'words' collection
+    /// Fetch words from quran_words collection with pagination
+    func fetchQuranWords(
+        limit: Int = 100,
+        offset: Int = 0,
+        sort: String = "rank",
+        pos: String? = nil,
+        form: String? = nil
+    ) async throws -> (words: [QuranWord], total: Int) {
+        print("📚 Fetching Quran words from Firestore... (offset: \(offset), limit: \(limit))")
+        
+        do {
+            var query: Query = db.collection("quran_words")
+            
+            // Apply filters
+            if let pos = pos {
+                query = query.whereField("morphology.partOfSpeech", isEqualTo: pos)
+            }
+            if let form = form {
+                query = query.whereField("morphology.form", isEqualTo: form)
+            }
+            
+            // Apply sorting
+            let sortField = sort == "occurrenceCount" ? "occurrenceCount" :
+                           sort == "arabicText" ? "arabicText" : "rank"
+            let descending = sort == "occurrenceCount"
+            
+            query = query.order(by: sortField, descending: descending)
+            
+            // For rank-based pagination (most efficient for ordered data)
+            // Calculate the starting rank based on offset
+            // Since rank starts at 1, page 1 = ranks 1-100, page 2 = ranks 101-200, etc.
+            let startRank = offset + 1
+            let endRank = offset + limit
+            
+            // Add range filter for efficient pagination when sorting by rank
+            if sort == "rank" && pos == nil && form == nil {
+                query = query
+                    .whereField("rank", isGreaterThanOrEqualTo: startRank)
+                    .whereField("rank", isLessThanOrEqualTo: endRank)
+            }
+            
+            let snapshot = try await query.limit(to: limit).getDocuments()
+            print("✅ Got \(snapshot.documents.count) Quran words from Firestore")
+            
+            var words: [QuranWord] = []
+            for doc in snapshot.documents {
+                do {
+                    let word = try convertToQuranWord(doc.data(), id: doc.documentID)
+                    words.append(word)
+                } catch {
+                    print("❌ Failed to parse Quran word \(doc.documentID): \(error)")
+                }
+            }
+            
+            // Get total count from stats
+            let stats = try? await fetchQuranStats()
+            let total = stats?.totalUniqueWords ?? 18994
+            
+            print("📚 Returning \(words.count) Quran words (total: \(total))")
+            return (words, total)
+        } catch {
+            print("❌ Firestore error fetching Quran words: \(error)")
+            throw error
+        }
+    }
+    
+    /// Get a single Quran word by ID
+    func fetchQuranWord(id: String) async throws -> QuranWord? {
+        let doc = try await db.collection("quran_words").document(id).getDocument()
+        guard let data = doc.data() else { return nil }
+        return try convertToQuranWord(data, id: doc.documentID)
+    }
+    
+    /// Search Quran words by Arabic text or English meaning
+    func searchQuranWords(query: String, limit: Int = 100) async throws -> [QuranWord] {
+        print("🔍 Searching Quran words for: '\(query)'")
+        
+        // Check if query contains Arabic characters
+        let containsArabic = query.range(of: "[\\u0600-\\u06FF]", options: .regularExpression) != nil
+        
+        if containsArabic {
+            // Search by arabicWithoutDiacritics for better matching
+            let snapshot = try await db.collection("quran_words")
+                .whereField("arabicWithoutDiacritics", isGreaterThanOrEqualTo: query)
+                .whereField("arabicWithoutDiacritics", isLessThanOrEqualTo: query + "\u{f8ff}")
+                .limit(to: limit)
+                .getDocuments()
+            
+            let words = snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+            print("✅ Found \(words.count) matching Quran words (Arabic search)")
+            return words
+        } else {
+            // Search by englishMeaning (case-insensitive prefix search)
+            let lowerQuery = query.lowercased()
+            let snapshot = try await db.collection("quran_words")
+                .whereField("englishMeaning", isGreaterThanOrEqualTo: lowerQuery)
+                .whereField("englishMeaning", isLessThanOrEqualTo: lowerQuery + "\u{f8ff}")
+                .limit(to: limit)
+                .getDocuments()
+            
+            let words = snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+            print("✅ Found \(words.count) matching Quran words (English search)")
+            return words
+        }
+    }
+    
+    /// Get words by root
+    func fetchWordsByRoot(root: String, limit: Int = 100) async throws -> [QuranWord] {
+        let snapshot = try await db.collection("quran_words")
+            .whereField("root.arabic", isEqualTo: root)
+            .order(by: "rank")
+            .limit(to: limit)
+            .getDocuments()
+        
+        return snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+    }
+    
+    /// Find a Quran word by its Arabic text (exact match)
+    func findQuranWordByArabic(_ arabicText: String) async throws -> QuranWord? {
+        let normalizedText = ArabicTextUtils.normalizeForMatching(arabicText)
+        
+        // Search by arabicWithoutDiacritics for matching
+        let snapshot = try await db.collection("quran_words")
+            .whereField("arabicWithoutDiacritics", isEqualTo: normalizedText)
+            .limit(to: 1)
+            .getDocuments()
+        
+        return snapshot.documents.first.flatMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+    }
+    
+    /// Check if a word exists in quran_words (for highlighting)
+    func isWordInQuranWords(_ arabicText: String) async throws -> Bool {
+        let normalizedText = ArabicTextUtils.normalizeForMatching(arabicText)
+        
+        let snapshot = try await db.collection("quran_words")
+            .whereField("arabicWithoutDiacritics", isEqualTo: normalizedText)
+            .limit(to: 1)
+            .getDocuments()
+        
+        return !snapshot.documents.isEmpty
+    }
+    
+    // MARK: - Quran Stats (quran_stats collection)
+    
+    func fetchQuranStats() async throws -> QuranStats {
+        let doc = try await db.collection("quran_stats").document("summary").getDocument()
+        guard let data = doc.data() else {
+            throw NSError(domain: "FirebaseService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Stats not found"])
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: data)
+        return try JSONDecoder().decode(QuranStats.self, from: jsonData)
+    }
+    
+    // MARK: - Quran Roots (quran_roots collection)
+    
+    func fetchQuranRoots(
+        limit: Int = 100,
+        offset: Int = 0,
+        sort: String = "totalOccurrences"
+    ) async throws -> (roots: [QuranRootDoc], total: Int) {
+        print("🌳 Fetching Quran roots from Firestore...")
+        
+        var query: Query = db.collection("quran_roots")
+        
+        // Apply sorting
+        switch sort {
+        case "derivativeCount":
+            query = query.order(by: "derivativeCount", descending: true)
+        case "root":
+            query = query.order(by: "root")
+        default:
+            query = query.order(by: "totalOccurrences", descending: true)
+        }
+        
+        let snapshot = try await query.limit(to: limit).getDocuments()
+        print("✅ Got \(snapshot.documents.count) Quran roots from Firestore")
+        
+        var roots: [QuranRootDoc] = []
+        for doc in snapshot.documents {
+            do {
+                let root = try convertToQuranRootDoc(doc.data(), id: doc.documentID)
+                roots.append(root)
+            } catch {
+                print("❌ Failed to parse root \(doc.documentID): \(error)")
+            }
+        }
+        
+        // Get total count from stats
+        let stats = try? await fetchQuranStats()
+        let total = stats?.uniqueRoots ?? 1651
+        
+        print("🌳 Returning \(roots.count) roots (total: \(total))")
+        return (roots, total)
+    }
+    
+    func fetchQuranRoot(id: String) async throws -> QuranRootDoc? {
+        let doc = try await db.collection("quran_roots").document(id).getDocument()
+        guard let data = doc.data() else { return nil }
+        return try convertToQuranRootDoc(data, id: doc.documentID)
+    }
+    
+    // MARK: - Legacy Generic Words (for backward compatibility)
+    
     func fetchGenericWords() async throws -> [Word] {
         print("📚 Fetching generic words from Firestore...")
         
@@ -379,7 +582,8 @@ class FirebaseService {
             } else {
                 print("   Bilingual segments: \(story.segments?.count ?? 0)")
             }
-            print("   Words: \(story.words?.count ?? 0)")
+            print("   Words from Firestore: \(story.words?.count ?? 0)")
+            print("   Arabic words in text: \(story.allArabicWordsInStory.count)")
             return story
         } catch {
             print("❌ Failed to decode Story: \(error)")
@@ -422,6 +626,70 @@ class FirebaseService {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return try decoder.decode(Word.self, from: jsonData)
+    }
+    
+    // MARK: - Quran Data Conversion Helpers
+    
+    private func convertToQuranWord(_ data: [String: Any], id: String) throws -> QuranWord {
+        var jsonDict = data
+        jsonDict["id"] = id
+        
+        // Ensure required fields have defaults
+        if jsonDict["rank"] == nil {
+            jsonDict["rank"] = 0
+        }
+        if jsonDict["occurrenceCount"] == nil {
+            jsonDict["occurrenceCount"] = 0
+        }
+        if jsonDict["arabicWithoutDiacritics"] == nil {
+            jsonDict["arabicWithoutDiacritics"] = jsonDict["arabicText"] ?? ""
+        }
+        
+        // Handle morphology null values
+        if var morphology = jsonDict["morphology"] as? [String: Any] {
+            if morphology["passive"] == nil {
+                morphology["passive"] = false
+            }
+            jsonDict["morphology"] = morphology
+        } else {
+            // Create default morphology
+            jsonDict["morphology"] = [
+                "partOfSpeech": NSNull(),
+                "posDescription": NSNull(),
+                "lemma": NSNull(),
+                "form": NSNull(),
+                "tense": NSNull(),
+                "gender": NSNull(),
+                "number": NSNull(),
+                "grammaticalCase": NSNull(),
+                "passive": false,
+                "breakdown": NSNull()
+            ]
+        }
+        
+        // Handle root null values
+        if var root = jsonDict["root"] as? [String: Any] {
+            if root["arabic"] is NSNull {
+                root["arabic"] = nil
+            }
+            if root["transliteration"] is NSNull {
+                root["transliteration"] = nil
+            }
+            jsonDict["root"] = root
+        }
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .useDefaultKeys
+        return try decoder.decode(QuranWord.self, from: jsonData)
+    }
+    
+    private func convertToQuranRootDoc(_ data: [String: Any], id: String) throws -> QuranRootDoc {
+        var jsonDict = data
+        jsonDict["id"] = id
+        
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDict)
+        return try JSONDecoder().decode(QuranRootDoc.self, from: jsonData)
     }
     
     private func wordToDictionary(_ word: Word) throws -> [String: Any] {
@@ -473,10 +741,24 @@ class FirebaseService {
         return try convertToStoryProgress(data)
     }
     
+    func fetchAllStoryProgressForUser(userId: String) async throws -> [StoryProgress] {
+        let snapshot = try await db.collection("users").document(userId)
+            .collection("storyProgress").getDocuments()
+        
+        return snapshot.documents.compactMap { doc in
+            guard let data = doc.data() as? [String: Any] else { return nil }
+            return try? convertToStoryProgress(data)
+        }
+    }
+    
     func saveStoryProgress(_ progress: StoryProgress) async throws {
         let data = try storyProgressToDictionary(progress)
         try await db.collection("users").document(progress.userId)
             .collection("storyProgress").document(progress.storyId).setData(data)
+    }
+    
+    func fetchStoryProgressFromData(_ data: [String: Any]) throws -> StoryProgress {
+        return try convertToStoryProgress(data)
     }
     
     private func convertToStoryProgress(_ data: [String: Any]) throws -> StoryProgress {

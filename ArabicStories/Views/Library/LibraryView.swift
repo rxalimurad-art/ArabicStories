@@ -22,6 +22,13 @@ struct LibraryView: View {
                     }
                     .padding()
                     
+                    // Continue Reading Section
+                    if let story = viewModel.continueReadingStory {
+                        ContinueReadingCard(story: story, progress: viewModel.getStoryProgress(story.id))
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                    }
+                    
                     // Difficulty Filter with Lock Indicators
                     DifficultyFilterBar(
                         selectedLevel: viewModel.selectedDifficulty,
@@ -153,6 +160,88 @@ struct LevelBadge: View {
         case 5: return .red
         default: return .gray
         }
+    }
+}
+
+// MARK: - Continue Reading Card
+
+struct ContinueReadingCard: View {
+    let story: Story
+    let progress: StoryProgress?
+    
+    private var readingProgress: Double {
+        progress?.readingProgress ?? 0.0
+    }
+    
+    var body: some View {
+        NavigationLink(value: story) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.caption.weight(.semibold))
+                        Text("Continue Reading")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(Color.hikayaTeal)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.hikayaTeal.opacity(0.15))
+                    .clipShape(Capsule())
+                    
+                    Spacer()
+                    
+                    Text("\(Int(readingProgress * 100))%")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
+                
+                HStack(spacing: 12) {
+                    // Story Cover
+                    StoryCoverImage(url: story.coverImageURL)
+                        .frame(width: 60, height: 80)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(story.title)
+                            .font(.subheadline.weight(.semibold))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                        
+                        Text(story.author)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        
+                        Spacer()
+                        
+                        // Progress bar
+                        GeometryReader { geometry in
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(Color(.systemGray5))
+                                    .frame(height: 6)
+                                
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(Color.hikayaTeal)
+                                    .frame(width: geometry.size.width * readingProgress, height: 6)
+                            }
+                        }
+                        .frame(height: 6)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding()
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
     }
 }
 

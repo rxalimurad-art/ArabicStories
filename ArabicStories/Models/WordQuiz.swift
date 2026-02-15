@@ -125,7 +125,8 @@ struct QuizSession: Identifiable, Codable {
     }
     
     func isWordMastered(_ wordId: UUID) -> Bool {
-        wordScore(for: wordId) >= masteryThreshold
+        // Only mastered when 100% progress (100 points)
+        wordScore(for: wordId) >= 100
     }
     
     func questionCount(for wordId: UUID) -> Int {
@@ -197,8 +198,10 @@ struct WordMastery: Identifiable, Codable {
             correctStreak = 0
         }
         
-        // Mark as mastered if score >= 20 and accuracy >= 70%
-        if totalScore >= 20 && accuracy >= 0.7 && !isMastered {
+        // Mark as mastered only when 100% progress reached
+        // Progress = min(totalScore / 100, 1.0)
+        let progress = min(Double(totalScore) / 100.0, 1.0)
+        if progress >= 1.0 && !isMastered {
             isMastered = true
             masteredAt = Date()
         }

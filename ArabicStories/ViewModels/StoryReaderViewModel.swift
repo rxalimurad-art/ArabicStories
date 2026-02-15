@@ -29,7 +29,9 @@ class StoryReaderViewModel {
     
     // Word Popover State
     var selectedWord: Word?
+    var selectedQuranWord: QuranWord?      // For Quran words from quran_words collection
     var showWordPopover = false
+    var showQuranWordDetail = false        // Show full QuranWordDetailView
     var popoverPosition: CGPoint = .zero
     var selectedMixedWord: MixedWordInfo?  // For mixed format
     
@@ -41,9 +43,12 @@ class StoryReaderViewModel {
     var showTransliteration = true
     var autoScrollEnabled = true
     
-    // Generic words cache for highlighting
-    private var genericWords: [Word] = []
-    var hasLoadedGenericWords = false
+    // Quran words cache for highlighting
+    private var quranWords: [QuranWord] = []
+    var hasLoadedQuranWords = false
+    
+    // Quran words found in this story's text
+    var quranWordsInStory: [QuranWord] = []
     
     // Trigger UI refresh when generic words load
     var onGenericWordsLoaded: (() -> Void)?
@@ -74,13 +79,8 @@ class StoryReaderViewModel {
         print("   Format: \(story.format.rawValue)")
         print("   Segments: \(story.segments?.count ?? 0)")
         print("   Mixed Segments: \(story.mixedSegments?.count ?? 0)")
-        print("   Words: \(story.words?.count ?? 0)")
+        print("   Arabic words in story: \(story.allArabicWordsInStory.count)")
         print("   Was reset: \(wasReset)")
-        if let words = story.words {
-            for word in words {
-                print("   - Word: '\(word.arabicText)' = '\(word.englishMeaning)'")
-            }
-        }
         
         // Load user-specific progress
         Task {
@@ -99,32 +99,45 @@ class StoryReaderViewModel {
             }
         }
         
-        // Pre-load generic words for highlighting
+        // Pre-load Quran words for highlighting
         Task {
-            await preloadGenericWords()
+            await preloadQuranWords()
         }
     }
     
-    /// Pre-load all generic words to enable highlighting
-    private func preloadGenericWords() async {
+    /// Pre-load all Quran words to enable highlighting and find words in story
+    private func preloadQuranWords() async {
         do {
-            genericWords = try await FirebaseService.shared.fetchGenericWords()
-            hasLoadedGenericWords = true
-            print("✅ Pre-loaded \(genericWords.count) generic words for highlighting")
+            // Load first 1000 Quran words for matching (sorted by rank)
+            let result = try await FirebaseService.shared.fetchQuranWords(limit: 1000, offset: 0, sort: "rank")
+            quranWords = result.words
+            hasLoadedQuranWords = true
+            print("✅ Pre-loaded \(quranWords.count) Quran words for highlighting")
+            
+            // Find Quran words that exist in this story's text
+            let matchedWords = story.findQuranWordsInStory(from: quranWords)
+            await MainActor.run {
+                self.quranWordsInStory = matchedWords
+                print("📖 Found \(matchedWords.count) Quran words in story '\(self.story.title)':")
+                for word in matchedWords.prefix(10) {
+                    print("   - '\(word.arabicText)' = '\(word.englishMeaning)' (rank: \(word.rank))")
+                }
+                if matchedWords.count > 10 {
+                    print("   ... and \(matchedWords.count - 10) more")
+                }
+            }
             
             // Notify UI to refresh highlighting
             await MainActor.run {
                 self.onGenericWordsLoaded?()
             }
         } catch {
-            print("❌ Failed to preload generic words: \(error)")
+            print("❌ Failed to preload Quran words: \(error)")
         }
     }
     
-    /// Check if a word has a meaning available (in story words or generic words)
+    /// Check if a word has a meaning available (in story words or Quran words)
     func hasMeaningAvailable(for wordText: String) -> Bool {
-        let normalizedSearch = ArabicTextUtils.normalizeForMatching(wordText)
-        
         // Check story words first
         if let storyWords = story.words {
             let hasStoryMatch = storyWords.contains { word in
@@ -133,12 +146,12 @@ class StoryReaderViewModel {
             if hasStoryMatch { return true }
         }
         
-        // Check generic words with normalization
-        let hasGenericMatch = genericWords.contains { word in
-            ArabicTextUtils.wordsMatch(word.arabicText, wordText)
+        // Check Quran words with normalization
+        let hasQuranMatch = quranWords.contains { quranWord in
+            ArabicTextUtils.wordsMatch(quranWord.arabicText, wordText)
         }
         
-        return hasGenericMatch
+        return hasQuranMatch
     }
     
     // MARK: - Computed Properties
@@ -275,26 +288,37 @@ class StoryReaderViewModel {
             print("❌ No word match found in story for '\(wordText)'")
             print("🔍 Searching in generic words collection...")
             
-            // Search in generic words
+            // Search in Quran words
             Task {
-                await searchGenericWords(wordText, position: position)
+                await searchQuranWords(wordText, position: position)
             }
         }
     }
     
-    /// Search for word in the generic words collection
-    private func searchGenericWords(_ arabicText: String, position: CGPoint) async {
-        do {
-            let matches = try await FirebaseService.shared.searchGenericWords(arabicText: arabicText)
-            
+    /// Search for word in the Quran words collection
+    private func searchQuranWords(_ arabicText: String, position: CGPoint) async {
+        // First search in cached quranWords (same as hasMeaningAvailable uses)
+        if let cachedMatch = quranWords.first(where: { 
+            ArabicTextUtils.wordsMatch($0.arabicText, arabicText) 
+        }) {
             await MainActor.run {
-                if let firstMatch = matches.first {
-                    print("✅ Found word match in generic words: '\(firstMatch.arabicText)' = '\(firstMatch.englishMeaning)'")
-                    showWordDetails(word: firstMatch, position: position)
-                } else {
-                    print("❌ No word match found in generic words for '\(arabicText)'")
-                    
-                    // Show original tapped text (not normalized) in the popover
+                print("✅ Found word match in cached Quran words: '\(cachedMatch.arabicText)' = '\(cachedMatch.englishMeaning)'")
+                showWordDetails(quranWord: cachedMatch, position: position)
+            }
+            return
+        }
+        
+        // If not in cache, try Firestore search
+        do {
+            if let quranWord = try await FirebaseService.shared.findQuranWordByArabic(arabicText) {
+                await MainActor.run {
+                    print("✅ Found word match in Firestore: '\(quranWord.arabicText)' = '\(quranWord.englishMeaning)'")
+                    showWordDetails(quranWord: quranWord, position: position)
+                }
+            } else {
+                await MainActor.run {
+                    print("❌ No word match found for '\(arabicText)'")
+                    // Show original tapped text as unknown word (simple popover)
                     let unknownWord = Word(
                         arabicText: arabicText,
                         englishMeaning: "Unknown word",
@@ -304,7 +328,7 @@ class StoryReaderViewModel {
                 }
             }
         } catch {
-            print("❌ Error searching generic words: \(error)")
+            print("❌ Error searching Quran words: \(error)")
         }
     }
     
@@ -327,6 +351,23 @@ class StoryReaderViewModel {
                 await dataService.recordVocabularyLearned(wordId: word.id.uuidString)
                 // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
+        }
+    }
+    
+    /// Show Quran word details in full detail view
+    private func showWordDetails(quranWord: QuranWord, position: CGPoint) {
+        selectedQuranWord = quranWord
+        showQuranWordDetail = true
+        
+        // Mark word as learned
+        var updatedStory = story
+        updatedStory.markWordAsLearned(quranWord.id)
+        story = updatedStory
+        
+        Task {
+            // Save story progress and update global vocabulary
+            try? await dataService.saveStory(story)
+            await dataService.recordVocabularyLearned(wordId: quranWord.id)
         }
     }
     
@@ -394,6 +435,11 @@ class StoryReaderViewModel {
         selectedMixedWord = nil
     }
     
+    func closeQuranWordDetail() {
+        showQuranWordDetail = false
+        selectedQuranWord = nil
+    }
+    
     // MARK: - Progress (User-Specific)
     
     private func updateStoryProgress() async {
@@ -406,6 +452,8 @@ class StoryReaderViewModel {
     }
     
     private func completeStory() async {
+        print("📖 completeStory() called for '\(story.title)' (ID: \(story.id.uuidString))")
+        
         // Save completion to user-specific story progress
         await dataService.updateStoryProgress(
             storyId: story.id,
@@ -421,6 +469,7 @@ class StoryReaderViewModel {
         if unlocked {
             print("🎉 Level 2 Unlocked!")
         }
+        print("📖 completeStory() finished")
     }
     
     func markAsCompleted() async {

@@ -227,7 +227,7 @@ struct Story: Identifiable, Codable, Hashable {
     }
     
     /// Extract unique Arabic words from text
-    private func extractArabicWords(from text: String) -> [String] {
+    func extractArabicWords(from text: String) -> [String] {
         var words: [String] = []
         var currentIndex = text.startIndex
         
@@ -255,6 +255,49 @@ struct Story: Identifiable, Codable, Hashable {
         }
         
         return words
+    }
+    
+    /// Get all Arabic words found in the story text
+    var allArabicWordsInStory: [String] {
+        let allText: String
+        switch format {
+        case .mixed:
+            allText = mixedSegments?.map { $0.text }.joined(separator: " ") ?? ""
+        case .bilingual:
+            allText = segments?.map { $0.arabicText }.joined(separator: " ") ?? ""
+        }
+        return extractArabicWords(from: allText)
+    }
+    
+    /// Find Quran words that exist in this story's text
+    /// - Parameter quranWords: Array of QuranWord to search against
+    /// - Returns: Array of QuranWord that match words in the story
+    func findQuranWordsInStory(from quranWords: [QuranWord]) -> [QuranWord] {
+        let storyWords = allArabicWordsInStory
+        print("📖 Story '\(title)': Extracted \(storyWords.count) Arabic words: \(storyWords)")
+        
+        var matchedWords: [QuranWord] = []
+        var seenIds: Set<String> = []
+        
+        for storyWord in storyWords {
+            // Try to find matching Quran word
+            if let match = quranWords.first(where: { quranWord in
+                ArabicTextUtils.wordsMatch(quranWord.arabicText, storyWord)
+            }) {
+                print("📖   Matched: '\(storyWord)' -> '\(match.arabicText)' (\(match.englishMeaning))")
+                if !seenIds.contains(match.id) {
+                    matchedWords.append(match)
+                    seenIds.insert(match.id)
+                }
+            } else {
+                print("📖   No match for: '\(storyWord)'")
+            }
+        }
+        
+        print("📖 Story '\(title)': Total matches: \(matchedWords.count)")
+        
+        // Sort by rank (most common words first)
+        return matchedWords.sorted { $0.rank < $1.rank }
     }
     
     // Learned vocabulary count

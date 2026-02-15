@@ -8,6 +8,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
+import UserNotifications
 
 @main
 struct ArabiclyApp: App {
@@ -53,7 +54,20 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Do NOT auto-login user - show login screen instead
         // User must explicitly choose to continue as guest or sign in
         
+        // Request notification permission at app launch
+        requestNotificationPermission()
+        
         return true
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error.localizedDescription)")
+            } else {
+                print("Notification permission granted: \(granted)")
+            }
+        }
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

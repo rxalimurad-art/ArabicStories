@@ -1,7 +1,7 @@
 //
 //  ProgressViewModel.swift
 //  Arabicly
-//  ViewModel for user progress dashboard with vocabulary tracking
+//  ViewModel for user progress dashboard with Quran vocabulary tracking
 //
 
 import Foundation
@@ -11,14 +11,14 @@ import SwiftUI
 class ProgressViewModel {
     // Dependencies
     private let dataService = DataService.shared
+    private let firebaseService = FirebaseService.shared
     
     // State
     var userProgress: UserProgress?
     var achievements: [Achievement] = []
-    var recentStories: [Story] = []
-    var storyProgress: [String: StoryProgress] = [:] // Key: storyId
-    var weakWords: [Word] = []
     var isLoading = false
+    var newlyUnlockedAchievement: Achievement?
+    var showAchievementUnlocked = false
     
     // Level Management
     var maxUnlockedLevel: Int = 1
@@ -31,16 +31,22 @@ class ProgressViewModel {
     var completedStories: Int = 0
     var totalLevel1Stories: Int = 0
     var completedLevel1Stories: Int = 0
-    var totalWords: Int = 0
-    var masteredWords: Int = 0
+    
+    // Word Statistics (from MyWords/Quiz)
+    var totalWordsUnlocked: Int = 0
+    var totalWordsMastered: Int = 0
     var currentStreak: Int = 0
+    
+    // Daily Goal
     var todayStudyMinutes: Int = 0
     var dailyGoalMinutes: Int = 15
     
-    // Vocabulary Statistics
-    var totalVocabularyLearned: Int = 0
-    var totalVocabularyMastered: Int = 0
-    var vocabularyNeededForLevel2: Int = 20
+    // Quran Statistics
+    var quranStats: QuranStats?
+    var quranWordsLearnedCount: Int = 0
+    var quranWordsMasteredCount: Int = 0
+    var quranCompletionPercentage: Double = 0.0
+    var totalOccurrencesLearned: Int = 0
     
     // Chart Data
     var weeklyStudyData: [StudyDayData] = []
@@ -58,9 +64,9 @@ class ProgressViewModel {
         defer { isLoading = false }
         
         await loadUserProgress()
+        await loadQuranStats()
+        await loadWordStats()
         await loadAchievements()
-        await loadRecentStories()
-        await loadWeakWords()
         await loadStatistics()
     }
     
@@ -72,15 +78,11 @@ class ProgressViewModel {
             todayStudyMinutes = progress.todayStudyMinutes
             dailyGoalMinutes = progress.dailyGoalMinutes
             maxUnlockedLevel = progress.maxUnlockedLevel
-            totalVocabularyLearned = progress.totalVocabularyLearned
-            totalVocabularyMastered = progress.masteredVocabularyIds.count
-            vocabularyNeededForLevel2 = progress.vocabularyNeededForLevel2
             
-            // Calculate story-based progress for Level 2 using user-specific story progress
+            // Calculate story-based progress for Level 2
             let allStories = await dataService.fetchAllStories()
             let level1Stories = allStories.filter { $0.difficultyLevel == 1 }
             
-            // Fetch all story progress to get completed stories
             let allStoryProgress = await dataService.getAllStoryProgress()
             let completedStoryIds = Set(allStoryProgress.filter { $0.isCompleted }.map { $0.storyId })
             
@@ -94,128 +96,175 @@ class ProgressViewModel {
                 ? Double(completedLevel1Stories) / Double(totalLevel1Stories) 
                 : 0
             
-            // Convert weekly data
-            let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-            weeklyStudyData = progress.weeklyStudyMinutes.enumerated().map { index, minutes in
-                StudyDayData(day: days[index], minutes: minutes)
+            // Build weekly study data
+            updateWeeklyStudyData(from: progress)
+        }
+    }
+    
+    func updateWeeklyStudyData(from progress: UserProgress) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today)
+        let daysFromMonday = (weekday + 5) % 7
+        let monday = calendar.date(byAdding: .day, value: -daysFromMonday, to: today)!
+        
+        var data: [StudyDayData] = []
+        let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        
+        for i in 0..<7 {
+            if let date = calendar.date(byAdding: .day, value: i, to: monday) {
+                let dayName = dayNames[i]
+                let isToday = calendar.isDate(date, inSameDayAs: today)
+                
+                // Get minutes for this day from weeklyStudyMinutes
+                var minutes = 0
+                let daysDiff = calendar.dateComponents([.day], from: date, to: today).day ?? 0
+                if daysDiff >= 0 && daysDiff < progress.weeklyStudyMinutes.count {
+                    let index = progress.weeklyStudyMinutes.count - 1 - daysDiff
+                    if index >= 0 && index < progress.weeklyStudyMinutes.count {
+                        minutes = progress.weeklyStudyMinutes[index]
+                    }
+                }
+                
+                data.append(StudyDayData(day: dayName, minutes: minutes, isToday: isToday))
+            }
+        }
+        
+        weeklyStudyData = data
+    }
+    
+    func loadQuranStats() async {
+        do {
+            quranStats = try await firebaseService.fetchQuranStats()
+        } catch {
+            print("Failed to load Quran stats: \(error)")
+        }
+    }
+    
+    func loadWordStats() async {
+        // Load from MyWordsViewModel's word mastery data
+        // This tracks words from completed stories
+        let myWordsVM = MyWordsViewModel()
+        await myWordsVM.loadUnlockedWords()
+        
+        totalWordsUnlocked = myWordsVM.unlockedWords.count
+        totalWordsMastered = myWordsVM.masteredWords.count
+        
+        // Calculate Quran coverage
+        if let stats = quranStats, stats.totalUniqueWords > 0 {
+            quranWordsLearnedCount = totalWordsUnlocked
+            quranWordsMasteredCount = totalWordsMastered
+            quranCompletionPercentage = Double(totalWordsMastered) / Double(stats.totalUniqueWords) * 100
+            
+            // Calculate total occurrences of learned words
+            // This is an approximation based on word rank
+            totalOccurrencesLearned = myWordsVM.unlockedWords.reduce(0) { sum, word in
+                // Higher rank = less frequent, so lower occurrence count
+                let occurrenceEstimate = max(1000 - (word.difficulty * 100), 10)
+                return sum + occurrenceEstimate
             }
         }
     }
     
     func loadAchievements() async {
         var achievementsList = Achievement.defaultAchievements
+        var newlyUnlocked: [Achievement] = []
         
-        // Update progress for vocabulary achievements
-        if let progress = userProgress {
-            for index in achievementsList.indices {
-                switch achievementsList[index].category {
-                case .vocabulary:
-                    if achievementsList[index].title == "Word Seeker" {
-                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 5)
-                    } else if achievementsList[index].title == "Vocabulary Builder" {
-                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 20)
-                    } else if achievementsList[index].title == "Level Up!" {
-                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 20)
-                    } else if achievementsList[index].title == "Word Collector" {
-                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 50)
-                    } else if achievementsList[index].title == "Lexicon Master" {
-                        achievementsList[index].currentProgress = min(progress.totalVocabularyLearned, 200)
-                    }
-                    
-                    // Check if should be unlocked
-                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
-                        achievementsList[index].isUnlocked = true
-                    }
-                    
-                case .stories:
-                    achievementsList[index].currentProgress = progress.storiesCompleted
-                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
-                        achievementsList[index].isUnlocked = true
-                    }
-                    
-                case .streak:
-                    achievementsList[index].currentProgress = progress.currentStreak
-                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
-                        achievementsList[index].isUnlocked = true
-                    }
-                    
-                case .time:
-                    let hours = Int(progress.totalReadingTime / 3600)
-                    achievementsList[index].currentProgress = hours
-                    if achievementsList[index].currentProgress >= achievementsList[index].requirement {
-                        achievementsList[index].isUnlocked = true
-                    }
-                    
-                default:
-                    break
+        guard let progress = userProgress else {
+            achievements = achievementsList
+            return
+        }
+        
+        for index in achievementsList.indices {
+            let wasUnlocked = achievementsList[index].isUnlocked
+            
+            switch achievementsList[index].category {
+            case .vocabulary:
+                updateVocabularyAchievement(&achievementsList[index], progress: progress)
+                
+            case .stories:
+                achievementsList[index].currentProgress = progress.storiesCompleted
+                if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                    achievementsList[index].isUnlocked = true
                 }
+                
+            case .streak:
+                achievementsList[index].currentProgress = progress.currentStreak
+                if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                    achievementsList[index].isUnlocked = true
+                }
+                
+            case .time:
+                let hours = Int(progress.totalReadingTime / 3600)
+                achievementsList[index].currentProgress = hours
+                if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                    achievementsList[index].isUnlocked = true
+                }
+                
+            case .mastery:
+                achievementsList[index].currentProgress = totalWordsMastered
+                if achievementsList[index].currentProgress >= achievementsList[index].requirement {
+                    achievementsList[index].isUnlocked = true
+                }
+                
+            default:
+                break
+            }
+            
+            // Check if newly unlocked
+            if !wasUnlocked && achievementsList[index].isUnlocked {
+                newlyUnlocked.append(achievementsList[index])
             }
         }
         
         achievements = achievementsList
-    }
-    
-    func loadRecentStories() async {
-        // Fetch all story progress and get stories with progress
-        let allStoryProgress = await dataService.getAllStoryProgress()
         
-        // Store progress in dictionary
-        storyProgress = Dictionary(uniqueKeysWithValues: allStoryProgress.map { ($0.storyId, $0) })
-        
-        let storyIdsWithProgress = allStoryProgress
-            .filter { $0.lastReadDate != nil }
-            .sorted { ($0.lastReadDate ?? .distantPast) > ($1.lastReadDate ?? .distantPast) }
-            .prefix(5)
-            .map { $0.storyId }
-        
-        // Fetch the actual stories
-        var stories: [Story] = []
-        for storyId in storyIdsWithProgress {
-            if let uuid = UUID(uuidString: storyId),
-               let story = await dataService.fetchStory(id: uuid) {
-                stories.append(story)
-            }
+        // Show notification for newly unlocked achievement
+        if let firstNew = newlyUnlocked.first {
+            newlyUnlockedAchievement = firstNew
+            showAchievementUnlocked = true
         }
-        recentStories = stories
     }
     
-    func loadWeakWords() async {
-        guard let progress = userProgress else { return }
+    private func updateVocabularyAchievement(_ achievement: inout Achievement, progress: UserProgress) {
+        switch achievement.title {
+        case "Word Seeker":
+            achievement.currentProgress = min(totalWordsUnlocked, 5)
+        case "Vocabulary Builder":
+            achievement.currentProgress = min(totalWordsUnlocked, 20)
+        case "Word Collector":
+            achievement.currentProgress = min(totalWordsUnlocked, 50)
+        case "Lexicon Master":
+            achievement.currentProgress = min(totalWordsMastered, 200)
+        case "Level Up!":
+            achievement.currentProgress = min(totalWordsMastered, 20)
+        default:
+            achievement.currentProgress = min(totalWordsUnlocked, achievement.requirement)
+        }
         
-        let allWords = await dataService.fetchAllWords()
-        weakWords = allWords
-            .filter { progress.weakWordIds.contains($0.id.uuidString) }
-            .prefix(10)
-            .map { $0 }
+        if achievement.currentProgress >= achievement.requirement {
+            achievement.isUnlocked = true
+        }
     }
     
     func loadStatistics() async {
         let stories = await dataService.fetchAllStories()
         totalStories = stories.count
         
-        // Get completed stories count from user-specific story progress
         let allStoryProgress = await dataService.getAllStoryProgress()
         completedStories = allStoryProgress.filter { $0.isCompleted }.count
-        
-        let allWords = await dataService.fetchAllWords()
-        totalWords = allWords.count
-        masteredWords = allWords.filter { ($0.masteryLevel ?? .new) == .mastered || ($0.masteryLevel ?? .new) == .known }.count
     }
     
     func refresh() async {
         await loadData()
     }
     
-    // MARK: - Story Progress Helpers
-    
-    func getStoryProgress(_ storyId: UUID) -> StoryProgress? {
-        return storyProgress[storyId.uuidString]
-    }
-    
     // MARK: - Actions
     
-    func recordStudySession(minutes: Int) async {
-        await dataService.recordStudySession(minutes: minutes)
+    func recordReadingSession(minutes: Int) async {
+        guard var progress = userProgress else { return }
+        progress.recordStudySession(minutes: minutes)
+        try? await dataService.updateUserProgress(progress)
         await loadUserProgress()
     }
     
@@ -226,6 +275,11 @@ class ProgressViewModel {
             progress.dailyGoalMinutes = minutes
             try? await dataService.updateUserProgress(progress)
         }
+    }
+    
+    func acknowledgeAchievement() {
+        showAchievementUnlocked = false
+        newlyUnlockedAchievement = nil
     }
     
     // MARK: - Computed Properties
@@ -243,13 +297,8 @@ class ProgressViewModel {
         return Double(completedStories) / Double(totalStories)
     }
     
-    var masteryRate: Double {
-        guard totalWords > 0 else { return 0 }
-        return Double(masteredWords) / Double(totalWords)
-    }
-    
     var unlockedAchievements: [Achievement] {
-        achievements.filter { $0.isUnlocked }
+        achievements.filter { $0.isUnlocked }.sorted { $0.rarity.rawValue > $1.rarity.rawValue }
     }
     
     var lockedAchievements: [Achievement] {
@@ -258,15 +307,6 @@ class ProgressViewModel {
     
     var achievementsByCategory: [AchievementCategory: [Achievement]] {
         Dictionary(grouping: achievements) { $0.category }
-    }
-    
-    var continueReadingStories: [Story] {
-        // Filter stories that are in progress (readingProgress > 0 && < 1)
-        recentStories.filter { story in
-            let progress = storyProgress[story.id.uuidString]
-            let readingProgress = progress?.readingProgress ?? 0.0
-            return readingProgress > 0 && readingProgress < 1.0
-        }
     }
     
     var weeklyTotalMinutes: Int {
@@ -287,34 +327,24 @@ class ProgressViewModel {
                 color: .orange
             ),
             QuickStats(
-                label: "Words Learned",
-                value: "\(totalVocabularyLearned)",
+                label: "Words Unlocked",
+                value: "\(totalWordsUnlocked)",
                 icon: "textformat.abc",
                 color: .blue
+            ),
+            QuickStats(
+                label: "Words Mastered",
+                value: "\(totalWordsMastered)",
+                icon: "star.fill",
+                color: .yellow
             ),
             QuickStats(
                 label: "Stories Read",
                 value: "\(completedStories)",
                 icon: "book.fill",
                 color: .green
-            ),
-            QuickStats(
-                label: "Study Time",
-                value: formatTime(userProgress?.totalReadingTime ?? 0),
-                icon: "clock.fill",
-                color: .purple
             )
         ]
-    }
-    
-    private func formatTime(_ timeInterval: TimeInterval) -> String {
-        let hours = Int(timeInterval) / 3600
-        if hours > 0 {
-            return "\(hours)h"
-        } else {
-            let minutes = Int(timeInterval) / 60
-            return "\(minutes)m"
-        }
     }
 }
 
@@ -326,3 +356,5 @@ struct QuickStats {
     let icon: String
     let color: Color
 }
+
+

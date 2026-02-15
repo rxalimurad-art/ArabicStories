@@ -390,19 +390,24 @@ class DataService {
         
         // Save to Firebase and cache
         do {
+            print("💾 Saving story progress: storyId=\(storyProgress.storyId), userId=\(storyProgress.userId), progress=\(storyProgress.readingProgress), isCompleted=\(storyProgress.isCompleted)")
             try await firebaseService.saveStoryProgress(storyProgress)
             await localCache.saveStoryProgress(storyProgress)
+            print("✅ Story progress saved successfully")
             
             // If story is completed, update user progress
             if storyProgress.isCompleted {
+                print("🎉 Story completed! Updating user progress...")
                 if let story = await fetchStory(id: storyId) {
-                    _ = await recordStoryCompleted(
+                    let unlocked = await recordStoryCompleted(
                         storyId: storyId.uuidString,
                         difficultyLevel: story.difficultyLevel
                     )
+                    print("🎉 Level 2 unlocked: \(unlocked)")
                 }
             }
         } catch {
+            print("❌ Error saving story progress: \(error)")
             errorPublisher.send(error)
         }
     }
@@ -440,6 +445,26 @@ class DataService {
     
     func getAllStoryProgress() async -> [StoryProgress] {
         return await localCache.fetchAllStoryProgress()
+    }
+    
+    /// Sync all story progress from Firebase to local cache
+    func syncAllStoryProgressFromFirebase() async {
+        let userId = getCurrentUserId()
+        print("🔄 Syncing story progress from Firebase for user: \(userId)")
+        
+        do {
+            // Fetch all story progress documents from Firebase
+            let snapshot = try await FirebaseService.shared.fetchAllStoryProgressForUser(userId: userId)
+            
+            print("🔄 Found \(snapshot.count) story progress documents in Firebase")
+            
+            for progress in snapshot {
+                await localCache.saveStoryProgress(progress)
+                print("🔄 Synced progress for story: \(progress.storyId), isCompleted: \(progress.isCompleted)")
+            }
+        } catch {
+            print("❌ Error syncing story progress: \(error)")
+        }
     }
 }
 

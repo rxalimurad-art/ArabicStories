@@ -7,16 +7,32 @@
 import SwiftUI
 import FirebaseAuth
 
+@Observable
+class NotificationSettings {
+    static let shared = NotificationSettings()
+    
+    var morningReminder: Bool {
+        get { UserDefaults.standard.bool(forKey: "morningReminder") }
+        set { UserDefaults.standard.set(newValue, forKey: "morningReminder") }
+    }
+    
+    var afternoonReminder: Bool {
+        get { UserDefaults.standard.bool(forKey: "afternoonReminder") }
+        set { UserDefaults.standard.set(newValue, forKey: "afternoonReminder") }
+    }
+    
+    private init() {}
+}
+
 struct SettingsView: View {
     @State private var authService = AuthService.shared
     @State private var showingResetAlert = false
     @State private var showingSignOutAlert = false
     @State private var showingDeleteAlert = false
     @State private var showingAccountLinking = false
-    @State private var dailyGoalMinutes = 15
-    @State private var notificationsEnabled = true
-    @State private var autoPlayAudio = true
-    @State private var showTransliteration = true
+    @State private var morningReminder = NotificationSettings.shared.morningReminder
+    @State private var afternoonReminder = NotificationSettings.shared.afternoonReminder
+    @State private var showingNotificationAlert = true
     
     var body: some View {
         NavigationStack {
@@ -24,56 +40,42 @@ struct SettingsView: View {
                 // Account Section
                 accountSection
                 
-                // Study Settings
-                Section("Study Settings") {
-                    NavigationLink {
-                        DailyGoalSettingsView()
-                    } label: {
+                // Notifications
+                Section("Reminders") {
+                    Toggle(isOn: $morningReminder) {
                         HStack {
-                            Image(systemName: "target")
+                            Image(systemName: "sunrise.fill")
                                 .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
+                                .foregroundStyle(Color.orange)
                             
-                            Text("Daily Goal")
-                            
-                            Spacer()
-                            
-                            Text("\(dailyGoalMinutes) min")
-                                .foregroundStyle(.secondary)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Morning Reminder")
+                                Text("9:00 AM")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
+                    .onChange(of: morningReminder) { _, newValue in
+                        handleNotificationToggle(newValue)
+                    }
                     
-                    Toggle(isOn: $notificationsEnabled) {
+                    Toggle(isOn: $afternoonReminder) {
                         HStack {
-                            Image(systemName: "bell.fill")
+                            Image(systemName: "sun.max.fill")
                                 .frame(width: 30)
                                 .foregroundStyle(Color.hikayaOrange)
                             
-                            Text("Daily Reminders")
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Afternoon Reminder")
+                                Text("3:00 PM")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
-                }
-                
-                // Reader Settings
-                Section("Reader Preferences") {
-                    Toggle(isOn: $autoPlayAudio) {
-                        HStack {
-                            Image(systemName: "speaker.wave.2.fill")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
-                            
-                            Text("Auto-play Audio")
-                        }
-                    }
-                    
-                    Toggle(isOn: $showTransliteration) {
-                        HStack {
-                            Image(systemName: "character.phonetic")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
-                            
-                            Text("Show Transliteration")
-                        }
+                    .onChange(of: afternoonReminder) { _, newValue in
+                        handleNotificationToggle(newValue)
                     }
                 }
                 
@@ -108,29 +110,13 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                     
-                    Link(destination: URL(string: "https://hikaya.app")!) {
-                        HStack {
-                            Image(systemName: "globe")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaTeal)
-                            
-                            Text("Website")
-                            
-                            Spacer()
-                            
-                            Image(systemName: "arrow.up.right.square")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    
-                    Link(destination: URL(string: "mailto:support@hikaya.app")!) {
+                    Link(destination: URL(string: "mailto:volutiontechnologies@gmail.com")!) {
                         HStack {
                             Image(systemName: "envelope")
                                 .frame(width: 30)
                                 .foregroundStyle(Color.hikayaTeal)
                             
-                            Text("Contact Support")
+                            Text("Contact Us")
                             
                             Spacer()
                             
@@ -143,7 +129,7 @@ struct SettingsView: View {
                 
                 // Acknowledgments
                 Section {
-                    Text("Arabicly uses the SM-2 algorithm for spaced repetition. Arabic text rendered with Noto Naskh Arabic.")
+                    Text("Arabicly helps you learn Arabic through stories. Built with love by Volution Technologies.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -156,6 +142,19 @@ struct SettingsView: View {
                 }
             } message: {
                 Text("This will reset all your reading progress, word statistics, and achievements. This action cannot be undone.")
+            }
+            .alert("Enable Notifications?", isPresented: $showingNotificationAlert) {
+                Button("Cancel", role: .cancel) {
+                    morningReminder = false
+                    afternoonReminder = false
+                }
+                Button("Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            } message: {
+                Text("Please enable notifications in Settings to receive study reminders.")
             }
             .sheet(isPresented: $showingAccountLinking) {
                 AccountLinkingView()
@@ -176,6 +175,65 @@ struct SettingsView: View {
             } message: {
                 Text("This will permanently delete your account and all associated data. This action cannot be undone.")
             }
+        }
+    }
+    
+    private func handleNotificationToggle(_ enabled: Bool) {
+        // Save to UserDefaults
+        NotificationSettings.shared.morningReminder = morningReminder
+        NotificationSettings.shared.afternoonReminder = afternoonReminder
+        
+        if enabled {
+            requestNotificationPermission()
+        } else {
+            // If both are disabled, we could optionally cancel scheduled notifications
+        }
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            DispatchQueue.main.async {
+                if !granted {
+                    showingNotificationAlert = true
+                } else {
+                    scheduleNotifications()
+                }
+            }
+        }
+    }
+    
+    private func scheduleNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        
+        // Morning reminder at 9:00 AM
+        if morningReminder {
+            let morningContent = UNMutableNotificationContent()
+            morningContent.title = "Time to Learn Arabic! 🌅"
+            morningContent.body = "Start your day with a quick Arabic story. Keep your streak going!"
+            morningContent.sound = .default
+            
+            var morningDate = DateComponents()
+            morningDate.hour = 9
+            morningDate.minute = 0
+            let morningTrigger = UNCalendarNotificationTrigger(dateMatching: morningDate, repeats: true)
+            let morningRequest = UNNotificationRequest(identifier: "morning-reminder", content: morningContent, trigger: morningTrigger)
+            center.add(morningRequest)
+        }
+        
+        // Afternoon reminder at 3:00 PM
+        if afternoonReminder {
+            let afternoonContent = UNMutableNotificationContent()
+            afternoonContent.title = "Continue Your Arabic Journey! ☀️"
+            afternoonContent.body = "Take a break and practice your Arabic vocabulary."
+            afternoonContent.sound = .default
+            
+            var afternoonDate = DateComponents()
+            afternoonDate.hour = 15
+            afternoonDate.minute = 0
+            let afternoonTrigger = UNCalendarNotificationTrigger(dateMatching: afternoonDate, repeats: true)
+            let afternoonRequest = UNNotificationRequest(identifier: "afternoon-reminder", content: afternoonContent, trigger: afternoonTrigger)
+            center.add(afternoonRequest)
         }
     }
     
@@ -273,50 +331,6 @@ struct SettingsView: View {
                 }
             }
         }
-    }
-}
-
-// MARK: - Daily Goal Settings View
-
-struct DailyGoalSettingsView: View {
-    @State private var goalMinutes = 15
-    @Environment(\.dismiss) private var dismiss
-    
-    let options = [10, 15, 20, 30, 45, 60]
-    
-    var body: some View {
-        List {
-            Section("Select your daily study goal") {
-                ForEach(options, id: \.self) { minutes in
-                    Button {
-                        goalMinutes = minutes
-                    } label: {
-                        HStack {
-                            Text("\(minutes) minutes")
-                            
-                            Spacer()
-                            
-                            if goalMinutes == minutes {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.hikayaTeal)
-                            }
-                        }
-                    }
-                    .foregroundStyle(.primary)
-                }
-            }
-            
-            Section {
-                Button("Save") {
-                    // Save the goal
-                    dismiss()
-                }
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(Color.hikayaTeal)
-            }
-        }
-        .navigationTitle("Daily Goal")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
