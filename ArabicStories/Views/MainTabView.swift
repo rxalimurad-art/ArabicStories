@@ -53,18 +53,19 @@ struct MainTabView: View {
                 print("📖 Complete story: ERROR - No achievement in notification")
             }
         }
-        .sheet(isPresented: $showAchievementUnlocked) {
-            print("📖 Complete story: Sheet is being presented, showAchievementUnlocked = \(showAchievementUnlocked)")
+        .sheet(isPresented: $showAchievementUnlocked, onDismiss: {
+            print("📖 Complete story: Achievement sheet dismissed")
+        }) {
             if let achievement = unlockedAchievement {
                 print("📖 Complete story: Showing AchievementUnlockedView for \(achievement.title)")
                 AchievementUnlockedView(achievement: achievement) {
-                    print("📖 Complete story: Achievement view dismissed")
+                    print("📖 Complete story: Achievement view dismiss callback")
                     showAchievementUnlocked = false
                     unlockedAchievement = nil
                 }
             } else {
                 print("📖 Complete story: ERROR - No achievement when presenting sheet!")
-                EmptyView()
+                Text("Error loading achievement")
             }
         }
     }
