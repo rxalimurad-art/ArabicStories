@@ -247,13 +247,25 @@ struct QuizQuestionView: View {
     @Bindable var viewModel: MyWordsViewModel
     @State private var showFeedback = false
     @State private var feedbackIsCorrect = false
+    @State private var masteredWordIds: Set<UUID> = []
     
     var body: some View {
         ZStack {
+            // Background gradient
+            LinearGradient(
+                colors: [Color.hikayaCream, Color.white],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
             // Main Quiz Content
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 // Header with Progress
                 quizHeader
+                
+                // Word Mastery Progress Card
+                wordMasteryCard
                 
                 // Question Card
                 questionCard
@@ -275,41 +287,105 @@ struct QuizQuestionView: View {
     
     // MARK: - Header
     private var quizHeader: some View {
-        VStack(spacing: 12) {
-            // Progress Bar
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(height: 8)
-                    
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.7)],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                        .frame(width: geometry.size.width * viewModel.progress, height: 8)
-                }
-            }
-            .frame(height: 8)
-            .padding(.horizontal)
-            
-            // Stats Row
-            HStack {
-                Label("\(viewModel.currentQuestionIndex + 1)/\(viewModel.totalQuestions)", systemImage: "number.circle")
-                    .font(.subheadline)
+        VStack(spacing: 16) {
+            // Progress Bar with Question Counter
+            HStack(spacing: 12) {
+                Text("\(viewModel.currentQuestionIndex + 1)/\(viewModel.totalQuestions)")
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
+                    .frame(width: 50)
                 
-                Spacer()
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color.gray.opacity(0.15))
+                            .frame(height: 12)
+                        
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.hikayaTeal, Color.hikayaOrange],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(width: geometry.size.width * viewModel.progress, height: 12)
+                    }
+                }
+                .frame(height: 12)
                 
-                Label("\(viewModel.totalScore)", systemImage: "star.fill")
-                    .font(.subheadline)
-                    .foregroundStyle(Color.hikayaOrange)
+                // Score Badge
+                HStack(spacing: 4) {
+                    Image(systemName: "star.fill")
+                        .font(.caption2)
+                    Text("\(viewModel.totalScore)")
+                        .font(.caption.weight(.bold))
+                }
+                .foregroundStyle(Color.hikayaOrange)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.hikayaOrange.opacity(0.15))
+                )
             }
             .padding(.horizontal)
+        }
+    }
+    
+    // MARK: - Word Mastery Progress Card
+    private var wordMasteryCard: some View {
+        Group {
+            if let word = viewModel.currentQuestion?.word {
+                let progress = viewModel.wordProgress(word.id)
+                let isMastered = viewModel.isWordMastered(word.id)
+                
+                HStack(spacing: 12) {
+                    // Progress Ring
+                    ZStack {
+                        Circle()
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 4)
+                            .frame(width: 44, height: 44)
+                        
+                        Circle()
+                            .trim(from: 0, to: progress)
+                            .stroke(
+                                isMastered ? Color.green : Color.hikayaTeal,
+                                style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                            )
+                            .frame(width: 44, height: 44)
+                            .rotationEffect(.degrees(-90))
+                        
+                        if isMastered {
+                            Image(systemName: "checkmark")
+                                .font(.caption.bold())
+                                .foregroundStyle(.green)
+                        } else {
+                            Text("\(Int(progress * 100))")
+                                .font(.caption.bold())
+                        }
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Word Mastery")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        
+                        Text(isMastered ? "Mastered! 🎉" : "\(Int(progress * 100))/100 points")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(isMastered ? .green : .primary)
+                    }
+                    
+                    Spacer()
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(.systemBackground))
+                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+                )
+                .padding(.horizontal)
+            }
         }
     }
     
@@ -317,31 +393,33 @@ struct QuizQuestionView: View {
     private var questionCard: some View {
         Group {
             if let question = viewModel.currentQuestion {
-                VStack(spacing: 20) {
+                VStack(spacing: 24) {
                     // Question Label
                     Text(question.questionType == .arabicToEnglish ? 
                          "What does this mean?" : "What's the Arabic word?")
-                        .font(.headline)
+                        .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.hikayaTeal)
                         .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.hikayaTeal.opacity(0.1))
-                        .clipShape(Capsule())
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(Color.hikayaTeal.opacity(0.12))
+                        )
                     
                     // The Word
                     Text(question.questionType == .arabicToEnglish ? 
                          question.word.arabicText : question.word.englishMeaning)
-                        .font(.system(size: 56, weight: .bold))
+                        .font(.system(size: 52, weight: .bold, design: .serif))
                         .minimumScaleFactor(0.5)
                         .foregroundStyle(.primary)
                         .padding(.horizontal)
                 }
-                .padding(.vertical, 32)
+                .padding(.vertical, 36)
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 24)
                         .fill(Color(.systemBackground))
-                        .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: 4)
+                        .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 6)
                 )
                 .padding(.horizontal)
             }
@@ -352,7 +430,7 @@ struct QuizQuestionView: View {
     private var optionsGrid: some View {
         Group {
             if let question = viewModel.currentQuestion {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                VStack(spacing: 12) {
                     ForEach(question.options, id: \.self) { option in
                         ThemedQuizButton(
                             text: option,
@@ -369,7 +447,6 @@ struct QuizQuestionView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.top, 8)
             }
         }
     }
@@ -384,7 +461,7 @@ struct QuizQuestionView: View {
         viewModel.selectAnswer(option)
         
         // Hide feedback after delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             withAnimation(.easeOut(duration: 0.2)) {
                 showFeedback = false
             }
@@ -394,32 +471,37 @@ struct QuizQuestionView: View {
     // MARK: - Feedback Overlay
     private var feedbackOverlay: some View {
         VStack {
-            HStack(spacing: 12) {
+            HStack(spacing: 16) {
                 Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .font(.title2)
+                    .font(.system(size: 36))
                     .foregroundStyle(feedbackIsCorrect ? .green : .red)
                 
-                Text(feedbackIsCorrect ? "Correct!" : "Wrong")
-                    .font(.title3.bold())
-                    .foregroundStyle(feedbackIsCorrect ? .green : .red)
-                
-                if feedbackIsCorrect {
-                    Text("+\(viewModel.lastScore)")
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(feedbackIsCorrect ? "Correct!" : "Try Again")
                         .font(.title3.bold())
-                        .foregroundStyle(Color.hikayaOrange)
+                        .foregroundStyle(feedbackIsCorrect ? .green : .red)
+                    
+                    if feedbackIsCorrect {
+                        Text("+\(viewModel.lastScore) points")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.hikayaOrange)
+                    }
                 }
+                
+                Spacer()
             }
             .padding(.horizontal, 24)
-            .padding(.vertical, 16)
+            .padding(.vertical, 20)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .fill(Color(.systemBackground))
-                    .shadow(color: (feedbackIsCorrect ? Color.green : Color.red).opacity(0.3), radius: 12, x: 0, y: 4)
+                    .shadow(color: (feedbackIsCorrect ? Color.green : Color.red).opacity(0.25), radius: 20, x: 0, y: 8)
             )
+            .padding(.horizontal, 20)
             
             Spacer()
         }
-        .padding(.top, 60)
+        .padding(.top, 100)
     }
 }
 
@@ -428,35 +510,183 @@ struct QuizCompleteView: View {
     var viewModel: MyWordsViewModel
     var onDone: () -> Void
     
+    private var newlyMasteredCount: Int {
+        viewModel.masteredWords.filter { word in
+            // Words that weren't mastered before but are now
+            viewModel.wordMastery[word.id]?.totalScore ?? 0 >= 100
+        }.count
+    }
+    
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "trophy.fill")
-                .font(.system(size: 80))
-                .foregroundStyle(.yellow)
-            
-            Text("Quiz Complete!")
-                .font(.largeTitle.bold())
-            
-            Text("Score: \(viewModel.totalScore)")
-                .font(.title)
-                .foregroundStyle(.secondary)
-            
-            HStack(spacing: 32) {
-                ResultStat(value: "\(viewModel.correctCount)", label: "Correct")
-                ResultStat(value: "\(viewModel.wrongCount)", label: "Wrong")
-                ResultStat(value: "\(viewModel.accuracy)%", label: "Accuracy")
-            }
-            
-            Button("Done", action: onDone)
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+        ScrollView {
+            VStack(spacing: 28) {
+                // Trophy Icon with Animation
+                ZStack {
+                    Circle()
+                        .fill(Color.yellow.opacity(0.15))
+                        .frame(width: 120, height: 120)
+                    
+                    Image(systemName: "trophy.fill")
+                        .font(.system(size: 60))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.yellow, .orange],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                }
+                
+                // Title
+                VStack(spacing: 8) {
+                    Text("Quiz Complete! 🎉")
+                        .font(.largeTitle.bold())
+                    
+                    Text("You've practiced \(viewModel.totalQuestions) words")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                
+                // Score Card
+                VStack(spacing: 16) {
+                    Text("\(viewModel.totalScore)")
+                        .font(.system(size: 64, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.hikayaOrange)
+                    
+                    Text("Total Points")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 20)
                 .padding(.horizontal, 40)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.hikayaOrange.opacity(0.1))
+                )
+                
+                // Stats Grid
+                HStack(spacing: 16) {
+                    StatCard(
+                        icon: "checkmark.circle.fill",
+                        value: "\(viewModel.correctCount)",
+                        label: "Correct",
+                        color: .green
+                    )
+                    
+                    StatCard(
+                        icon: "xmark.circle.fill",
+                        value: "\(viewModel.wrongCount)",
+                        label: "Wrong",
+                        color: .red
+                    )
+                    
+                    StatCard(
+                        icon: "percent",
+                        value: "\(viewModel.accuracy)%",
+                        label: "Accuracy",
+                        color: .blue
+                    )
+                }
+                .padding(.horizontal)
+                
+                // Words Mastered Section
+                if !viewModel.masteredWords.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "star.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Words Mastered: \(viewModel.masteredWords.count)")
+                                .font(.headline)
+                        }
+                        
+                        Text("Great job! You've mastered these words through practice.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        
+                        // List of mastered words
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(viewModel.masteredWords.prefix(5)) { word in
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.caption)
+                                        .foregroundStyle(.green)
+                                    Text(word.arabicText)
+                                        .font(.subheadline)
+                                    Text("= \(word.englishMeaning)")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            
+                            if viewModel.masteredWords.count > 5 {
+                                Text("+ \(viewModel.masteredWords.count - 5) more")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.green.opacity(0.08))
+                        )
+                    }
+                    .padding(.horizontal)
+                }
+                
+                // Done Button
+                Button(action: onDone) {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                        Text("Done")
+                    }
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.8)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 8)
+            }
+            .padding(.vertical, 24)
         }
-        .padding()
+    }
+}
+
+// MARK: - Stat Card
+struct StatCard: View {
+    let icon: String
+    let value: String
+    let label: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundStyle(color)
+            
+            Text(value)
+                .font(.title3.bold())
+                .foregroundStyle(.primary)
+            
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(color.opacity(0.1))
+        )
     }
 }
 
@@ -552,36 +782,54 @@ struct ThemedQuizButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack {
-                Spacer()
+            HStack(spacing: 12) {
+                // Selection indicator
+                ZStack {
+                    Circle()
+                        .stroke(strokeColor, lineWidth: 2)
+                        .frame(width: 24, height: 24)
+                    
+                    if isSelected {
+                        Circle()
+                            .fill(selectionFillColor)
+                            .frame(width: 16, height: 16)
+                    }
+                    
+                    // Show checkmark or x after result
+                    if showResult && isUserSelection {
+                        Image(systemName: isCorrectAnswer ? "checkmark" : "xmark")
+                            .font(.caption.bold())
+                            .foregroundStyle(.white)
+                    }
+                }
                 
                 Text(text)
-                    .font(.title3.weight(.semibold))
-                    .multilineTextAlignment(.center)
-                    .minimumScaleFactor(0.7)
+                    .font(.body.weight(.medium))
+                    .multilineTextAlignment(.leading)
+                    .minimumScaleFactor(0.8)
                     .lineLimit(2)
                 
                 Spacer()
             }
-            .padding(.vertical, 20)
-            .padding(.horizontal, 12)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 16)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 14)
                     .fill(backgroundColor)
                     .shadow(
-                        color: shadowColor.opacity(isPressed ? 0.1 : 0.2),
-                        radius: isPressed ? 4 : 8,
+                        color: shadowColor.opacity(isPressed ? 0.1 : 0.15),
+                        radius: isPressed ? 3 : 6,
                         x: 0,
-                        y: isPressed ? 2 : 4
+                        y: isPressed ? 1 : 2
                     )
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(strokeColor, lineWidth: strokeWidth)
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(strokeColor, lineWidth: isSelected || (showResult && isUserSelection) ? 2 : 1)
             )
             .foregroundStyle(foregroundColor)
-            .scaleEffect(isPressed ? 0.96 : 1.0)
-            .animation(.spring(response: 0.2), value: isPressed)
+            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.15), value: isPressed)
             .animation(.spring(response: 0.2), value: showResult)
         }
         .buttonStyle(.plain)
@@ -597,46 +845,63 @@ struct ThemedQuizButton: View {
         }
     }
     
+    private var selectionFillColor: Color {
+        if showResult {
+            return isCorrectAnswer ? .green : .red
+        }
+        return Color.hikayaTeal
+    }
+    
     private var backgroundColor: Color {
         if !showResult {
-            return isPressed ? Color.hikayaTeal.opacity(0.1) : Color(.systemBackground)
+            return isSelected ? Color.hikayaTeal.opacity(0.08) : Color(.systemBackground)
         }
         
-        // After result is shown - ONLY show user's selection, don't reveal correct answer
+        // After result is shown
         if isUserSelection && isCorrectAnswer {
-            return Color.green.opacity(0.15)  // User got it right
+            return Color.green.opacity(0.12)
         } else if isUserSelection && !isCorrectAnswer {
-            return Color.red.opacity(0.15)    // User got it wrong
+            return Color.red.opacity(0.12)
+        } else if isCorrectAnswer {
+            return Color.green.opacity(0.08)  // Show correct answer after selection
         } else {
-            return Color(.systemBackground).opacity(0.6)  // Other options fade (no hint!)
+            return Color(.systemBackground).opacity(0.5)
         }
     }
     
     private var foregroundColor: Color {
         if !showResult {
-            return .primary
+            return isSelected ? Color.hikayaTeal : .primary
         }
         
-        // After result is shown - ONLY show user's selection
+        // After result is shown
         if isUserSelection && isCorrectAnswer {
             return .green
         } else if isUserSelection && !isCorrectAnswer {
             return .red
+        } else if isCorrectAnswer {
+            return .green  // Show correct answer
         } else {
-            return .secondary.opacity(0.6)  // Don't reveal correct answer
+            return .secondary.opacity(0.5)
         }
     }
     
     private var strokeColor: Color {
         if !showResult {
-            return isPressed ? Color.hikayaTeal : Color.hikayaTeal.opacity(0.3)
+            return isSelected ? Color.hikayaTeal : Color.gray.opacity(0.3)
         }
         
-        // After result is shown - ONLY show user's selection
+        // After result is shown
         if isUserSelection && isCorrectAnswer {
             return .green
         } else if isUserSelection && !isCorrectAnswer {
             return .red
+        } else if isCorrectAnswer {
+            return .green  // Show correct answer border
+        } else {
+            return Color.gray.opacity(0.2)
+        }
+    }
         } else {
             return Color.gray.opacity(0.2)  // Don't reveal correct answer
         }
