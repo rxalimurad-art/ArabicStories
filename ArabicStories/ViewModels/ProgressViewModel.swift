@@ -241,8 +241,9 @@ class ProgressViewModel {
         achievements = achievementsList
         
         // Save updated progress with new achievements
-        if !newlyUnlocked.isEmpty {
-            try? await dataService.updateUserProgress(progress)
+        if !newlyUnlocked.isEmpty, var updatedProgress = userProgress {
+            updatedProgress.unlockedAchievementTitles = progress.unlockedAchievementTitles
+            try? await dataService.updateUserProgress(updatedProgress)
             print("📖 Complete story: Saved \(newlyUnlocked.count) new achievements to storage")
         }
         
