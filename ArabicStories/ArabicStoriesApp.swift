@@ -27,8 +27,6 @@ struct ArabiclyApp: App {
 
 struct RootView: View {
     @State private var authService = AuthService.shared
-    @State private var unlockedAchievement: Achievement?
-    @State private var showAchievementUnlocked = false
     
     var body: some View {
         Group {
@@ -39,20 +37,6 @@ struct RootView: View {
             }
         }
         .loadingOverlay(isLoading: authService.isLoading)
-        .onReceive(NotificationCenter.default.publisher(for: .achievementUnlocked)) { notification in
-            if let achievement = notification.object as? Achievement {
-                unlockedAchievement = achievement
-                showAchievementUnlocked = true
-            }
-        }
-        .sheet(isPresented: $showAchievementUnlocked) {
-            if let achievement = unlockedAchievement {
-                AchievementUnlockedView(achievement: achievement) {
-                    showAchievementUnlocked = false
-                    unlockedAchievement = nil
-                }
-            }
-        }
     }
 }
 

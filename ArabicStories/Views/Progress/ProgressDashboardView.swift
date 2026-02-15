@@ -92,32 +92,6 @@ struct StreakCard: View {
             
             Divider()
             
-            // Daily Goal Progress
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("Daily Goal")
-                        .font(.subheadline.weight(.medium))
-                    
-                    Spacer()
-                    
-                    Text("\(viewModel.todayStudyMinutes)/\(viewModel.dailyGoalMinutes) min")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(viewModel.isDailyGoalCompleted ? .green : .secondary)
-                }
-                
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(.systemGray5))
-                            .frame(height: 8)
-                        
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(viewModel.isDailyGoalCompleted ? Color.green : Color.hikayaTeal)
-                            .frame(width: geometry.size.width * viewModel.dailyGoalProgress, height: 8)
-                    }
-                }
-                .frame(height: 8)
-            }
         }
         .padding()
         .background(

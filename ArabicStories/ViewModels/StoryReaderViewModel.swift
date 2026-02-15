@@ -495,6 +495,9 @@ class StoryReaderViewModel {
         
         // Check if any new achievements were unlocked
         if let newAchievement = progressVM.newlyUnlockedAchievement {
+            // Wait a bit for the story view to fully dismiss
+            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            
             await MainActor.run {
                 // Post notification to show achievement unlocked
                 NotificationCenter.default.post(
