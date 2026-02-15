@@ -9,7 +9,6 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var unlockedAchievement: Achievement?
-    @State private var showAchievementUnlocked = false
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -45,61 +44,22 @@ struct MainTabView: View {
         .onReceive(NotificationCenter.default.publisher(for: .achievementUnlocked)) { notification in
             print("📖 Complete story: MainTabView received achievement notification")
             if let achievement = notification.object as? Achievement {
-                print("📖 Complete story: Setting achievement - \(achievement.title)")
+                print("📖 Complete story: Setting unlockedAchievement - \(achievement.title)")
                 unlockedAchievement = achievement
-                showAchievementUnlocked = true
-                print("📖 Complete story: showAchievementUnlocked set to true")
+                print("📖 Complete story: unlockedAchievement set, sheet will present automatically")
             } else {
                 print("📖 Complete story: ERROR - No achievement in notification")
             }
         }
-        .sheet(isPresented: $showAchievementUnlocked, onDismiss: {
+        .sheet(item: $unlockedAchievement, onDismiss: {
             print("📖 Complete story: Achievement sheet dismissed")
-            showAchievementUnlocked = false
             unlockedAchievement = nil
-        }) {
-            AchievementSheetContent(
-                achievement: unlockedAchievement,
-                onDismiss: {
-                    showAchievementUnlocked = false
-                    unlockedAchievement = nil
-                }
-            )
-        }
-    }
-}
-
-// MARK: - Achievement Sheet Content
-
-struct AchievementSheetContent: View {
-    let achievement: Achievement?
-    let onDismiss: () -> Void
-    
-    init(achievement: Achievement?, onDismiss: @escaping () -> Void) {
-        self.achievement = achievement
-        self.onDismiss = onDismiss
-        if let ach = achievement {
-            print("📖 Complete story: Showing AchievementUnlockedView for \(ach.title)")
-        } else {
-            print("📖 Complete story: ERROR - No achievement when presenting sheet!")
-        }
-    }
-    
-    var body: some View {
-        if let achievement = achievement {
+        }) { achievement in
+            print("📖 Complete story: Presenting sheet for \(achievement.title)")
             AchievementUnlockedView(achievement: achievement) {
                 print("📖 Complete story: Achievement view dismiss callback")
-                onDismiss()
+                unlockedAchievement = nil
             }
-        } else {
-            VStack(spacing: 20) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.orange)
-                Text("Error loading achievement")
-                    .font(.headline)
-            }
-            .padding()
         }
     }
 }
