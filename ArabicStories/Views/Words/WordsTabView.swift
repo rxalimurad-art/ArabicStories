@@ -87,7 +87,12 @@ struct MyWordsView: View {
         .task {
             await viewModel.loadUnlockedWords()
         }
-        .sheet(isPresented: $showingQuiz) {
+        .sheet(isPresented: $showingQuiz, onDismiss: {
+            // Refresh word mastery data when quiz is dismissed
+            Task {
+                await viewModel.loadUnlockedWords()
+            }
+        }) {
             QuizSessionSheet(viewModel: viewModel)
         }
         .sheet(item: $selectedWord) { word in

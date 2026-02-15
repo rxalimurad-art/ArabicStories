@@ -187,6 +187,12 @@ class MyWordsViewModel {
                 self.loadMockMasteryData()
                 self.isLoading = false
                 print("📚 MyWords: Done! Loaded \(collectedWords.count) Quran words from stories")
+            
+            // Load saved mastery data
+            let savedMastery = await dataService.fetchWordMastery()
+            await MainActor.run {
+                self.wordMastery = savedMastery
+                print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries")
             }
             
         } catch {
@@ -390,6 +396,13 @@ class MyWordsViewModel {
     func endQuiz() {
         session?.endSession()
         isQuizActive = false
+        
+        // Save mastery data
+        Task {
+            await dataService.saveWordMastery(wordMastery)
+            print("💾 Saved word mastery data: \(wordMastery.count) entries")
+        }
+        
         restartQuiz()
     }
     

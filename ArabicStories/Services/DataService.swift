@@ -348,6 +348,39 @@ class DataService {
         }
     }
     
+    // MARK: - Word Mastery (UserDefaults for simplicity)
+    
+    private var wordMasteryKey: String {
+        "wordMastery_\(getCurrentUserId())"
+    }
+    
+    func saveWordMastery(_ mastery: [UUID: WordMastery]) async {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(mastery)
+            UserDefaults.standard.set(data, forKey: wordMasteryKey)
+            print("💾 Saved \(mastery.count) word mastery entries")
+        } catch {
+            print("❌ Error saving word mastery: \(error)")
+        }
+    }
+    
+    func fetchWordMastery() async -> [UUID: WordMastery] {
+        guard let data = UserDefaults.standard.data(forKey: wordMasteryKey) else {
+            return [:]
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let mastery = try decoder.decode([UUID: WordMastery].self, from: data)
+            print("📂 Loaded \(mastery.count) word mastery entries")
+            return mastery
+        } catch {
+            print("❌ Error loading word mastery: \(error)")
+            return [:]
+        }
+    }
+    
     // MARK: - Story Progress (User-Specific)
     
     func fetchStoryProgress(storyId: UUID) async -> StoryProgress? {
