@@ -902,18 +902,6 @@ struct ThemedQuizButton: View {
             return Color.gray.opacity(0.2)
         }
     }
-        } else {
-            return Color.gray.opacity(0.2)  // Don't reveal correct answer
-        }
-    }
-    
-    private var strokeWidth: CGFloat {
-        if !showResult {
-            return isPressed ? 3 : 2
-        }
-        // Only highlight user's selection, not the correct answer
-        return isUserSelection ? 3 : 1
-    }
     
     private var shadowColor: Color {
         if !showResult {
