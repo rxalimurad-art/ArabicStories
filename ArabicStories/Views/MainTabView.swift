@@ -55,18 +55,51 @@ struct MainTabView: View {
         }
         .sheet(isPresented: $showAchievementUnlocked, onDismiss: {
             print("📖 Complete story: Achievement sheet dismissed")
+            showAchievementUnlocked = false
+            unlockedAchievement = nil
         }) {
-            if let achievement = unlockedAchievement {
-                print("📖 Complete story: Showing AchievementUnlockedView for \(achievement.title)")
-                AchievementUnlockedView(achievement: achievement) {
-                    print("📖 Complete story: Achievement view dismiss callback")
+            AchievementSheetContent(
+                achievement: unlockedAchievement,
+                onDismiss: {
                     showAchievementUnlocked = false
                     unlockedAchievement = nil
                 }
-            } else {
-                print("📖 Complete story: ERROR - No achievement when presenting sheet!")
-                Text("Error loading achievement")
+            )
+        }
+    }
+}
+
+// MARK: - Achievement Sheet Content
+
+struct AchievementSheetContent: View {
+    let achievement: Achievement?
+    let onDismiss: () -> Void
+    
+    init(achievement: Achievement?, onDismiss: @escaping () -> Void) {
+        self.achievement = achievement
+        self.onDismiss = onDismiss
+        if let ach = achievement {
+            print("📖 Complete story: Showing AchievementUnlockedView for \(ach.title)")
+        } else {
+            print("📖 Complete story: ERROR - No achievement when presenting sheet!")
+        }
+    }
+    
+    var body: some View {
+        if let achievement = achievement {
+            AchievementUnlockedView(achievement: achievement) {
+                print("📖 Complete story: Achievement view dismiss callback")
+                onDismiss()
             }
+        } else {
+            VStack(spacing: 20) {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.system(size: 60))
+                    .foregroundStyle(.orange)
+                Text("Error loading achievement")
+                    .font(.headline)
+            }
+            .padding()
         }
     }
 }
