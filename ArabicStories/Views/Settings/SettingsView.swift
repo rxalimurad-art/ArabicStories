@@ -43,41 +43,99 @@ struct SettingsView: View {
                 accountSection
                 
                 // Daily Goal
-                Section("Daily Goal") {
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Image(systemName: "flame.fill")
-                                .frame(width: 30)
-                                .foregroundStyle(Color.hikayaOrange)
-                            
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Daily Study Goal")
-                                Text("\(dailyGoalMinutes) minutes")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                Section {
+                    VStack(alignment: .center, spacing: 16) {
+                        // Icon and Title
+                        VStack(spacing: 8) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.hikayaOrange.opacity(0.15))
+                                    .frame(width: 60, height: 60)
+                                
+                                Image(systemName: "flame.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundStyle(Color.hikayaOrange)
                             }
                             
-                            Spacer()
+                            Text("Daily Study Goal")
+                                .font(.headline)
+                            
+                            Text("Commit to learning Arabic every day")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
                         
-                        // Goal picker
-                        Picker("Daily Goal", selection: $dailyGoalMinutes) {
-                            Text("5 min").tag(5)
-                            Text("10 min").tag(10)
-                            Text("15 min").tag(15)
-                            Text("20 min").tag(20)
-                            Text("30 min").tag(30)
-                            Text("45 min").tag(45)
-                            Text("60 min").tag(60)
+                        // Minutes Display
+                        VStack(spacing: 4) {
+                            Text("\(dailyGoalMinutes)")
+                                .font(.system(size: 48, weight: .bold, design: .rounded))
+                                .foregroundStyle(Color.hikayaOrange)
+                            
+                            Text("minutes")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
                         }
-                        .pickerStyle(.segmented)
-                        .onChange(of: dailyGoalMinutes) { _, newValue in
-                            Task {
-                                await updateDailyGoal(minutes: newValue)
+                        
+                        // Slider
+                        VStack(spacing: 8) {
+                            Slider(
+                                value: Binding(
+                                    get: { Double(dailyGoalMinutes) },
+                                    set: { newValue in
+                                        // Snap to nearest 5
+                                        let snapped = Int(round(newValue / 5) * 5)
+                                        dailyGoalMinutes = max(5, min(60, snapped))
+                                    }
+                                ),
+                                in: 5...60,
+                                step: 5
+                            )
+                            .tint(Color.hikayaOrange)
+                            
+                            // Labels
+                            HStack {
+                                Text("5 min")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text("30 min")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text("60 min")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding(.horizontal, 4)
+                        
+                        // Preset buttons
+                        HStack(spacing: 8) {
+                            ForEach([5, 10, 15, 20, 30], id: \.self) { minutes in
+                                Button {
+                                    withAnimation(.spring(response: 0.3)) {
+                                        dailyGoalMinutes = minutes
+                                    }
+                                    Task {
+                                        await updateDailyGoal(minutes: minutes)
+                                    }
+                                } label: {
+                                    Text("\(minutes)m")
+                                        .font(.caption.weight(.medium))
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 8)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .fill(dailyGoalMinutes == minutes ? Color.hikayaOrange : Color(.systemGray5))
+                                        )
+                                        .foregroundStyle(dailyGoalMinutes == minutes ? .white : .primary)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
-                    .padding(.vertical, 4)
+                    .padding(.vertical, 16)
+                    .frame(maxWidth: .infinity)
                 }
                 .onAppear {
                     // Load current daily goal
@@ -87,6 +145,11 @@ struct SettingsView: View {
                                 dailyGoalMinutes = progress.dailyGoalMinutes
                             }
                         }
+                    }
+                }
+                .onChange(of: dailyGoalMinutes) { _, newValue in
+                    Task {
+                        await updateDailyGoal(minutes: newValue)
                     }
                 }
                 
