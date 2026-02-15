@@ -62,10 +62,14 @@ struct StoryReaderView: View {
                                 refreshTrigger: wordsLoadedRefresh,
                                 onMarkAsDone: {
                                     Task {
+                                        print("📖 Complete story: MixedContentView onMarkAsDone called")
                                         await viewModel.markAsCompleted()
+                                        print("📖 Complete story: markAsCompleted() returned, waiting 0.5s...")
                                         // Small delay to allow achievement notification to be processed
                                         try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                                        print("📖 Complete story: Delay complete, calling dismiss()")
                                         dismiss()
+                                        print("📖 Complete story: dismiss() called")
                                     }
                                 },
                                 onRepeat: {
@@ -99,10 +103,14 @@ struct StoryReaderView: View {
                                     await viewModel.goToNextSegment()
                                 } else {
                                     // On last slide - mark complete and dismiss
+                                    print("📖 Complete story: Complete button tapped, calling markAsCompleted()")
                                     await viewModel.markAsCompleted()
+                                    print("📖 Complete story: markAsCompleted() returned, waiting 0.5s...")
                                     // Small delay to allow achievement notification to be processed
                                     try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                                    print("📖 Complete story: Delay complete, calling dismiss()")
                                     dismiss()
+                                    print("📖 Complete story: dismiss() called")
                                 }
                             }
                         },

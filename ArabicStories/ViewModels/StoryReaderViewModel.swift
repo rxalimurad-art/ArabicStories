@@ -453,50 +453,68 @@ class StoryReaderViewModel {
     }
     
     private func completeStory() async {
-        print("📖 completeStory() called for '\(story.title)' (ID: \(story.id.uuidString))")
+        print("📖 Complete story: Starting completion for '\(story.title)'")
         
         await MainActor.run {
             isCompletingStory = true
+            print("📖 Complete story: Set isCompletingStory = true")
         }
         
         // Save completion to user-specific story progress
+        print("📖 Complete story: Saving story progress...")
         await dataService.updateStoryProgress(
             storyId: story.id,
             readingProgress: 1.0,
             currentSegmentIndex: currentSegmentIndex
         )
+        print("📖 Complete story: Story progress saved")
         
         // Record story completion in user progress
+        print("📖 Complete story: Recording story completion...")
         let unlocked = await dataService.recordStoryCompleted(
             storyId: story.id.uuidString,
             difficultyLevel: story.difficultyLevel
         )
         if unlocked {
-            print("🎉 Level 2 Unlocked!")
+            print("🎉 Complete story: Level 2 Unlocked!")
         }
+        print("📖 Complete story: Story completion recorded")
         
         // Check for achievements after story completion
+        print("📖 Complete story: Checking achievements...")
         await checkAchievementsAfterCompletion()
+        print("📖 Complete story: Achievement check completed")
         
         await MainActor.run {
             isCompletingStory = false
+            print("📖 Complete story: Set isCompletingStory = false")
         }
-        print("📖 completeStory() finished")
+        print("📖 Complete story: Finished successfully")
     }
     
     func markAsCompleted() async {
+        print("📖 Complete story: markAsCompleted() called")
         await completeStory()
+        print("📖 Complete story: markAsCompleted() finished")
     }
     
     private func checkAchievementsAfterCompletion() async {
+        print("📖 Complete story: checkAchievementsAfterCompletion() started")
+        
         // Load progress view model to check achievements
+        print("📖 Complete story: Loading ProgressViewModel...")
         let progressVM = ProgressViewModel()
         await progressVM.checkAchievementsAfterStoryCompletion()
+        print("📖 Complete story: ProgressViewModel check completed")
         
         // Check if any new achievements were unlocked
         if let newAchievement = progressVM.newlyUnlockedAchievement {
+            print("📖 Complete story: New achievement unlocked - \(newAchievement.title)")
+            
             // Wait a bit for the story view to fully dismiss
+            print("📖 Complete story: Waiting 1 second before showing achievement...")
             try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            print("📖 Complete story: Wait completed, posting notification...")
             
             await MainActor.run {
                 // Post notification to show achievement unlocked
@@ -504,8 +522,13 @@ class StoryReaderViewModel {
                     name: .achievementUnlocked,
                     object: newAchievement
                 )
+                print("📖 Complete story: Achievement notification posted")
             }
+        } else {
+            print("📖 Complete story: No new achievements unlocked")
         }
+        
+        print("📖 Complete story: checkAchievementsAfterCompletion() finished")
     }
     
     // MARK: - Settings

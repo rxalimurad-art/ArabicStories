@@ -43,17 +43,28 @@ struct MainTabView: View {
         }
         .tint(.hikayaTeal)
         .onReceive(NotificationCenter.default.publisher(for: .achievementUnlocked)) { notification in
+            print("📖 Complete story: MainTabView received achievement notification")
             if let achievement = notification.object as? Achievement {
+                print("📖 Complete story: Setting achievement - \(achievement.title)")
                 unlockedAchievement = achievement
                 showAchievementUnlocked = true
+                print("📖 Complete story: showAchievementUnlocked set to true")
+            } else {
+                print("📖 Complete story: ERROR - No achievement in notification")
             }
         }
         .sheet(isPresented: $showAchievementUnlocked) {
+            print("📖 Complete story: Sheet is being presented, showAchievementUnlocked = \(showAchievementUnlocked)")
             if let achievement = unlockedAchievement {
+                print("📖 Complete story: Showing AchievementUnlockedView for \(achievement.title)")
                 AchievementUnlockedView(achievement: achievement) {
+                    print("📖 Complete story: Achievement view dismissed")
                     showAchievementUnlocked = false
                     unlockedAchievement = nil
                 }
+            } else {
+                print("📖 Complete story: ERROR - No achievement when presenting sheet!")
+                EmptyView()
             }
         }
     }
