@@ -52,12 +52,9 @@ struct MainTabView: View {
             }
         }
         .sheet(item: $unlockedAchievement, onDismiss: {
-            print("📖 Complete story: Achievement sheet dismissed")
             unlockedAchievement = nil
         }) { achievement in
-            print("📖 Complete story: Presenting sheet for \(achievement.title)")
             AchievementUnlockedView(achievement: achievement) {
-                print("📖 Complete story: Achievement view dismiss callback")
                 unlockedAchievement = nil
             }
         }
