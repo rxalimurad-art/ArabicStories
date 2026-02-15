@@ -182,8 +182,13 @@ class ProgressViewModel {
             return
         }
         
+        // Track which achievements were already unlocked before this check
+        let previouslyUnlockedTitles = Set(achievements.filter { $0.isUnlocked }.map { $0.title })
+        print("📖 Complete story: Previously unlocked achievements: \(previouslyUnlockedTitles)")
+        
         for index in achievementsList.indices {
-            let wasUnlocked = achievementsList[index].isUnlocked
+            let achievementTitle = achievementsList[index].title
+            let wasUnlocked = previouslyUnlockedTitles.contains(achievementTitle)
             
             switch achievementsList[index].category {
             case .vocabulary:
@@ -218,8 +223,9 @@ class ProgressViewModel {
                 break
             }
             
-            // Check if newly unlocked
+            // Check if newly unlocked (wasn't unlocked before but is now)
             if !wasUnlocked && achievementsList[index].isUnlocked {
+                print("📖 Complete story: Newly unlocked: \(achievementTitle)")
                 newlyUnlocked.append(achievementsList[index])
             }
         }
@@ -228,8 +234,11 @@ class ProgressViewModel {
         
         // Only show notification when checkForUnlocks is true (after story completion)
         if checkForUnlocks, let firstNew = newlyUnlocked.first {
+            print("📖 Complete story: Showing achievement popup for: \(firstNew.title)")
             newlyUnlockedAchievement = firstNew
             showAchievementUnlocked = true
+        } else if checkForUnlocks {
+            print("📖 Complete story: No new achievements to show")
         }
     }
     
