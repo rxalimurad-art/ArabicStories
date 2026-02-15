@@ -182,13 +182,16 @@ class ProgressViewModel {
             return
         }
         
-        // Track which achievements were already unlocked before this check
-        let previouslyUnlockedTitles = Set(achievements.filter { $0.isUnlocked }.map { $0.title })
-        print("📖 Complete story: Previously unlocked achievements: \(previouslyUnlockedTitles)")
+        // Track which achievements were already unlocked from persistent storage
+        let previouslyUnlockedTitles = Set(progress.unlockedAchievementTitles)
+        print("📖 Complete story: Previously unlocked achievements from storage: \(previouslyUnlockedTitles)")
         
         for index in achievementsList.indices {
             let achievementTitle = achievementsList[index].title
             let wasUnlocked = previouslyUnlockedTitles.contains(achievementTitle)
+            
+            // Set isUnlocked based on persistent storage
+            achievementsList[index].isUnlocked = wasUnlocked
             
             switch achievementsList[index].category {
             case .vocabulary:
@@ -227,10 +230,21 @@ class ProgressViewModel {
             if !wasUnlocked && achievementsList[index].isUnlocked {
                 print("📖 Complete story: Newly unlocked: \(achievementTitle)")
                 newlyUnlocked.append(achievementsList[index])
+                
+                // Save to persistent storage
+                if !progress.unlockedAchievementTitles.contains(achievementTitle) {
+                    progress.unlockedAchievementTitles.append(achievementTitle)
+                }
             }
         }
         
         achievements = achievementsList
+        
+        // Save updated progress with new achievements
+        if !newlyUnlocked.isEmpty {
+            try? await dataService.updateUserProgress(progress)
+            print("📖 Complete story: Saved \(newlyUnlocked.count) new achievements to storage")
+        }
         
         // Only show notification when checkForUnlocks is true (after story completion)
         if checkForUnlocks, let firstNew = newlyUnlocked.first {

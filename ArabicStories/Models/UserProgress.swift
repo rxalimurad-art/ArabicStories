@@ -52,6 +52,9 @@ struct UserProgress: Identifiable, Codable {
     // MARK: - Weak Words (for targeted practice)
     var weakWordIds: [String]
     
+    // MARK: - Achievements
+    var unlockedAchievementTitles: [String]
+    
     // MARK: - Timestamps
     var createdAt: Date
     var updatedAt: Date
@@ -79,6 +82,7 @@ struct UserProgress: Identifiable, Codable {
         self.todayStudyMinutes = 0
         self.weeklyStudyMinutes = Array(repeating: 0, count: 7)
         self.weakWordIds = []
+        self.unlockedAchievementTitles = []
         self.createdAt = Date()
         self.updatedAt = Date()
     }
