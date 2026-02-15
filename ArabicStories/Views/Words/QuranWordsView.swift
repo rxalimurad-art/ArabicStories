@@ -65,7 +65,7 @@ struct QuranWordsView: View {
         HStack(spacing: 12) {
             StatItemCompact(value: stats.totalUniqueWords.formatted(), label: "Unique Words", color: .blue)
             Divider().frame(height: 30)
-            StatItemCompact(value: stats.totalTokens.formatted(), label: "Total Occurrences", color: .orange)
+            StatItemCompact(value: stats.totalTokens.formatted(), label: "Total Occurrences in Quran", color: .orange)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)

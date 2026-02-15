@@ -220,13 +220,20 @@ struct ActionButton: View {
     let icon: String
     let title: String
     let color: Color
+    var isLoading: Bool = false
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
             VStack(spacing: 6) {
-                Image(systemName: icon)
-                    .font(.title3)
+                if isLoading {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                        .frame(width: 24, height: 24)
+                } else {
+                    Image(systemName: icon)
+                        .font(.title3)
+                }
                 Text(title)
                     .font(.caption2.weight(.medium))
             }
@@ -237,6 +244,7 @@ struct ActionButton: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
+        .disabled(isLoading)
     }
 }
 

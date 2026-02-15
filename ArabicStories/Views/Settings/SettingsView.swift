@@ -33,12 +33,62 @@ struct SettingsView: View {
     @State private var morningReminder = NotificationSettings.shared.morningReminder
     @State private var afternoonReminder = NotificationSettings.shared.afternoonReminder
     @State private var showingNotificationAlert = true
+    @State private var dailyGoalMinutes = 5
+    @State private var dataService = DataService.shared
     
     var body: some View {
         NavigationStack {
             List {
                 // Account Section
                 accountSection
+                
+                // Daily Goal
+                Section("Daily Goal") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "flame.fill")
+                                .frame(width: 30)
+                                .foregroundStyle(Color.hikayaOrange)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Daily Study Goal")
+                                Text("\(dailyGoalMinutes) minutes")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        // Goal picker
+                        Picker("Daily Goal", selection: $dailyGoalMinutes) {
+                            Text("5 min").tag(5)
+                            Text("10 min").tag(10)
+                            Text("15 min").tag(15)
+                            Text("20 min").tag(20)
+                            Text("30 min").tag(30)
+                            Text("45 min").tag(45)
+                            Text("60 min").tag(60)
+                        }
+                        .pickerStyle(.segmented)
+                        .onChange(of: dailyGoalMinutes) { _, newValue in
+                            Task {
+                                await updateDailyGoal(minutes: newValue)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+                .onAppear {
+                    // Load current daily goal
+                    Task {
+                        if let progress = await dataService.fetchUserProgress() {
+                            await MainActor.run {
+                                dailyGoalMinutes = progress.dailyGoalMinutes
+                            }
+                        }
+                    }
+                }
                 
                 // Notifications
                 Section("Reminders") {
@@ -259,6 +309,13 @@ struct SettingsView: View {
     
     private func resetAllProgress() {
         // Implementation for resetting all progress
+    }
+    
+    private func updateDailyGoal(minutes: Int) async {
+        guard var progress = await dataService.fetchUserProgress() else { return }
+        progress.dailyGoalMinutes = minutes
+        try? await dataService.updateUserProgress(progress)
+        print("✅ Updated daily goal to \(minutes) minutes")
     }
     
     // MARK: - Account Section

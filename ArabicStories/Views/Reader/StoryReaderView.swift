@@ -5,13 +5,18 @@
 //
 
 import SwiftUI
+import Combine
 
 struct StoryReaderView: View {
     var story: Story
     @Bindable var viewModel: StoryReaderViewModel
     @State private var showingSettings = false
     @State private var wordsLoadedRefresh = false  // Trigger refresh when generic words load
+    @State private var timerUpdate = false  // Triggers UI refresh every second for timer
     @Environment(\.dismiss) private var dismiss
+    
+    // Timer for real-time updates
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     init(story: Story) {
         self.story = story
@@ -28,7 +33,8 @@ struct StoryReaderView: View {
                 ReaderNavigationBar(
                     progress: viewModel.readingProgress,
                     isNightMode: viewModel.isNightMode,
-                    readingTime: story.estimatedReadingTime,
+                    elapsedTime: viewModel.formattedCurrentSessionTime,
+                    timerUpdate: timerUpdate,  // Force refresh every second
                     onBackTap: { dismiss() },
                     onSettingsTap: { showingSettings = true }
                 )
@@ -57,6 +63,8 @@ struct StoryReaderView: View {
                                 onMarkAsDone: {
                                     Task {
                                         await viewModel.markAsCompleted()
+                                        // Small delay to allow achievement notification to be processed
+                                        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
                                         dismiss()
                                     }
                                 },
@@ -92,6 +100,8 @@ struct StoryReaderView: View {
                                 } else {
                                     // On last slide - mark complete and dismiss
                                     await viewModel.markAsCompleted()
+                                    // Small delay to allow achievement notification to be processed
+                                    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
                                     dismiss()
                                 }
                             }
@@ -99,6 +109,11 @@ struct StoryReaderView: View {
                         onPrevious: { Task { await viewModel.goToPreviousSegment() } }
                     )
                 }
+            }
+            
+            // Completion Loading Overlay
+            if viewModel.isCompletingStory {
+                CompletionLoadingView()
             }
             
             // Word Popover
@@ -165,6 +180,10 @@ struct StoryReaderView: View {
                 wordsLoadedRefresh.toggle()
             }
         }
+        .onReceive(timer) { _ in
+            // Trigger UI refresh every second for real-time timer display
+            timerUpdate.toggle()
+        }
     }
 }
 
@@ -227,18 +246,10 @@ struct VocabularyProgressBar: View {
 struct ReaderNavigationBar: View {
     let progress: Double
     let isNightMode: Bool
-    let readingTime: TimeInterval
+    let elapsedTime: String
+    let timerUpdate: Bool  // Triggers refresh every second
     let onBackTap: () -> Void
     let onSettingsTap: () -> Void
-    
-    private var formattedReadingTime: String {
-        let minutes = Int(readingTime / 60)
-        if minutes < 1 {
-            return "< 1 min"
-        } else {
-            return "\(minutes) min"
-        }
-    }
     
     var body: some View {
         HStack(spacing: 16) {
@@ -247,7 +258,7 @@ struct ReaderNavigationBar: View {
                     .font(.title3.weight(.semibold))
             }
             
-            // Progress Bar with Reading Time
+            // Progress Bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 2)
@@ -261,14 +272,22 @@ struct ReaderNavigationBar: View {
             }
             .frame(height: 4)
             
-            // Reading Time
+            // Real-time Timer
             HStack(spacing: 4) {
-                Image(systemName: "clock")
+                Image(systemName: "stopwatch")
                     .font(.caption)
-                Text(formattedReadingTime)
+                Text(elapsedTime)
                     .font(.caption.weight(.medium))
+                    .monospacedDigit()
             }
-            .foregroundStyle(isNightMode ? .gray : .secondary)
+            .id(timerUpdate)  // Force refresh every second
+            .foregroundStyle(Color.hikayaTeal)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Color.hikayaTeal.opacity(0.1))
+            )
             
             Button(action: onSettingsTap) {
                 Image(systemName: "textformat.size")
@@ -1269,6 +1288,66 @@ struct FlowLayout: Layout {
             }
             
             self.size = CGSize(width: maxWidth, height: y + lineHeight)
+        }
+    }
+}
+
+// MARK: - Completion Loading View
+
+struct CompletionLoadingView: View {
+    @State private var animationPhase = 0
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                // Animated Progress Circle
+                ZStack {
+                    Circle()
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 6)
+                        .frame(width: 80, height: 80)
+                    
+                    Circle()
+                        .trim(from: 0, to: 0.7)
+                        .stroke(
+                            Color.hikayaTeal,
+                            style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                        )
+                        .frame(width: 80, height: 80)
+                        .rotationEffect(.degrees(Double(animationPhase) * 360))
+                        .animation(
+                            .linear(duration: 1)
+                            .repeatForever(autoreverses: false),
+                            value: animationPhase
+                        )
+                    
+                    Image(systemName: "book.closed.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(Color.hikayaTeal)
+                }
+                
+                VStack(spacing: 8) {
+                    Text("Completing Story...")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    
+                    Text("Saving your progress and checking achievements")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+            }
+            .padding(30)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+            )
+        }
+        .onAppear {
+            animationPhase = 1
         }
     }
 }

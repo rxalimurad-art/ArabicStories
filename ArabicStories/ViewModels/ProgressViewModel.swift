@@ -66,8 +66,15 @@ class ProgressViewModel {
         await loadUserProgress()
         await loadQuranStats()
         await loadWordStats()
-        await loadAchievements()
+        await loadAchievements(checkForUnlocks: false)  // Don't show unlocks on initial load
         await loadStatistics()
+    }
+    
+    /// Call this after story completion to check for newly unlocked achievements
+    func checkAchievementsAfterStoryCompletion() async {
+        await loadUserProgress()
+        await loadWordStats()
+        await loadAchievements(checkForUnlocks: true)  // Show unlocks after story completion
     }
     
     func loadUserProgress() async {
@@ -166,7 +173,7 @@ class ProgressViewModel {
         }
     }
     
-    func loadAchievements() async {
+    func loadAchievements(checkForUnlocks: Bool = false) async {
         var achievementsList = Achievement.defaultAchievements
         var newlyUnlocked: [Achievement] = []
         
@@ -219,8 +226,8 @@ class ProgressViewModel {
         
         achievements = achievementsList
         
-        // Show notification for newly unlocked achievement
-        if let firstNew = newlyUnlocked.first {
+        // Only show notification when checkForUnlocks is true (after story completion)
+        if checkForUnlocks, let firstNew = newlyUnlocked.first {
             newlyUnlockedAchievement = firstNew
             showAchievementUnlocked = true
         }

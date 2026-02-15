@@ -325,12 +325,19 @@ class DataService {
         await localCache.saveUserProgress(progress)
     }
     
-    /// Record reading time for a story and update user's total reading time
+    /// Record reading time for a story and update user's total reading time and daily goal
     func recordReadingTime(storyId: UUID, timeInterval: TimeInterval) async {
         guard var progress = await fetchUserProgress() else { return }
         
         // Update the user's total reading time
         progress.recordReadingTime(timeInterval)
+        
+        // Also update daily goal progress (convert seconds to minutes, rounding up)
+        let minutes = Int(ceil(timeInterval / 60.0))
+        if minutes > 0 {
+            progress.recordStudySession(minutes: minutes)
+            print("⏱️ Added \(minutes) minutes to daily goal")
+        }
         
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())

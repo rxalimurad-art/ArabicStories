@@ -44,6 +44,15 @@ struct ProgressDashboardView: View {
                     }
                 }
             }
+            .refreshable {
+                await viewModel.refresh()
+            }
+            .onAppear {
+                // Refresh data when view appears to show latest reading time
+                Task {
+                    await viewModel.loadUserProgress()
+                }
+            }
         }
     }
 }
@@ -246,6 +255,7 @@ struct WeeklyProgressCard: View {
 
 struct AchievementsSection: View {
     var viewModel: ProgressViewModel
+    @State private var showingAllAchievements = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -270,11 +280,29 @@ struct AchievementsSection: View {
                     AchievementBadge(achievement: achievement)
                 }
             }
+            
+            // See All Button
+            Button {
+                showingAllAchievements = true
+            } label: {
+                HStack {
+                    Text("See All Achievements")
+                        .font(.subheadline.weight(.medium))
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                }
+                .foregroundStyle(Color.hikayaTeal)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 8)
+            }
         }
         .padding()
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+        .sheet(isPresented: $showingAllAchievements) {
+            AchievementsListView(achievements: viewModel.achievements)
+        }
     }
 }
 
@@ -287,12 +315,12 @@ struct AchievementBadge: View {
         VStack(spacing: 8) {
             ZStack {
                 Circle()
-                    .fill(achievement.isUnlocked ? rarityColor.opacity(0.2) : Color(.systemGray5))
+                    .fill(achievement.isUnlocked ? categoryColor.opacity(0.2) : Color(.systemGray5))
                     .frame(width: 60, height: 60)
                 
                 Image(systemName: achievement.iconName)
                     .font(.system(size: 24))
-                    .foregroundStyle(achievement.isUnlocked ? rarityColor : Color.gray)
+                    .foregroundStyle(achievement.isUnlocked ? categoryColor : Color.gray)
             }
             
             Text(achievement.title)
@@ -305,12 +333,23 @@ struct AchievementBadge: View {
         .opacity(achievement.isUnlocked ? 1 : 0.5)
     }
     
-    private var rarityColor: Color {
-        switch achievement.rarity {
-        case .common: return .gray
-        case .rare: return .blue
-        case .epic: return .purple
-        case .legendary: return .orange
+    /// Category-based colors for better visual distinction
+    private var categoryColor: Color {
+        switch achievement.category {
+        case .streak:
+            return Color.orange  // Fire/streak = orange
+        case .vocabulary:
+            return Color.green   // Growth/words = green
+        case .stories:
+            return Color.blue    // Books/stories = blue
+        case .time:
+            return Color.cyan    // Time = cyan
+        case .mastery:
+            return Color.purple  // Mastery/skill = purple
+        case .social:
+            return Color.pink    // Social = pink
+        @unknown default:
+            return Color.gray
         }
     }
 }
@@ -403,28 +442,19 @@ struct AchievementUnlockedView: View {
     let onDismiss: () -> Void
     @State private var showConfetti = false
     
-    private var rarityColor: Color {
-        switch achievement.rarity {
-        case .common: return .gray
-        case .rare: return .blue
-        case .epic: return .purple
-        case .legendary: return .orange
-        }
-    }
-    
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Icon
+            // Icon with category color
             ZStack {
                 Circle()
-                    .fill(rarityColor.opacity(0.2))
+                    .fill(categoryColor.opacity(0.2))
                     .frame(width: 120, height: 120)
                 
                 Image(systemName: achievement.iconName)
                     .font(.system(size: 60))
-                    .foregroundStyle(rarityColor)
+                    .foregroundStyle(categoryColor)
             }
             
             // Text
@@ -435,7 +465,7 @@ struct AchievementUnlockedView: View {
                 
                 Text(achievement.title)
                     .font(.title3.weight(.semibold))
-                    .foregroundStyle(rarityColor)
+                    .foregroundStyle(categoryColor)
                 
                 Text(achievement.achievementDescription)
                     .font(.subheadline)
@@ -443,32 +473,307 @@ struct AchievementUnlockedView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
                 
-                // Rarity badge
-                Text(achievement.rarity.displayName)
-                    .font(.caption.weight(.semibold))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(rarityColor.opacity(0.2))
-                    .foregroundStyle(rarityColor)
-                    .clipShape(Capsule())
+                // Category & Rarity badges
+                HStack(spacing: 12) {
+                    Text(achievement.category.displayName)
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(categoryColor.opacity(0.2))
+                        .foregroundStyle(categoryColor)
+                        .clipShape(Capsule())
+                    
+                    Text(achievement.rarity.displayName)
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(rarityBadgeColor.opacity(0.2))
+                        .foregroundStyle(rarityBadgeColor)
+                        .clipShape(Capsule())
+                }
             }
             
             Spacer()
             
-            // Dismiss button
+            // Dismiss button with category color
             Button(action: onDismiss) {
                 Text("Awesome!")
                     .font(.headline)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.hikayaTeal)
+                    .background(categoryColor)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 32)
         }
         .background(Color.hikayaBackground)
+    }
+    
+    /// Category-based colors for visual distinction
+    private var categoryColor: Color {
+        switch achievement.category {
+        case .streak:
+            return Color.orange  // Fire/streak = orange
+        case .vocabulary:
+            return Color.green   // Growth/words = green
+        case .stories:
+            return Color.blue    // Books/stories = blue
+        case .time:
+            return Color.cyan    // Time = cyan
+        case .mastery:
+            return Color.purple  // Mastery/skill = purple
+        case .social:
+            return Color.pink    // Social = pink
+        @unknown default:
+            return Color.gray
+        }
+    }
+    
+    /// Rarity badge colors
+    private var rarityBadgeColor: Color {
+        switch achievement.rarity {
+        case .common: return .gray
+        case .rare: return .blue
+        case .epic: return .purple
+        case .legendary: return .orange
+        @unknown default:
+            return .gray
+        }
+    }
+}
+
+// MARK: - Achievements List View
+
+struct AchievementsListView: View {
+    let achievements: [Achievement]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            List {
+                // Summary Section
+                Section {
+                    AchievementsSummaryView(achievements: achievements)
+                }
+                
+                // Unlocked Achievements
+                if !unlockedAchievements.isEmpty {
+                    Section("Unlocked") {
+                        ForEach(unlockedAchievements) { achievement in
+                            AchievementRow(achievement: achievement)
+                        }
+                    }
+                }
+                
+                // Locked Achievements
+                if !lockedAchievements.isEmpty {
+                    Section("Locked") {
+                        ForEach(lockedAchievements) { achievement in
+                            AchievementRow(achievement: achievement)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Achievements")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+    
+    private var unlockedAchievements: [Achievement] {
+        achievements.filter { $0.isUnlocked }.sorted { $0.rarity.rawValue > $1.rarity.rawValue }
+    }
+    
+    private var lockedAchievements: [Achievement] {
+        achievements.filter { !$0.isUnlocked }
+    }
+}
+
+// MARK: - Achievements Summary View
+
+struct AchievementsSummaryView: View {
+    let achievements: [Achievement]
+    
+    var unlockedCount: Int {
+        achievements.filter { $0.isUnlocked }.count
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Progress Ring
+            ZStack {
+                Circle()
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 12)
+                    .frame(width: 120, height: 120)
+                
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(
+                        Color.hikayaOrange,
+                        style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                    )
+                    .frame(width: 120, height: 120)
+                    .rotationEffect(.degrees(-90))
+                
+                VStack(spacing: 4) {
+                    Text("\(unlockedCount)")
+                        .font(.title.bold())
+                    Text("of \(achievements.count)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            
+            Text("\(Int(progress * 100))% Complete")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+    }
+    
+    private var progress: Double {
+        guard achievements.count > 0 else { return 0 }
+        return Double(unlockedCount) / Double(achievements.count)
+    }
+}
+
+// MARK: - Achievement Row
+
+struct AchievementRow: View {
+    let achievement: Achievement
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            // Icon
+            ZStack {
+                Circle()
+                    .fill(achievement.isUnlocked ? categoryColor.opacity(0.2) : Color(.systemGray5))
+                    .frame(width: 50, height: 50)
+                
+                Image(systemName: achievement.iconName)
+                    .font(.system(size: 20))
+                    .foregroundStyle(achievement.isUnlocked ? categoryColor : Color.gray)
+            }
+            
+            // Info
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(achievement.title)
+                        .font(.subheadline.weight(.semibold))
+                    
+                    if achievement.isUnlocked {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                    }
+                }
+                
+                Text(achievement.achievementDescription)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                
+                // Category tag
+                HStack(spacing: 8) {
+                    Text(achievement.category.displayName)
+                        .font(.caption2.weight(.medium))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(categoryColor.opacity(0.15))
+                        .foregroundStyle(categoryColor)
+                        .clipShape(Capsule())
+                    
+                    // Progress for locked achievements
+                    if !achievement.isUnlocked {
+                        Text("\(achievement.currentProgress)/\(achievement.requirement)")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                
+                // Progress bar for locked achievements
+                if !achievement.isUnlocked {
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color(.systemGray5))
+                                .frame(height: 4)
+                            
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(categoryColor)
+                                .frame(width: geometry.size.width * achievement.progressPercentage, height: 4)
+                        }
+                    }
+                    .frame(height: 4)
+                    .padding(.top, 4)
+                }
+            }
+            
+            Spacer()
+            
+            // Rarity Badge
+            Text(achievement.rarity.displayName)
+                .font(.caption2.weight(.medium))
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(rarityBadgeColor.opacity(0.15))
+                .foregroundStyle(rarityBadgeColor)
+                .clipShape(Capsule())
+        }
+        .padding(.vertical, 4)
+        .opacity(achievement.isUnlocked ? 1 : 0.6)
+    }
+    
+    /// Category-based colors for visual distinction
+    private var categoryColor: Color {
+        switch achievement.category {
+        case .streak:
+            return Color.orange  // Fire/streak = orange
+        case .vocabulary:
+            return Color.green   // Growth/words = green
+        case .stories:
+            return Color.blue    // Books/stories = blue
+        case .time:
+            return Color.cyan    // Time = cyan
+        case .mastery:
+            return Color.purple  // Mastery/skill = purple
+        case .social:
+            return Color.pink    // Social = pink
+        @unknown default:
+            return Color.gray
+        }
+    }
+    
+    /// Rarity badge colors
+    private var rarityBadgeColor: Color {
+        switch achievement.rarity {
+        case .common: return .gray
+        case .rare: return .blue
+        case .epic: return .purple
+        case .legendary: return .orange
+        @unknown default:
+            return .gray
+        }
+    }
+    
+    private var rarityColor: Color {
+        switch achievement.rarity {
+        case .common: return .gray
+        case .rare: return .blue
+        case .epic: return .purple
+        case .legendary: return .orange
+        @unknown default:
+            return .gray
+        }
     }
 }
 

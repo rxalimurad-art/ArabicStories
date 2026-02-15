@@ -75,7 +75,7 @@ struct UserProgress: Identifiable, Codable {
         self.level2StoriesCompleted = 0
         self.totalReadingTime = 0
         self.totalPagesRead = 0
-        self.dailyGoalMinutes = 15
+        self.dailyGoalMinutes = 5  // Default 5 minutes daily goal
         self.todayStudyMinutes = 0
         self.weeklyStudyMinutes = Array(repeating: 0, count: 7)
         self.weakWordIds = []

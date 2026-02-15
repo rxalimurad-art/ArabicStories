@@ -18,6 +18,7 @@ class StoryReaderViewModel {
     var story: Story
     var currentSegmentIndex: Int = 0
     var isLoading = false
+    var isCompletingStory = false  // For showing progress when completing story
     
     // Audio State
     var isPlaying = false
@@ -454,6 +455,10 @@ class StoryReaderViewModel {
     private func completeStory() async {
         print("📖 completeStory() called for '\(story.title)' (ID: \(story.id.uuidString))")
         
+        await MainActor.run {
+            isCompletingStory = true
+        }
+        
         // Save completion to user-specific story progress
         await dataService.updateStoryProgress(
             storyId: story.id,
@@ -469,11 +474,35 @@ class StoryReaderViewModel {
         if unlocked {
             print("🎉 Level 2 Unlocked!")
         }
+        
+        // Check for achievements after story completion
+        await checkAchievementsAfterCompletion()
+        
+        await MainActor.run {
+            isCompletingStory = false
+        }
         print("📖 completeStory() finished")
     }
     
     func markAsCompleted() async {
         await completeStory()
+    }
+    
+    private func checkAchievementsAfterCompletion() async {
+        // Load progress view model to check achievements
+        let progressVM = ProgressViewModel()
+        await progressVM.checkAchievementsAfterStoryCompletion()
+        
+        // Check if any new achievements were unlocked
+        if let newAchievement = progressVM.newlyUnlockedAchievement {
+            await MainActor.run {
+                // Post notification to show achievement unlocked
+                NotificationCenter.default.post(
+                    name: .achievementUnlocked,
+                    object: newAchievement
+                )
+            }
+        }
     }
     
     // MARK: - Settings
@@ -534,6 +563,19 @@ class StoryReaderViewModel {
     }
     
     // MARK: - Reading Time Tracking
+    
+    /// Formatted reading time for display (updates in real-time)
+    var formattedCurrentSessionTime: String {
+        let totalSeconds = Int(currentSessionDuration)
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        
+        if minutes > 0 {
+            return String(format: "%d:%02d", minutes, seconds)
+        } else {
+            return String(format: "0:%02d", seconds)
+        }
+    }
     
     /// Start tracking reading time for this session
     func startReadingSession() {

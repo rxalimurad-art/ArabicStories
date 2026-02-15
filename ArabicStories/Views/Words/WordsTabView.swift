@@ -57,28 +57,31 @@ struct MyWordsView: View {
     @Binding var selectedTab: Int
     @State private var viewModel = MyWordsViewModel()
     @State private var showingQuiz = false
+    @State private var selectedWord: Word?
     
     init(selectedTab: Binding<Int> = .constant(1)) {
         self._selectedTab = selectedTab
     }
     
     var body: some View {
-        Group {
-            if viewModel.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if viewModel.unlockedWords.isEmpty {
-                ContentUnavailableView {
-                    Label("No Words Yet", systemImage: "lock.fill")
-                } description: {
-                    Text("Read stories to unlock words for practice")
-                } actions: {
-                    Button("Go to Stories") {
-                        selectedTab = 0 // Switch to Learn tab
+        NavigationStack {
+            Group {
+                if viewModel.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if viewModel.unlockedWords.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Words Yet", systemImage: "lock.fill")
+                    } description: {
+                        Text("Read stories to unlock words for practice")
+                    } actions: {
+                        Button("Go to Stories") {
+                            selectedTab = 0 // Switch to Learn tab
+                        }
                     }
+                } else {
+                    myWordsList
                 }
-            } else {
-                myWordsList
             }
         }
         .task {
@@ -86,6 +89,13 @@ struct MyWordsView: View {
         }
         .sheet(isPresented: $showingQuiz) {
             QuizSessionSheet(viewModel: viewModel)
+        }
+        .sheet(item: $selectedWord) { word in
+            MyWordDetailView(
+                word: word,
+                isMastered: viewModel.isWordMastered(word.id),
+                progress: viewModel.wordProgress(word.id)
+            )
         }
     }
     
@@ -161,11 +171,16 @@ struct MyWordsView: View {
             // Unlocked Words List
             Section(header: Text("Words")) {
                 ForEach(viewModel.unlockedWords) { word in
-                    MyWordRow(
-                        word: word,
-                        isMastered: viewModel.isWordMastered(word.id),
-                        progress: viewModel.wordProgress(word.id)
-                    )
+                    Button {
+                        selectedWord = word
+                    } label: {
+                        MyWordRow(
+                            word: word,
+                            isMastered: viewModel.isWordMastered(word.id),
+                            progress: viewModel.wordProgress(word.id)
+                        )
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }
@@ -684,6 +699,487 @@ struct StatBadge: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+// MARK: - My Word Detail View
+struct MyWordDetailView: View {
+    let word: Word
+    let isMastered: Bool
+    let progress: Double
+    @Environment(\.dismiss) private var dismiss
+    
+    // Audio & Bookmark states
+    @State private var isPlayingAudio = false
+    @State private var isBookmarked = false
+    
+    // Related words
+    @State private var relatedWords: [QuranWord] = []
+    @State private var isLoadingRelated = false
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Header Card with Audio & Bookmark
+                    headerCard
+                    
+                    // Root Section (similar to QuranWordDetailView)
+                    rootSection
+                    
+                    // Related Words by Root
+                    relatedWordsSection
+                    
+                    // Linguistic Info Section (similar to Morphology)
+                    linguisticInfoSection
+                    
+                    // Learning Progress Section (similar to Statistics)
+                    progressSection
+                    
+                    // Example Sentences Section
+                    examplesSection
+                }
+                .padding()
+            }
+            .navigationTitle("Word Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .onAppear {
+            isBookmarked = word.isBookmarked ?? false
+        }
+    }
+    
+    // MARK: - Header Card
+    private var headerCard: some View {
+        VStack(spacing: 16) {
+            // Arabic Text
+            Text(word.displayText)
+                .font(.system(size: 48, weight: .bold, design: .serif))
+                .multilineTextAlignment(.center)
+            
+            // English Meaning
+            Text(word.englishMeaning)
+                .font(.title2)
+                .fontWeight(.medium)
+                .foregroundStyle(.primary)
+            
+            // Transliteration
+            if let transliteration = word.transliteration {
+                Text(transliteration)
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .italic()
+            }
+            
+            // Badges Row
+            HStack(spacing: 12) {
+                if let pos = word.partOfSpeech {
+                    MyWordBadge(text: pos.displayName, color: .blue)
+                }
+                if isMastered {
+                    MyWordBadge(text: "Mastered", color: .green)
+                } else {
+                    MyWordBadge(text: "Learning", color: .orange)
+                }
+                if word.difficulty > 0 {
+                    MyWordBadge(text: "Level \(word.difficulty)", color: .purple)
+                }
+            }
+            
+            Divider()
+            
+            // Action Buttons (Audio & Bookmark)
+            HStack(spacing: 24) {
+                // Audio Button
+                ActionButton(
+                    icon: isPlayingAudio ? "speaker.wave.2.fill" : "speaker.wave.2",
+                    title: "Listen",
+                    color: Color.hikayaTeal,
+                    isLoading: isPlayingAudio
+                ) {
+                    playPronunciation()
+                }
+                
+                // Bookmark Button
+                ActionButton(
+                    icon: isBookmarked ? "bookmark.fill" : "bookmark",
+                    title: isBookmarked ? "Saved" : "Save",
+                    color: isBookmarked ? .orange : .gray
+                ) {
+                    toggleBookmark()
+                }
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color(.systemBackground))
+        .cornerRadius(16)
+        .shadow(radius: 2)
+    }
+    
+    // MARK: - Root Section
+    private var rootSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            MyWordSectionHeader(title: "Root Information", icon: "arrow.branch")
+            
+            if let root = word.rootLetters, !root.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    // Root Arabic
+                    HStack(spacing: 16) {
+                        Text(root)
+                            .font(.system(size: 36, weight: .bold, design: .serif))
+                            .foregroundStyle(.primary)
+                        
+                        Spacer()
+                    }
+                    
+                    Divider()
+                    
+                    // Root Info
+                    HStack(spacing: 24) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Label("This word is derived from the Arabic root '\(root)'", systemImage: "info.circle")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                    }
+                }
+            } else {
+                VStack(spacing: 8) {
+                    Image(systemName: "minus.circle")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+                    Text("No root information available")
+                        .foregroundStyle(.secondary)
+                        .italic()
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 8)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Related Words Section
+    private var relatedWordsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                MyWordSectionHeader(title: "Words from Same Root", icon: "text.alignleft")
+                Spacer()
+                if isLoadingRelated {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                }
+            }
+            
+            if let root = word.rootLetters, !root.isEmpty {
+                if relatedWords.isEmpty && !isLoadingRelated {
+                    Button("Load related words") {
+                        Task { await loadRelatedWords() }
+                    }
+                    .buttonStyle(.bordered)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } else if !relatedWords.isEmpty {
+                    // Show first 5 related words
+                    ForEach(relatedWords.prefix(5)) { relatedWord in
+                        RelatedQuranWordRow(word: relatedWord)
+                    }
+                    
+                    if relatedWords.count > 5 {
+                        Text("+ \(relatedWords.count - 5) more words")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.top, 8)
+                    }
+                }
+            } else {
+                Text("No related words available")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+        .task {
+            await loadRelatedWords()
+        }
+    }
+    
+    private func loadRelatedWords() async {
+        guard let root = word.rootLetters, !root.isEmpty else { return }
+        
+        isLoadingRelated = true
+        defer { isLoadingRelated = false }
+        
+        do {
+            let words = try await FirebaseService.shared.fetchWordsByRoot(root: root, limit: 50)
+            await MainActor.run {
+                relatedWords = words
+            }
+        } catch {
+            print("❌ Error loading related words: \(error)")
+        }
+    }
+    
+    // MARK: - Linguistic Info Section
+    private var linguisticInfoSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            MyWordSectionHeader(title: "Morphology", icon: "textformat")
+            
+            VStack(spacing: 8) {
+                MorphologyRow(label: "Part of Speech", value: word.partOfSpeech?.displayName ?? "N/A")
+                
+                if let root = word.rootLetters, !root.isEmpty {
+                    MorphologyRow(label: "Root Letters", value: root, isRTL: true)
+                }
+                
+                if let tashkeel = word.tashkeel, tashkeel != word.arabicText {
+                    MorphologyRow(label: "With Tashkeel", value: tashkeel, isRTL: true)
+                }
+                
+                if let transliteration = word.transliteration, !transliteration.isEmpty {
+                    MorphologyRow(label: "Transliteration", value: transliteration)
+                }
+                
+                MorphologyRow(label: "Difficulty", value: word.difficulty > 0 ? "Level \(word.difficulty)" : "Not specified")
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
+    
+    // MARK: - Progress Section
+    private var progressSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            MyWordSectionHeader(title: "Learning Statistics", icon: "chart.bar")
+            
+            HStack(spacing: 20) {
+                StatItem(value: "\(Int(progress * 100))%", label: "Mastery", color: progressColor)
+                StatItem(value: isMastered ? "Yes" : "No", label: "Mastered", color: isMastered ? .green : .gray)
+            }
+            
+            // Progress description
+            HStack {
+                Image(systemName: isMastered ? "star.fill" : "star")
+                    .foregroundStyle(isMastered ? .yellow : .gray)
+                Text(isMastered ? "You've mastered this word!" : "Keep practicing to master this word")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 8)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
+    
+    // MARK: - Example Sentences Section
+    private var examplesSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            MyWordSectionHeader(title: "Example Sentences", icon: "text.quote")
+            
+            if let examples = word.exampleSentences, !examples.isEmpty {
+                VStack(spacing: 16) {
+                    ForEach(examples.prefix(3)) { example in
+                        ExampleCard(example: example)
+                    }
+                }
+            } else {
+                VStack(spacing: 12) {
+                    Image(systemName: "text.bubble")
+                        .font(.system(size: 40))
+                        .foregroundStyle(.secondary.opacity(0.5))
+                    Text("No examples available")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 32)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Actions
+    private func playPronunciation() {
+        guard !isPlayingAudio else { return }
+        
+        isPlayingAudio = true
+        
+        Task {
+            await PronunciationService.shared.playPronunciation(for: word)
+            
+            // Reset after a delay (simulate audio duration)
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            await MainActor.run {
+                isPlayingAudio = false
+            }
+        }
+    }
+    
+    private func toggleBookmark() {
+        isBookmarked.toggle()
+    }
+    
+    private var progressColor: Color {
+        switch progress {
+        case 0..<0.3: return .red
+        case 0.3..<0.7: return .orange
+        case 0.7..<1.0: return .yellow
+        default: return .green
+        }
+    }
+}
+
+// MARK: - Related Quran Word Row
+struct RelatedQuranWordRow: View {
+    let word: QuranWord
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Rank
+            Text("#\(word.rank)")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
+                .frame(width: 40, alignment: .leading)
+            
+            // Arabic
+            Text(word.arabicText)
+                .font(.system(size: 18, weight: .medium, design: .serif))
+                .frame(width: 60, alignment: .trailing)
+            
+            // English
+            Text(word.englishMeaning)
+                .font(.subheadline)
+                .lineLimit(1)
+            
+            Spacer()
+            
+            // Occurrences
+            if word.occurrenceCount > 0 {
+                Text("\(word.occurrenceCount)×")
+                    .font(.caption)
+                    .foregroundStyle(.green)
+            }
+            
+            // POS
+            if let pos = word.morphology.partOfSpeech {
+                Text(pos)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(Color.blue.opacity(0.15))
+                    .foregroundStyle(.blue)
+                    .cornerRadius(4)
+            }
+        }
+        .padding(.vertical, 6)
+    }
+}
+
+// MARK: - Example Card
+struct ExampleCard: View {
+    let example: ExampleSentence
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Arabic
+            Text(example.arabic)
+                .font(.system(size: 20, weight: .medium, design: .serif))
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            
+            Divider()
+            
+            // Transliteration
+            Text(example.transliteration)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .italic()
+            
+            // English
+            Text(example.english)
+                .font(.body)
+                .foregroundStyle(.primary)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(10)
+    }
+}
+
+// MARK: - Info Row
+struct InfoRow: View {
+    let label: String
+    let value: String
+    var isRTL: Bool = false
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Text(value)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .multilineTextAlignment(isRTL ? .trailing : .trailing)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Section Header
+struct MyWordSectionHeader: View {
+    let title: String
+    let icon: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundStyle(Color.hikayaTeal)
+            Text(title)
+                .font(.headline)
+            Spacer()
+        }
+    }
+}
+
+// MARK: - Badge
+struct MyWordBadge: View {
+    let text: String
+    let color: Color
+    
+    var body: some View {
+        Text(text)
+            .font(.subheadline)
+            .fontWeight(.medium)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(color.opacity(0.15))
+            .foregroundColor(color)
+            .cornerRadius(8)
     }
 }
 
