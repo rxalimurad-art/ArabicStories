@@ -187,6 +187,7 @@ class MyWordsViewModel {
                 self.loadMockMasteryData()
                 self.isLoading = false
                 print("📚 MyWords: Done! Loaded \(collectedWords.count) Quran words from stories")
+            }
             
             // Load saved mastery data
             let savedMastery = await dataService.fetchWordMastery()
@@ -295,23 +296,27 @@ class MyWordsViewModel {
         selectedOption = answer
         let responseTime = Date().timeIntervalSince(startTime)
         
+        // Get current question BEFORE answering (index will change after)
+        guard let question = currentQuestion else { return }
+        
+        // Determine if answer is correct BEFORE processing
+        let correct = (answer == question.correctAnswer)
+        isCorrect = correct
+        
         // Capture score before moving to next question
         let previousTotalScore = session?.totalScore ?? 0
         
         session?.answerCurrentQuestion(answer, responseTime: responseTime)
-        isCorrect = (answer == currentQuestion?.correctAnswer)
         
         // Calculate score earned for this answer
         let newTotalScore = session?.totalScore ?? 0
         lastScore = newTotalScore - previousTotalScore
         
         // Update word mastery based on answer
-        if let word = currentQuestion?.word {
-            updateWordMastery(word: word, isCorrect: isCorrect == true, score: lastScore)
-        }
+        updateWordMastery(word: question.word, isCorrect: correct, score: lastScore)
         
         // Play sound effect
-        if isCorrect == true {
+        if correct {
             SoundEffectService.shared.playCorrect()
             currentStreak += 1
             if currentStreak > bestStreak {
