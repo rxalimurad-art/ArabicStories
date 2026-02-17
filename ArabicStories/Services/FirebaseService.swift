@@ -346,7 +346,8 @@ class FirebaseService {
     
     func saveUserProgress(_ progress: UserProgress, userId: String) async throws {
         let data = try userProgressToDictionary(progress)
-        try await db.collection("users").document(userId).setData(data)
+        try await db.collection("users").document(userId).setData(data, merge: true)
+        print("✅ FirebaseService: Saved user progress with merge=true to preserve other fields")
     }
     
     // MARK: - Word Mastery

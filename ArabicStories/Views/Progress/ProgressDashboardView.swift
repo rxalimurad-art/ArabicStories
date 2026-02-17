@@ -213,7 +213,7 @@ struct QuranCoverageCard: View {
                                 endPoint: .trailing
                             )
                         )
-                        .frame(width: geometry.size.width * (viewModel.quranCompletionPercentage / 100.0), height: 12)
+                        .frame(width: geometry.size.width * (String(format: "%.1f%%", coveragePercentage)), height: 12)
                 }
             }
             .frame(height: 12)

@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./FirebaseBE/functions
-        run: npm ci
+        run: npm install
 
       - name: Deploy to Firebase
         working-directory: ./FirebaseBE
