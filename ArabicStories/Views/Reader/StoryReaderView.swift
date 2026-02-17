@@ -23,6 +23,15 @@ struct StoryReaderView: View {
         viewModel = StoryReaderViewModel(story: story, wasReset: false)
     }
     
+    /// Handle story completion - show summary instead of immediately dismissing
+    private func handleStoryCompletion() async {
+        print("📖 Complete story: Complete button tapped, calling markAsCompleted()")
+        await viewModel.markAsCompleted()
+        print("📖 Complete story: markAsCompleted() returned, summary sheet will show")
+        // Don't dismiss here - the completion summary sheet will be shown
+        // The dismissal happens when the user taps "Continue" on the summary
+    }
+    
     var body: some View {
         ZStack {
             // Background
@@ -62,14 +71,7 @@ struct StoryReaderView: View {
                                 refreshTrigger: wordsLoadedRefresh,
                                 onMarkAsDone: {
                                     Task {
-                                        print("📖 Complete story: MixedContentView onMarkAsDone called")
-                                        await viewModel.markAsCompleted()
-                                        print("📖 Complete story: markAsCompleted() returned, waiting 0.5s...")
-                                        // Small delay to allow achievement notification to be processed
-                                        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-                                        print("📖 Complete story: Delay complete, calling dismiss()")
-                                        dismiss()
-                                        print("📖 Complete story: dismiss() called")
+                                        await handleStoryCompletion()
                                     }
                                 },
                                 onRepeat: {
@@ -102,15 +104,7 @@ struct StoryReaderView: View {
                                 if viewModel.canGoNext {
                                     await viewModel.goToNextSegment()
                                 } else {
-                                    // On last slide - mark complete and dismiss
-                                    print("📖 Complete story: Complete button tapped, calling markAsCompleted()")
-                                    await viewModel.markAsCompleted()
-                                    print("📖 Complete story: markAsCompleted() returned, waiting 0.5s...")
-                                    // Small delay to allow achievement notification to be processed
-                                    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-                                    print("📖 Complete story: Delay complete, calling dismiss()")
-                                    dismiss()
-                                    print("📖 Complete story: dismiss() called")
+                                    await handleStoryCompletion()
                                 }
                             }
                         },
@@ -165,6 +159,15 @@ struct StoryReaderView: View {
                 QuranWordDetailView(word: quranWord)
                     .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
+            }
+        }
+        .fullScreenCover(isPresented: $viewModel.showCompletionSummary) {
+            if let result = viewModel.completionResult {
+                StoryCompletionSummaryView(result: result) {
+                    // On dismiss, close the reader view
+                    viewModel.dismissCompletionSummary()
+                    dismiss()
+                }
             }
         }
         .onAppear {

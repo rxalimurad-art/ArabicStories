@@ -8,7 +8,6 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab = 0
-    @State private var unlockedAchievement: Achievement?
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -41,23 +40,6 @@ struct MainTabView: View {
                 .tag(3)
         }
         .tint(.hikayaTeal)
-        .onReceive(NotificationCenter.default.publisher(for: .achievementUnlocked)) { notification in
-            print("📖 Complete story: MainTabView received achievement notification")
-            if let achievement = notification.object as? Achievement {
-                print("📖 Complete story: Setting unlockedAchievement - \(achievement.title)")
-                unlockedAchievement = achievement
-                print("📖 Complete story: unlockedAchievement set, sheet will present automatically")
-            } else {
-                print("📖 Complete story: ERROR - No achievement in notification")
-            }
-        }
-        .sheet(item: $unlockedAchievement, onDismiss: {
-            unlockedAchievement = nil
-        }) { achievement in
-            AchievementUnlockedView(achievement: achievement) {
-                unlockedAchievement = nil
-            }
-        }
     }
 }
 

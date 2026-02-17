@@ -62,6 +62,10 @@ class StoryReaderViewModel {
     private var currentSessionDuration: TimeInterval = 0
     private var readingTimer: Timer?
     
+    // Story Completion Summary
+    var showCompletionSummary = false
+    var completionResult: StoryCompletionResult?
+    
     struct MixedWordInfo {
         let wordId: String
         let arabicText: String
@@ -480,14 +484,15 @@ class StoryReaderViewModel {
         }
         print("📖 Complete story: Story completion recorded")
         
-        // Check for achievements after story completion
-        print("📖 Complete story: Checking achievements...")
-        await checkAchievementsAfterCompletion()
-        print("📖 Complete story: Achievement check completed")
+        // Check for achievements and prepare completion summary
+        print("📖 Complete story: Preparing completion summary...")
+        let result = await prepareCompletionSummary()
         
         await MainActor.run {
-            isCompletingStory = false
-            print("📖 Complete story: Set isCompletingStory = false")
+            self.completionResult = result
+            self.showCompletionSummary = true
+            self.isCompletingStory = false
+            print("📖 Complete story: Completion summary ready, sheet will show")
         }
         print("📖 Complete story: Finished successfully")
     }
@@ -498,8 +503,9 @@ class StoryReaderViewModel {
         print("📖 Complete story: markAsCompleted() finished")
     }
     
-    private func checkAchievementsAfterCompletion() async {
-        print("📖 Complete story: checkAchievementsAfterCompletion() started")
+    /// Prepare the completion summary with achievements, words unlocked, and stats
+    private func prepareCompletionSummary() async -> StoryCompletionResult {
+        print("📖 Complete story: prepareCompletionSummary() started")
         
         // Load progress view model to check achievements
         print("📖 Complete story: Loading ProgressViewModel...")
@@ -507,28 +513,56 @@ class StoryReaderViewModel {
         await progressVM.checkAchievementsAfterStoryCompletion()
         print("📖 Complete story: ProgressViewModel check completed")
         
-        // Check if any new achievements were unlocked
-        if let newAchievement = progressVM.newlyUnlockedAchievement {
-            print("📖 Complete story: New achievement unlocked - \(newAchievement.title)")
-            
-            // Wait a bit for the story view to fully dismiss
-            print("📖 Complete story: Waiting 1 second before showing achievement...")
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-            print("📖 Complete story: Wait completed, posting notification...")
-            
-            await MainActor.run {
-                // Post notification to show achievement unlocked
-                NotificationCenter.default.post(
-                    name: .achievementUnlocked,
-                    object: newAchievement
-                )
-                print("📖 Complete story: Achievement notification posted")
-            }
-        } else {
-            print("📖 Complete story: No new achievements unlocked")
+        // Get all newly unlocked achievements
+        let newlyUnlocked = progressVM.achievements.filter { achievement in
+            achievement.isUnlocked && progressVM.newlyUnlockedAchievement?.id == achievement.id
         }
         
-        print("📖 Complete story: checkAchievementsAfterCompletion() finished")
+        // Also include any other achievements that were unlocked recently
+        let allUnlockedAchievements = progressVM.achievements.filter { $0.isUnlocked }
+        
+        print("📖 Complete story: Found \(allUnlockedAchievements.count) unlocked achievements")
+        
+        // Get words unlocked in this session
+        let wordsUnlocked = getWordsUnlockedInSession()
+        print("📖 Complete story: Found \(wordsUnlocked.count) words unlocked in session")
+        
+        // Get total words in story
+        let totalWords = story.words?.count ?? story.allArabicWordsInStory.count
+        
+        // Create completion result
+        let result = StoryCompletionResult(
+            story: story,
+            unlockedAchievements: allUnlockedAchievements,
+            totalWordsInStory: totalWords,
+            wordsUnlockedInSession: wordsUnlocked,
+            readingTime: currentSessionDuration
+        )
+        
+        print("📖 Complete story: prepareCompletionSummary() finished")
+        return result
+    }
+    
+    /// Get the words that were unlocked/learned during this reading session
+    private func getWordsUnlockedInSession() -> [Word] {
+        guard let storyWords = story.words else { return [] }
+        
+        // Get words that were learned in this session
+        let sessionWordIds = learnedWordIdsInSession
+        
+        // Also include words that were already marked as learned in the story
+        let learnedIds = story.learnedWordIds ?? []
+        let allLearnedIds = sessionWordIds.union(Set(learnedIds))
+        
+        return storyWords.filter { word in
+            allLearnedIds.contains(word.id.uuidString)
+        }
+    }
+    
+    /// Dismiss the completion summary and reset state
+    func dismissCompletionSummary() {
+        showCompletionSummary = false
+        completionResult = nil
     }
     
     // MARK: - Settings
