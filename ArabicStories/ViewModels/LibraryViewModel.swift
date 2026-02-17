@@ -11,6 +11,7 @@ import Combine
 class LibraryViewModel {
     // Dependencies
     private let dataService = DataService.shared
+    private let networkMonitor = NetworkMonitor.shared
     
     // State
     var stories: [Story] = []
@@ -18,6 +19,7 @@ class LibraryViewModel {
     var storyProgress: [String: StoryProgress] = [:] // Key: storyId
     var isLoading = false
     var errorMessage: String?
+    var showErrorAlert = false
     
     // Level Management
     var maxUnlockedLevel: Int = 1
@@ -85,7 +87,13 @@ class LibraryViewModel {
     
     func loadStories() async {
         isLoading = true
+        errorMessage = nil
+        showErrorAlert = false
         defer { isLoading = false }
+        
+        if !networkMonitor.isConnected {
+            errorMessage = "You're offline. Showing cached stories."
+        }
         
         let fetchedStories = await dataService.fetchStories(
             difficulty: selectedDifficulty,
@@ -93,6 +101,11 @@ class LibraryViewModel {
             searchQuery: searchQuery.isEmpty ? nil : searchQuery,
             sortBy: selectedSortOption
         )
+        
+        if fetchedStories.isEmpty && !networkMonitor.isConnected {
+            errorMessage = "No internet connection and no cached stories available."
+            showErrorAlert = true
+        }
         
         // Check for duplicates
         let storyIDs = fetchedStories.map { $0.id.uuidString }

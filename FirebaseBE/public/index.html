@@ -324,14 +324,8 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="story-difficulty">Difficulty Level *</label>
-                <select id="story-difficulty" required>
-                  <option value="1">Level 1 - Beginner</option>
-                  <option value="2">Level 2 - Elementary</option>
-                  <option value="3">Level 3 - Intermediate</option>
-                  <option value="4">Level 4 - Advanced</option>
-                  <option value="5">Level 5 - Expert</option>
-                </select>
+                <label for="story-difficulty">Difficulty Level (1-100) *</label>
+                <input type="number" id="story-difficulty" min="1" max="100" value="1" required>
               </div>
               <div class="form-group">
                 <label for="story-category">Category *</label>

@@ -46,7 +46,7 @@ function formatStoryForFirestore(storyData) {
   
   // Determine format (mixed for Level 1, bilingual for Level 2+)
   const format = storyData.format || 'bilingual';
-  const difficultyLevel = Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 5);
+  const difficultyLevel = Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 100);
   
   // Use mixed format for Level 1 if not explicitly set
   const finalFormat = format || (difficultyLevel === 1 ? 'mixed' : 'bilingual');
@@ -451,8 +451,8 @@ app.post('/api/stories/validate', async (req, res) => {
     }
 
     const difficulty = parseInt(storyData.difficultyLevel);
-    if (isNaN(difficulty) || difficulty < 1 || difficulty > 5) {
-      errors.push('Difficulty level must be between 1 and 5');
+    if (isNaN(difficulty) || difficulty < 1 || difficulty > 100) {
+      errors.push('Difficulty level must be between 1 and 100');
     }
     
     // Recommend mixed format for Level 1

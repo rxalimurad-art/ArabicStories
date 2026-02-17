@@ -125,6 +125,18 @@ struct LibraryView: View {
             } message: {
                 Text(viewModel.lockedLevelMessage)
             }
+            .alert("Connection Issue", isPresented: $viewModel.showErrorAlert) {
+                Button("Retry") {
+                    Task {
+                        await viewModel.loadStories()
+                    }
+                }
+                Button("OK", role: .cancel) { }
+            } message: {
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                }
+            }
         }
         .environment(viewModel)
     }

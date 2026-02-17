@@ -8,19 +8,70 @@ import Foundation
 import Combine
 import FirebaseAuth
 
+enum NetworkError: LocalizedError {
+    case noConnection
+    case timeout
+    case serverError
+    
+    var errorDescription: String? {
+        switch self {
+        case .noConnection:
+            return "No internet connection. Please check your network and try again."
+        case .timeout:
+            return "Request timed out. Please try again."
+        case .serverError:
+            return "Server error. Please try again later."
+        }
+    }
+}
+
 @Observable
 class DataService {
     static let shared = DataService()
 
     private let firebaseService = FirebaseService.shared
+    private let networkMonitor = NetworkMonitor.shared
 
     // Publishers for reactive updates
     var storiesPublisher = CurrentValueSubject<[Story], Never>([])
     var isLoadingPublisher = CurrentValueSubject<Bool, Never>(false)
     var errorPublisher = PassthroughSubject<Error, Never>()
     var levelUnlockedPublisher = PassthroughSubject<Int, Never>()
+    
+    // MARK: - Cache
+    private var cachedStories: [Story]?
+    private var cachedUserProgress: UserProgress?
+    private var cachedWords: [Word]?
+    private var cacheTimestamp: Date?
+    private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
 
     private init() {}
+    
+    // MARK: - Cache Management
+    
+    private func isCacheValid() -> Bool {
+        guard let timestamp = cacheTimestamp else { return false }
+        return Date().timeIntervalSince(timestamp) < cacheValidityDuration
+    }
+    
+    func clearCache() {
+        cachedStories = nil
+        cachedUserProgress = nil
+        cachedWords = nil
+        cacheTimestamp = nil
+    }
+    
+    func refreshCache() async {
+        clearCache()
+        _ = await fetchAllStories()
+        _ = await fetchUserProgress()
+    }
+    
+    private func checkNetwork() throws {
+        guard networkMonitor.isConnected else {
+            throw NetworkError.noConnection
+        }
+    }
 
     // Get current Firebase Auth user ID
     private func getCurrentUserId() -> String {
@@ -55,21 +106,52 @@ class DataService {
     // MARK: - Story Operations
 
     func fetchAllStories() async -> [Story] {
+        // Return cached stories if valid
+        if isCacheValid(), let cached = cachedStories {
+            print("📱 DataService: Returning cached stories (\(cached.count) stories)")
+            return cached
+        }
+        
         isLoadingPublisher.send(true)
         defer { isLoadingPublisher.send(false) }
+        
+        // Check network before fetching
+        do {
+            try checkNetwork()
+        } catch {
+            // If offline and have cache, return stale cache
+            if let cached = cachedStories {
+                print("📱 DataService: Offline - returning stale cached stories")
+                return cached
+            }
+            // No cache and offline
+            print("📱 DataService: Offline with no cache")
+            errorPublisher.send(error)
+            return []
+        }
 
-        print("📱 DataService: Fetching all stories...")
+        print("📱 DataService: Fetching all stories from Firebase...")
 
         do {
             print("📱 DataService: Calling firebaseService.fetchStories()")
             let stories = try await firebaseService.fetchStories()
             print("📱 DataService: Got \(stories.count) stories from Firebase")
 
+            // Update cache
+            cachedStories = stories
+            cacheTimestamp = Date()
+            
             storiesPublisher.send(stories)
             return stories
         } catch {
             print("📱 DataService: Error fetching from Firebase: \(error)")
             errorPublisher.send(error)
+            
+            // Return stale cache if available
+            if let cached = cachedStories {
+                print("📱 DataService: Returning stale cache after error")
+                return cached
+            }
             return []
         }
     }
@@ -221,8 +303,35 @@ class DataService {
 
     func fetchUserProgress() async -> UserProgress? {
         let userId = getCurrentUserId()
+        
+        // Return cached progress if valid (but still check for daily reset)
+        if let cached = cachedUserProgress {
+            var progress = cached
+            let didReset = progress.checkAndResetDailyStatsIfNeeded()
+            
+            if didReset {
+                // Daily reset happened - save and update cache
+                do {
+                    try checkNetwork()
+                    try await firebaseService.saveUserProgress(progress, userId: userId)
+                    cachedUserProgress = progress
+                    return progress
+                } catch {
+                    // Offline - return cached with reset applied locally
+                    cachedUserProgress = progress
+                    return progress
+                }
+            }
+            
+            // No reset needed, return valid cache
+            if isCacheValid() {
+                return cached
+            }
+        }
 
         do {
+            try checkNetwork()
+            
             if var progress = try await firebaseService.fetchUserProgress(userId: userId) {
                 // Check and reset daily stats if new day started
                 let didReset = progress.checkAndResetDailyStatsIfNeeded()
@@ -232,9 +341,17 @@ class DataService {
                     try await firebaseService.saveUserProgress(progress, userId: userId)
                 }
                 
+                // Update cache
+                cachedUserProgress = progress
+                
                 return progress
             }
         } catch {
+            // Return stale cache if available
+            if let cached = cachedUserProgress {
+                print("📱 DataService: Offline - returning stale cached user progress")
+                return cached
+            }
             return UserProgress()
         }
 

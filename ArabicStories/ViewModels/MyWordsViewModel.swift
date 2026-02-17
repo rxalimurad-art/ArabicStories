@@ -13,11 +13,14 @@ class MyWordsViewModel {
     // Dependencies
     private let dataService = DataService.shared
     private let firebaseService = FirebaseService.shared
+    private let networkMonitor = NetworkMonitor.shared
     
     // MARK: - State
     var unlockedWords: [Word] = []
     var isLoading = false
     var error: Error?
+    var errorMessage: String?
+    var showErrorAlert = false
     var sortOption: WordSortOption = .score
     var filterOption: WordFilterOption = .all
     
