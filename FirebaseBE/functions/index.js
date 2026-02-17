@@ -40,6 +40,7 @@ try {
 }
 
 // Create Express app
+const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
