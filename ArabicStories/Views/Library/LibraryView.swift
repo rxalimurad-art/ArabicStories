@@ -379,15 +379,6 @@ struct DifficultyFilterBar: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                // All button
-                FilterChip(
-                    title: "All",
-                    isSelected: selectedLevel == nil,
-                    color: .hikayaTeal
-                ) {
-                    onSelect(nil)
-                }
-                
                 ForEach(levels, id: \.self) { level in
                     let isLocked = level > maxUnlockedLevel
                     FilterChip(

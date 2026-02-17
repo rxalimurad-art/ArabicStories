@@ -11,31 +11,17 @@ import FirebaseAuth
 @Observable
 class DataService {
     static let shared = DataService()
-    
+
     private let firebaseService = FirebaseService.shared
-    private let localCache = LocalCache.shared
-    
+
     // Publishers for reactive updates
     var storiesPublisher = CurrentValueSubject<[Story], Never>([])
     var isLoadingPublisher = CurrentValueSubject<Bool, Never>(false)
     var errorPublisher = PassthroughSubject<Error, Never>()
     var levelUnlockedPublisher = PassthroughSubject<Int, Never>()
-    
-    private init() {
-        // Observe auth state changes to update userId
-        setupAuthObserver()
-    }
-    
-    private func setupAuthObserver() {
-        Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
-            let userId = user?.uid ?? "anonymous"
-            Task {
-                await self.localCache.switchUser(userId)
-            }
-        }
-    }
-    
+
+    private init() {}
+
     // Get current Firebase Auth user ID
     private func getCurrentUserId() -> String {
         if let user = Auth.auth().currentUser {
@@ -43,58 +29,51 @@ class DataService {
         }
         return "anonymous"
     }
-    
+
     // MARK: - Level Management
-    
+
     func getMaxUnlockedLevel() async -> Int {
         let progress = await fetchUserProgress()
         return progress?.maxUnlockedLevel ?? 1
     }
-    
+
     func canAccessLevel(_ level: Int) async -> Bool {
         let maxLevel = await getMaxUnlockedLevel()
         return level <= maxLevel
     }
-    
+
     func vocabularyProgressToLevel2() async -> Double {
         let progress = await fetchUserProgress()
         return progress?.vocabularyProgressToLevel2 ?? 0.0
     }
-    
+
     func vocabularyRemainingForLevel2() async -> Int {
         let progress = await fetchUserProgress()
         return progress?.vocabularyRemainingForLevel2 ?? 20
     }
-    
+
     // MARK: - Story Operations
-    
+
     func fetchAllStories() async -> [Story] {
         isLoadingPublisher.send(true)
         defer { isLoadingPublisher.send(false) }
-        
+
         print("📱 DataService: Fetching all stories...")
-        
+
         do {
-            // Try to fetch from Firebase first
             print("📱 DataService: Calling firebaseService.fetchStories()")
             let stories = try await firebaseService.fetchStories()
             print("📱 DataService: Got \(stories.count) stories from Firebase")
-            
-            // Cache locally
-            await localCache.saveStories(stories)
-            
+
             storiesPublisher.send(stories)
             return stories
         } catch {
             print("📱 DataService: Error fetching from Firebase: \(error)")
-            // Fallback to cache
             errorPublisher.send(error)
-            let cachedStories = await localCache.fetchStories()
-            print("📱 DataService: Returning \(cachedStories.count) cached stories")
-            return cachedStories
+            return []
         }
     }
-    
+
     func fetchStories(
         difficulty: Int? = nil,
         category: StoryCategory? = nil,
@@ -103,24 +82,24 @@ class DataService {
         isBookmarked: Bool? = nil
     ) async -> [Story] {
         var stories = await fetchAllStories()
-        
+
         // Filter by level access
         let maxLevel = await getMaxUnlockedLevel()
         stories = stories.filter { $0.difficultyLevel <= maxLevel }
-        
+
         // Filter
         if let difficulty = difficulty {
             stories = stories.filter { $0.difficultyLevel == difficulty }
         }
-        
+
         if let category = category {
             stories = stories.filter { $0.category == category }
         }
-        
+
         if let isBookmarked = isBookmarked {
             stories = stories.filter { $0.isBookmarked == isBookmarked }
         }
-        
+
         if let query = searchQuery, !query.isEmpty {
             let lowerQuery = query.lowercased()
             stories = stories.filter {
@@ -128,7 +107,7 @@ class DataService {
                 $0.author.localizedStandardContains(lowerQuery)
             }
         }
-        
+
         // Sort
         switch sortBy {
         case .newest:
@@ -142,281 +121,275 @@ class DataService {
         case .alphabetical:
             stories.sort { $0.title < $1.title }
         }
-        
+
         return stories
     }
-    
+
     func fetchStoriesByFormat(_ format: StoryFormat) async -> [Story] {
         let stories = await fetchAllStories()
         return stories.filter { $0.format == format }
     }
-    
+
     func fetchStory(id: UUID) async -> Story? {
-        // Check cache first
-        if let cached = await localCache.fetchStory(id: id) {
-            return cached
-        }
-        
-        // Fetch from Firebase
         do {
             if let story = try await firebaseService.fetchStory(id: id.uuidString) {
-                await localCache.saveStory(story)
                 return story
             }
         } catch {
             errorPublisher.send(error)
         }
-        
+
         return nil
     }
-    
+
     func saveStory(_ story: Story) async throws {
         try await firebaseService.saveStory(story)
-        await localCache.saveStory(story)
         _ = await fetchAllStories() // Refresh
     }
-    
+
     func deleteStory(_ story: Story) async throws {
         try await firebaseService.deleteStory(id: story.id.uuidString)
-        await localCache.deleteStory(id: story.id)
         _ = await fetchAllStories() // Refresh
     }
-    
+
     func toggleBookmark(_ story: Story) async {
         var updatedStory = story
         updatedStory.isBookmarked.toggle()
         updatedStory.updatedAt = Date()
-        
+
         do {
             try await saveStory(updatedStory)
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     // MARK: - Word Operations
-    
+
     func fetchAllWords() async -> [Word] {
         let stories = await fetchAllStories()
         return stories.compactMap { $0.words }.flatMap { $0 }
     }
-    
+
     func fetchBookmarkedWords() async -> [Word] {
         let words = await fetchAllWords()
         return words.filter { $0.isBookmarked ?? false }
     }
-    
+
     func toggleWordBookmark(_ word: Word) async {
         // Words are saved as part of stories, so we'd need to update the parent story
         // This is a simplified implementation
     }
-    
+
     // MARK: - Vocabulary Learning
-    
+
     func recordVocabularyLearned(wordId: String) async {
         guard var progress = await fetchUserProgress() else { return }
-        
+
         progress.recordVocabularyLearned(wordId: wordId)
-        
+
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-            await localCache.saveUserProgress(progress)
-            
-            // Note: Level 2 is now unlocked by completing all Level 1 stories, not vocabulary
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     func recordVocabularyMastered(wordId: String) async {
         guard var progress = await fetchUserProgress() else { return }
-        
+
         progress.recordVocabularyMastered(wordId: wordId)
-        
+
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-            await localCache.saveUserProgress(progress)
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     func getLearnedVocabularyIds() async -> [String] {
         let progress = await fetchUserProgress()
         return progress?.learnedVocabularyIds ?? []
     }
-    
+
     func getMasteredVocabularyIds() async -> [String] {
         let progress = await fetchUserProgress()
         return progress?.masteredVocabularyIds ?? []
     }
-    
+
     // MARK: - User Progress Operations
-    
+
     func fetchUserProgress() async -> UserProgress? {
         let userId = getCurrentUserId()
-        
-        // Check cache first (user-specific)
-        if let cached = await localCache.fetchUserProgress() {
-            // Verify cache belongs to current user by checking if we're authenticated
-            // If user is logged in, always fetch from Firebase to ensure fresh data
-            if Auth.auth().currentUser == nil {
-                return cached
-            }
-        }
-        
-        // Fetch from Firebase (always fetch for authenticated users to ensure isolation)
+
         do {
-            if let progress = try await firebaseService.fetchUserProgress(userId: userId) {
-                await localCache.saveUserProgress(progress)
+            if var progress = try await firebaseService.fetchUserProgress(userId: userId) {
+                // Check and reset daily stats if new day started
+                let didReset = progress.checkAndResetDailyStatsIfNeeded()
+                
+                if didReset {
+                    // Save updated progress with reset stats
+                    try await firebaseService.saveUserProgress(progress, userId: userId)
+                }
+                
                 return progress
             }
         } catch {
-            // Return default if not found
             return UserProgress()
         }
-        
+
         return UserProgress()
     }
-    
+
     func recordStudySession(minutes: Int) async {
         guard var progress = await fetchUserProgress() else { return }
         progress.recordStudySession(minutes: minutes)
-        
+
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-            await localCache.saveUserProgress(progress)
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     func recordStoryCompleted(storyId: String, difficultyLevel: Int) async -> Bool {
         guard var progress = await fetchUserProgress() else { return false }
-        
+
         // Get total Level 1 stories count for unlock check
         let allStories = await fetchAllStories()
         let totalLevel1Stories = allStories.filter { $0.difficultyLevel == 1 }.count
-        
+
         let unlocked = progress.recordStoryCompleted(
             storyId: storyId,
             difficultyLevel: difficultyLevel,
             totalStoriesInLevel1: totalLevel1Stories
         )
-        
+
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-            await localCache.saveUserProgress(progress)
-            
+
             // Publish level unlock event if Level 2 was unlocked
             if unlocked {
                 levelUnlockedPublisher.send(2)
             }
-            
+
             return unlocked
         } catch {
             errorPublisher.send(error)
             return false
         }
     }
-    
+
     func updateUserProgress(_ progress: UserProgress) async throws {
         try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-        await localCache.saveUserProgress(progress)
     }
-    
+
     /// Record reading time for a story and update user's total reading time and daily goal
     func recordReadingTime(storyId: UUID, timeInterval: TimeInterval) async {
         guard var progress = await fetchUserProgress() else { return }
-        
+
         // Update the user's total reading time
         progress.recordReadingTime(timeInterval)
-        
+
         // Also update daily goal progress (convert seconds to minutes, rounding up)
         let minutes = Int(ceil(timeInterval / 60.0))
         if minutes > 0 {
             progress.recordStudySession(minutes: minutes)
             print("⏱️ Added \(minutes) minutes to daily goal")
         }
-        
+
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
-            await localCache.saveUserProgress(progress)
             print("⏱️ Recorded \(Int(timeInterval))s reading time to user progress")
         } catch {
             print("❌ Error saving reading time to user progress: \(error)")
         }
     }
-    
-    // MARK: - Word Mastery (UserDefaults for simplicity)
-    
-    private var wordMasteryKey: String {
-        "wordMastery_\(getCurrentUserId())"
-    }
-    
+
+    // MARK: - Word Mastery (Firebase)
+
     func saveWordMastery(_ mastery: [UUID: WordMastery]) async {
         do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(mastery)
-            UserDefaults.standard.set(data, forKey: wordMasteryKey)
-            print("💾 Saved \(mastery.count) word mastery entries")
+            try await firebaseService.saveWordMastery(mastery, userId: getCurrentUserId())
         } catch {
             print("❌ Error saving word mastery: \(error)")
         }
     }
-    
+
     func fetchWordMastery() async -> [UUID: WordMastery] {
-        guard let data = UserDefaults.standard.data(forKey: wordMasteryKey) else {
-            return [:]
-        }
-        
         do {
-            let decoder = JSONDecoder()
-            let mastery = try decoder.decode([UUID: WordMastery].self, from: data)
-            print("📂 Loaded \(mastery.count) word mastery entries")
-            return mastery
+            return try await firebaseService.fetchWordMastery(userId: getCurrentUserId())
         } catch {
             print("❌ Error loading word mastery: \(error)")
             return [:]
         }
     }
     
-    // MARK: - Story Progress (User-Specific)
+    // MARK: - Unlocked Words (New Optimized)
     
+    func saveUnlockedWords(_ words: [UnlockedWord]) async {
+        do {
+            try await firebaseService.saveUnlockedWords(words, userId: getCurrentUserId())
+        } catch {
+            print("❌ Error saving unlocked words: \(error)")
+        }
+    }
+    
+    func fetchUnlockedWords() async -> [UnlockedWord] {
+        do {
+            return try await firebaseService.fetchUnlockedWords(userId: getCurrentUserId())
+        } catch {
+            print("❌ Error fetching unlocked words: \(error)")
+            return []
+        }
+    }
+    
+    func addUnlockedWord(_ word: UnlockedWord) async {
+        do {
+            try await firebaseService.addUnlockedWord(word, userId: getCurrentUserId())
+        } catch {
+            print("❌ Error adding unlocked word: \(error)")
+        }
+    }
+    
+    func isWordUnlocked(_ wordId: UUID) async -> Bool {
+        do {
+            return try await firebaseService.isWordUnlocked(wordId, userId: getCurrentUserId())
+        } catch {
+            print("❌ Error checking word unlock status: \(error)")
+            return false
+        }
+    }
+
+    // MARK: - Story Progress (User-Specific)
+
     func fetchStoryProgress(storyId: UUID) async -> StoryProgress? {
         let userId = getCurrentUserId()
-        
-        // Check cache first
-        if let cached = await localCache.fetchStoryProgress(storyId: storyId) {
-            return cached
-        }
-        
-        // Fetch from Firebase
+
         do {
             if let progress = try await firebaseService.fetchStoryProgress(
                 storyId: storyId.uuidString,
                 userId: userId
             ) {
-                await localCache.saveStoryProgress(progress)
                 return progress
             }
         } catch {
             print("❌ Error fetching story progress: \(error)")
         }
-        
+
         // Return new progress if not found
         return StoryProgress(storyId: storyId.uuidString, userId: userId)
     }
-    
+
     func updateStoryProgress(
         storyId: UUID,
         readingProgress: Double? = nil,
         currentSegmentIndex: Int? = nil,
         readingTime: TimeInterval? = nil
     ) async {
-        var storyProgress = await fetchStoryProgress(storyId: storyId) 
+        var storyProgress = await fetchStoryProgress(storyId: storyId)
             ?? StoryProgress(storyId: storyId.uuidString, userId: getCurrentUserId())
-        
+
         // Update fields
         if let progress = readingProgress {
             storyProgress.updateProgress(progress)
@@ -427,14 +400,13 @@ class DataService {
         if let time = readingTime {
             storyProgress.addReadingTime(time)
         }
-        
-        // Save to Firebase and cache
+
+        // Save to Firebase
         do {
             print("💾 Saving story progress: storyId=\(storyProgress.storyId), userId=\(storyProgress.userId), progress=\(storyProgress.readingProgress), isCompleted=\(storyProgress.isCompleted)")
             try await firebaseService.saveStoryProgress(storyProgress)
-            await localCache.saveStoryProgress(storyProgress)
             print("✅ Story progress saved successfully")
-            
+
             // If story is completed, update user progress
             if storyProgress.isCompleted {
                 print("🎉 Story completed! Updating user progress...")
@@ -451,193 +423,43 @@ class DataService {
             errorPublisher.send(error)
         }
     }
-    
+
     func toggleStoryBookmark(storyId: UUID) async {
-        var storyProgress = await fetchStoryProgress(storyId: storyId) 
+        var storyProgress = await fetchStoryProgress(storyId: storyId)
             ?? StoryProgress(storyId: storyId.uuidString, userId: getCurrentUserId())
-        
+
         storyProgress.toggleBookmark()
-        
+
         do {
             try await firebaseService.saveStoryProgress(storyProgress)
-            await localCache.saveStoryProgress(storyProgress)
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     func markStoryWordAsLearned(storyId: UUID, wordId: String) async {
-        var storyProgress = await fetchStoryProgress(storyId: storyId) 
+        var storyProgress = await fetchStoryProgress(storyId: storyId)
             ?? StoryProgress(storyId: storyId.uuidString, userId: getCurrentUserId())
-        
+
         storyProgress.markWordAsLearned(wordId)
-        
+
         // Also update global vocabulary progress
         await recordVocabularyLearned(wordId: wordId)
-        
+
         do {
             try await firebaseService.saveStoryProgress(storyProgress)
-            await localCache.saveStoryProgress(storyProgress)
         } catch {
             errorPublisher.send(error)
         }
     }
-    
+
     func getAllStoryProgress() async -> [StoryProgress] {
-        return await localCache.fetchAllStoryProgress()
-    }
-    
-    /// Sync all story progress from Firebase to local cache
-    func syncAllStoryProgressFromFirebase() async {
         let userId = getCurrentUserId()
-        print("🔄 Syncing story progress from Firebase for user: \(userId)")
-        
         do {
-            // Fetch all story progress documents from Firebase
-            let snapshot = try await FirebaseService.shared.fetchAllStoryProgressForUser(userId: userId)
-            
-            print("🔄 Found \(snapshot.count) story progress documents in Firebase")
-            
-            for progress in snapshot {
-                await localCache.saveStoryProgress(progress)
-                print("🔄 Synced progress for story: \(progress.storyId), isCompleted: \(progress.isCompleted)")
-            }
+            return try await firebaseService.fetchAllStoryProgressForUser(userId: userId)
         } catch {
-            print("❌ Error syncing story progress: \(error)")
-        }
-    }
-}
-
-// MARK: - Local Cache (In-Memory + UserDefaults)
-
-@Observable
-class LocalCache {
-    static let shared = LocalCache()
-    
-    private var stories: [Story] = []
-    private var userProgress: UserProgress?
-    private var storyProgress: [String: StoryProgress] = [:] // Key: "storyId"
-    private var currentUserId: String = "anonymous"
-    private let defaults = UserDefaults.standard
-    
-    private init() {
-        // Load from UserDefaults on init
-        loadFromDisk()
-    }
-    
-    // Switch to a different user's cache
-    func switchUser(_ userId: String) async {
-        // Save current user's cache first
-        saveToDisk()
-        
-        // Switch to new user
-        currentUserId = userId
-        
-        // Clear in-memory cache
-        userProgress = nil
-        storyProgress = [:]
-        
-        // Load new user's cache
-        loadFromDisk()
-        
-        print("📱 LocalCache: Switched to user \(userId)")
-    }
-    
-    // MARK: - Stories (shared across users)
-    
-    func fetchStories() async -> [Story] {
-        return stories
-    }
-    
-    func fetchStory(id: UUID) async -> Story? {
-        return stories.first { $0.id == id }
-    }
-    
-    func saveStories(_ stories: [Story]) async {
-        self.stories = stories
-        saveToDisk()
-    }
-    
-    func saveStory(_ story: Story) async {
-        if let index = stories.firstIndex(where: { $0.id == story.id }) {
-            stories[index] = story
-        } else {
-            stories.append(story)
-        }
-        saveToDisk()
-    }
-    
-    func deleteStory(id: UUID) async {
-        stories.removeAll { $0.id == id }
-        saveToDisk()
-    }
-    
-    // MARK: - User Progress (user-specific)
-    
-    func fetchUserProgress() async -> UserProgress? {
-        return userProgress
-    }
-    
-    func saveUserProgress(_ progress: UserProgress) async {
-        self.userProgress = progress
-        saveToDisk()
-    }
-    
-    // MARK: - Story Progress (user-specific)
-    
-    func fetchStoryProgress(storyId: UUID) async -> StoryProgress? {
-        return storyProgress[storyId.uuidString]
-    }
-    
-    func saveStoryProgress(_ progress: StoryProgress) async {
-        storyProgress[progress.storyId] = progress
-        saveToDisk()
-    }
-    
-    func fetchAllStoryProgress() async -> [StoryProgress] {
-        return Array(storyProgress.values)
-    }
-    
-    // MARK: - Persistence
-    
-    private func saveToDisk() {
-        // Stories are shared (same for all users)
-        if let storiesData = try? JSONEncoder().encode(stories) {
-            defaults.set(storiesData, forKey: "cached_stories")
-        }
-        
-        // Progress is user-specific
-        if let progressData = try? JSONEncoder().encode(userProgress) {
-            defaults.set(progressData, forKey: "cached_progress_\(currentUserId)")
-        }
-        
-        // Story progress is user-specific
-        if let storyProgressData = try? JSONEncoder().encode(storyProgress) {
-            defaults.set(storyProgressData, forKey: "cached_story_progress_\(currentUserId)")
-        }
-    }
-    
-    private func loadFromDisk() {
-        // Load stories (shared)
-        if let storiesData = defaults.data(forKey: "cached_stories"),
-           let decodedStories = try? JSONDecoder().decode([Story].self, from: storiesData) {
-            self.stories = decodedStories
-        }
-        
-        // Load user-specific progress
-        if let progressData = defaults.data(forKey: "cached_progress_\(currentUserId)"),
-           let decodedProgress = try? JSONDecoder().decode(UserProgress.self, from: progressData) {
-            self.userProgress = decodedProgress
-        } else {
-            self.userProgress = nil
-        }
-        
-        // Load user-specific story progress
-        if let storyProgressData = defaults.data(forKey: "cached_story_progress_\(currentUserId)"),
-           let decodedStoryProgress = try? JSONDecoder().decode([String: StoryProgress].self, from: storyProgressData) {
-            self.storyProgress = decodedStoryProgress
-        } else {
-            self.storyProgress = [:]
+            print("❌ Error fetching all story progress: \(error)")
+            return []
         }
     }
 }
@@ -650,9 +472,9 @@ enum SortOption: String, CaseIterable, Identifiable {
     case mostPopular = "most_popular"
     case recentlyRead = "recently_read"
     case alphabetical = "alphabetical"
-    
+
     var id: String { rawValue }
-    
+
     var displayName: String {
         switch self {
         case .newest: return "Newest"
@@ -662,7 +484,7 @@ enum SortOption: String, CaseIterable, Identifiable {
         case .alphabetical: return "A-Z"
         }
     }
-    
+
     var icon: String {
         switch self {
         case .newest: return "calendar"

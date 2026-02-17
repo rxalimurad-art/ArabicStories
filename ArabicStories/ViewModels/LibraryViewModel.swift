@@ -191,7 +191,7 @@ class LibraryViewModel {
     }
     
     func clearFilters() {
-        selectedDifficulty = nil
+        selectedDifficulty = maxUnlockedLevel
         selectedCategory = nil
         searchQuery = ""
         Task {

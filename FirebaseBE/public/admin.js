@@ -159,6 +159,7 @@ function setupEventListeners() {
     totalQuranWordsCount = 0;
     loadWords();
   });
+  document.getElementById('export-words')?.addEventListener('click', exportAllWords);
   document.getElementById('word-search')?.addEventListener('input', debounce(filterWords, 300));
   document.getElementById('word-pos-filter')?.addEventListener('change', loadWords);
   document.getElementById('word-form-filter')?.addEventListener('change', loadWords);
@@ -1419,6 +1420,60 @@ function goToWordsPage(page) {
 
 function changeWordsPage(delta) {
   goToWordsPage(state.wordsPage + delta);
+}
+
+/**
+ * Export all Quran words to JSON file
+ */
+async function exportAllWords() {
+  const btn = document.getElementById('export-words');
+  const originalText = btn.innerHTML;
+  
+  try {
+    btn.innerHTML = '⏳ Exporting...';
+    btn.disabled = true;
+    
+    // Fetch all words (maximum 20000)
+    const url = `${API.quranWords()}?limit=20000&sort=rank`;
+    showToast('Fetching all words from database...', 'info');
+    
+    const data = await apiRequest(url);
+    const words = data.words || [];
+    
+    if (words.length === 0) {
+      showToast('No words found to export', 'error');
+      return;
+    }
+    
+    // Create JSON blob
+    const jsonStr = JSON.stringify(words, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    
+    // Create download link
+    const url_download = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url_download;
+    
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().split('T')[0];
+    link.download = `quran_words_${timestamp}.json`;
+    
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up
+    URL.revokeObjectURL(url_download);
+    
+    showToast(`Successfully exported ${words.length.toLocaleString()} words`, 'success');
+  } catch (error) {
+    console.error('Export error:', error);
+    showToast(`Export failed: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
 }
 
 function updateWordsPaginationUI() {

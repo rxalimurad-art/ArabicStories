@@ -269,9 +269,6 @@ class AuthService {
     // MARK: - Sign Out
     func signOut() async throws {
         do {
-            // Clear local cache before signing out
-            await LocalCache.shared.switchUser("anonymous")
-            
             // Sign out from Firebase
             try Auth.auth().signOut()
             

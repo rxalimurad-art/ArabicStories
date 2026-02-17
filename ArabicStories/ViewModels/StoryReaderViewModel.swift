@@ -484,6 +484,11 @@ class StoryReaderViewModel {
         }
         print("📖 Complete story: Story completion recorded")
         
+        // NEW: Extract and save unlocked words
+        print("📖 Complete story: Extracting Quran words from story...")
+        await extractAndSaveUnlockedWords()
+        print("📖 Complete story: Words saved successfully")
+        
         // Check for achievements and prepare completion summary
         print("📖 Complete story: Preparing completion summary...")
         let result = await prepareCompletionSummary()
@@ -495,6 +500,67 @@ class StoryReaderViewModel {
             print("📖 Complete story: Completion summary ready, sheet will show")
         }
         print("📖 Complete story: Finished successfully")
+    }
+    
+    /// Extract Quran words from story and save to user's unlocked words collection
+    private func extractAndSaveUnlockedWords() async {
+        do {
+            // Fetch Quran words for matching
+            let quranWordsResult = try await FirebaseService.shared.fetchQuranWords(
+                limit: 1000,
+                offset: 0,
+                sort: "rank"
+            )
+            let quranWords = quranWordsResult.words
+            
+            // Use Story's algorithm to find Quran words in story text
+            let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
+            print("📖 Complete story: Found \(matchedQuranWords.count) Quran words in story")
+            
+            // Convert to UnlockedWord objects
+            var unlockedWords: [UnlockedWord] = []
+            for quranWord in matchedQuranWords {
+                let wordUUID = UUID(uuidString: quranWord.id) ?? UUID()
+                
+                // Check if word is already unlocked (avoid duplicates)
+                let isUnlocked = await dataService.isWordUnlocked(wordUUID)
+                if !isUnlocked {
+                    let word = Word(
+                        id: wordUUID,
+                        arabicText: quranWord.arabicText,
+                        englishMeaning: quranWord.englishMeaning,
+                        partOfSpeech: PartOfSpeech(rawValue: quranWord.morphology.partOfSpeech ?? "unknown"),
+                        rootLetters: quranWord.root?.arabic,
+                        difficulty: quranWord.rank <= 1000 ? 1 : quranWord.rank <= 5000 ? 2 : 3,
+                        quranOccurrenceCount: quranWord.occurrenceCount,
+                        quranRank: quranWord.rank
+                    )
+                    
+                    let unlockedWord = UnlockedWord(
+                        id: wordUUID,
+                        wordData: word,
+                        unlockedAt: Date(),
+                        fromStoryId: story.id.uuidString,
+                        fromStoryTitle: story.title,
+                        difficultyLevel: story.difficultyLevel
+                    )
+                    
+                    unlockedWords.append(unlockedWord)
+                }
+            }
+            
+            // Save unlocked words to Firebase
+            if !unlockedWords.isEmpty {
+                await dataService.saveUnlockedWords(unlockedWords)
+                print("📖 Complete story: Saved \(unlockedWords.count) new words to user collection")
+            } else {
+                print("📖 Complete story: No new words to save (all already unlocked)")
+            }
+            
+        } catch {
+            print("📖 Complete story: Error extracting/saving words: \(error)")
+            // Don't fail the whole completion if word extraction fails
+        }
     }
     
     func markAsCompleted() async {
@@ -513,27 +579,22 @@ class StoryReaderViewModel {
         await progressVM.checkAchievementsAfterStoryCompletion()
         print("📖 Complete story: ProgressViewModel check completed")
         
-        // Get all newly unlocked achievements
-        let newlyUnlocked = progressVM.achievements.filter { achievement in
-            achievement.isUnlocked && progressVM.newlyUnlockedAchievement?.id == achievement.id
-        }
-        
-        // Also include any other achievements that were unlocked recently
-        let allUnlockedAchievements = progressVM.achievements.filter { $0.isUnlocked }
-        
-        print("📖 Complete story: Found \(allUnlockedAchievements.count) unlocked achievements")
-        
+        // Get only achievements newly unlocked by this story
+        let newlyUnlockedAchievements = progressVM.newlyUnlockedAchievements
+
+        print("📖 Complete story: Found \(newlyUnlockedAchievements.count) newly unlocked achievements")
+
         // Get words unlocked in this session
         let wordsUnlocked = getWordsUnlockedInSession()
         print("📖 Complete story: Found \(wordsUnlocked.count) words unlocked in session")
-        
-        // Get total words in story
-        let totalWords = story.words?.count ?? story.allArabicWordsInStory.count
-        
+
+        // Get total words in story (use same logic as library view cells)
+        let totalWords = story.arabicWordCount
+
         // Create completion result
         let result = StoryCompletionResult(
             story: story,
-            unlockedAchievements: allUnlockedAchievements,
+            unlockedAchievements: newlyUnlockedAchievements,
             totalWordsInStory: totalWords,
             wordsUnlockedInSession: wordsUnlocked,
             readingTime: currentSessionDuration

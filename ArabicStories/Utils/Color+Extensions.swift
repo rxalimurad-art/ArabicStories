@@ -94,6 +94,11 @@ extension View {
     func shimmering() -> some View {
         modifier(ShimmerModifier())
     }
+    
+    /// Alias for shimmering - shorter name for skeleton loading
+    func shimmer() -> some View {
+        modifier(ShimmerModifier())
+    }
 }
 
 // MARK: - Arabic Font Support

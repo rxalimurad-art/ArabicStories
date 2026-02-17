@@ -23,6 +23,9 @@ struct ProgressDashboardView: View {
                         // Daily Goal Card
                         DailyGoalCard(viewModel: viewModel)
                         
+                        // Quran Coverage Card (NEW)
+                        QuranCoverageCard(viewModel: viewModel)
+                        
                         // Quick Stats Grid
                         QuickStatsGrid(viewModel: viewModel)
                         
@@ -160,6 +163,122 @@ struct QuickStatCard: View {
     }
 }
 
+// MARK: - Quran Coverage Card
+
+struct QuranCoverageCard: View {
+    var viewModel: ProgressViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Quran Coverage")
+                        .font(.headline.weight(.semibold))
+                    
+                    if let stats = viewModel.quranStats {
+                        Text("\(viewModel.quranWordsLearnedCount) of \(stats.totalUniqueWords) unique words")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Loading...")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                // Percentage Badge
+                Text(String(format: "%.1f%%", viewModel.quranCompletionPercentage))
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(Color.hikayaTeal)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.hikayaTeal.opacity(0.15))
+                    .clipShape(Capsule())
+            }
+            
+            // Progress Bar
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 12)
+                    
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.7)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geometry.size.width * (viewModel.quranCompletionPercentage / 100.0), height: 12)
+                }
+            }
+            .frame(height: 12)
+            
+            // Statistics Grid
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Words Learned")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text("\(viewModel.quranWordsLearnedCount)")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.primary)
+                }
+                
+                Divider()
+                    .frame(height: 40)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Occurrences")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text("\(viewModel.totalOccurrencesLearned)")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(Color.hikayaOrange)
+                }
+                
+                Divider()
+                    .frame(height: 40)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Mastered")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text("\(viewModel.quranWordsMasteredCount)")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(Color.green)
+                }
+            }
+            .padding(.top, 4)
+            
+            // Info Text
+            if viewModel.totalOccurrencesLearned > 0, let stats = viewModel.quranStats {
+                let totalOccurrences = stats.totalTokens
+                let coveragePercentage = Double(viewModel.totalOccurrencesLearned) / Double(totalOccurrences) * 100
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.caption)
+                        .foregroundStyle(Color.hikayaTeal.opacity(0.7))
+                    
+                    Text("You can understand ~\(String(format: "%.1f%%", coveragePercentage)) of Quran text")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.top, 4)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+    }
+}
+
 // MARK: - Vocabulary Progress Card
 
 // MARK: - Weekly Progress Card
@@ -203,7 +322,7 @@ struct WeeklyProgressCard: View {
                                 if day.minutes > 0 {
                                     RoundedRectangle(cornerRadius: 4)
                                         .fill(Color.hikayaTeal)
-                                        .frame(height: geometry.size.height * CGFloat(day.minutes) / 60.0)
+                                        .frame(height: geometry.size.height * min(CGFloat(day.minutes) / CGFloat(viewModel.dailyGoalMinutes), 1.0))
                                 }
                             }
                         }

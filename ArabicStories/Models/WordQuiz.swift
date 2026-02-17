@@ -49,17 +49,12 @@ struct QuizQuestion: Identifiable, Codable {
         self.answeredAt = Date()
         self.responseTime = responseTime
         self.isCorrect = answer == correctAnswer
-        
-        // Score calculation: +10 for correct, -5 for wrong
-        // Bonus: +5 for fast answer (< 3 seconds)
+
+        // Score calculation: +10 for correct, -20 for wrong
         if self.isCorrect == true {
-            var points = 10
-            if responseTime < 3.0 {
-                points += 5
-            }
-            self.score = points
+            self.score = 10
         } else {
-            self.score = -5
+            self.score = -20
         }
     }
 }

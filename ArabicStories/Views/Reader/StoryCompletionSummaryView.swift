@@ -250,21 +250,21 @@ struct StoryCompletionSummaryView: View {
             }
             
             HStack(spacing: 16) {
-                StatCard(
+                CompletionStatCard(
                     icon: "textformat.abc",
                     value: "\(result.totalWordsInStory)",
                     label: "Words in Story",
                     color: .blue
                 )
-                
-                StatCard(
+
+                CompletionStatCard(
                     icon: "clock.fill",
                     value: formattedReadingTime,
                     label: "Reading Time",
                     color: .purple
                 )
-                
-                StatCard(
+
+                CompletionStatCard(
                     icon: "flame.fill",
                     value: "\(result.wordsUnlockedInSession.count)",
                     label: "Words Learned",
@@ -444,9 +444,9 @@ struct WordUnlockedCard: View {
     }
 }
 
-// MARK: - Stat Card
+// MARK: - Completion Stat Card
 
-struct StatCard: View {
+struct CompletionStatCard: View {
     let icon: String
     let value: String
     let label: String
@@ -558,8 +558,8 @@ struct ConfettiParticle {
                 format: .mixed,
                 difficultyLevel: 1,
                 words: [
-                    Word(arabicText: "تاجر", englishMeaning: "Merchant", difficulty: 1, transliteration: "tājir"),
-                    Word(arabicText: "حكيم", englishMeaning: "Wise", difficulty: 1, transliteration: "ḥakīm")
+                    Word(arabicText: "تاجر", transliteration: "tājir", englishMeaning: "Merchant", difficulty: 1),
+                    Word(arabicText: "حكيم", transliteration: "ḥakīm", englishMeaning: "Wise", difficulty: 1)
                 ]
             ),
             unlockedAchievements: [
@@ -568,9 +568,9 @@ struct ConfettiParticle {
             ],
             totalWordsInStory: 15,
             wordsUnlockedInSession: [
-                Word(arabicText: "تاجر", englishMeaning: "Merchant", difficulty: 1, transliteration: "tājir"),
-                Word(arabicText: "حكيم", englishMeaning: "Wise", difficulty: 1, transliteration: "ḥakīm"),
-                Word(arabicText: "بغداد", englishMeaning: "Baghdad", difficulty: 1, transliteration: "baghdād")
+                Word(arabicText: "تاجر", transliteration: "tājir", englishMeaning: "Merchant", difficulty: 1),
+                Word(arabicText: "حكيم", transliteration: "ḥakīm", englishMeaning: "Wise", difficulty: 1),
+                Word(arabicText: "بغداد", transliteration: "baghdād", englishMeaning: "Baghdad", difficulty: 1)
             ],
             readingTime: 180
         ),

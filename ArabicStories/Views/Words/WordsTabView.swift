@@ -6,48 +6,17 @@
 
 import SwiftUI
 
-enum WordsTabSection: String, CaseIterable {
-    case myWords = "My Words"
-    case allWords = "All Words"
-    
-    var icon: String {
-        switch self {
-        case .myWords: return "star.fill"
-        case .allWords: return "text.book.closed"
-        }
-    }
-}
-
 struct WordsTabView: View {
     @Binding var selectedTab: Int
-    @State private var selectedSection: WordsTabSection = .myWords
-    
+
     init(selectedTab: Binding<Int> = .constant(1)) {
         self._selectedTab = selectedTab
     }
-    
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // Segmented Picker
-                Picker("Section", selection: $selectedSection) {
-                    ForEach(WordsTabSection.allCases, id: \.self) { section in
-                        Label(section.rawValue, systemImage: section.icon)
-                            .tag(section)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                
-                // Content based on selection
-                switch selectedSection {
-                case .myWords:
-                    MyWordsView(selectedTab: $selectedTab)
-                case .allWords:
-                    QuranWordsView()
-                }
-            }
-            .navigationTitle("Words")
+            MyWordsView(selectedTab: $selectedTab)
+                .navigationTitle("Words")
         }
     }
 }
@@ -64,24 +33,22 @@ struct MyWordsView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else if viewModel.unlockedWords.isEmpty {
-                    ContentUnavailableView {
-                        Label("No Words Yet", systemImage: "lock.fill")
-                    } description: {
-                        Text("Read stories to unlock words for practice")
-                    } actions: {
-                        Button("Go to Stories") {
-                            selectedTab = 0 // Switch to Learn tab
-                        }
+        Group {
+            if viewModel.isLoading {
+                // Skeleton Loading State
+                skeletonLoadingView
+            } else if viewModel.unlockedWords.isEmpty {
+                ContentUnavailableView {
+                    Label("No Words Yet", systemImage: "lock.fill")
+                } description: {
+                    Text("Read stories to unlock words for practice")
+                } actions: {
+                    Button("Go to Stories") {
+                        selectedTab = 0 // Switch to Learn tab
                     }
-                } else {
-                    myWordsList
                 }
+            } else {
+                myWordsList
             }
         }
         .task {
@@ -105,91 +72,45 @@ struct MyWordsView: View {
     }
     
     private var myWordsList: some View {
-        List {
-            // Stats Header
-            Section {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Your Collection")
-                        .font(.headline)
-                    
-                    Text("Words you've encountered in stories. Take a quiz to master them!")
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                // Stats Header Card
+                statsHeaderCard
+
+                // Sort & Filter Bar
+                sortFilterBar
+
+                // Practice Button Card
+                if !viewModel.quizWords.isEmpty {
+                    practiceCard
+                }
+
+                // Words List
+                let words = viewModel.sortedAndFilteredWords
+                if words.isEmpty {
+                    Text("No words match the current filter")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    
-                    // Stats Row
-                    HStack(spacing: 20) {
-                        StatBadge(
-                            value: viewModel.unlockedWords.count,
-                            label: "Unlocked",
-                            color: .blue
-                        )
-                        
-                        StatBadge(
-                            value: viewModel.masteredWords.count,
-                            label: "Mastered",
-                            color: .green
-                        )
-                        
-                        StatBadge(
-                            value: viewModel.wordsToReview.count,
-                            label: "To Review",
-                            color: .orange
-                        )
-                    }
-                    .padding(.top, 8)
-                }
-                .padding(.vertical, 8)
-            }
-            
-            // Start Quiz Button
-            if !viewModel.quizWords.isEmpty {
-                Section {
-                    Button {
-                        Task {
-                            await viewModel.startQuiz()
-                            showingQuiz = true
+                        .padding(.top, 40)
+                } else {
+                    ForEach(words) { word in
+                        Button {
+                            selectedWord = word
+                        } label: {
+                            MyWordRow(
+                                word: word,
+                                isMastered: viewModel.isWordMastered(word.id),
+                                progress: viewModel.wordProgress(word.id)
+                            )
                         }
-                    } label: {
-                        HStack {
-                            Image(systemName: "play.circle.fill")
-                                .font(.title2)
-                            
-                            VStack(alignment: .leading) {
-                                Text("Practice \(viewModel.quizWords.count) Words")
-                                    .font(.headline)
-                                Text("Test your knowledge")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.secondary)
-                        }
-                        .foregroundStyle(.primary)
+                        .buttonStyle(.plain)
                     }
-                    .padding(.vertical, 8)
                 }
             }
-            
-            // Unlocked Words List
-            Section(header: Text("Words")) {
-                ForEach(viewModel.unlockedWords) { word in
-                    Button {
-                        selectedWord = word
-                    } label: {
-                        MyWordRow(
-                            word: word,
-                            isMastered: viewModel.isWordMastered(word.id),
-                            progress: viewModel.wordProgress(word.id)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
+            .padding(.horizontal)
+            .padding(.bottom, 20)
         }
-        .listStyle(.insetGrouped)
+        .background(Color.hikayaBackground.ignoresSafeArea())
         .refreshable {
             await viewModel.loadUnlockedWords()
         }
@@ -205,6 +126,218 @@ struct MyWordsView: View {
                 .disabled(viewModel.isLoading)
             }
         }
+    }
+
+    // MARK: - Stats Header Card
+    private var statsHeaderCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Your Collection")
+                .font(.headline)
+
+            Text("Words you've encountered in stories. Take a quiz to master them!")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 20) {
+                StatBadge(
+                    value: viewModel.unlockedWords.count,
+                    label: "Unlocked",
+                    color: .blue
+                )
+                StatBadge(
+                    value: viewModel.masteredWords.count,
+                    label: "Mastered",
+                    color: .green
+                )
+                StatBadge(
+                    value: viewModel.wordsToReview.count,
+                    label: "To Review",
+                    color: .orange
+                )
+            }
+            .padding(.top, 8)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
+    }
+    
+    // MARK: - Skeleton Loading View
+    
+    private var skeletonLoadingView: some View {
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                // Stats Header Skeleton
+                VStack(spacing: 12) {
+                    HStack(spacing: 20) {
+                        ForEach(0..<3, id: \.self) { _ in
+                            VStack(spacing: 6) {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 60, height: 24)
+                                
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(Color.gray.opacity(0.2))
+                                    .frame(width: 80, height: 12)
+                            }
+                        }
+                    }
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(.systemBackground))
+                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+                )
+                .shimmer()
+                
+                // Sort/Filter Bar Skeleton
+                HStack(spacing: 12) {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 36)
+                    
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 36)
+                }
+                .shimmer()
+                
+                // Word Cards Skeleton
+                ForEach(0..<8, id: \.self) { _ in
+                    HStack(spacing: 16) {
+                        // Progress Ring Skeleton
+                        Circle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 44, height: 44)
+                        
+                        // Word Info Skeleton
+                        VStack(alignment: .leading, spacing: 8) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: 120, height: 20)
+                            
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: 180, height: 14)
+                        }
+                        
+                        Spacer()
+                        
+                        // Badge Skeleton
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(width: 50, height: 24)
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.systemBackground))
+                            .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+                    )
+                    .shimmer()
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 20)
+        }
+        .background(Color.hikayaBackground.ignoresSafeArea())
+    }
+
+    // MARK: - Sort & Filter Bar
+    private var sortFilterBar: some View {
+        VStack(spacing: 10) {
+            // Filter chips
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(WordFilterOption.allCases, id: \.self) { option in
+                        FilterChip(
+                            title: option.rawValue,
+                            isSelected: viewModel.filterOption == option,
+                            color: Color.hikayaTeal
+                        ) {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.filterOption = option
+                            }
+                        }
+                    }
+
+                    Spacer()
+
+                    // Sort menu
+                    Menu {
+                        ForEach(WordSortOption.allCases, id: \.self) { option in
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    viewModel.sortOption = option
+                                }
+                            } label: {
+                                Label(option.rawValue, systemImage: option.icon)
+                            }
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.up.arrow.down")
+                            Text(viewModel.sortOption.rawValue)
+                                .font(.subheadline.weight(.medium))
+                        }
+                        .foregroundStyle(Color.hikayaTeal)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            Capsule()
+                                .fill(Color(.systemBackground))
+                                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Practice Card
+    private var practiceCard: some View {
+        Button {
+            Task {
+                await viewModel.startQuiz()
+                showingQuiz = true
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "play.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(Color.hikayaTeal)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Practice \(viewModel.quizWords.count) Words")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text("Test your knowledge")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.hikayaTeal.opacity(0.3), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -237,8 +370,10 @@ struct QuizSessionSheet: View {
             .alert("End Quiz?", isPresented: $showExitConfirmation) {
                 Button("Cancel", role: .cancel) {}
                 Button("End", role: .destructive) {
-                    viewModel.endQuiz()
-                    dismiss()
+                    Task {
+                        await viewModel.endQuiz()
+                        dismiss()
+                    }
                 }
             } message: {
                 Text("Your progress will be saved.")
@@ -252,155 +387,178 @@ struct QuizQuestionView: View {
     @Bindable var viewModel: MyWordsViewModel
     @State private var showFeedback = false
     @State private var feedbackIsCorrect = false
-    @State private var masteredWordIds: Set<UUID> = []
-    
+    @State private var feedbackScore = 0
+
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                colors: [Color.hikayaCream, Color.white],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            // Main Quiz Content
-            VStack(spacing: 20) {
-                // Header with Progress
-                quizHeader
-                
-                // Word Mastery Progress Card
-                wordMasteryCard
-                
-                // Question Card
-                questionCard
-                
-                // Options Grid
-                optionsGrid
-                
-                Spacer(minLength: 20)
+            // Background
+            Color.hikayaBackground.ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 16) {
+                    // Header with Progress
+                    quizHeader
+
+                    // Streak badge
+                    if viewModel.currentStreak >= 2 {
+                        HStack(spacing: 6) {
+                            Image(systemName: "flame.fill")
+                                .foregroundStyle(.orange)
+                            Text("\(viewModel.currentStreak) streak!")
+                                .font(.caption.weight(.bold))
+                                .foregroundStyle(.orange)
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(Color.orange.opacity(0.12))
+                        )
+                        .transition(.scale.combined(with: .opacity))
+                    }
+
+                    // Word Mastery Progress Card
+                    wordMasteryCard
+
+                    // Question Card
+                    questionCard
+
+                    // Options
+                    optionsGrid
+
+                    Spacer(minLength: 30)
+                }
+                .padding(.top, 8)
             }
-            .padding(.top)
-            
-            // Feedback Overlay
+
+            // Feedback Toast
             if showFeedback {
-                feedbackOverlay
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                VStack {
+                    feedbackToast
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    Spacer()
+                }
             }
         }
+        .animation(.spring(response: 0.3), value: viewModel.currentStreak)
     }
-    
+
     // MARK: - Header
     private var quizHeader: some View {
-        VStack(spacing: 16) {
-            // Progress Bar with Question Counter
+        VStack(spacing: 12) {
             HStack(spacing: 12) {
+                // Question counter
                 Text("\(viewModel.currentQuestionIndex + 1)/\(viewModel.totalQuestions)")
-                    .font(.caption.weight(.semibold))
+                    .font(.subheadline.weight(.semibold))
+                    .monospacedDigit()
                     .foregroundStyle(.secondary)
-                    .frame(width: 50)
-                
+
+                // Progress Bar
                 GeometryReader { geometry in
                     ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(Color.gray.opacity(0.15))
-                            .frame(height: 12)
-                        
-                        RoundedRectangle(cornerRadius: 6)
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.gray.opacity(0.12))
+                            .frame(height: 10)
+
+                        RoundedRectangle(cornerRadius: 8)
                             .fill(
                                 LinearGradient(
-                                    colors: [Color.hikayaTeal, Color.hikayaOrange],
+                                    colors: [Color.hikayaTeal, Color.hikayaTeal.opacity(0.7)],
                                     startPoint: .leading,
                                     endPoint: .trailing
                                 )
                             )
-                            .frame(width: geometry.size.width * viewModel.progress, height: 12)
+                            .frame(width: max(0, geometry.size.width * viewModel.progress), height: 10)
+                            .animation(.easeInOut(duration: 0.4), value: viewModel.progress)
                     }
                 }
-                .frame(height: 12)
-                
-                // Score Badge
+                .frame(height: 10)
+
+                // Score badge
                 HStack(spacing: 4) {
                     Image(systemName: "star.fill")
                         .font(.caption2)
                     Text("\(viewModel.totalScore)")
-                        .font(.caption.weight(.bold))
+                        .font(.subheadline.weight(.bold))
+                        .monospacedDigit()
                 }
                 .foregroundStyle(Color.hikayaOrange)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
                 .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.hikayaOrange.opacity(0.15))
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.hikayaOrange.opacity(0.12))
                 )
             }
             .padding(.horizontal)
         }
     }
-    
+
     // MARK: - Word Mastery Progress Card
     private var wordMasteryCard: some View {
         Group {
             if let word = viewModel.currentQuestion?.word {
                 let progress = viewModel.wordProgress(word.id)
                 let isMastered = viewModel.isWordMastered(word.id)
-                
-                HStack(spacing: 12) {
+                let score = viewModel.wordMastery[word.id]?.totalScore ?? 0
+
+                HStack(spacing: 14) {
                     // Progress Ring
                     ZStack {
                         Circle()
-                            .stroke(Color.gray.opacity(0.2), lineWidth: 4)
-                            .frame(width: 44, height: 44)
-                        
+                            .stroke(Color.gray.opacity(0.15), lineWidth: 4)
+                            .frame(width: 48, height: 48)
+
                         Circle()
                             .trim(from: 0, to: progress)
                             .stroke(
                                 isMastered ? Color.green : Color.hikayaTeal,
                                 style: StrokeStyle(lineWidth: 4, lineCap: .round)
                             )
-                            .frame(width: 44, height: 44)
+                            .frame(width: 48, height: 48)
                             .rotationEffect(.degrees(-90))
-                        
+                            .animation(.easeInOut(duration: 0.4), value: progress)
+
                         if isMastered {
                             Image(systemName: "checkmark")
                                 .font(.caption.bold())
                                 .foregroundStyle(.green)
                         } else {
-                            Text("\(Int(progress * 100))")
+                            Text("\(score)")
                                 .font(.caption.bold())
+                                .monospacedDigit()
                         }
                     }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
+
+                    VStack(alignment: .leading, spacing: 3) {
                         Text("Word Mastery")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        
-                        Text(isMastered ? "Mastered! 🎉" : "\(Int(progress * 100))/100 points")
+                        Text(isMastered ? "Mastered!" : "\(score)/100 points")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(isMastered ? .green : .primary)
                     }
-                    
+
                     Spacer()
                 }
-                .padding()
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 14)
                         .fill(Color(.systemBackground))
-                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+                        .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
                 )
                 .padding(.horizontal)
             }
         }
     }
-    
+
     // MARK: - Question Card
     private var questionCard: some View {
         Group {
             if let question = viewModel.currentQuestion {
-                VStack(spacing: 24) {
-                    // Question Label
-                    Text(question.questionType == .arabicToEnglish ? 
+                VStack(spacing: 20) {
+                    Text(question.questionType == .arabicToEnglish ?
                          "What does this mean?" : "What's the Arabic word?")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.hikayaTeal)
@@ -408,34 +566,35 @@ struct QuizQuestionView: View {
                         .padding(.vertical, 6)
                         .background(
                             Capsule()
-                                .fill(Color.hikayaTeal.opacity(0.12))
+                                .fill(Color.hikayaTeal.opacity(0.1))
                         )
-                    
-                    // The Word
-                    Text(question.questionType == .arabicToEnglish ? 
+
+                    Text(question.questionType == .arabicToEnglish ?
                          question.word.arabicText : question.word.englishMeaning)
-                        .font(.system(size: 52, weight: .bold, design: .serif))
-                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 48, weight: .bold, design: .serif))
+                        .minimumScaleFactor(0.4)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
                         .foregroundStyle(.primary)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 20)
                 }
-                .padding(.vertical, 36)
+                .padding(.vertical, 32)
                 .frame(maxWidth: .infinity)
                 .background(
-                    RoundedRectangle(cornerRadius: 24)
+                    RoundedRectangle(cornerRadius: 20)
                         .fill(Color(.systemBackground))
-                        .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 6)
+                        .shadow(color: .black.opacity(0.06), radius: 12, x: 0, y: 4)
                 )
                 .padding(.horizontal)
             }
         }
     }
-    
+
     // MARK: - Options Grid
     private var optionsGrid: some View {
         Group {
             if let question = viewModel.currentQuestion {
-                VStack(spacing: 12) {
+                VStack(spacing: 10) {
                     ForEach(question.options, id: \.self) { option in
                         ThemedQuizButton(
                             text: option,
@@ -455,58 +614,52 @@ struct QuizQuestionView: View {
             }
         }
     }
-    
-    // MARK: - Handle Selection with Feedback
+
+    // MARK: - Handle Selection
     private func handleSelection(_ option: String, isCorrect: Bool) {
         feedbackIsCorrect = isCorrect
+        feedbackScore = isCorrect ? 10 : -20
         withAnimation(.spring(response: 0.3)) {
             showFeedback = true
         }
-        
+
         viewModel.selectAnswer(option)
-        
-        // Hide feedback after delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
             withAnimation(.easeOut(duration: 0.2)) {
                 showFeedback = false
             }
         }
     }
-    
-    // MARK: - Feedback Overlay
-    private var feedbackOverlay: some View {
-        VStack {
-            HStack(spacing: 16) {
-                Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .font(.system(size: 36))
+
+    // MARK: - Feedback Toast
+    private var feedbackToast: some View {
+        HStack(spacing: 14) {
+            Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .font(.system(size: 32))
+                .foregroundStyle(feedbackIsCorrect ? .green : .red)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(feedbackIsCorrect ? "Correct!" : "Wrong!")
+                    .font(.headline)
                     .foregroundStyle(feedbackIsCorrect ? .green : .red)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(feedbackIsCorrect ? "Correct!" : "Try Again")
-                        .font(.title3.bold())
-                        .foregroundStyle(feedbackIsCorrect ? .green : .red)
-                    
-                    if feedbackIsCorrect {
-                        Text("+\(viewModel.lastScore) points")
-                            .font(.subheadline)
-                            .foregroundStyle(Color.hikayaOrange)
-                    }
-                }
-                
-                Spacer()
+
+                Text(feedbackIsCorrect ? "+\(feedbackScore) points" : "\(feedbackScore) points")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(feedbackIsCorrect ? Color.hikayaOrange : .red.opacity(0.7))
             }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 20)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: (feedbackIsCorrect ? Color.green : Color.red).opacity(0.25), radius: 20, x: 0, y: 8)
-            )
-            .padding(.horizontal, 20)
-            
+
             Spacer()
         }
-        .padding(.top, 100)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+                .shadow(color: (feedbackIsCorrect ? Color.green : Color.red).opacity(0.2), radius: 16, x: 0, y: 4)
+        )
+        .padding(.horizontal, 16)
+        .padding(.top, 60)
     }
 }
 
@@ -514,6 +667,7 @@ struct QuizQuestionView: View {
 struct QuizCompleteView: View {
     var viewModel: MyWordsViewModel
     var onDone: () -> Void
+    @State private var isSaving = false
     
     private var newlyMasteredCount: Int {
         viewModel.masteredWords.filter { word in
@@ -639,10 +793,25 @@ struct QuizCompleteView: View {
                 }
                 
                 // Done Button
-                Button(action: onDone) {
+                Button {
+                    isSaving = true
+                    Task {
+                        // Save progress before dismissing
+                        await DataService.shared.saveWordMastery(viewModel.wordMastery)
+                        print("💾 Quiz Complete: Saved word mastery before dismissing")
+                        isSaving = false
+                        onDone()
+                    }
+                } label: {
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text("Done")
+                        if isSaving {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.white)
+                        } else {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Done")
+                        }
                     }
                     .font(.headline)
                     .foregroundStyle(.white)
@@ -657,6 +826,7 @@ struct QuizCompleteView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
+                .disabled(isSaving)
                 .padding(.horizontal, 24)
                 .padding(.top, 8)
             }
@@ -700,7 +870,7 @@ struct MyWordRow: View {
     let word: Word
     let isMastered: Bool
     let progress: Double
-    
+
     var body: some View {
         HStack(spacing: 16) {
             // Progress Ring
@@ -708,7 +878,7 @@ struct MyWordRow: View {
                 Circle()
                     .stroke(Color.gray.opacity(0.2), lineWidth: 3)
                     .frame(width: 44, height: 44)
-                
+
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(
@@ -717,7 +887,7 @@ struct MyWordRow: View {
                     )
                     .frame(width: 44, height: 44)
                     .rotationEffect(.degrees(-90))
-                
+
                 if isMastered {
                     Image(systemName: "checkmark")
                         .font(.caption.bold())
@@ -727,27 +897,45 @@ struct MyWordRow: View {
                         .font(.caption.bold())
                 }
             }
-            
+
             // Word Info
             VStack(alignment: .leading, spacing: 4) {
                 Text(word.arabicText)
                     .font(.title3.bold())
-                
+
                 Text(word.englishMeaning)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
-            
+
             Spacer()
-            
+
+            // Quran occurrence badge
+            if let count = word.quranOccurrenceCount, count > 0 {
+                Text("\(count)\u{00D7}")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.green)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(Color.green.opacity(0.12))
+                    )
+            }
+
             if isMastered {
                 Image(systemName: "star.fill")
                     .foregroundStyle(.yellow)
             }
         }
-        .padding(.vertical, 4)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
     }
-    
+
     private var progressColor: Color {
         switch progress {
         case 0..<0.3: return .red

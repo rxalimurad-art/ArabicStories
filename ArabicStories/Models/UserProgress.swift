@@ -296,6 +296,43 @@ struct UserProgress: Identifiable, Codable {
         streakFreezeUsed = false
         streakFreezeDate = nil
     }
+    
+    /// Checks if a new day has started and resets daily stats if needed
+    /// Returns true if reset was performed
+    mutating func checkAndResetDailyStatsIfNeeded() -> Bool {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        guard let lastDate = lastStudyDate else {
+            return false
+        }
+        
+        let lastStudyDay = calendar.startOfDay(for: lastDate)
+        let daysSinceLastStudy = calendar.dateComponents([.day], from: lastStudyDay, to: today).day ?? 0
+        
+        if daysSinceLastStudy > 0 {
+            // New day - reset daily stats
+            resetDailyStats()
+            
+            // Update streak logic
+            if daysSinceLastStudy == 1 {
+                // Consecutive day - streak continues (will increment on next study)
+            } else if daysSinceLastStudy > 1 {
+                // Missed days
+                if !streakFreezeUsed && daysSinceLastStudy == 2 {
+                    streakFreezeUsed = true
+                    streakFreezeDate = lastDate
+                } else {
+                    currentStreak = 0
+                }
+            }
+            
+            updatedAt = Date()
+            return true
+        }
+        
+        return false
+    }
 }
 
 // MARK: - Achievement Model

@@ -18,6 +18,7 @@ class ProgressViewModel {
     var achievements: [Achievement] = []
     var isLoading = false
     var newlyUnlockedAchievement: Achievement?
+    var newlyUnlockedAchievements: [Achievement] = []
     var showAchievementUnlocked = false
     
     // Level Management
@@ -161,14 +162,15 @@ class ProgressViewModel {
         if let stats = quranStats, stats.totalUniqueWords > 0 {
             quranWordsLearnedCount = totalWordsUnlocked
             quranWordsMasteredCount = totalWordsMastered
-            quranCompletionPercentage = Double(totalWordsMastered) / Double(stats.totalUniqueWords) * 100
             
-            // Calculate total occurrences of learned words
-            // This is an approximation based on word rank
+            // Calculate percentage based on unique words learned (not mastered)
+            quranCompletionPercentage = Double(totalWordsUnlocked) / Double(stats.totalUniqueWords) * 100
+            
+            // Calculate total occurrences of learned words using actual Quran occurrence data
             totalOccurrencesLearned = myWordsVM.unlockedWords.reduce(0) { sum, word in
-                // Higher rank = less frequent, so lower occurrence count
-                let occurrenceEstimate = max(1000 - (word.difficulty * 100), 10)
-                return sum + occurrenceEstimate
+                // Use actual Quran occurrence count if available
+                let occurrences = word.quranOccurrenceCount ?? 0
+                return sum + occurrences
             }
         }
     }
@@ -239,13 +241,14 @@ class ProgressViewModel {
         }
         
         achievements = achievementsList
-        
+        newlyUnlockedAchievements = newlyUnlocked
+
         // Save updated progress with new achievements
         if !newlyUnlocked.isEmpty {
             try? await dataService.updateUserProgress(progress)
             print("📖 Complete story: Saved \(newlyUnlocked.count) new achievements to storage")
         }
-        
+
         // Only show notification when checkForUnlocks is true (after story completion)
         if checkForUnlocks, let firstNew = newlyUnlocked.first {
             print("📖 Complete story: Showing achievement popup for: \(firstNew.title)")

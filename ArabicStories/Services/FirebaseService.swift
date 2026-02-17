@@ -349,6 +349,95 @@ class FirebaseService {
         try await db.collection("users").document(userId).setData(data)
     }
     
+    // MARK: - Word Mastery
+
+    func saveWordMastery(_ mastery: [UUID: WordMastery], userId: String) async throws {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(mastery)
+        let jsonObject = try JSONSerialization.jsonObject(with: data)
+
+        try await db.collection("users").document(userId).setData([
+            "wordMastery": jsonObject
+        ], merge: true)
+        print("💾 Saved \(mastery.count) word mastery entries to Firebase")
+    }
+
+    func fetchWordMastery(userId: String) async throws -> [UUID: WordMastery] {
+        let doc = try await db.collection("users").document(userId).getDocument()
+        guard let data = doc.data(),
+              let wordMasteryData = data["wordMastery"] else {
+            return [:]
+        }
+
+        let jsonData = try JSONSerialization.data(withJSONObject: wordMasteryData)
+        let decoder = JSONDecoder()
+        let mastery = try decoder.decode([UUID: WordMastery].self, from: jsonData)
+        print("📂 Loaded \(mastery.count) word mastery entries from Firebase")
+        return mastery
+    }
+    
+    // MARK: - Unlocked Words (New Optimized Structure)
+    
+    /// Save unlocked words for a user (called when story is completed)
+    func saveUnlockedWords(_ words: [UnlockedWord], userId: String) async throws {
+        let batch = db.batch()
+        let unlockedWordsRef = db.collection("users").document(userId).collection("unlockedWords")
+        
+        for word in words {
+            let wordRef = unlockedWordsRef.document(word.id.uuidString)
+            let wordData = try word.toFirestore()
+            batch.setData(wordData, forDocument: wordRef, merge: true)
+        }
+        
+        try await batch.commit()
+        print("💾 Saved \(words.count) unlocked words to Firebase for user")
+    }
+    
+    /// Fetch all unlocked words for a user (FAST - single collection query)
+    func fetchUnlockedWords(userId: String) async throws -> [UnlockedWord] {
+        let snapshot = try await db.collection("users")
+            .document(userId)
+            .collection("unlockedWords")
+            .order(by: "unlockedAt", descending: true)
+            .getDocuments()
+        
+        var words: [UnlockedWord] = []
+        for document in snapshot.documents {
+            do {
+                let word = try UnlockedWord.fromFirestore(document.data())
+                words.append(word)
+            } catch {
+                print("⚠️ Failed to parse unlocked word \(document.documentID): \(error)")
+            }
+        }
+        
+        print("📚 Fetched \(words.count) unlocked words from Firebase")
+        return words
+    }
+    
+    /// Add a single unlocked word (for manual unlock or individual updates)
+    func addUnlockedWord(_ word: UnlockedWord, userId: String) async throws {
+        let wordRef = db.collection("users")
+            .document(userId)
+            .collection("unlockedWords")
+            .document(word.id.uuidString)
+        
+        let wordData = try word.toFirestore()
+        try await wordRef.setData(wordData, merge: true)
+        print("💾 Added unlocked word: \(word.arabicText)")
+    }
+    
+    /// Check if a word is already unlocked (to avoid duplicates)
+    func isWordUnlocked(_ wordId: UUID, userId: String) async throws -> Bool {
+        let doc = try await db.collection("users")
+            .document(userId)
+            .collection("unlockedWords")
+            .document(wordId.uuidString)
+            .getDocument()
+        
+        return doc.exists
+    }
+
     // MARK: - Search
     
     func searchStories(query: String) async throws -> [Story] {

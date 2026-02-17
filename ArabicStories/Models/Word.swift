@@ -32,6 +32,10 @@ struct Word: Identifiable, Codable, Hashable {
     var easeFactor: Double?
     var masteryLevel: MasteryLevel?
     
+    // MARK: - Quran Metadata (populated when word comes from Quran matching)
+    var quranOccurrenceCount: Int?
+    var quranRank: Int?
+
     // MARK: - Timestamps
     var createdAt: Date?
     var updatedAt: Date?
@@ -55,6 +59,8 @@ struct Word: Identifiable, Codable, Hashable {
         case interval
         case easeFactor
         case masteryLevel
+        case quranOccurrenceCount
+        case quranRank
         case createdAt
         case updatedAt
     }
@@ -80,6 +86,8 @@ struct Word: Identifiable, Codable, Hashable {
         interval = try container.decodeIfPresent(Double.self, forKey: .interval) ?? 0
         easeFactor = try container.decodeIfPresent(Double.self, forKey: .easeFactor) ?? 2.5
         masteryLevel = try container.decodeIfPresent(MasteryLevel.self, forKey: .masteryLevel) ?? .new
+        quranOccurrenceCount = try container.decodeIfPresent(Int.self, forKey: .quranOccurrenceCount)
+        quranRank = try container.decodeIfPresent(Int.self, forKey: .quranRank)
         createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
         updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
     }
@@ -99,7 +107,9 @@ struct Word: Identifiable, Codable, Hashable {
         reviewCount: Int? = 0,
         interval: Double? = 0,
         easeFactor: Double? = 2.5,
-        masteryLevel: MasteryLevel? = .new
+        masteryLevel: MasteryLevel? = .new,
+        quranOccurrenceCount: Int? = nil,
+        quranRank: Int? = nil
     ) {
         self.id = id
         self.arabicText = arabicText
@@ -116,6 +126,8 @@ struct Word: Identifiable, Codable, Hashable {
         self.interval = interval
         self.easeFactor = easeFactor
         self.masteryLevel = masteryLevel
+        self.quranOccurrenceCount = quranOccurrenceCount
+        self.quranRank = quranRank
         self.createdAt = nil
         self.updatedAt = nil
     }
