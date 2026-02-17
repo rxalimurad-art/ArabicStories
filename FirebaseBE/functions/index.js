@@ -81,7 +81,7 @@ async function logAdminAction(action, details, ip) {
       action,
       details,
       ip: ip || 'unknown',
-      timestamp: new Date().toISOString()
+      timestamp: new Date()
     });
   } catch (error) {
     console.error('Failed to log admin action:', error);
@@ -92,7 +92,7 @@ async function logAdminAction(action, details, ip) {
  * Helper: Convert story data to Firestore format
  */
 function formatStoryForFirestore(storyData) {
-  const now = new Date().toISOString();
+  const now = new Date();
   
   // Determine format (mixed for Level 1, bilingual for Level 2+)
   const format = storyData.format || 'bilingual';
@@ -690,7 +690,7 @@ app.post('/api/quran-words', async (req, res) => {
       return;
     }
 
-    const now = new Date().toISOString();
+    const now = new Date();
     const wordId = require('crypto').randomUUID();
 
     const newWord = {
@@ -837,15 +837,25 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
 app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
   try {
     const wordId = req.params.id;
+    console.log('Audio upload request for word:', wordId);
 
     if (!req.file) {
+      console.log('No audio file in request');
       res.status(400).json({ error: 'No audio file provided' });
       return;
     }
 
+    console.log('File received:', {
+      fieldname: req.file.fieldname,
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size
+    });
+
     const docRef = db.collection('quran_words').doc(wordId);
     const doc = await docRef.get();
     if (!doc.exists) {
+      console.log('Word not found:', wordId);
       res.status(404).json({ error: 'Word not found' });
       return;
     }
@@ -854,16 +864,20 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
     const fileName = `word-audio/${wordId}.mp3`;
     const file = bucket.file(fileName);
 
+    console.log('Uploading to storage:', fileName);
     await file.save(req.file.buffer, {
       metadata: { contentType: 'audio/mpeg' }
     });
 
+    console.log('Making file public');
     await file.makePublic();
     const audioURL = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 
+    console.log('Updating Firestore with URL:', audioURL);
     await docRef.update({ audioURL, updatedAt: new Date() });
     await logAdminAction('UPLOAD_WORD_AUDIO', { wordId }, req.ip);
 
+    console.log('Audio upload successful');
     res.json({ success: true, audioURL });
   } catch (error) {
     console.error('Error uploading word audio:', error);
@@ -934,7 +948,7 @@ app.post('/api/completions/story', async (req, res) => {
       storyId,
       storyTitle: story.title || 'Unknown Story',
       difficultyLevel: story.difficultyLevel || 0,
-      completedAt: new Date().toISOString(),
+      completedAt: new Date(),
       notificationSent: false
     };
     
@@ -1036,7 +1050,7 @@ app.post('/api/completions/level', async (req, res) => {
       userName: userName || 'Unknown User',
       userEmail: userEmail || null,
       level: parseInt(level),
-      completedAt: new Date().toISOString(),
+      completedAt: new Date(),
       notificationSent: false
     };
     
