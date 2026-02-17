@@ -6,6 +6,7 @@
 
 import Foundation
 import SwiftUI
+import FirebaseAuth
 
 @Observable
 class StoryReaderViewModel {
@@ -13,6 +14,7 @@ class StoryReaderViewModel {
     private let dataService = DataService.shared
     private let audioService = AudioService.shared
     private let pronunciationService = PronunciationService.shared
+    private let firebaseService = FirebaseService.shared
     
     // State
     var story: Story
@@ -489,6 +491,11 @@ class StoryReaderViewModel {
         await extractAndSaveUnlockedWords()
         print("📖 Complete story: Words saved successfully")
         
+        // Track story completion via Firebase function
+        print("📖 Complete story: Tracking completion via API...")
+        await trackStoryCompletion()
+        print("📖 Complete story: API tracking completed")
+        
         // Check for achievements and prepare completion summary
         print("📖 Complete story: Preparing completion summary...")
         let result = await prepareCompletionSummary()
@@ -560,6 +567,28 @@ class StoryReaderViewModel {
         } catch {
             print("📖 Complete story: Error extracting/saving words: \(error)")
             // Don't fail the whole completion if word extraction fails
+        }
+    }
+    
+    /// Track story completion via Firebase function
+    private func trackStoryCompletion() async {
+        guard let user = Auth.auth().currentUser else {
+            print("⚠️ No user logged in, skipping completion tracking")
+            return
+        }
+        
+        do {
+            try await firebaseService.trackStoryCompletion(
+                userId: user.uid,
+                userName: user.displayName,
+                userEmail: user.email,
+                storyId: story.id.uuidString,
+                storyTitle: story.title,
+                difficultyLevel: story.difficultyLevel
+            )
+        } catch {
+            print("⚠️ Failed to track story completion: \(error)")
+            // Don't fail the whole completion if tracking fails
         }
     }
     

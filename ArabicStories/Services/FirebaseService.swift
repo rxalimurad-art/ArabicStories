@@ -352,6 +352,7 @@ class FirebaseService {
     // MARK: - Word Mastery
 
     func saveWordMastery(_ mastery: [UUID: WordMastery], userId: String) async throws {
+        print("💾 FirebaseService: Saving word mastery for user \(userId)")
         let encoder = JSONEncoder()
         let data = try encoder.encode(mastery)
         let jsonObject = try JSONSerialization.jsonObject(with: data)
@@ -359,20 +360,28 @@ class FirebaseService {
         try await db.collection("users").document(userId).setData([
             "wordMastery": jsonObject
         ], merge: true)
-        print("💾 Saved \(mastery.count) word mastery entries to Firebase")
+        print("💾 FirebaseService: Successfully saved \(mastery.count) word mastery entries to Firestore")
     }
 
     func fetchWordMastery(userId: String) async throws -> [UUID: WordMastery] {
+        print("📂 FirebaseService: Fetching word mastery for user \(userId)")
         let doc = try await db.collection("users").document(userId).getDocument()
+        
+        guard doc.exists else {
+            print("📂 FirebaseService: User document does not exist, returning empty mastery")
+            return [:]
+        }
+        
         guard let data = doc.data(),
               let wordMasteryData = data["wordMastery"] else {
+            print("📂 FirebaseService: No wordMastery field found in user document, returning empty")
             return [:]
         }
 
         let jsonData = try JSONSerialization.data(withJSONObject: wordMasteryData)
         let decoder = JSONDecoder()
         let mastery = try decoder.decode([UUID: WordMastery].self, from: jsonData)
-        print("📂 Loaded \(mastery.count) word mastery entries from Firebase")
+        print("📂 FirebaseService: Successfully loaded \(mastery.count) word mastery entries from Firestore")
         return mastery
     }
     
@@ -875,11 +884,49 @@ class FirebaseService {
         return try decoder.decode(StoryProgress.self, from: jsonData)
     }
     
-    private func storyProgressToDictionary(_ progress: StoryProgress) throws -> [String: Any] {
+        private func storyProgressToDictionary(_ progress: StoryProgress) throws -> [String: Any] {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         let data = try encoder.encode(progress)
         return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+    }
+    
+    // MARK: - Story Completion Tracking API
+    
+    /// Call Firebase function to track story completion
+    func trackStoryCompletion(
+        userId: String,
+        userName: String?,
+        userEmail: String?,
+        storyId: String,
+        storyTitle: String,
+        difficultyLevel: Int
+    ) async throws {
+        let url = URL(string: "https://us-central1-arabicstories-82611.cloudfunctions.net/api/completions/story")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "userId": userId,
+            "userName": userName ?? "Anonymous",
+            "userEmail": userEmail ?? "",
+            "storyId": storyId,
+            "storyTitle": storyTitle,
+            "difficultyLevel": difficultyLevel
+        ]
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw NSError(domain: "FirebaseService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to track story completion"])
+        }
+        
+        print("✅ Story completion tracked: \(storyTitle)")
     }
 }
 

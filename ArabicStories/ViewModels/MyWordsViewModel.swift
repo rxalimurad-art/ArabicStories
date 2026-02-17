@@ -150,15 +150,21 @@ class MyWordsViewModel {
             
             // Load saved mastery data
             let savedMastery = await dataService.fetchWordMastery()
-            print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries")
+            print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries from Firebase")
+            
+            // Log some samples
+            for (wordId, mastery) in savedMastery.prefix(3) {
+                print("📚   Sample: wordId=\(wordId), score=\(mastery.totalScore), correct=\(mastery.timesCorrect), wrong=\(mastery.timesWrong)")
+            }
             
             await MainActor.run {
                 self.unlockedWords = words
                 self.wordMastery = savedMastery
+                print("📚 MyWords: Applied saved mastery to wordMastery property")
                 // Initialize mastery for new words that don't have saved data yet
                 self.initializeMissingMasteryData()
                 self.isLoading = false
-                print("📚 MyWords: Done! Loaded \(words.count) words")
+                print("📚 MyWords: Done! Loaded \(words.count) words with mastery data")
             }
             
         } catch {
@@ -480,8 +486,15 @@ class MyWordsViewModel {
         isQuizActive = false
         
         // Save mastery data (await to ensure it completes before returning)
+        print("💾 Attempting to save word mastery: \(wordMastery.count) entries")
+        
+        // Log some samples
+        for (wordId, mastery) in wordMastery.prefix(3) {
+            print("💾   Sample: wordId=\(wordId), score=\(mastery.totalScore), correct=\(mastery.timesCorrect), wrong=\(mastery.timesWrong)")
+        }
+        
         await dataService.saveWordMastery(wordMastery)
-        print("💾 Saved word mastery data: \(wordMastery.count) entries")
+        print("💾 Word mastery save completed")
         
         restartQuiz()
     }
