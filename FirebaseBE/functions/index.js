@@ -8,6 +8,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 // Initialize Firebase Admin
 initializeApp();
@@ -16,11 +17,55 @@ const db = getFirestore();
 // Collection references
 const STORIES_COLLECTION = 'stories';
 const ADMIN_LOGS_COLLECTION = 'admin_logs';
+const USER_COMPLETIONS_COLLECTION = 'user_completions';
+
+// Email configuration
+const EMAIL_CONFIG = {
+  service: 'gmail',
+  auth: {
+    user: 'volutiontechnologies@gmail.com',
+    pass: 'tneh ndls rjjq pffm'
+  }
+};
+
+const NOTIFICATION_EMAIL = 'volutiontechnologies@gmail.com';
+
+// Create email transporter
+let emailTransporter = null;
+try {
+  emailTransporter = nodemailer.createTransport(EMAIL_CONFIG);
+  console.log('Email transporter initialized successfully');
+} catch (error) {
+  console.error('Failed to initialize email transporter:', error);
+}
 
 // Create Express app
-const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
+
+/**
+ * Send email notification
+ */
+async function sendEmail(subject, html) {
+  if (!emailTransporter) {
+    console.error('Email transporter not configured');
+    return false;
+  }
+  
+  try {
+    await emailTransporter.sendMail({
+      from: `"Arabic Stories" <${EMAIL_CONFIG.auth.user}>`,
+      to: NOTIFICATION_EMAIL,
+      subject: subject,
+      html: html
+    });
+    console.log('Email sent successfully:', subject);
+    return true;
+  } catch (error) {
+    console.error('Failed to send email:', error);
+    return false;
+  }
+}
 
 /**
  * Helper: Log admin actions
@@ -46,7 +91,7 @@ function formatStoryForFirestore(storyData) {
   
   // Determine format (mixed for Level 1, bilingual for Level 2+)
   const format = storyData.format || 'bilingual';
-  const difficultyLevel = Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 100);
+  const difficultyLevel = Math.min(Math.max(parseInt(storyData.difficultyLevel) || 1, 1), 400);
   
   // Use mixed format for Level 1 if not explicitly set
   const finalFormat = format || (difficultyLevel === 1 ? 'mixed' : 'bilingual');
@@ -451,8 +496,8 @@ app.post('/api/stories/validate', async (req, res) => {
     }
 
     const difficulty = parseInt(storyData.difficultyLevel);
-    if (isNaN(difficulty) || difficulty < 1 || difficulty > 100) {
-      errors.push('Difficulty level must be between 1 and 100');
+    if (isNaN(difficulty) || difficulty < 1 || difficulty > 400) {
+      errors.push('Difficulty level must be between 1 and 400');
     }
     
     // Recommend mixed format for Level 1
@@ -817,6 +862,262 @@ app.get('/api/quran-roots/:root/words', async (req, res) => {
     });
   } catch (error) {
     console.error('Error getting words by root:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ============================================
+// USER COMPLETION TRACKING ROUTES
+// ============================================
+
+/**
+ * Track story completion
+ * POST /api/completions/story
+ * Body: { userId, userName, userEmail, storyId, storyTitle, difficultyLevel, completedAt }
+ */
+app.post('/api/completions/story', async (req, res) => {
+  try {
+    const { userId, userName, userEmail, storyId, storyTitle, difficultyLevel } = req.body;
+    
+    // Validate required fields
+    if (!userId || !storyId) {
+      res.status(400).json({ error: 'userId and storyId are required' });
+      return;
+    }
+    
+    // Get story details if not provided
+    let story = { title: storyTitle, difficultyLevel };
+    if (!storyTitle || !difficultyLevel) {
+      const storyDoc = await db.collection(STORIES_COLLECTION).doc(storyId).get();
+      if (storyDoc.exists) {
+        const storyData = storyDoc.data();
+        story.title = storyData.title;
+        story.difficultyLevel = storyData.difficultyLevel;
+      }
+    }
+    
+    const completionData = {
+      type: 'story',
+      userId,
+      userName: userName || 'Unknown User',
+      userEmail: userEmail || null,
+      storyId,
+      storyTitle: story.title || 'Unknown Story',
+      difficultyLevel: story.difficultyLevel || 0,
+      completedAt: new Date().toISOString(),
+      notificationSent: false
+    };
+    
+    // Save to Firestore
+    const docRef = await db.collection(USER_COMPLETIONS_COLLECTION).add(completionData);
+    
+    // Send email notification
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .badge { display: inline-block; background: #4CAF50; color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin: 10px 0; }
+          .info-box { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+          .info-row { padding: 10px 0; border-bottom: 1px solid #eee; }
+          .info-row:last-child { border-bottom: none; }
+          .label { font-weight: bold; color: #667eea; display: inline-block; width: 150px; }
+          .emoji { font-size: 24px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1><span class="emoji">🎉</span> Story Completed!</h1>
+          </div>
+          <div class="content">
+            <div class="badge">Story Completion</div>
+            <div class="info-box">
+              <div class="info-row">
+                <span class="label">📚 Story:</span> ${story.title}
+              </div>
+              <div class="info-row">
+                <span class="label">⭐ Level:</span> ${story.difficultyLevel}
+              </div>
+              <div class="info-row">
+                <span class="label">👤 User:</span> ${userName || 'Unknown User'}
+              </div>
+              ${userEmail ? `<div class="info-row"><span class="label">📧 Email:</span> ${userEmail}</div>` : ''}
+              <div class="info-row">
+                <span class="label">🆔 User ID:</span> ${userId}
+              </div>
+              <div class="info-row">
+                <span class="label">⏰ Completed:</span> ${new Date(completionData.completedAt).toLocaleString()}
+              </div>
+            </div>
+            <p style="color: #666; font-size: 14px; margin-top: 20px;">
+              This is an automated notification from Arabic Stories app.
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+    
+    const emailSent = await sendEmail(
+      `📚 Story Completed: ${story.title} (Level ${story.difficultyLevel})`,
+      emailHtml
+    );
+    
+    // Update notification status
+    if (emailSent) {
+      await docRef.update({ notificationSent: true });
+    }
+    
+    res.status(201).json({
+      success: true,
+      message: 'Story completion tracked',
+      completionId: docRef.id,
+      emailSent
+    });
+  } catch (error) {
+    console.error('Error tracking story completion:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Track level completion
+ * POST /api/completions/level
+ * Body: { userId, userName, userEmail, level, completedAt }
+ */
+app.post('/api/completions/level', async (req, res) => {
+  try {
+    const { userId, userName, userEmail, level } = req.body;
+    
+    // Validate required fields
+    if (!userId || !level) {
+      res.status(400).json({ error: 'userId and level are required' });
+      return;
+    }
+    
+    const completionData = {
+      type: 'level',
+      userId,
+      userName: userName || 'Unknown User',
+      userEmail: userEmail || null,
+      level: parseInt(level),
+      completedAt: new Date().toISOString(),
+      notificationSent: false
+    };
+    
+    // Save to Firestore
+    const docRef = await db.collection(USER_COMPLETIONS_COLLECTION).add(completionData);
+    
+    // Send email notification
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .badge { display: inline-block; background: #FF6B6B; color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin: 10px 0; }
+          .level-badge { display: inline-block; background: #4ECDC4; color: white; padding: 15px 30px; border-radius: 50%; font-size: 32px; font-weight: bold; margin: 20px 0; }
+          .info-box { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+          .info-row { padding: 10px 0; border-bottom: 1px solid #eee; }
+          .info-row:last-child { border-bottom: none; }
+          .label { font-weight: bold; color: #f5576c; display: inline-block; width: 150px; }
+          .emoji { font-size: 24px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1><span class="emoji">🏆</span> Level Completed!</h1>
+          </div>
+          <div class="content">
+            <div style="text-align: center;">
+              <div class="level-badge">${level}</div>
+              <div class="badge">Level Achievement</div>
+            </div>
+            <div class="info-box">
+              <div class="info-row">
+                <span class="label">👤 User:</span> ${userName || 'Unknown User'}
+              </div>
+              ${userEmail ? `<div class="info-row"><span class="label">📧 Email:</span> ${userEmail}</div>` : ''}
+              <div class="info-row">
+                <span class="label">🆔 User ID:</span> ${userId}
+              </div>
+              <div class="info-row">
+                <span class="label">⏰ Completed:</span> ${new Date(completionData.completedAt).toLocaleString()}
+              </div>
+            </div>
+            <p style="color: #666; font-size: 14px; margin-top: 20px;">
+              This is an automated notification from Arabic Stories app.
+            </p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+    
+    const emailSent = await sendEmail(
+      `🏆 Level ${level} Completed by ${userName || 'User'}`,
+      emailHtml
+    );
+    
+    // Update notification status
+    if (emailSent) {
+      await docRef.update({ notificationSent: true });
+    }
+    
+    res.status(201).json({
+      success: true,
+      message: 'Level completion tracked',
+      completionId: docRef.id,
+      emailSent
+    });
+  } catch (error) {
+    console.error('Error tracking level completion:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * Get user completions
+ * GET /api/completions?userId=xxx&type=story|level
+ */
+app.get('/api/completions', async (req, res) => {
+  try {
+    const { userId, type, limit = 50 } = req.query;
+    
+    let query = db.collection(USER_COMPLETIONS_COLLECTION)
+      .orderBy('completedAt', 'desc')
+      .limit(parseInt(limit));
+    
+    if (userId) {
+      query = query.where('userId', '==', userId);
+    }
+    
+    if (type) {
+      query = query.where('type', '==', type);
+    }
+    
+    const snapshot = await query.get();
+    const completions = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    res.json({
+      success: true,
+      count: completions.length,
+      completions
+    });
+  } catch (error) {
+    console.error('Error getting completions:', error);
     res.status(500).json({ error: error.message });
   }
 });

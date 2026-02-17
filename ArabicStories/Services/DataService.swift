@@ -37,35 +37,8 @@ class DataService {
     var isLoadingPublisher = CurrentValueSubject<Bool, Never>(false)
     var errorPublisher = PassthroughSubject<Error, Never>()
     var levelUnlockedPublisher = PassthroughSubject<Int, Never>()
-    
-    // MARK: - Cache
-    private var cachedStories: [Story]?
-    private var cachedUserProgress: UserProgress?
-    private var cachedWords: [Word]?
-    private var cacheTimestamp: Date?
-    private let cacheValidityDuration: TimeInterval = 300 // 5 minutes
 
     private init() {}
-    
-    // MARK: - Cache Management
-    
-    private func isCacheValid() -> Bool {
-        guard let timestamp = cacheTimestamp else { return false }
-        return Date().timeIntervalSince(timestamp) < cacheValidityDuration
-    }
-    
-    func clearCache() {
-        cachedStories = nil
-        cachedUserProgress = nil
-        cachedWords = nil
-        cacheTimestamp = nil
-    }
-    
-    func refreshCache() async {
-        clearCache()
-        _ = await fetchAllStories()
-        _ = await fetchUserProgress()
-    }
     
     private func checkNetwork() throws {
         guard networkMonitor.isConnected else {
@@ -106,29 +79,8 @@ class DataService {
     // MARK: - Story Operations
 
     func fetchAllStories() async -> [Story] {
-        // Return cached stories if valid
-        if isCacheValid(), let cached = cachedStories {
-            print("📱 DataService: Returning cached stories (\(cached.count) stories)")
-            return cached
-        }
-        
         isLoadingPublisher.send(true)
         defer { isLoadingPublisher.send(false) }
-        
-        // Check network before fetching
-        do {
-            try checkNetwork()
-        } catch {
-            // If offline and have cache, return stale cache
-            if let cached = cachedStories {
-                print("📱 DataService: Offline - returning stale cached stories")
-                return cached
-            }
-            // No cache and offline
-            print("📱 DataService: Offline with no cache")
-            errorPublisher.send(error)
-            return []
-        }
 
         print("📱 DataService: Fetching all stories from Firebase...")
 
@@ -136,22 +88,12 @@ class DataService {
             print("📱 DataService: Calling firebaseService.fetchStories()")
             let stories = try await firebaseService.fetchStories()
             print("📱 DataService: Got \(stories.count) stories from Firebase")
-
-            // Update cache
-            cachedStories = stories
-            cacheTimestamp = Date()
             
             storiesPublisher.send(stories)
             return stories
         } catch {
             print("📱 DataService: Error fetching from Firebase: \(error)")
             errorPublisher.send(error)
-            
-            // Return stale cache if available
-            if let cached = cachedStories {
-                print("📱 DataService: Returning stale cache after error")
-                return cached
-            }
             return []
         }
     }
@@ -303,35 +245,8 @@ class DataService {
 
     func fetchUserProgress() async -> UserProgress? {
         let userId = getCurrentUserId()
-        
-        // Return cached progress if valid (but still check for daily reset)
-        if let cached = cachedUserProgress {
-            var progress = cached
-            let didReset = progress.checkAndResetDailyStatsIfNeeded()
-            
-            if didReset {
-                // Daily reset happened - save and update cache
-                do {
-                    try checkNetwork()
-                    try await firebaseService.saveUserProgress(progress, userId: userId)
-                    cachedUserProgress = progress
-                    return progress
-                } catch {
-                    // Offline - return cached with reset applied locally
-                    cachedUserProgress = progress
-                    return progress
-                }
-            }
-            
-            // No reset needed, return valid cache
-            if isCacheValid() {
-                return cached
-            }
-        }
 
         do {
-            try checkNetwork()
-            
             if var progress = try await firebaseService.fetchUserProgress(userId: userId) {
                 // Check and reset daily stats if new day started
                 let didReset = progress.checkAndResetDailyStatsIfNeeded()
@@ -341,17 +256,10 @@ class DataService {
                     try await firebaseService.saveUserProgress(progress, userId: userId)
                 }
                 
-                // Update cache
-                cachedUserProgress = progress
-                
                 return progress
             }
         } catch {
-            // Return stale cache if available
-            if let cached = cachedUserProgress {
-                print("📱 DataService: Offline - returning stale cached user progress")
-                return cached
-            }
+            print("📱 DataService: Error fetching user progress: \(error)")
             return UserProgress()
         }
 
@@ -428,14 +336,18 @@ class DataService {
     func saveWordMastery(_ mastery: [UUID: WordMastery]) async {
         do {
             try await firebaseService.saveWordMastery(mastery, userId: getCurrentUserId())
+            print("✅ Successfully saved \(mastery.count) word mastery entries to Firebase")
         } catch {
             print("❌ Error saving word mastery: \(error)")
+            errorPublisher.send(error)
         }
     }
 
     func fetchWordMastery() async -> [UUID: WordMastery] {
         do {
-            return try await firebaseService.fetchWordMastery(userId: getCurrentUserId())
+            let result = try await firebaseService.fetchWordMastery(userId: getCurrentUserId())
+            print("✅ Successfully loaded \(result.count) word mastery entries from Firebase")
+            return result
         } catch {
             print("❌ Error loading word mastery: \(error)")
             return [:]

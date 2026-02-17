@@ -378,6 +378,13 @@ struct QuizSessionSheet: View {
             } message: {
                 Text("Your progress will be saved.")
             }
+            .alert("Quiz Saved", isPresented: $viewModel.showErrorAlert) {
+                Button("OK") { }
+            } message: {
+                if let message = viewModel.errorMessage {
+                    Text(message)
+                }
+            }
         }
     }
 }
