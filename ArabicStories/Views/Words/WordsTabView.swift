@@ -100,7 +100,11 @@ struct MyWordsView: View {
                             MyWordRow(
                                 word: word,
                                 isMastered: viewModel.isWordMastered(word.id),
-                                progress: viewModel.wordProgress(word.id)
+                                progress: viewModel.wordProgress(word.id),
+                                isStarred: word.isBookmarked == true,
+                                onToggleStar: {
+                                    viewModel.toggleStarWord(wordId: word.id)
+                                }
                             )
                         }
                         .buttonStyle(.plain)
@@ -877,6 +881,8 @@ struct MyWordRow: View {
     let word: Word
     let isMastered: Bool
     let progress: Double
+    var isStarred: Bool = false
+    var onToggleStar: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: 16) {
@@ -930,9 +936,19 @@ struct MyWordRow: View {
                     )
             }
 
+            // Star button
+            Button {
+                onToggleStar?()
+            } label: {
+                Image(systemName: isStarred ? "star.fill" : "star")
+                    .foregroundStyle(isStarred ? .yellow : .gray.opacity(0.4))
+                    .font(.title3)
+            }
+            .buttonStyle(.plain)
+
             if isMastered {
-                Image(systemName: "star.fill")
-                    .foregroundStyle(.yellow)
+                Image(systemName: "checkmark.seal.fill")
+                    .foregroundStyle(.green)
             }
         }
         .padding()

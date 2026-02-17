@@ -17,6 +17,13 @@ struct QuranWord: Identifiable, Codable, Hashable {
     var root: QuranRoot?
     var morphology: QuranMorphology
     var occurrenceCount: Int
+    var exampleArabic: String?
+    var exampleEnglish: String?
+    var audioURL: String?
+    var tags: [String]?
+    var notes: String?
+    var createdAt: String?
+    var updatedAt: String?
     
     // MARK: - Coding Keys
     enum CodingKeys: String, CodingKey {
@@ -29,6 +36,13 @@ struct QuranWord: Identifiable, Codable, Hashable {
         case root
         case morphology
         case occurrenceCount
+        case exampleArabic
+        case exampleEnglish
+        case audioURL
+        case tags
+        case notes
+        case createdAt
+        case updatedAt
     }
     
     // MARK: - Computed Properties
@@ -45,6 +59,7 @@ struct QuranWord: Identifiable, Codable, Hashable {
 struct QuranRoot: Codable, Hashable {
     var arabic: String?
     var transliteration: String?
+    var meaning: String?
 }
 
 // MARK: - Quran Morphology (nested in quran_words)
@@ -59,6 +74,7 @@ struct QuranMorphology: Codable, Hashable {
     var grammaticalCase: String?     // Nominative, Accusative, Genitive
     var passive: Bool                // Passive voice marker
     var breakdown: String?           // Full morphological breakdown
+    var state: String?               // Definite, Indefinite state
 }
 
 // MARK: - Quran Stats (quran_stats collection)

@@ -13,6 +13,8 @@ struct StoryReaderView: View {
     @State private var showingSettings = false
     @State private var wordsLoadedRefresh = false  // Trigger refresh when generic words load
     @State private var timerUpdate = false  // Triggers UI refresh every second for timer
+    @State private var transitionDirection: Edge = .trailing
+    @State private var contentId = UUID()  // For content transition
     @Environment(\.dismiss) private var dismiss
     
     // Timer for real-time updates
@@ -23,6 +25,40 @@ struct StoryReaderView: View {
         viewModel = StoryReaderViewModel(story: story, wasReset: false)
     }
     
+    // MARK: - Navigation with Haptics & Animation
+
+    private func navigateNext() {
+        Task {
+            if viewModel.canGoNext {
+                transitionDirection = .trailing
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    contentId = UUID()
+                }
+                await viewModel.goToNextSegment()
+            } else {
+                let notification = UINotificationFeedbackGenerator()
+                notification.notificationOccurred(.success)
+                await handleStoryCompletion()
+            }
+        }
+    }
+
+    private func navigatePrevious() {
+        Task {
+            if viewModel.canGoPrevious {
+                transitionDirection = .leading
+                let impact = UIImpactFeedbackGenerator(style: .light)
+                impact.impactOccurred()
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    contentId = UUID()
+                }
+                await viewModel.goToPreviousSegment()
+            }
+        }
+    }
+
     /// Handle story completion - show summary instead of immediately dismissing
     private func handleStoryCompletion() async {
         print("📖 Complete story: Complete button tapped, calling markAsCompleted()")
@@ -61,54 +97,70 @@ struct StoryReaderView: View {
                 // Content area
                 VStack(spacing: 0) {
                     // Content based on format
-                    if viewModel.isMixedFormat {
-                        // Mixed Format (Level 1) - English with Arabic words
-                        if let segment = viewModel.currentMixedSegment {
-                            MixedContentView(
-                                segment: segment,
-                                storyWords: story.words,
-                                viewModel: viewModel,
-                                refreshTrigger: wordsLoadedRefresh,
-                                onMarkAsDone: {
-                                    Task {
-                                        await handleStoryCompletion()
+                    Group {
+                        if viewModel.isMixedFormat {
+                            // Mixed Format (Level 1) - English with Arabic words
+                            if let segment = viewModel.currentMixedSegment {
+                                MixedContentView(
+                                    segment: segment,
+                                    storyWords: story.words,
+                                    viewModel: viewModel,
+                                    refreshTrigger: wordsLoadedRefresh,
+                                    onMarkAsDone: {
+                                        Task {
+                                            await handleStoryCompletion()
+                                        }
+                                    },
+                                    onRepeat: {
+                                        viewModel.resetProgress()
                                     }
-                                },
-                                onRepeat: {
-                                    viewModel.resetProgress()
-                                }
-                            )
+                                )
+                            } else {
+                                ContentUnavailableView("No Content", systemImage: "doc.text")
+                            }
                         } else {
-                            ContentUnavailableView("No Content", systemImage: "doc.text")
-                        }
-                    } else {
-                        // Bilingual Format (Level 2+) - Full Arabic with English
-                        if let segment = viewModel.currentSegment {
-                            BilingualContentView(
-                                segment: segment,
-                                viewModel: viewModel,
-                                refreshTrigger: wordsLoadedRefresh
-                            )
-                        } else {
-                            ContentUnavailableView("No Content", systemImage: "doc.text")
+                            // Bilingual Format (Level 2+) - Full Arabic with English
+                            if let segment = viewModel.currentSegment {
+                                BilingualContentView(
+                                    segment: segment,
+                                    viewModel: viewModel,
+                                    refreshTrigger: wordsLoadedRefresh
+                                )
+                            } else {
+                                ContentUnavailableView("No Content", systemImage: "doc.text")
+                            }
                         }
                     }
-                    
+                    .id(contentId)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: transitionDirection),
+                        removal: .move(edge: transitionDirection == .trailing ? .leading : .trailing)
+                    ))
+                    .gesture(
+                        DragGesture(minimumDistance: 50, coordinateSpace: .local)
+                            .onEnded { value in
+                                let horizontalAmount = value.translation.width
+                                let verticalAmount = value.translation.height
+                                // Only handle horizontal swipes
+                                guard abs(horizontalAmount) > abs(verticalAmount) else { return }
+
+                                if horizontalAmount < 0 {
+                                    // Swipe left -> next
+                                    navigateNext()
+                                } else {
+                                    // Swipe right -> previous
+                                    navigatePrevious()
+                                }
+                            }
+                    )
+
                     // Bottom Navigation Bar
                     BottomNavigationBar(
                         canGoNext: viewModel.canGoNext,
                         canGoPrevious: viewModel.canGoPrevious,
                         isNightMode: viewModel.isNightMode,
-                        onNext: { 
-                            Task { 
-                                if viewModel.canGoNext {
-                                    await viewModel.goToNextSegment()
-                                } else {
-                                    await handleStoryCompletion()
-                                }
-                            }
-                        },
-                        onPrevious: { Task { await viewModel.goToPreviousSegment() } }
+                        onNext: { navigateNext() },
+                        onPrevious: { navigatePrevious() }
                     )
                 }
             }

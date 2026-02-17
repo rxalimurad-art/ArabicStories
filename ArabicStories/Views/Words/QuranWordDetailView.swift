@@ -19,6 +19,16 @@ struct QuranWordDetailView: View {
                     // Header Card
                     headerCard
                     
+                    // Example Section (if available)
+                    if word.exampleArabic != nil || word.exampleEnglish != nil {
+                        exampleSection
+                    }
+                    
+                    // Tags Section (if available)
+                    if let tags = word.tags, !tags.isEmpty {
+                        tagsSection
+                    }
+                    
                     // Root Section (moved up for prominence)
                     rootSection
                     
@@ -30,6 +40,11 @@ struct QuranWordDetailView: View {
                     
                     // Statistics Section
                     statsSection
+                    
+                    // Notes Section (if available)
+                    if let notes = word.notes, !notes.isEmpty {
+                        notesSection
+                    }
                 }
                 .padding()
             }
@@ -85,6 +100,80 @@ struct QuranWordDetailView: View {
         .shadow(radius: 2)
     }
     
+    // MARK: - Example Section
+    private var exampleSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: "Example Usage", icon: "text.quote")
+            
+            VStack(alignment: .leading, spacing: 12) {
+                if let exampleArabic = word.exampleArabic {
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(exampleArabic)
+                            .font(.system(size: 20, weight: .medium, design: .serif))
+                            .multilineTextAlignment(.trailing)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+                }
+                
+                if let exampleEnglish = word.exampleEnglish {
+                    Text(exampleEnglish)
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6).opacity(0.5))
+            .cornerRadius(8)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Tags Section
+    private var tagsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: "Tags", icon: "tag")
+            
+            FlowLayout(spacing: 8) {
+                if let tags = word.tags {
+                    ForEach(tags, id: \.self) { tag in
+                        Text(tag)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.purple.opacity(0.15))
+                            .foregroundColor(.purple)
+                            .cornerRadius(12)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Notes Section
+    private var notesSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: "Notes", icon: "note.text")
+            
+            Text(word.notes ?? "")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.leading)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
     // MARK: - Morphology Section
     private var morphologySection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -109,6 +198,9 @@ struct QuranWordDetailView: View {
                 }
                 if let grammaticalCase = word.morphology.grammaticalCase {
                     MorphologyRow(label: "Case", value: grammaticalCase)
+                }
+                if let state = word.morphology.state {
+                    MorphologyRow(label: "State", value: state)
                 }
                 MorphologyRow(label: "Passive", value: word.morphology.passive ? "Yes" : "No")
                 if let breakdown = word.morphology.breakdown {
@@ -375,6 +467,60 @@ struct Badge: View {
     }
 }
 
+// MARK: - Flow Layout for Tags
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+    
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let result = FlowResult(
+            in: proposal.replacingUnspecifiedDimensions().width,
+            subviews: subviews,
+            spacing: spacing
+        )
+        return result.size
+    }
+    
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = FlowResult(
+            in: bounds.width,
+            subviews: subviews,
+            spacing: spacing
+        )
+        for (index, subview) in subviews.enumerated() {
+            subview.place(at: CGPoint(x: bounds.minX + result.frames[index].minX,
+                                     y: bounds.minY + result.frames[index].minY),
+                         proposal: .unspecified)
+        }
+    }
+    
+    struct FlowResult {
+        var frames: [CGRect] = []
+        var size: CGSize = .zero
+        
+        init(in maxWidth: CGFloat, subviews: Subviews, spacing: CGFloat) {
+            var currentX: CGFloat = 0
+            var currentY: CGFloat = 0
+            var lineHeight: CGFloat = 0
+            
+            for subview in subviews {
+                let size = subview.sizeThatFits(.unspecified)
+                
+                if currentX + size.width > maxWidth && currentX > 0 {
+                    currentX = 0
+                    currentY += lineHeight + spacing
+                    lineHeight = 0
+                }
+                
+                frames.append(CGRect(x: currentX, y: currentY, width: size.width, height: size.height))
+                lineHeight = max(lineHeight, size.height)
+                currentX += size.width + spacing
+            }
+            
+            self.size = CGSize(width: maxWidth, height: currentY + lineHeight)
+        }
+    }
+}
+
 // MARK: - Preview
 #Preview {
     QuranWordDetailView(word: QuranWord(
@@ -384,7 +530,7 @@ struct Badge: View {
         arabicWithoutDiacritics: "فى",
         buckwalter: "fiY",
         englishMeaning: "In",
-        root: QuranRoot(arabic: nil, transliteration: "N/A"),
+        root: QuranRoot(arabic: nil, transliteration: "N/A", meaning: nil),
         morphology: QuranMorphology(
             partOfSpeech: "P",
             posDescription: "حرف جر",
@@ -395,8 +541,16 @@ struct Badge: View {
             number: "Plural",
             grammaticalCase: nil,
             passive: false,
-            breakdown: "فِى[P]"
+            breakdown: "فِى[P]",
+            state: nil
         ),
-        occurrenceCount: 1098
+        occurrenceCount: 1098,
+        exampleArabic: "قَرَأْتُ الكِتَابَ أَمْسِ",
+        exampleEnglish: "I read the book yesterday",
+        audioURL: nil,
+        tags: ["common", "preposition"],
+        notes: "Form I verbal noun pattern",
+        createdAt: "2026-02-17T21:38:54.250Z",
+        updatedAt: "2026-02-17T21:40:18.701Z"
     ))
 }

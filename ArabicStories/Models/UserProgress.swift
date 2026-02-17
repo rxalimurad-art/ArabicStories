@@ -165,32 +165,37 @@ struct UserProgress: Identifiable, Codable {
     mutating func recordStudySession(minutes: Int) {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        
+
         todayStudyMinutes += minutes
         weeklyStudyMinutes[6] = todayStudyMinutes
-        
+
         if let lastDate = lastStudyDate {
             let lastStudyDay = calendar.startOfDay(for: lastDate)
             let daysSinceLastStudy = calendar.dateComponents([.day], from: lastStudyDay, to: today).day ?? 0
-            
-            if daysSinceLastStudy == 1 {
+
+            if daysSinceLastStudy == 0 {
+                // Same day — streak already counted, nothing to do
+            } else if daysSinceLastStudy == 1 {
+                // Consecutive day — increment streak once (first session of new day)
                 currentStreak += 1
                 if currentStreak > longestStreak {
                     longestStreak = currentStreak
                 }
-            } else if daysSinceLastStudy > 1 {
-                if !streakFreezeUsed && daysSinceLastStudy == 2 {
-                    streakFreezeUsed = true
-                    streakFreezeDate = lastDate
-                } else {
-                    currentStreak = 1
-                }
+            }
+            // daysSinceLastStudy > 1 is handled by checkAndResetDailyStatsIfNeeded
+            // which runs before this. If we get here with >1, streak was already reset.
+            // Start a new streak of 1 if streak is currently 0.
+            if daysSinceLastStudy > 1 && currentStreak == 0 {
+                currentStreak = 1
             }
         } else {
+            // First ever session
             currentStreak = 1
-            longestStreak = 1
+            if currentStreak > longestStreak {
+                longestStreak = currentStreak
+            }
         }
-        
+
         lastStudyDate = Date()
         updatedAt = Date()
         updateWeeklyStats()
@@ -302,35 +307,44 @@ struct UserProgress: Identifiable, Codable {
     mutating func checkAndResetDailyStatsIfNeeded() -> Bool {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        
+
         guard let lastDate = lastStudyDate else {
             return false
         }
-        
+
         let lastStudyDay = calendar.startOfDay(for: lastDate)
         let daysSinceLastStudy = calendar.dateComponents([.day], from: lastStudyDay, to: today).day ?? 0
-        
+
         if daysSinceLastStudy > 0 {
-            // New day - reset daily stats
-            resetDailyStats()
-            
-            // Update streak logic
-            if daysSinceLastStudy == 1 {
-                // Consecutive day - streak continues (will increment on next study)
-            } else if daysSinceLastStudy > 1 {
-                // Missed days
+            // Determine if streak freeze should be used BEFORE resetting daily stats
+            var shouldUseFreeze = false
+            if daysSinceLastStudy > 1 {
                 if !streakFreezeUsed && daysSinceLastStudy == 2 {
+                    shouldUseFreeze = true
+                }
+            }
+
+            // Reset daily stats (this resets streakFreezeUsed to false)
+            resetDailyStats()
+
+            // Apply streak logic AFTER reset
+            if daysSinceLastStudy == 1 {
+                // Consecutive day — streak continues (will increment in recordStudySession)
+            } else if daysSinceLastStudy > 1 {
+                if shouldUseFreeze {
+                    // Use streak freeze — preserve current streak
                     streakFreezeUsed = true
                     streakFreezeDate = lastDate
                 } else {
+                    // Streak is broken
                     currentStreak = 0
                 }
             }
-            
+
             updatedAt = Date()
             return true
         }
-        
+
         return false
     }
 }

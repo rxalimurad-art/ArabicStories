@@ -246,6 +246,9 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+
+                // Sign Out & Delete Account (bottom)
+                destructiveActionsSection
             }
             .navigationTitle("Settings")
             .alert("Reset Progress?", isPresented: $showingResetAlert) {
@@ -381,7 +384,7 @@ struct SettingsView: View {
         print("✅ Updated daily goal to \(minutes) minutes")
     }
     
-    // MARK: - Account Section
+    // MARK: - Account Section (user info + connect only)
     private var accountSection: some View {
         Section("Account") {
             // User info
@@ -389,18 +392,18 @@ struct SettingsView: View {
                 Image(systemName: authService.isAnonymous ? "person.fill.questionmark" : "person.circle.fill")
                     .font(.system(size: 40))
                     .foregroundStyle(authService.isAnonymous ? .secondary : Color.hikayaTeal)
-                
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(authService.currentUser?.displayName ?? "Guest User")
                         .font(.headline)
-                    
+
                     Text(authService.isAnonymous ? "Guest Account" : (authService.currentUser?.email ?? "Connected Account"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
             }
             .padding(.vertical, 4)
-            
+
             // Connect Account option (only for anonymous users)
             if authService.isAnonymous {
                 Button {
@@ -410,46 +413,54 @@ struct SettingsView: View {
                         Image(systemName: "link.circle.fill")
                             .frame(width: 30)
                             .foregroundStyle(Color.hikayaOrange)
-                        
+
                         Text("Connect Account")
                             .foregroundStyle(Color.hikayaDeepTeal)
-                        
+
                         Spacer()
-                        
+
                         Image(systemName: "chevron.right")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
             }
-            
+        }
+    }
+
+    // MARK: - Destructive Actions Section (at bottom)
+    private var destructiveActionsSection: some View {
+        Section {
             // Sign Out
             Button {
                 showingSignOutAlert = true
             } label: {
                 HStack {
-                    Image(systemName: "arrow.left.circle.fill")
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
                         .frame(width: 30)
-                        .foregroundStyle(.orange)
-                    
+                        .foregroundStyle(.secondary)
+
                     Text("Sign Out")
                         .foregroundStyle(.primary)
                 }
             }
-            
+
             // Delete Account
             Button {
                 showingDeleteAlert = true
             } label: {
                 HStack {
-                    Image(systemName: "trash.circle.fill")
+                    Image(systemName: "trash")
                         .frame(width: 30)
                         .foregroundStyle(.red)
-                    
+
                     Text("Delete Account")
                         .foregroundStyle(.red)
                 }
             }
+        } footer: {
+            Text("Signing out will keep your data safe. Deleting your account will permanently remove all your data.")
+                .font(.caption)
         }
     }
 }

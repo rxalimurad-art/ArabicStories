@@ -390,6 +390,19 @@ class DataService {
         }
     }
 
+    func updateWordBookmark(wordId: UUID, isBookmarked: Bool) async {
+        do {
+            try await firebaseService.updateUnlockedWordField(
+                wordId: wordId,
+                userId: getCurrentUserId(),
+                field: "wordData.isBookmarked",
+                value: isBookmarked
+            )
+        } catch {
+            print("❌ Error updating word bookmark: \(error)")
+        }
+    }
+
     // MARK: - Story Progress (User-Specific)
 
     func fetchStoryProgress(storyId: UUID) async -> StoryProgress? {

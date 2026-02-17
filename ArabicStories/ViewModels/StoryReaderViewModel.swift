@@ -270,6 +270,8 @@ class StoryReaderViewModel {
     // MARK: - Word Interaction (Bilingual Format)
     
     func handleWordTap(wordText: String, position: CGPoint) {
+        let selection = UISelectionFeedbackGenerator()
+        selection.selectionChanged()
         print("👆 Word tapped: '\(wordText)'")
         
         // Print all available words in the story
@@ -381,6 +383,8 @@ class StoryReaderViewModel {
     // MARK: - Mixed Format Word Interaction
     
     func handleMixedWordTap(wordId: String, position: CGPoint) {
+        let selection = UISelectionFeedbackGenerator()
+        selection.selectionChanged()
         print("👆 Mixed format word tapped (ID: \(wordId))")
         
         // Find word details from story's vocabulary
@@ -791,41 +795,31 @@ class StoryReaderViewModel {
 // MARK: - Arabic Font Options
 
 enum ArabicFont: String, CaseIterable, Identifiable {
+    case geezaPro = "Geeza Pro"
+    case alNile = "Al Nile"
+    case damascus = "Damascus"
+    case baghdad = "Baghdad"
     case notoNaskh = "Noto Naskh Arabic"
-    case notoSans = "Noto Sans Arabic"
-    case scheherazade = "Scheherazade New"
-    case amiri = "Amiri"
-    case lateef = "Lateef"
-    
+
     var id: String { rawValue }
-    
+
+    /// The actual iOS font family name used with UIFont / Font.custom
     var fontName: String {
         switch self {
+        case .geezaPro:
+            return "GeezaPro"
+        case .alNile:
+            return "AlNile"
+        case .damascus:
+            return "Damascus"
+        case .baghdad:
+            return "Baghdad"
         case .notoNaskh:
             return "NotoNaskhArabic"
-        case .notoSans:
-            return "NotoSansArabic"
-        case .scheherazade:
-            return "ScheherazadeNew"
-        case .amiri:
-            return "Amiri"
-        case .lateef:
-            return "Lateef"
         }
     }
-    
+
     var swiftUIFont: Font {
-        switch self {
-        case .notoNaskh:
-            return .custom("NotoNaskhArabic", size: 20)
-        case .notoSans:
-            return .custom("NotoSansArabic", size: 20)
-        case .scheherazade:
-            return .custom("ScheherazadeNew", size: 20)
-        case .amiri:
-            return .custom("Amiri", size: 20)
-        case .lateef:
-            return .custom("Lateef", size: 20)
-        }
+        .custom(fontName, size: 20)
     }
 }

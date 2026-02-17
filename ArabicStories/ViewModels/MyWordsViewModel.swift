@@ -49,6 +49,8 @@ class MyWordsViewModel {
         switch filterOption {
         case .all:
             filtered = unlockedWords
+        case .starred:
+            filtered = unlockedWords.filter { $0.isBookmarked == true }
         case .mastered:
             filtered = unlockedWords.filter { wordMastery[$0.id]?.isMastered == true }
         case .toReview:
@@ -120,8 +122,26 @@ class MyWordsViewModel {
         return Int(Double(correctCount) / Double(answered) * 100)
     }
     
+    // MARK: - Star/Bookmark Words
+
+    func toggleStarWord(wordId: UUID) {
+        if let index = unlockedWords.firstIndex(where: { $0.id == wordId }) {
+            let current = unlockedWords[index].isBookmarked ?? false
+            unlockedWords[index].isBookmarked = !current
+
+            // Persist to Firebase
+            Task {
+                await dataService.updateWordBookmark(wordId: wordId, isBookmarked: !current)
+            }
+        }
+    }
+
+    var starredWords: [Word] {
+        unlockedWords.filter { $0.isBookmarked == true }
+    }
+
     // MARK: - Word Progress
-    
+
     func isWordMastered(_ wordId: UUID) -> Bool {
         wordMastery[wordId]?.isMastered ?? false
     }
@@ -529,6 +549,7 @@ enum WordSortOption: String, CaseIterable {
 
 enum WordFilterOption: String, CaseIterable {
     case all = "All"
+    case starred = "Starred"
     case mastered = "Mastered"
     case toReview = "To Review"
 }

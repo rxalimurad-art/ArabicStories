@@ -295,14 +295,19 @@ class LibraryViewModel {
     }
     
     var lockedLevelMessage: String {
-        let remaining = storiesRemainingForLevel2
-        if remaining == 1 {
-            return "You're almost there! Complete 1 more story to unlock full Arabic reading."
-        } else if remaining > 0 {
-            return "Complete \(remaining) more stories to unlock full Arabic reading with Level 2."
-        } else {
-            return "Keep reading Level 1 stories to build your vocabulary first."
+        guard let tapped = lockedLevelTapped else {
+            return "Keep reading to unlock more levels."
         }
+        let previousLevel = tapped - 1
+        if previousLevel == 1 {
+            let remaining = storiesRemainingForLevel2
+            if remaining == 1 {
+                return "You're almost there! Complete 1 more Level \(previousLevel) story to unlock Level \(tapped)."
+            } else if remaining > 0 {
+                return "Complete \(remaining) more Level \(previousLevel) stories to unlock Level \(tapped)."
+            }
+        }
+        return "Complete all Level \(previousLevel) stories first to unlock Level \(tapped)."
     }
     
     var unlockProgressText: String {

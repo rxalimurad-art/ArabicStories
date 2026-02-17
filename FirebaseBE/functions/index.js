@@ -790,7 +790,7 @@ app.put('/api/quran-words/:id', async (req, res) => {
       occurrenceCount: wordData.occurrenceCount || 0,
       tags: Array.isArray(wordData.tags) ? wordData.tags : [],
       notes: wordData.notes?.trim() || null,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date()
     };
 
     await docRef.update(updateData);
@@ -861,7 +861,7 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
     await file.makePublic();
     const audioURL = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 
-    await docRef.update({ audioURL, updatedAt: new Date().toISOString() });
+    await docRef.update({ audioURL, updatedAt: new Date() });
     await logAdminAction('UPLOAD_WORD_AUDIO', { wordId }, req.ip);
 
     res.json({ success: true, audioURL });
@@ -887,7 +887,7 @@ app.delete('/api/quran-words/:id/audio', async (req, res) => {
     const file = bucket.file(`word-audio/${wordId}.mp3`);
     await file.delete().catch(() => {}); // ignore if file doesn't exist
 
-    await docRef.update({ audioURL: null, updatedAt: new Date().toISOString() });
+    await docRef.update({ audioURL: null, updatedAt: new Date() });
 
     res.json({ success: true, message: 'Audio deleted' });
   } catch (error) {

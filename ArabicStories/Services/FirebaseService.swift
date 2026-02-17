@@ -444,8 +444,17 @@ class FirebaseService {
             .collection("unlockedWords")
             .document(wordId.uuidString)
             .getDocument()
-        
+
         return doc.exists
+    }
+
+    /// Update a single field on an unlocked word document
+    func updateUnlockedWordField(wordId: UUID, userId: String, field: String, value: Any) async throws {
+        try await db.collection("users")
+            .document(userId)
+            .collection("unlockedWords")
+            .document(wordId.uuidString)
+            .updateData([field: value])
     }
 
     // MARK: - Search
@@ -762,7 +771,8 @@ class FirebaseService {
                 "number": NSNull(),
                 "grammaticalCase": NSNull(),
                 "passive": false,
-                "breakdown": NSNull()
+                "breakdown": NSNull(),
+                "state": NSNull()
             ]
         }
         
@@ -773,6 +783,9 @@ class FirebaseService {
             }
             if root["transliteration"] is NSNull {
                 root["transliteration"] = nil
+            }
+            if root["meaning"] is NSNull {
+                root["meaning"] = nil
             }
             jsonDict["root"] = root
         }
@@ -903,7 +916,7 @@ class FirebaseService {
         storyTitle: String,
         difficultyLevel: Int
     ) async throws {
-        let url = URL(string: "https://us-central1-arabicstories-82611.cloudfunctions.net/api/completions/story")!
+        let url = URL(string: "https://arabicstories-82611.web.app/api/completions/story")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
