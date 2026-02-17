@@ -228,7 +228,6 @@
         <button class="nav-btn active" data-view="stories">📚 Stories</button>
         <button class="nav-btn" data-view="create">➕ New Story</button>
         <button class="nav-btn" data-view="words">📖 Words</button>
-        <button class="nav-btn" data-view="roots">🌳 Roots</button>
         <button class="nav-btn" data-view="import">📤 Import</button>
       </nav>
       <div class="header-actions">
@@ -417,6 +416,7 @@
               <option value="occurrenceCount">Sort by Occurrences</option>
               <option value="arabicText">Sort by Arabic</option>
             </select>
+            <button id="add-word-btn" class="btn btn-primary">➕ Add Word</button>
             <button id="refresh-words" class="btn btn-icon">🔄</button>
             <button id="export-words" class="btn btn-primary" title="Export all words to JSON">📥 Export All</button>
             <select id="word-limit">
@@ -451,50 +451,6 @@
           </div>
           <button id="word-next-page" class="btn btn-secondary" title="Next Page">Next ▶️</button>
           <button id="word-last-page" class="btn btn-secondary" title="Last Page">Last ⏭️</button>
-        </div>
-      </div>
-
-      <!-- Quran Roots View -->
-      <div id="roots-view" class="view hidden">
-        <div class="view-header">
-          <h2>🌳 Quran Roots</h2>
-          <div class="search-box">
-            <input type="text" id="root-search" placeholder="Search roots...">
-            <select id="root-sort">
-              <option value="totalOccurrences">Sort by Occurrences</option>
-              <option value="derivativeCount">Sort by Derivatives</option>
-              <option value="root">Sort by Root</option>
-            </select>
-            <select id="root-limit">
-              <option value="50">50</option>
-              <option value="100" selected>100</option>
-              <option value="200">200</option>
-              <option value="500">500</option>
-              <option value="all">Show All</option>
-            </select>
-            <button id="refresh-roots" class="btn btn-icon">🔄</button>
-          </div>
-        </div>
-        
-        <div id="roots-count-display" style="margin: 16px 0; padding: 12px 16px; background: var(--gray-100); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-          <span id="roots-count-text">Loading roots...</span>
-          <span id="roots-showing-text"></span>
-        </div>
-        
-        <div id="roots-list" class="words-grid">
-          <div class="loading">Loading roots...</div>
-        </div>
-        
-        <div id="roots-pagination" class="pagination" style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; padding: 16px; background: white; border-radius: 12px; box-shadow: var(--shadow-sm);">
-          <button id="root-first-page" class="btn btn-secondary" title="First Page">⏮️ First</button>
-          <button id="root-prev-page" class="btn btn-secondary" title="Previous Page">◀️ Prev</button>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span>Page</span>
-            <input type="number" id="root-page-input" value="1" min="1" style="width: 60px; text-align: center; padding: 8px; border: 2px solid var(--gray-300); border-radius: 8px;">
-            <span id="root-page-of">of 1</span>
-          </div>
-          <button id="root-next-page" class="btn btn-secondary" title="Next Page">Next ▶️</button>
-          <button id="root-last-page" class="btn btn-secondary" title="Last Page">Last ⏭️</button>
         </div>
       </div>
 
@@ -688,12 +644,274 @@
               <input type="text" id="word-breakdown-input" readonly style="background: var(--gray-100);">
             </div>
           </div>
+
+          <!-- Example Sentences -->
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-example-arabic-input">Example (Arabic)</label>
+              <input type="text" id="word-example-arabic-input" dir="rtl" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-example-english-input">Example (English)</label>
+              <input type="text" id="word-example-english-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+
+          <!-- Tags & Notes -->
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-tags-input">Tags (comma-separated)</label>
+              <input type="text" id="word-tags-input" placeholder="e.g. prayer, worship, common" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="word-notes-input">Notes</label>
+              <input type="text" id="word-notes-input" readonly style="background: var(--gray-100);">
+            </div>
+          </div>
+
+          <!-- Audio -->
+          <div class="form-row" id="word-audio-section">
+            <div class="form-group form-group-wide">
+              <label>Audio Pronunciation</label>
+              <div id="word-audio-display" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span id="word-audio-status" style="color:var(--gray-500); font-size:13px;">No audio</span>
+                <audio id="word-audio-player" controls style="display:none; height:32px;"></audio>
+              </div>
+              <div id="word-audio-upload-area" style="display:none; margin-top:8px;">
+                <input type="file" id="word-audio-file" accept="audio/mpeg,.mp3" style="margin-bottom:6px;">
+                <button type="button" id="upload-audio-btn" class="btn btn-secondary" onclick="uploadWordAudio()">⬆️ Upload MP3</button>
+                <button type="button" id="delete-audio-btn" class="btn btn-danger" onclick="deleteWordAudio()" style="display:none;">🗑️ Remove Audio</button>
+              </div>
+            </div>
+          </div>
         </form>
-        
+
         <div class="modal-actions">
           <button id="cancel-word" class="btn btn-secondary">Close</button>
           <button id="edit-word-btn" class="btn btn-primary" onclick="enableWordEdit()">✏️ Edit</button>
           <button id="save-word-btn" class="btn btn-primary hidden" onclick="saveWord()">💾 Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Word Modal -->
+    <div id="create-word-modal" class="modal hidden">
+      <div class="modal-content modal-wide">
+        <h3>➕ Add New Word</h3>
+
+        <form id="create-word-form">
+          <!-- Core Fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-arabic">Arabic Text <span style="color:red">*</span></label>
+              <input type="text" id="cw-arabic" dir="rtl" placeholder="e.g. بِسْمِ" required>
+            </div>
+            <div class="form-group">
+              <label for="cw-arabic-plain">Arabic (no diacritics)</label>
+              <input type="text" id="cw-arabic-plain" dir="rtl" placeholder="Auto-filled if empty">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-english">English Meaning <span style="color:red">*</span></label>
+              <input type="text" id="cw-english" placeholder="e.g. in the name of" required>
+            </div>
+            <div class="form-group">
+              <label for="cw-buckwalter">Buckwalter Transliteration</label>
+              <input type="text" id="cw-buckwalter" placeholder="e.g. bisomi">
+            </div>
+          </div>
+
+          <!-- Example Sentences -->
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-example-arabic">Example Sentence (Arabic)</label>
+              <input type="text" id="cw-example-arabic" dir="rtl" placeholder="e.g. بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-example-english">Example Sentence (English)</label>
+              <input type="text" id="cw-example-english" placeholder="e.g. In the name of Allah, the Most Gracious, the Most Merciful.">
+            </div>
+          </div>
+
+          <!-- Root Information -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-root-arabic">Root (Arabic)</label>
+              <input type="text" id="cw-root-arabic" dir="rtl" placeholder="e.g. س م و">
+            </div>
+            <div class="form-group">
+              <label for="cw-root-trans">Root Transliteration</label>
+              <input type="text" id="cw-root-trans" placeholder="e.g. s-m-w">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-root-meaning">Root Meaning</label>
+              <input type="text" id="cw-root-meaning" placeholder="e.g. to be high, elevated">
+            </div>
+          </div>
+
+          <!-- Morphology -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-pos">Part of Speech</label>
+              <select id="cw-pos">
+                <option value="">— Select —</option>
+                <option value="N">N – Noun</option>
+                <option value="V">V – Verb</option>
+                <option value="P">P – Preposition</option>
+                <option value="PN">PN – Proper Noun</option>
+                <option value="ADJ">ADJ – Adjective</option>
+                <option value="ADV">ADV – Adverb</option>
+                <option value="PRO">PRO – Pronoun</option>
+                <option value="CONJ">CONJ – Conjunction</option>
+                <option value="DET">DET – Determiner</option>
+                <option value="INTJ">INTJ – Interjection</option>
+                <option value="PART">PART – Particle</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cw-lemma">Lemma (Base Form)</label>
+              <input type="text" id="cw-lemma" dir="rtl" placeholder="e.g. كَتَبَ">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-form">Verb Form (I–X)</label>
+              <select id="cw-form">
+                <option value="">—</option>
+                <option value="1">Form I</option>
+                <option value="2">Form II</option>
+                <option value="3">Form III</option>
+                <option value="4">Form IV</option>
+                <option value="5">Form V</option>
+                <option value="6">Form VI</option>
+                <option value="7">Form VII</option>
+                <option value="8">Form VIII</option>
+                <option value="9">Form IX</option>
+                <option value="10">Form X</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cw-tense">Tense</label>
+              <select id="cw-tense">
+                <option value="">—</option>
+                <option value="PERF">PERF – Perfect</option>
+                <option value="IMPF">IMPF – Imperfect</option>
+                <option value="IMPV">IMPV – Imperative</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-gender">Gender</label>
+              <select id="cw-gender">
+                <option value="">—</option>
+                <option value="M">M – Masculine</option>
+                <option value="F">F – Feminine</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cw-number">Number</label>
+              <select id="cw-number">
+                <option value="">—</option>
+                <option value="S">S – Singular</option>
+                <option value="D">D – Dual</option>
+                <option value="P">P – Plural</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-case">Grammatical Case</label>
+              <select id="cw-case">
+                <option value="">—</option>
+                <option value="NOM">NOM – Nominative</option>
+                <option value="ACC">ACC – Accusative</option>
+                <option value="GEN">GEN – Genitive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cw-state">State</label>
+              <select id="cw-state">
+                <option value="">—</option>
+                <option value="DEF">DEF – Definite</option>
+                <option value="INDEF">INDEF – Indefinite</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-passive">Passive Voice</label>
+              <select id="cw-passive">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cw-pos-description">POS Description (Arabic)</label>
+              <input type="text" id="cw-pos-description" dir="rtl" placeholder="e.g. اسم">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-breakdown">Morphological Breakdown</label>
+              <input type="text" id="cw-breakdown" placeholder="e.g. bi+ismi">
+            </div>
+          </div>
+
+          <!-- Frequency -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cw-rank">Frequency Rank</label>
+              <input type="number" id="cw-rank" min="1" placeholder="e.g. 1">
+            </div>
+            <div class="form-group">
+              <label for="cw-occurrence">Occurrence Count</label>
+              <input type="number" id="cw-occurrence" min="0" value="0">
+            </div>
+          </div>
+
+          <!-- Tags & Notes -->
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-tags">Tags (comma-separated)</label>
+              <input type="text" id="cw-tags" placeholder="e.g. prayer, worship, basmala">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-notes">Notes</label>
+              <input type="text" id="cw-notes" placeholder="Any additional notes...">
+            </div>
+          </div>
+
+          <!-- Audio Upload -->
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label for="cw-audio">Audio Pronunciation (MP3, max 20MB)</label>
+              <input type="file" id="cw-audio" accept="audio/mpeg,.mp3">
+              <small style="color:var(--gray-500);">Audio will be uploaded after the word is created.</small>
+            </div>
+          </div>
+        </form>
+
+        <div class="modal-actions">
+          <button id="cancel-create-word" class="btn btn-secondary">Cancel</button>
+          <button id="submit-create-word" class="btn btn-primary" onclick="createWord()">➕ Create Word</button>
         </div>
       </div>
     </div>

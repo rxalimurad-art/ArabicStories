@@ -18,14 +18,11 @@ const API = {
   validate: () => `${CONFIG.apiBaseUrl}/api/stories/validate`,
   categories: () => `${CONFIG.apiBaseUrl}/api/categories`,
   seed: () => `${CONFIG.apiBaseUrl}/api/seed`,
-  // Quran data endpoints (read-only)
+  // Quran words endpoints
   quranWords: () => `${CONFIG.apiBaseUrl}/api/quran-words`,
   quranWord: (id) => `${CONFIG.apiBaseUrl}/api/quran-words/${id}`,
   quranWordSearch: (text) => `${CONFIG.apiBaseUrl}/api/quran-words/search/${encodeURIComponent(text)}`,
-  quranStats: () => `${CONFIG.apiBaseUrl}/api/quran-stats`,
-  quranRoots: () => `${CONFIG.apiBaseUrl}/api/quran-roots`,
-  quranRoot: (id) => `${CONFIG.apiBaseUrl}/api/quran-roots/${id}`,
-  quranRootWords: (root) => `${CONFIG.apiBaseUrl}/api/quran-roots/${encodeURIComponent(root)}/words`
+  quranWordAudio: (id) => `${CONFIG.apiBaseUrl}/api/quran-words/${id}/audio`
 };
 
 // ============================================
@@ -44,10 +41,6 @@ const state = {
   wordsList: [],
   wordsPage: 1,
   wordsLimit: 100,
-  // Roots state
-  rootsList: [],
-  rootsPage: 1,
-  rootsLimit: 100,
   wordToDelete: null,
   wordCategories: []
 };
@@ -63,15 +56,8 @@ function initializeApp() {
   setupEventListeners();
   loadStories();
   
-  // Prefetch Quran stats for word count
+  // Prefetch word count
   fetchQuranWordsCount();
-  
-  // Prefetch roots count (from stats)
-  apiRequest(API.quranStats()).then(data => {
-    if (data.stats?.uniqueRoots) {
-      totalQuranRootsCount = data.stats.uniqueRoots;
-    }
-  }).catch(() => {});
   
   // Load any saved draft
   const hasDraft = localStorage.getItem('storyDraft');
@@ -119,33 +105,10 @@ function setupEventListeners() {
   document.getElementById('import-file')?.addEventListener('change', handleFileSelect);
   document.getElementById('export-all-btn')?.addEventListener('click', exportAllStories);
   
-  // Quran Stats
-  loadQuranStats();
-  
-  // Roots view
-  document.getElementById('refresh-roots')?.addEventListener('click', () => {
-    totalQuranRootsCount = 0;
-    loadRoots();
-  });
-  document.getElementById('root-search')?.addEventListener('input', debounce(filterRoots, 300));
-  document.getElementById('root-sort')?.addEventListener('change', loadRoots);
-  document.getElementById('root-limit')?.addEventListener('change', (e) => {
-    const val = e.target.value;
-    state.rootsLimit = val === 'all' ? 2000 : parseInt(val);
-    state.rootsPage = 1;
-    loadRoots();
-  });
-  
-  // Roots pagination
-  document.getElementById('root-first-page')?.addEventListener('click', () => goToRootsPage(1));
-  document.getElementById('root-prev-page')?.addEventListener('click', () => changeRootsPage(-1));
-  document.getElementById('root-next-page')?.addEventListener('click', () => changeRootsPage(1));
-  document.getElementById('root-last-page')?.addEventListener('click', () => goToRootsPage(getMaxRootsPage()));
-  document.getElementById('root-page-input')?.addEventListener('change', (e) => {
-    const page = parseInt(e.target.value) || 1;
-    goToRootsPage(page);
-  });
-  
+  // Word modal - create
+  document.getElementById('add-word-btn')?.addEventListener('click', openCreateWordModal);
+  document.getElementById('cancel-create-word')?.addEventListener('click', closeCreateWordModal);
+
   // Modal
   document.getElementById('cancel-delete')?.addEventListener('click', closeDeleteModal);
   document.getElementById('confirm-delete')?.addEventListener('click', confirmDelete);
@@ -274,12 +237,6 @@ function switchView(viewName) {
       loadWords();
     } else {
       updateWordsCountDisplay();
-    }
-  } else if (viewName === 'roots') {
-    if (state.rootsList.length === 0) {
-      loadRoots();
-    } else {
-      updateRootsCountDisplay();
     }
   }
 }
@@ -1269,11 +1226,10 @@ let totalQuranWordsCount = 0;
 
 async function fetchQuranWordsCount() {
   try {
-    const stats = await apiRequest(API.quranStats());
-    totalQuranWordsCount = stats.stats?.totalUniqueWords || 0;
+    const data = await apiRequest(`${API.quranWords()}?limit=1`);
+    totalQuranWordsCount = data.total || 0;
     updateWordsCountDisplay();
   } catch (error) {
-    console.error('Error fetching word count:', error);
     totalQuranWordsCount = 0;
   }
 }
@@ -1522,23 +1478,23 @@ function openWordModal(word = null) {
   if (word) {
     title.textContent = `📖 Word #${word.rank || 'N/A'} - ${word.arabicText || ''}`;
     document.getElementById('word-id').value = word.id || '';
-    
+
     // Core fields
     document.getElementById('word-arabic-input').value = word.arabicText || '';
     document.getElementById('word-english-input').value = word.englishMeaning || '';
     document.getElementById('word-buckwalter-input').value = word.buckwalter || '';
-    
+
     // POS
     document.getElementById('word-pos-input').value = word.morphology?.partOfSpeech || '';
-    
+
     // Root
     document.getElementById('word-root-input').value = word.root?.arabic || '';
     document.getElementById('word-root-transliteration-input').value = word.root?.transliteration || '';
-    
+
     // Statistics
     document.getElementById('word-rank-input').value = word.rank || '';
     document.getElementById('word-occurrence-count-input').value = word.occurrenceCount || '';
-    
+
     // Morphology details
     document.getElementById('word-lemma-input').value = word.morphology?.lemma || '';
     document.getElementById('word-form-input').value = word.morphology?.form || '';
@@ -1549,8 +1505,33 @@ function openWordModal(word = null) {
     document.getElementById('word-pos-description-input').value = word.morphology?.posDescription || '';
     document.getElementById('word-passive-input').value = word.morphology?.passive ? 'Yes' : 'No';
     document.getElementById('word-breakdown-input').value = word.morphology?.breakdown || '';
+
+    // Example sentences
+    document.getElementById('word-example-arabic-input').value = word.exampleArabic || '';
+    document.getElementById('word-example-english-input').value = word.exampleEnglish || '';
+
+    // Tags & notes
+    document.getElementById('word-tags-input').value = Array.isArray(word.tags) ? word.tags.join(', ') : (word.tags || '');
+    document.getElementById('word-notes-input').value = word.notes || '';
+
+    // Audio
+    const audioPlayer = document.getElementById('word-audio-player');
+    const audioStatus = document.getElementById('word-audio-status');
+    const deleteAudioBtn = document.getElementById('delete-audio-btn');
+    if (word.audioURL) {
+      audioPlayer.src = word.audioURL;
+      audioPlayer.style.display = 'block';
+      audioStatus.style.display = 'none';
+      if (deleteAudioBtn) deleteAudioBtn.style.display = 'inline-block';
+    } else {
+      audioPlayer.style.display = 'none';
+      audioPlayer.src = '';
+      audioStatus.style.display = 'inline';
+      audioStatus.textContent = 'No audio';
+      if (deleteAudioBtn) deleteAudioBtn.style.display = 'none';
+    }
   }
-  
+
   modal.classList.remove('hidden');
 }
 
@@ -1571,31 +1552,47 @@ function enableWordEdit() {
   document.getElementById('edit-word-btn').classList.add('hidden');
   document.getElementById('save-word-btn').classList.remove('hidden');
   document.getElementById('word-modal-title').textContent = '✏️ Edit Word';
+  const uploadArea = document.getElementById('word-audio-upload-area');
+  if (uploadArea) uploadArea.style.display = 'block';
 }
 
 function closeWordModal() {
   document.getElementById('word-modal').classList.add('hidden');
   document.getElementById('word-form').reset();
   setWordFormReadonly(true);
+  const uploadArea = document.getElementById('word-audio-upload-area');
+  if (uploadArea) uploadArea.style.display = 'none';
 }
 
 async function saveWord() {
   const wordId = document.getElementById('word-id').value;
-  
+  const arabicText = document.getElementById('word-arabic-input').value.trim();
+  const englishMeaning = document.getElementById('word-english-input').value.trim();
+
+  if (!arabicText || !englishMeaning) {
+    showToast('Arabic and English are required', 'error');
+    return;
+  }
+
+  const tagsRaw = document.getElementById('word-tags-input').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
   const wordData = {
-    arabicText: document.getElementById('word-arabic-input').value.trim(),
-    arabicWithoutDiacritics: document.getElementById('word-arabic-input').value.trim(),
+    arabicText,
+    arabicWithoutDiacritics: arabicText,
     buckwalter: document.getElementById('word-buckwalter-input').value.trim() || null,
-    englishMeaning: document.getElementById('word-english-input').value.trim(),
-    
+    englishMeaning,
+    exampleArabic: document.getElementById('word-example-arabic-input').value.trim() || null,
+    exampleEnglish: document.getElementById('word-example-english-input').value.trim() || null,
     root: {
       arabic: document.getElementById('word-root-input').value.trim() || null,
-      transliteration: document.getElementById('word-root-transliteration-input').value.trim() || null
+      transliteration: document.getElementById('word-root-transliteration-input').value.trim() || null,
+      meaning: null
     },
-    
     rank: parseInt(document.getElementById('word-rank-input').value) || null,
     occurrenceCount: parseInt(document.getElementById('word-occurrence-count-input').value) || 0,
-    
+    tags,
+    notes: document.getElementById('word-notes-input').value.trim() || null,
     morphology: {
       partOfSpeech: document.getElementById('word-pos-input').value || null,
       posDescription: document.getElementById('word-pos-description-input').value.trim() || null,
@@ -1605,229 +1602,191 @@ async function saveWord() {
       gender: document.getElementById('word-gender-input').value || null,
       number: document.getElementById('word-number-input').value || null,
       grammaticalCase: document.getElementById('word-case-input').value || null,
-      passive: document.getElementById('word-passive-input').value.toLowerCase() === 'yes' || 
+      state: null,
+      passive: document.getElementById('word-passive-input').value.toLowerCase() === 'yes' ||
                document.getElementById('word-passive-input').value.toLowerCase() === 'true',
       breakdown: document.getElementById('word-breakdown-input').value.trim() || null
     }
   };
-  
-  if (!wordData.arabicText || !wordData.englishMeaning) {
-    showToast('Arabic and English are required', 'error');
-    return;
-  }
-  
+
   try {
+    const btn = document.getElementById('save-word-btn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Saving...';
+
     await apiRequest(API.quranWord(wordId), {
       method: 'PUT',
       body: JSON.stringify(wordData)
     });
-    
+
+    // Upload audio if a file was selected
+    const audioFile = document.getElementById('word-audio-file')?.files?.[0];
+    if (audioFile) {
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+      await fetch(API.quranWordAudio(wordId), { method: 'POST', body: formData });
+    }
+
     showToast('Word updated successfully', 'success');
     closeWordModal();
     loadWords();
   } catch (error) {
     showToast(`Failed to save word: ${error.message}`, 'error');
+  } finally {
+    const btn = document.getElementById('save-word-btn');
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Save'; }
   }
 }
 
 // ============================================
-// Quran Roots Management
+// Create Word
 // ============================================
-let totalQuranRootsCount = 0;
 
-async function loadRoots() {
-  const container = document.getElementById('roots-list');
-  container.innerHTML = '<div class="loading">Loading Quran roots...</div>';
-  
-  try {
-    const sort = document.getElementById('root-sort')?.value || 'totalOccurrences';
-    const limitSelect = document.getElementById('root-limit')?.value || '100';
-    const limit = limitSelect === 'all' ? 2000 : parseInt(limitSelect);
-    
-    if (limitSelect === 'all') {
-      container.innerHTML = '<div class="loading">Loading all Quran roots... This may take a moment.</div>';
-    }
-    
-    let url = `${API.quranRoots()}?limit=${limit}&offset=${(state.rootsPage - 1) * limit}&sort=${sort}`;
-    
-    const data = await apiRequest(url);
-    
-    state.rootsList = data.roots || [];
-    
-    if (data.total) {
-      totalQuranRootsCount = data.total;
-    }
-    
-    renderRoots(state.rootsList);
-    updateRootsCountDisplay();
-    updateRootsPaginationUI();
-  } catch (error) {
-    container.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1;">
-        <p>Error loading roots: ${error.message}</p>
-      </div>
-    `;
-  }
+function openCreateWordModal() {
+  document.getElementById('create-word-form').reset();
+  document.getElementById('create-word-modal').classList.remove('hidden');
 }
 
-function renderRoots(roots) {
-  const container = document.getElementById('roots-list');
-  const searchQuery = document.getElementById('root-search')?.value.toLowerCase() || '';
-  
-  let filtered = roots;
-  if (searchQuery) {
-    filtered = roots.filter(r => 
-      r.root?.toLowerCase().includes(searchQuery) ||
-      r.transliteration?.toLowerCase().includes(searchQuery) ||
-      r.sampleDerivatives?.some(d => d.toLowerCase().includes(searchQuery))
-    );
-  }
-  
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1;">
-        <p>No roots found.</p>
-      </div>
-    `;
+function closeCreateWordModal() {
+  document.getElementById('create-word-modal').classList.add('hidden');
+  document.getElementById('create-word-form').reset();
+}
+
+async function createWord() {
+  const arabicText = document.getElementById('cw-arabic').value.trim();
+  const englishMeaning = document.getElementById('cw-english').value.trim();
+
+  if (!arabicText || !englishMeaning) {
+    showToast('Arabic text and English meaning are required', 'error');
     return;
   }
-  
-  container.innerHTML = filtered.map(root => {
-    const rootArabic = root.root || '';
-    const rootTrans = root.transliteration || '';
-    const derivatives = root.sampleDerivatives || [];
-    
-    return `
-    <div class="root-card-compact" data-id="${root.id}" style="background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
-      <div class="root-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #e3f2fd; padding-bottom: 12px;">
-        <div class="root-arabic" dir="rtl" style="font-size: 28px; font-weight: 700; color: var(--primary);">${escapeHtml(rootArabic)}</div>
-        <div class="root-trans" style="font-size: 14px; color: var(--gray-600); font-style: italic;">${escapeHtml(rootTrans)}</div>
-      </div>
-      <div class="root-stats" style="display: flex; gap: 16px; margin-bottom: 12px;">
-        <div class="root-stat" style="text-align: center;">
-          <div style="font-size: 20px; font-weight: 700; color: #1565c0;">${root.derivativeCount || 0}</div>
-          <div style="font-size: 11px; color: var(--gray-500);">Derivatives</div>
-        </div>
-        <div class="root-stat" style="text-align: center;">
-          <div style="font-size: 20px; font-weight: 700; color: #2e7d32;">${root.totalOccurrences?.toLocaleString() || 0}</div>
-          <div style="font-size: 11px; color: var(--gray-500);">Occurrences</div>
-        </div>
-      </div>
-      ${derivatives.length > 0 ? `
-      <div class="root-derivatives" style="margin-top: 12px;">
-        <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 6px;">Sample derivatives:</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 6px;" dir="rtl">
-          ${derivatives.map(d => `<span style="background: #f5f5f5; padding: 4px 8px; border-radius: 6px; font-size: 13px; color: var(--gray-700);">${escapeHtml(d)}</span>`).join('')}
-        </div>
-      </div>
-      ` : ''}
-    </div>
-  `}).join('');
+
+  const tagsRaw = document.getElementById('cw-tags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+  const wordData = {
+    arabicText,
+    arabicWithoutDiacritics: document.getElementById('cw-arabic-plain').value.trim() || arabicText,
+    buckwalter: document.getElementById('cw-buckwalter').value.trim() || null,
+    englishMeaning,
+    exampleArabic: document.getElementById('cw-example-arabic').value.trim() || null,
+    exampleEnglish: document.getElementById('cw-example-english').value.trim() || null,
+    root: {
+      arabic: document.getElementById('cw-root-arabic').value.trim() || null,
+      transliteration: document.getElementById('cw-root-trans').value.trim() || null,
+      meaning: document.getElementById('cw-root-meaning').value.trim() || null
+    },
+    morphology: {
+      partOfSpeech: document.getElementById('cw-pos').value || null,
+      posDescription: document.getElementById('cw-pos-description').value.trim() || null,
+      lemma: document.getElementById('cw-lemma').value.trim() || null,
+      form: document.getElementById('cw-form').value || null,
+      tense: document.getElementById('cw-tense').value || null,
+      gender: document.getElementById('cw-gender').value || null,
+      number: document.getElementById('cw-number').value || null,
+      grammaticalCase: document.getElementById('cw-case').value || null,
+      state: document.getElementById('cw-state').value || null,
+      passive: document.getElementById('cw-passive').value === 'true',
+      breakdown: document.getElementById('cw-breakdown').value.trim() || null
+    },
+    rank: parseInt(document.getElementById('cw-rank').value) || null,
+    occurrenceCount: parseInt(document.getElementById('cw-occurrence').value) || 0,
+    tags,
+    notes: document.getElementById('cw-notes').value.trim() || null
+  };
+
+  const btn = document.getElementById('submit-create-word');
+  btn.disabled = true;
+  btn.textContent = '⏳ Creating...';
+
+  try {
+    const result = await apiRequest(API.quranWords(), {
+      method: 'POST',
+      body: JSON.stringify(wordData)
+    });
+
+    const wordId = result.word?.id;
+
+    // Upload audio if selected
+    const audioFile = document.getElementById('cw-audio')?.files?.[0];
+    if (audioFile && wordId) {
+      try {
+        const formData = new FormData();
+        formData.append('audio', audioFile);
+        await fetch(API.quranWordAudio(wordId), { method: 'POST', body: formData });
+      } catch (audioError) {
+        showToast('Word created but audio upload failed', 'warning');
+      }
+    }
+
+    showToast(`Word "${arabicText}" created successfully`, 'success');
+    closeCreateWordModal();
+    totalQuranWordsCount = 0;
+    loadWords();
+  } catch (error) {
+    showToast(`Failed to create word: ${error.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '➕ Create Word';
+  }
 }
 
-function filterRoots() {
-  renderRoots(state.rootsList);
-}
+async function uploadWordAudio() {
+  const wordId = document.getElementById('word-id').value;
+  const audioFile = document.getElementById('word-audio-file')?.files?.[0];
 
-function getMaxRootsPage() {
-  const limitSelect = document.getElementById('root-limit')?.value || '100';
-  if (limitSelect === 'all') return 1;
-  const limit = parseInt(limitSelect);
-  return Math.max(1, Math.ceil(totalQuranRootsCount / limit));
-}
-
-function goToRootsPage(page) {
-  const limitSelect = document.getElementById('root-limit')?.value || '100';
-  if (limitSelect === 'all') {
-    showToast('Pagination is disabled when showing all roots', 'info');
+  if (!audioFile) {
+    showToast('Please select an MP3 file', 'error');
     return;
   }
-  
-  const maxPage = getMaxRootsPage();
-  state.rootsPage = Math.max(1, Math.min(page, maxPage));
-  updateRootsPaginationUI();
-  loadRoots();
-}
 
-function changeRootsPage(delta) {
-  goToRootsPage(state.rootsPage + delta);
-}
+  const btn = document.getElementById('upload-audio-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Uploading...';
 
-function updateRootsPaginationUI() {
-  const maxPage = getMaxRootsPage();
-  const pageInput = document.getElementById('root-page-input');
-  const pageOf = document.getElementById('root-page-of');
-  
-  if (pageInput) pageInput.value = state.rootsPage;
-  if (pageOf) pageOf.textContent = `of ${maxPage}`;
-  
-  // Update button states
-  const firstBtn = document.getElementById('root-first-page');
-  const prevBtn = document.getElementById('root-prev-page');
-  const nextBtn = document.getElementById('root-next-page');
-  const lastBtn = document.getElementById('root-last-page');
-  
-  if (firstBtn) firstBtn.disabled = state.rootsPage <= 1;
-  if (prevBtn) prevBtn.disabled = state.rootsPage <= 1;
-  if (nextBtn) nextBtn.disabled = state.rootsPage >= maxPage;
-  if (lastBtn) lastBtn.disabled = state.rootsPage >= maxPage;
-}
-
-function updateRootsCountDisplay() {
-  const countText = document.getElementById('roots-count-text');
-  const showingText = document.getElementById('roots-showing-text');
-  
-  if (countText) {
-    countText.textContent = `Total Quran Roots: ${totalQuranRootsCount.toLocaleString()}`;
-  }
-  
-  if (showingText && state.rootsList) {
-    const limitSelect = document.getElementById('root-limit')?.value || '100';
-    const limit = limitSelect === 'all' ? totalQuranRootsCount : parseInt(limitSelect);
-    const offset = (state.rootsPage - 1) * limit;
-    const end = Math.min(offset + state.rootsList.length, totalQuranRootsCount);
-    showingText.textContent = `Showing ${offset + 1}-${end} of ${totalQuranRootsCount.toLocaleString()}`;
-  }
-}
-
-// ============================================
-// Quran Statistics
-// ============================================
-async function loadQuranStats() {
-  const container = document.getElementById('quran-stats-container');
-  if (!container) return;
-  
   try {
-    const data = await apiRequest(API.quranStats());
-    const stats = data.stats;
-    
-    container.innerHTML = `
-      <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
-        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
-          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.totalUniqueWords?.toLocaleString() || 0}</div>
-          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Unique Words</div>
-        </div>
-        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
-          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.totalTokens?.toLocaleString() || 0}</div>
-          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Total Tokens</div>
-        </div>
-        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
-          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.uniqueRoots?.toLocaleString() || 0}</div>
-          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Unique Roots</div>
-        </div>
-        <div class="stat-card" style="background: var(--gray-100); padding: 16px; border-radius: 8px;">
-          <div class="stat-value" style="font-size: 24px; font-weight: 700; color: var(--primary);">${stats.wordsWithRoots?.toLocaleString() || 0}</div>
-          <div class="stat-label" style="color: var(--gray-600); font-size: 14px;">Words with Roots</div>
-        </div>
-      </div>
-      <div style="margin-top: 16px; color: var(--gray-600); font-size: 12px;">
-        Generated: ${stats.generatedAt || 'N/A'} | Version: ${stats.version || 'N/A'}
-      </div>
-    `;
+    const formData = new FormData();
+    formData.append('audio', audioFile);
+    const resp = await fetch(API.quranWordAudio(wordId), { method: 'POST', body: formData });
+    const data = await resp.json();
+
+    if (!resp.ok) throw new Error(data.error || 'Upload failed');
+
+    const audioPlayer = document.getElementById('word-audio-player');
+    audioPlayer.src = data.audioURL;
+    audioPlayer.style.display = 'block';
+    document.getElementById('word-audio-status').style.display = 'none';
+    document.getElementById('delete-audio-btn').style.display = 'inline-block';
+
+    showToast('Audio uploaded successfully', 'success');
   } catch (error) {
-    container.innerHTML = `<p style="color: var(--danger);">Error loading statistics: ${error.message}</p>`;
+    showToast(`Audio upload failed: ${error.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⬆️ Upload MP3';
   }
 }
+
+async function deleteWordAudio() {
+  const wordId = document.getElementById('word-id').value;
+  if (!confirm('Remove audio pronunciation for this word?')) return;
+
+  try {
+    await apiRequest(API.quranWordAudio(wordId), { method: 'DELETE' });
+
+    const audioPlayer = document.getElementById('word-audio-player');
+    audioPlayer.style.display = 'none';
+    audioPlayer.src = '';
+    document.getElementById('word-audio-status').style.display = 'inline';
+    document.getElementById('word-audio-status').textContent = 'No audio';
+    document.getElementById('delete-audio-btn').style.display = 'none';
+
+    showToast('Audio removed', 'success');
+  } catch (error) {
+    showToast(`Failed to remove audio: ${error.message}`, 'error');
+  }
+}
+
 
 // Make functions available globally for onclick handlers
 window.switchView = switchView;
@@ -1843,9 +1802,12 @@ window.normalizeWords = normalizeWords;
 window.viewWordDetails = viewWordDetails;
 window.enableWordEdit = enableWordEdit;
 window.saveWord = saveWord;
-window.filterRoots = filterRoots;
+window.createWord = createWord;
+window.openCreateWordModal = openCreateWordModal;
+window.closeCreateWordModal = closeCreateWordModal;
+window.uploadWordAudio = uploadWordAudio;
+window.deleteWordAudio = deleteWordAudio;
 window.goToWordsPage = goToWordsPage;
-window.goToRootsPage = goToRootsPage;
 
 // Format switching for story form
 function onFormatChange() {
