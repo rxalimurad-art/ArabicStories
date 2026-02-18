@@ -16,7 +16,29 @@ const multer = require('multer');
 initializeApp();
 const db = getFirestore();
 const storage = getStorage();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
+const upload = multer({ 
+  storage: multer.memoryStorage(), 
+  limits: { 
+    fileSize: 20 * 1024 * 1024, // 20MB
+    fieldSize: 1024 * 1024, // 1MB for form fields
+    fields: 10, // Maximum 10 form fields
+    files: 1 // Maximum 1 file
+  },
+  fileFilter: (req, file, cb) => {
+    console.log('MULTER FILE FILTER:', {
+      fieldname: file.fieldname,
+      originalname: file.originalname,
+      mimetype: file.mimetype
+    });
+    
+    // Accept audio files
+    if (file.mimetype.startsWith('audio/')) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Invalid file type: ${file.mimetype}. Only audio files are allowed.`));
+    }
+  }
+});
 
 // Collection references
 const STORIES_COLLECTION = 'stories';
@@ -881,7 +903,51 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
 });
 
 // Upload audio for a quran word
-app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
+app.post('/api/quran-words/:id/audio', (req, res, next) => {
+  console.log('========================================');
+  console.log('AUDIO UPLOAD REQUEST STARTED');
+  console.log('Word ID:', req.params.id);
+  console.log('Content-Type:', req.headers['content-type']);
+  console.log('Content-Length:', req.headers['content-length']);
+  console.log('========================================');
+  
+  upload.single('audio')(req, res, (err) => {
+    if (err) {
+      console.error('========================================');
+      console.error('MULTER ERROR OCCURRED:', err);
+      console.error('Error name:', err.name);
+      console.error('Error message:', err.message);
+      console.error('Error code:', err.code);
+      console.error('Error stack:', err.stack);
+      console.error('========================================');
+      
+      let errorMessage = err.message;
+      let statusCode = 400;
+      
+      // Handle specific multer errors
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        errorMessage = 'File too large. Maximum size is 20MB.';
+      } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+        errorMessage = 'Unexpected file field. Use "audio" as the field name.';
+      } else if (err.message.includes('Unexpected end of form')) {
+        errorMessage = 'File upload was interrupted or corrupted. Please try again.';
+      } else if (err.message.includes('Invalid file type')) {
+        errorMessage = err.message;
+      }
+      
+      return res.status(statusCode).json({
+        success: false,
+        error: errorMessage,
+        code: err.code,
+        details: 'Multer file upload error',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    console.log('MULTER SUCCESS - proceeding to main handler');
+    next();
+  });
+}, async (req, res) => {
   try {
     const wordId = req.params.id;
     console.log('========================================');
