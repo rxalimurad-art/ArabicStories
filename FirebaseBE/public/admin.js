@@ -42,8 +42,106 @@ const state = {
   wordsPage: 1,
   wordsLimit: 100,
   wordToDelete: null,
-  wordCategories: []
+  wordCategories: [],
+  // Debug state
+  errorCount: 0,
+  debugConsoleCollapsed: false
 };
+
+// ============================================
+// Debug Console System
+// ============================================
+function addToDebugLog(type, message, details = null) {
+  const timestamp = new Date().toLocaleTimeString();
+  const logElement = document.getElementById('debug-log');
+  const errorCountElement = document.getElementById('error-count');
+  
+  if (type === 'error') {
+    state.errorCount++;
+    errorCountElement.textContent = state.errorCount;
+  }
+  
+  const typeColors = {
+    info: '#00ff00',
+    warn: '#ffff00', 
+    error: '#ff4444',
+    success: '#44ff44'
+  };
+  
+  const typeIcons = {
+    info: 'ℹ️',
+    warn: '⚠️', 
+    error: '❌',
+    success: '✅'
+  };
+  
+  let logEntry = `[${timestamp}] ${typeIcons[type]} ${message}`;
+  if (details) {
+    logEntry += `\n    Details: ${JSON.stringify(details, null, 2)}`;
+  }
+  
+  const logLine = document.createElement('div');
+  logLine.style.color = typeColors[type];
+  logLine.style.marginBottom = '4px';
+  logLine.textContent = logEntry;
+  
+  logElement.appendChild(logLine);
+  logElement.scrollTop = logElement.scrollHeight;
+}
+
+function toggleDebugConsole() {
+  const content = document.getElementById('debug-content');
+  const toggle = document.getElementById('debug-toggle');
+  
+  state.debugConsoleCollapsed = !state.debugConsoleCollapsed;
+  
+  if (state.debugConsoleCollapsed) {
+    content.style.display = 'none';
+    toggle.textContent = '▲';
+  } else {
+    content.style.display = 'block';
+    toggle.textContent = '▼';
+  }
+}
+
+function clearDebugLog() {
+  document.getElementById('debug-log').innerHTML = '';
+  state.errorCount = 0;
+  document.getElementById('error-count').textContent = '0';
+  addToDebugLog('info', 'Debug log cleared');
+}
+
+function exportDebugLog() {
+  const logContent = document.getElementById('debug-log').textContent;
+  const blob = new Blob([logContent], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `debug-log-${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+  
+  URL.revokeObjectURL(url);
+  addToDebugLog('info', 'Debug log exported');
+}
+
+// Capture console errors
+window.addEventListener('error', (event) => {
+  addToDebugLog('error', `JavaScript Error: ${event.message}`, {
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    stack: event.error?.stack
+  });
+});
+
+// Capture unhandled promise rejections
+window.addEventListener('unhandledrejection', (event) => {
+  addToDebugLog('error', `Unhandled Promise Rejection: ${event.reason}`, {
+    reason: event.reason,
+    promise: event.promise
+  });
+});
 
 // ============================================
 // Initialization
@@ -53,6 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
+  // Initialize debug console
+  addToDebugLog('info', 'Arabic Stories Admin initialized');
+  addToDebugLog('info', `API Base URL: ${CONFIG.apiBaseUrl || 'Same origin'}`);
+  
   setupEventListeners();
   loadStories();
   
@@ -63,6 +165,7 @@ function initializeApp() {
   const hasDraft = localStorage.getItem('storyDraft');
   if (hasDraft) {
     showToast('💡 You have a saved draft. Go to "New Story" to restore it.', 'info', 6000);
+    addToDebugLog('info', 'Found saved draft in localStorage');
   }
 }
 
@@ -180,16 +283,38 @@ async function apiRequest(url, options = {}) {
     }
   };
   
+  // Log API request
+  addToDebugLog('info', `API Request: ${options.method || 'GET'} ${url}`);
+  
   try {
     const response = await fetch(url, { ...defaultOptions, ...options });
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error || `HTTP ${response.status}`);
+      const errorMsg = data.error || `HTTP ${response.status}`;
+      addToDebugLog('error', `API Error: ${errorMsg}`, {
+        url,
+        method: options.method || 'GET',
+        status: response.status,
+        response: data
+      });
+      throw new Error(errorMsg);
     }
     
+    addToDebugLog('success', `API Success: ${options.method || 'GET'} ${url}`);
     return data;
   } catch (error) {
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      addToDebugLog('error', 'Network Error: Failed to connect to API', {
+        url,
+        error: error.message
+      });
+    } else if (!error.message.includes('HTTP')) {
+      addToDebugLog('error', `API Request Failed: ${error.message}`, {
+        url,
+        error: error.message
+      });
+    }
     console.error('API Error:', error);
     throw error;
   }
@@ -290,8 +415,11 @@ function renderStories(stories) {
     return;
   }
   
-  container.innerHTML = stories.map(story => `
-    <div class="story-card" data-id="${story.id}">
+  container.innerHTML = stories.map(story => {
+    // Use the Firestore document ID for edit/delete operations
+    const docId = story.id;
+    return `
+    <div class="story-card" data-id="${docId}">
       <div class="story-card-cover" style="${story.coverImageURL ? `background-image: url('${story.coverImageURL}')` : ''}">
         ${!story.coverImageURL ? '📚' : ''}
       </div>
@@ -313,11 +441,11 @@ function renderStories(stories) {
         </div>
       </div>
       <div class="story-card-actions">
-        <button class="btn btn-small btn-secondary" onclick="editStory('${story.id}')">Edit</button>
-        <button class="btn btn-small btn-danger" onclick="promptDelete('${story.id}')">Delete</button>
+        <button class="btn btn-small btn-secondary" onclick="editStory('${docId}')">Edit</button>
+        <button class="btn btn-small btn-danger" onclick="promptDelete('${docId}')">Delete</button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function filterStories(e) {
@@ -802,21 +930,28 @@ function populateForm(data) {
 // ============================================
 async function editStory(storyId) {
   try {
-    console.log('Editing story:', storyId);
+    addToDebugLog('info', `Attempting to edit story: ${storyId}`);
     const result = await apiRequest(API.story(storyId));
     
     if (result.story) {
-      console.log('Loaded story:', { id: result.story.id, title: result.story.title });
+      addToDebugLog('success', 'Story loaded successfully', { 
+        id: result.story.id, 
+        title: result.story.title 
+      });
       populateForm(result.story);
       
       // Verify ID was set
       const formId = document.getElementById('story-id').value;
-      console.log('Form ID after populate:', formId);
+      addToDebugLog('info', `Form ID after populate: ${formId}`);
       
       document.getElementById('form-title').textContent = '✏️ Edit Story';
       switchView('create');
     }
   } catch (error) {
+    addToDebugLog('error', 'Failed to load story for editing', {
+      storyId,
+      error: error.message
+    });
     showToast(`Failed to load story: ${error.message}`, 'error');
   }
 }
@@ -840,14 +975,20 @@ async function confirmDelete() {
   if (!state.storyToDelete) return;
   
   try {
+    addToDebugLog('info', `Attempting to delete story: ${state.storyToDelete}`);
     await apiRequest(API.story(state.storyToDelete), {
       method: 'DELETE'
     });
     
+    addToDebugLog('success', 'Story deleted successfully', { storyId: state.storyToDelete });
     showToast('Story deleted successfully', 'success');
     closeDeleteModal();
     loadStories();
   } catch (error) {
+    addToDebugLog('error', 'Failed to delete story', {
+      storyId: state.storyToDelete,
+      error: error.message
+    });
     showToast(`Failed to delete: ${error.message}`, 'error');
   }
 }
@@ -1331,21 +1472,24 @@ function renderWords(words) {
     const count = word.occurrenceCount || 0;
     
     return `
-    <div class="word-card-compact" data-id="${word.id}" onclick="viewWordDetails('${word.id}')" style="cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+    <div class="word-card-compact" data-id="${word.id}" style="position: relative; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
       <div class="word-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <div class="word-rank" style="font-size: 12px; color: var(--gray-500); font-weight: 600;">#${rank}</div>
-        <div class="word-arabic" dir="rtl" style="font-size: 22px; font-weight: 600; color: var(--primary); flex: 1; text-align: center;">${escapeHtml(arabicText)}</div>
+        <div class="word-arabic" dir="rtl" style="font-size: 22px; font-weight: 600; color: var(--primary); flex: 1; text-align: center;" onclick="viewWordDetails('${word.id}')">${escapeHtml(arabicText)}</div>
         ${count > 0 ? `<div class="word-count" style="font-size: 11px; color: var(--success); font-weight: 600;">${count}x</div>` : ''}
       </div>
-      <div class="word-english" style="font-size: 14px; color: var(--gray-700); margin-bottom: 4px;">${escapeHtml(englishMeaning)}</div>
-      ${transliteration ? `<div class="word-transliteration" style="font-size: 12px; color: var(--gray-500); font-style: italic; margin-bottom: 8px;">${escapeHtml(transliteration)}</div>` : ''}
-      <div class="word-meta" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+      <div class="word-english" style="font-size: 14px; color: var(--gray-700); margin-bottom: 4px;" onclick="viewWordDetails('${word.id}')">${escapeHtml(englishMeaning)}</div>
+      ${transliteration ? `<div class="word-transliteration" style="font-size: 12px; color: var(--gray-500); font-style: italic; margin-bottom: 8px;" onclick="viewWordDetails('${word.id}')">${escapeHtml(transliteration)}</div>` : ''}
+      <div class="word-meta" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;" onclick="viewWordDetails('${word.id}')">
         ${pos ? `<span class="word-badge pos" title="Part of Speech" style="background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${pos}</span>` : ''}
         ${rootArabic ? `<span class="word-badge root" dir="rtl" title="Root: ${rootTrans}" style="background: #f3e5f5; color: #6a1b9a; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${escapeHtml(rootArabic)}</span>` : ''}
         ${word.morphology?.form ? `<span class="word-badge form" title="Form" style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">Form ${word.morphology.form}</span>` : ''}
         ${word.morphology?.tense ? `<span class="word-badge tense" title="Tense" style="background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${word.morphology.tense}</span>` : ''}
       </div>
-      ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl" style="font-size: 12px; color: var(--gray-600); margin-top: 6px; border-top: 1px solid var(--gray-200); padding-top: 6px;">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
+      ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl" style="font-size: 12px; color: var(--gray-600); margin-top: 6px; border-top: 1px solid var(--gray-200); padding-top: 6px;" onclick="viewWordDetails('${word.id}')">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
+      <div class="word-actions" style="position: absolute; top: 8px; right: 8px; display: flex; gap: 4px;">
+        <button class="btn btn-icon btn-danger" onclick="event.stopPropagation(); promptDeleteWord('${word.id}', '${escapeHtml(arabicText)}')" title="Delete word" style="padding: 4px 6px; font-size: 12px; min-width: auto;">✕</button>
+      </div>
     </div>
   `}).join('');
 }
@@ -1735,8 +1879,35 @@ async function uploadWordAudio() {
   const wordId = document.getElementById('word-id').value;
   const audioFile = document.getElementById('word-audio-file')?.files?.[0];
 
+  addToDebugLog('info', `Starting audio upload for word: ${wordId}`);
+
   if (!audioFile) {
-    showToast('Please select an MP3 file', 'error');
+    addToDebugLog('error', 'No audio file selected');
+    showToast('Please select an audio file', 'error');
+    return;
+  }
+
+  // Client-side validation
+  const allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg'];
+  const allowedExtensions = ['.mp3', '.wav', '.ogg'];
+  const fileName = audioFile.name.toLowerCase();
+  
+  addToDebugLog('info', 'Audio file details', {
+    name: audioFile.name,
+    type: audioFile.type,
+    size: audioFile.size,
+    sizeFormatted: `${(audioFile.size / 1024 / 1024).toFixed(2)} MB`
+  });
+  
+  if (!allowedTypes.includes(audioFile.type) && !allowedExtensions.some(ext => fileName.endsWith(ext))) {
+    addToDebugLog('error', `Invalid file type: ${audioFile.type}`, { fileName });
+    showToast('Please select a valid audio file (MP3, WAV, or OGG)', 'error');
+    return;
+  }
+
+  if (audioFile.size > 20 * 1024 * 1024) { // 20MB limit
+    addToDebugLog('error', `File too large: ${audioFile.size} bytes (max 20MB)`);
+    showToast('File size must be less than 20MB', 'error');
     return;
   }
 
@@ -1747,10 +1918,27 @@ async function uploadWordAudio() {
   try {
     const formData = new FormData();
     formData.append('audio', audioFile);
-    const resp = await fetch(API.quranWordAudio(wordId), { method: 'POST', body: formData });
+    
+    addToDebugLog('info', 'Sending file to server...', {
+      endpoint: API.quranWordAudio(wordId),
+      formDataKeys: Array.from(formData.keys())
+    });
+    
+    const resp = await fetch(API.quranWordAudio(wordId), { 
+      method: 'POST', 
+      body: formData 
+    });
+    
     const data = await resp.json();
+    addToDebugLog('info', 'Server response received', {
+      status: resp.status,
+      ok: resp.ok,
+      response: data
+    });
 
-    if (!resp.ok) throw new Error(data.error || 'Upload failed');
+    if (!resp.ok) {
+      throw new Error(data.error || `Upload failed with status ${resp.status}`);
+    }
 
     const audioPlayer = document.getElementById('word-audio-player');
     audioPlayer.src = data.audioURL;
@@ -1758,12 +1946,21 @@ async function uploadWordAudio() {
     document.getElementById('word-audio-status').style.display = 'none';
     document.getElementById('delete-audio-btn').style.display = 'inline-block';
 
-    showToast('Audio uploaded successfully', 'success');
+    addToDebugLog('success', 'Audio upload completed successfully', { audioURL: data.audioURL });
+    showToast(data.message || 'Audio uploaded successfully', 'success');
+    
+    // Clear the file input
+    document.getElementById('word-audio-file').value = '';
   } catch (error) {
+    addToDebugLog('error', 'Audio upload failed', {
+      error: error.message,
+      stack: error.stack
+    });
+    console.error('Audio upload error:', error);
     showToast(`Audio upload failed: ${error.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = '⬆️ Upload MP3';
+    btn.textContent = '⬆️ Upload Audio';
   }
 }
 
@@ -1784,6 +1981,38 @@ async function deleteWordAudio() {
     showToast('Audio removed', 'success');
   } catch (error) {
     showToast(`Failed to remove audio: ${error.message}`, 'error');
+  }
+}
+
+// ============================================
+// Delete Word Functions
+// ============================================
+
+function promptDeleteWord(wordId, arabicText) {
+  state.wordToDelete = wordId;
+  const modal = document.getElementById('delete-modal');
+  modal.querySelector('h3').textContent = '⚠️ Delete Word';
+  modal.querySelector('p').textContent = `Are you sure you want to delete the word "${arabicText}"? This action cannot be undone.`;
+  modal.classList.remove('hidden');
+  
+  // Update the confirm button to call word delete
+  document.getElementById('confirm-delete').onclick = confirmDeleteWord;
+}
+
+async function confirmDeleteWord() {
+  if (!state.wordToDelete) return;
+  
+  try {
+    await apiRequest(API.quranWord(state.wordToDelete), {
+      method: 'DELETE'
+    });
+    
+    showToast('Word deleted successfully', 'success');
+    closeDeleteModal();
+    totalQuranWordsCount = 0; // Reset count to trigger refetch
+    loadWords(); // Reload the words list
+  } catch (error) {
+    showToast(`Failed to delete word: ${error.message}`, 'error');
   }
 }
 
@@ -1808,6 +2037,11 @@ window.closeCreateWordModal = closeCreateWordModal;
 window.uploadWordAudio = uploadWordAudio;
 window.deleteWordAudio = deleteWordAudio;
 window.goToWordsPage = goToWordsPage;
+window.promptDeleteWord = promptDeleteWord;
+window.confirmDeleteWord = confirmDeleteWord;
+window.toggleDebugConsole = toggleDebugConsole;
+window.clearDebugLog = clearDebugLog;
+window.exportDebugLog = exportDebugLog;
 
 // Format switching for story form
 function onFormatChange() {

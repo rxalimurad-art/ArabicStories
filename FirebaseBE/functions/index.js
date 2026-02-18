@@ -852,6 +852,19 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
       size: req.file.size
     });
 
+    // Validate file type and size
+    if (!req.file.mimetype.startsWith('audio/')) {
+      console.log('Invalid file type:', req.file.mimetype);
+      res.status(400).json({ error: 'File must be an audio file' });
+      return;
+    }
+
+    if (req.file.size > 20 * 1024 * 1024) { // 20MB limit
+      console.log('File too large:', req.file.size);
+      res.status(400).json({ error: 'File size must be less than 20MB' });
+      return;
+    }
+
     const docRef = db.collection('quran_words').doc(wordId);
     const doc = await docRef.get();
     if (!doc.exists) {
@@ -865,8 +878,22 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
     const file = bucket.file(fileName);
 
     console.log('Uploading to storage:', fileName);
+    
+    // Set proper content type based on file
+    let contentType = 'audio/mpeg';
+    if (req.file.mimetype === 'audio/mp3' || req.file.originalname.toLowerCase().endsWith('.mp3')) {
+      contentType = 'audio/mpeg';
+    } else if (req.file.mimetype === 'audio/wav' || req.file.originalname.toLowerCase().endsWith('.wav')) {
+      contentType = 'audio/wav';
+    } else if (req.file.mimetype === 'audio/ogg' || req.file.originalname.toLowerCase().endsWith('.ogg')) {
+      contentType = 'audio/ogg';
+    }
+
     await file.save(req.file.buffer, {
-      metadata: { contentType: 'audio/mpeg' }
+      metadata: { 
+        contentType: contentType,
+        cacheControl: 'public, max-age=3600'
+      }
     });
 
     console.log('Making file public');
@@ -875,13 +902,24 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
 
     console.log('Updating Firestore with URL:', audioURL);
     await docRef.update({ audioURL, updatedAt: new Date() });
-    await logAdminAction('UPLOAD_WORD_AUDIO', { wordId }, req.ip);
+    await logAdminAction('UPLOAD_WORD_AUDIO', { 
+      wordId, 
+      fileName: req.file.originalname,
+      fileSize: req.file.size 
+    }, req.ip);
 
     console.log('Audio upload successful');
-    res.json({ success: true, audioURL });
+    res.json({ 
+      success: true, 
+      audioURL,
+      message: `Audio uploaded successfully (${(req.file.size / 1024).toFixed(1)} KB)`
+    });
   } catch (error) {
     console.error('Error uploading word audio:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: error.message,
+      details: 'Check server logs for more information'
+    });
   }
 });
 
@@ -906,6 +944,45 @@ app.delete('/api/quran-words/:id/audio', async (req, res) => {
     res.json({ success: true, message: 'Audio deleted' });
   } catch (error) {
     console.error('Error deleting word audio:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete quran word
+app.delete('/api/quran-words/:id', async (req, res) => {
+  try {
+    const wordId = req.params.id;
+
+    const docRef = db.collection('quran_words').doc(wordId);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Word not found' });
+      return;
+    }
+
+    const wordData = doc.data();
+
+    // Delete associated audio file if it exists
+    if (wordData.audioURL) {
+      const bucket = storage.bucket();
+      const file = bucket.file(`word-audio/${wordId}.mp3`);
+      await file.delete().catch(() => {}); // ignore if file doesn't exist
+    }
+
+    // Delete the word document
+    await docRef.delete();
+    await logAdminAction('DELETE_WORD', { 
+      wordId, 
+      arabicText: wordData.arabicText,
+      englishMeaning: wordData.englishMeaning
+    }, req.ip);
+
+    res.json({
+      success: true,
+      message: 'Word deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting word:', error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -524,6 +524,21 @@
     <!-- Toast Notifications -->
     <div id="toast-container"></div>
 
+    <!-- Debug Console -->
+    <div id="debug-console" style="position: fixed; bottom: 0; right: 0; width: 400px; max-height: 300px; background: #1a1a1a; color: #00ff00; font-family: 'Courier New', monospace; font-size: 12px; border: 2px solid #333; border-radius: 8px 8px 0 0; z-index: 9999;">
+      <div id="debug-header" style="background: #333; padding: 8px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleDebugConsole()">
+        <span>🐛 Debug Console (<span id="error-count">0</span> errors)</span>
+        <span id="debug-toggle">▼</span>
+      </div>
+      <div id="debug-content" style="padding: 8px; overflow-y: auto; max-height: 250px; display: block;">
+        <div id="debug-log" style="white-space: pre-wrap; word-wrap: break-word;"></div>
+        <div style="margin-top: 8px; display: flex; gap: 8px;">
+          <button onclick="clearDebugLog()" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Clear</button>
+          <button onclick="exportDebugLog()" style="background: #4444ff; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Export</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div id="delete-modal" class="modal hidden">
       <div class="modal-content">
@@ -682,8 +697,8 @@
                 <audio id="word-audio-player" controls style="display:none; height:32px;"></audio>
               </div>
               <div id="word-audio-upload-area" style="display:none; margin-top:8px;">
-                <input type="file" id="word-audio-file" accept="audio/mpeg,.mp3" style="margin-bottom:6px;">
-                <button type="button" id="upload-audio-btn" class="btn btn-secondary" onclick="uploadWordAudio()">⬆️ Upload MP3</button>
+                <input type="file" id="word-audio-file" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg,.mp3,.wav,.ogg" style="margin-bottom:6px;">
+                <button type="button" id="upload-audio-btn" class="btn btn-secondary" onclick="uploadWordAudio()">⬆️ Upload Audio</button>
                 <button type="button" id="delete-audio-btn" class="btn btn-danger" onclick="deleteWordAudio()" style="display:none;">🗑️ Remove Audio</button>
               </div>
             </div>
@@ -902,8 +917,8 @@
           <!-- Audio Upload -->
           <div class="form-row">
             <div class="form-group form-group-wide">
-              <label for="cw-audio">Audio Pronunciation (MP3, max 20MB)</label>
-              <input type="file" id="cw-audio" accept="audio/mpeg,.mp3">
+              <label for="cw-audio">Audio Pronunciation (MP3, WAV, OGG - max 20MB)</label>
+              <input type="file" id="cw-audio" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg,.mp3,.wav,.ogg">
               <small style="color:var(--gray-500);">Audio will be uploaded after the word is created.</small>
             </div>
           </div>
