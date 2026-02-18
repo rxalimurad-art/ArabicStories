@@ -1667,10 +1667,10 @@ function renderWords(words) {
     
     return `
     <div class="word-card-compact" data-id="${word.id}" style="position: relative; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-      <div class="word-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <div class="word-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-right: 28px;">
         <div class="word-rank" style="font-size: 12px; color: var(--gray-500); font-weight: 600;">#${rank}</div>
         <div class="word-arabic" dir="rtl" style="font-size: 22px; font-weight: 600; color: var(--primary); flex: 1; text-align: center;" onclick="viewWordDetails('${word.id}')">${escapeHtml(arabicText)}</div>
-        ${count > 0 ? `<div class="word-count" style="font-size: 11px; color: var(--success); font-weight: 600;">${count}x</div>` : ''}
+        ${count > 0 ? `<div class="word-count" style="font-size: 11px; color: var(--success); font-weight: 600; white-space: nowrap;">${count}x</div>` : ''}
       </div>
       <div class="word-english" style="font-size: 14px; color: var(--gray-700); margin-bottom: 4px;" onclick="viewWordDetails('${word.id}')">${escapeHtml(englishMeaning)}</div>
       ${transliteration ? `<div class="word-transliteration" style="font-size: 12px; color: var(--gray-500); font-style: italic; margin-bottom: 8px;" onclick="viewWordDetails('${word.id}')">${escapeHtml(transliteration)}</div>` : ''}
@@ -1681,8 +1681,8 @@ function renderWords(words) {
         ${word.morphology?.tense ? `<span class="word-badge tense" title="Tense" style="background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">${word.morphology.tense}</span>` : ''}
       </div>
       ${word.morphology?.lemma ? `<div class="word-lemma" dir="rtl" style="font-size: 12px; color: var(--gray-600); margin-top: 6px; border-top: 1px solid var(--gray-200); padding-top: 6px;" onclick="viewWordDetails('${word.id}')">Lemma: ${escapeHtml(word.morphology.lemma)}</div>` : ''}
-      <div class="word-actions" style="position: absolute; top: 8px; right: 8px; display: flex; gap: 4px;">
-        <button class="btn btn-icon btn-danger" onclick="event.stopPropagation(); promptDeleteWord('${word.id}', '${escapeHtml(arabicText)}')" title="Delete word" style="padding: 4px 6px; font-size: 12px; min-width: auto;">✕</button>
+      <div class="word-actions" style="position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; z-index: 10;">
+        <button class="btn btn-icon btn-danger" onclick="event.stopPropagation(); promptDeleteWord('${word.id}', '${escapeHtml(arabicText)}')" title="Delete word" style="padding: 4px 6px; font-size: 12px; min-width: auto; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">✕</button>
       </div>
     </div>
   `}).join('');
