@@ -1,7 +1,7 @@
 //
 //  MyWordsViewModel.swift
 //  Arabicly
-//  ViewModel for My Words (unlocked words from stories with quiz)
+//  ViewModel for My Words (Quran words with learning progress)
 //
 
 import Foundation
@@ -16,7 +16,7 @@ class MyWordsViewModel {
     private let networkMonitor = NetworkMonitor.shared
     
     // MARK: - State
-    var unlockedWords: [Word] = []
+    var unlockedWords: [QuranWord] = []
     var isLoading = false
     var error: Error?
     var errorMessage: String?
@@ -40,46 +40,48 @@ class MyWordsViewModel {
     private var pendingResponseTime: TimeInterval = 0
     
     // Word Mastery Tracking
-    var wordMastery: [UUID: WordMastery] = [:]
+    var wordMastery: [String: WordMastery] = [:]
     
     // MARK: - Computed Properties
 
-    var sortedAndFilteredWords: [Word] {
-        let filtered: [Word]
+    var sortedAndFilteredWords: [QuranWord] {
+        let filtered: [QuranWord]
         switch filterOption {
         case .all:
             filtered = unlockedWords
         case .starred:
             filtered = unlockedWords.filter { $0.isBookmarked == true }
         case .mastered:
-            filtered = unlockedWords.filter { wordMastery[$0.id]?.isMastered == true }
+            filtered = unlockedWords.filter { $0.isWordMastered }
         case .toReview:
-            filtered = unlockedWords.filter { wordMastery[$0.id]?.isMastered != true }
+            filtered = unlockedWords.filter { !$0.isWordMastered }
         }
 
         return filtered.sorted { a, b in
             switch sortOption {
             case .score:
-                return (wordMastery[a.id]?.totalScore ?? 0) > (wordMastery[b.id]?.totalScore ?? 0)
+                let scoreA = wordMastery[a.id]?.totalScore ?? 0
+                let scoreB = wordMastery[b.id]?.totalScore ?? 0
+                return scoreA > scoreB
             case .quranFreq:
-                return (a.quranOccurrenceCount ?? 0) > (b.quranOccurrenceCount ?? 0)
+                return a.occurrenceCount > b.occurrenceCount
             case .alphabetical:
                 return a.arabicText.localizedCompare(b.arabicText) == .orderedAscending
             case .rank:
-                return (a.quranRank ?? Int.max) < (b.quranRank ?? Int.max)
+                return a.rank < b.rank
             }
         }
     }
 
-    var masteredWords: [Word] {
-        unlockedWords.filter { wordMastery[$0.id]?.isMastered == true }
+    var masteredWords: [QuranWord] {
+        unlockedWords.filter { $0.isWordMastered }
     }
     
-    var wordsToReview: [Word] {
-        unlockedWords.filter { wordMastery[$0.id]?.isMastered != true }
+    var wordsToReview: [QuranWord] {
+        unlockedWords.filter { !$0.isWordMastered }
     }
     
-    var quizWords: [Word] {
+    var quizWords: [QuranWord] {
         wordsToReview.isEmpty ? unlockedWords : wordsToReview
     }
     
@@ -124,29 +126,29 @@ class MyWordsViewModel {
     
     // MARK: - Star/Bookmark Words
 
-    func toggleStarWord(wordId: UUID) {
+    func toggleStarWord(wordId: String) {
         if let index = unlockedWords.firstIndex(where: { $0.id == wordId }) {
             let current = unlockedWords[index].isBookmarked ?? false
             unlockedWords[index].isBookmarked = !current
 
             // Persist to Firebase
             Task {
-                await dataService.updateWordBookmark(wordId: wordId, isBookmarked: !current)
+                await dataService.updateQuranWordBookmark(wordId: wordId, isBookmarked: !current)
             }
         }
     }
 
-    var starredWords: [Word] {
+    var starredWords: [QuranWord] {
         unlockedWords.filter { $0.isBookmarked == true }
     }
 
     // MARK: - Word Progress
 
-    func isWordMastered(_ wordId: UUID) -> Bool {
+    func isWordMastered(_ wordId: String) -> Bool {
         wordMastery[wordId]?.isMastered ?? false
     }
     
-    func wordProgress(_ wordId: UUID) -> Double {
+    func wordProgress(_ wordId: String) -> Double {
         guard let mastery = wordMastery[wordId] else { return 0 }
         // Progress from 0.0 to 1.0 (100% mastery at 100 points)
         return min(Double(mastery.totalScore) / 100.0, 1.0)
@@ -154,140 +156,28 @@ class MyWordsViewModel {
     
     // MARK: - Load Unlocked Words
     
-    /// Load user's unlocked words from Firebase (OPTIMIZED - direct query)
+    /// Load user's unlocked words from Firebase
     func loadUnlockedWords() async {
         isLoading = true
-        print("📚 MyWords: Starting to load unlocked words (optimized)...")
+        print("📚 MyWords: Starting to load unlocked Quran words...")
         print("📚 MyWords: Current user: \(Auth.auth().currentUser?.uid ?? "none")")
         
         do {
-            // NEW OPTIMIZED METHOD: Single query to user's unlocked words collection
-            let unlockedWordsData = await dataService.fetchUnlockedWords()
-            print("📚 MyWords: Fetched \(unlockedWordsData.count) unlocked words from user collection")
-            
-            // Extract Word objects from UnlockedWord wrappers
-            let words = unlockedWordsData.map { $0.wordData }
+            // Fetch from user's learned vocabulary collection
+            let learnedWords = await dataService.fetchLearnedQuranWords()
+            print("📚 MyWords: Fetched \(learnedWords.count) learned Quran words")
             
             // Load saved mastery data
-            let savedMastery = await dataService.fetchWordMastery()
-            print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries from Firebase")
-            
-            // Log some samples
-            for (wordId, mastery) in savedMastery.prefix(3) {
-                print("📚   Sample: wordId=\(wordId), score=\(mastery.totalScore), correct=\(mastery.timesCorrect), wrong=\(mastery.timesWrong)")
-            }
-            
-            await MainActor.run {
-                self.unlockedWords = words
-                self.wordMastery = savedMastery
-                print("📚 MyWords: Applied saved mastery to wordMastery property")
-                // Initialize mastery for new words that don't have saved data yet
-                self.initializeMissingMasteryData()
-                self.isLoading = false
-                print("📚 MyWords: Done! Loaded \(words.count) words with mastery data")
-            }
-            
-        } catch {
-            print("📚 MyWords: Error loading words: \(error)")
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
-            }
-        }
-    }
-    
-    /// LEGACY METHOD: Fallback for users who haven't completed stories since update
-    /// This will be removed after migration is complete
-    func loadUnlockedWordsLegacy() async {
-        isLoading = true
-        print("📚 MyWords: Using legacy method to load unlocked words...")
-        print("📚 MyWords: Current user: \(Auth.auth().currentUser?.uid ?? "none")")
-        
-        do {
-            // Step 1: Get all story progress to find completed stories
-            let allStoryProgress = await dataService.getAllStoryProgress()
-            print("📚 MyWords: Got \(allStoryProgress.count) story progress entries")
-            
-            // Find completed story IDs from StoryProgress (lowercased for case-insensitive comparison)
-            var completedStoryIds = Set(allStoryProgress.filter { 
-                $0.isCompleted || $0.readingProgress >= 1.0 
-            }.map { $0.storyId.lowercased() })
-            
-            // Also check UserProgress for completed stories (lowercased for case-insensitive comparison)
-            if let userProgress = await dataService.fetchUserProgress() {
-                let userCompletedIds = Set(userProgress.completedStoryIds.map { $0.lowercased() })
-                completedStoryIds = completedStoryIds.union(userCompletedIds)
-            }
-            
-            print("📚 MyWords: Total unique completed story IDs: \(completedStoryIds)")
-            
-            // Step 3: Fetch all stories
-            let allStories = await dataService.fetchAllStories()
-            print("📚 MyWords: Total stories fetched: \(allStories.count)")
-            
-            // Step 4: Pre-load Quran words for matching
-            print("📚 MyWords: Loading Quran words for matching...")
-            let quranWordsResult = try await firebaseService.fetchQuranWords(limit: 1000, offset: 0, sort: "rank")
-            let quranWords = quranWordsResult.words
-            print("📚 MyWords: Loaded \(quranWords.count) Quran words for matching")
-            
-            // Step 5: Find Quran words in completed stories
-            var collectedWords: [Word] = []
-            var seenWordIds: Set<UUID> = []
-            var completedStoriesCount = 0
-            var totalMatchedWords = 0
-            
-            print("📚 MyWords: Checking \(allStories.count) stories against completed IDs: \(completedStoryIds)")
-            
-            for story in allStories {
-                let storyIdString = story.id.uuidString.lowercased()
-                let isCompleted = completedStoryIds.contains(storyIdString)
-                
-                print("📚 MyWords: Story '\(story.title)' ID: \(storyIdString), completed: \(isCompleted)")
-                
-                if isCompleted {
-                    completedStoriesCount += 1
-                    print("📚 MyWords: ✅ Story '\(story.title)' is completed")
-                    
-                    // Use Story's algorithm to find Quran words in story text
-                    let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
-                    print("📚 MyWords:   Found \(matchedQuranWords.count) Quran words in story")
-                    
-                    // Convert QuranWord to Word
-                    for quranWord in matchedQuranWords {
-                        let wordUUID = UUID(uuidString: quranWord.id) ?? UUID()
-                        if !seenWordIds.contains(wordUUID) {
-                            let word = Word(
-                                id: wordUUID,
-                                arabicText: quranWord.arabicText,
-                                englishMeaning: quranWord.englishMeaning,
-                                partOfSpeech: PartOfSpeech(rawValue: quranWord.morphology.partOfSpeech ?? "unknown"),
-                                rootLetters: quranWord.root?.arabic,
-                                difficulty: quranWord.rank <= 1000 ? 1 : quranWord.rank <= 5000 ? 2 : 3,
-                                quranOccurrenceCount: quranWord.occurrenceCount,
-                                quranRank: quranWord.rank
-                            )
-                            collectedWords.append(word)
-                            seenWordIds.insert(wordUUID)
-                            totalMatchedWords += 1
-                        }
-                    }
-                }
-            }
-            
-            print("📚 MyWords: Found \(completedStoriesCount) completed stories with \(totalMatchedWords) matched Quran words")
-            
-            // Load saved mastery data FIRST
             let savedMastery = await dataService.fetchWordMastery()
             print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries")
             
             await MainActor.run {
-                self.unlockedWords = collectedWords
+                self.unlockedWords = learnedWords
                 self.wordMastery = savedMastery
-                // Initialize mastery for new words that don't have saved data yet
+                // Initialize mastery for new words
                 self.initializeMissingMasteryData()
                 self.isLoading = false
-                print("📚 MyWords: Done! Loaded \(collectedWords.count) Quran words from stories")
+                print("📚 MyWords: Done! Loaded \(learnedWords.count) words")
             }
             
         } catch {
@@ -302,7 +192,6 @@ class MyWordsViewModel {
     /// Initialize mastery data only for words that don't have saved data yet
     private func initializeMissingMasteryData() {
         for word in unlockedWords {
-            // Only initialize if this word doesn't already have mastery data
             if wordMastery[word.id] == nil {
                 let mastery = WordMastery(
                     id: word.id,
@@ -355,7 +244,7 @@ class MyWordsViewModel {
         }
     }
     
-    private func generateQuestion(for word: Word) -> QuizQuestion? {
+    private func generateQuestion(for word: QuranWord) -> QuizQuestion? {
         // Get other words for wrong answers
         let otherWords = unlockedWords.filter {
             $0.id != word.id &&
@@ -398,15 +287,14 @@ class MyWordsViewModel {
         let correct = (answer == question.correctAnswer)
         isCorrect = correct
 
-        // Store pending answer — session advances in nextQuestion() so the
-        // current question's options stay on screen while showing the result.
+        // Store pending answer
         pendingAnswer = answer
         pendingResponseTime = responseTime
 
         // Compute score for feedback display
         lastScore = correct ? 10 : -20
 
-        // Update word mastery with new scoring: +10 / -20, floor at 0
+        // Update word mastery
         updateWordMastery(word: question.word, isCorrect: correct)
 
         if correct {
@@ -428,8 +316,7 @@ class MyWordsViewModel {
     }
     
     /// Update word mastery progress after answering a question
-    /// Correct: +10, Wrong: -20 (floor at 0)
-    private func updateWordMastery(word: Word, isCorrect: Bool) {
+    private func updateWordMastery(word: QuranWord, isCorrect: Bool) {
         var mastery = wordMastery[word.id] ?? WordMastery(
             id: word.id,
             totalScore: 0,
@@ -460,18 +347,25 @@ class MyWordsViewModel {
 
         wordMastery[word.id] = mastery
 
-        print("📚 Word '\(word.arabicText)' mastery updated: score=\(mastery.totalScore), correct=\(mastery.timesCorrect), mastered=\(mastery.isMastered)")
+        // Update the word in unlockedWords
+        if let index = unlockedWords.firstIndex(where: { $0.id == word.id }) {
+            unlockedWords[index].mastery = min(Double(mastery.totalScore) / 100.0, 1.0)
+            unlockedWords[index].isMastered = mastery.isMastered
+            unlockedWords[index].reviewCount = mastery.timesAsked
+        }
+
+        print("📚 Word '\(word.arabicText)' mastery updated: score=\(mastery.totalScore), mastered=\(mastery.isMastered)")
     }
     
     private func nextQuestion() {
-        // Advance the session NOW (after result was shown on the correct question)
+        // Advance the session
         if let answer = pendingAnswer {
             session?.answerCurrentQuestion(answer, responseTime: pendingResponseTime)
             pendingAnswer = nil
             pendingResponseTime = 0
         }
 
-        // Reset UI state — the view now renders the NEW question cleanly
+        // Reset UI state
         showResult = false
         selectedOption = nil
         isCorrect = nil
@@ -505,15 +399,13 @@ class MyWordsViewModel {
         session?.endSession()
         isQuizActive = false
         
-        // Save mastery data (await to ensure it completes before returning)
-        print("💾 Attempting to save word mastery: \(wordMastery.count) entries")
-        
-        // Log some samples
-        for (wordId, mastery) in wordMastery.prefix(3) {
-            print("💾   Sample: wordId=\(wordId), score=\(mastery.totalScore), correct=\(mastery.timesCorrect), wrong=\(mastery.timesWrong)")
-        }
-        
+        // Save mastery data
+        print("💾 Saving word mastery: \(wordMastery.count) entries")
         await dataService.saveWordMastery(wordMastery)
+        
+        // Save updated word progress
+        await dataService.saveLearnedQuranWords(unlockedWords)
+        
         print("💾 Word mastery save completed")
         
         restartQuiz()

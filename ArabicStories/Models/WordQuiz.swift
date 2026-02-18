@@ -18,7 +18,7 @@ enum QuizQuestionType: String, Codable, CaseIterable {
 
 struct QuizQuestion: Identifiable, Codable {
     let id: UUID
-    let word: Word
+    let word: QuranWord
     let questionType: QuizQuestionType
     let correctAnswer: String
     let options: [String]                  // Multiple choice options
@@ -30,7 +30,7 @@ struct QuizQuestion: Identifiable, Codable {
     var responseTime: TimeInterval?         // How long user took to answer
     
     init(id: UUID = UUID(),
-         word: Word,
+         word: QuranWord,
          questionType: QuizQuestionType,
          correctAnswer: String,
          options: [String],
@@ -113,18 +113,18 @@ struct QuizSession: Identifiable, Codable {
     }
     
     /// Check if a word has been mastered (reached threshold)
-    func wordScore(for wordId: UUID) -> Int {
+    func wordScore(for wordId: String) -> Int {
         return questions
             .filter { $0.word.id == wordId && $0.isCorrect != nil }
             .reduce(0) { $0 + $1.score }
     }
     
-    func isWordMastered(_ wordId: UUID) -> Bool {
+    func isWordMastered(_ wordId: String) -> Bool {
         // Only mastered when 100% progress (100 points)
         wordScore(for: wordId) >= 100
     }
     
-    func questionCount(for wordId: UUID) -> Int {
+    func questionCount(for wordId: String) -> Int {
         return questions.filter { $0.word.id == wordId }.count
     }
     
@@ -160,10 +160,10 @@ struct QuizSession: Identifiable, Codable {
 // MARK: - Word Mastery Tracking
 
 struct WordMastery: Identifiable, Codable {
-    let id: UUID                    // Word ID
+    let id: String                        // Word ID (String for QuranWord)
     var totalScore: Int
-    var correctStreak: Int          // Consecutive correct answers
-    var wrongStreak: Int            // Consecutive wrong answers
+    var correctStreak: Int                // Consecutive correct answers
+    var wrongStreak: Int                  // Consecutive wrong answers
     var timesAsked: Int
     var timesCorrect: Int
     var timesWrong: Int

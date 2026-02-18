@@ -5,19 +5,24 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct QuranWordDetailView: View {
     let word: QuranWord
-    @State private var relatedWords: [QuranWord] = []
-    @State private var isLoadingRelated = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     // Header Card
                     headerCard
+                    
+                    // Root Section
+                    rootSection
+                    
+                    // Morphology Section
+                    morphologySection
                     
                     // Example Section (if available)
                     if word.exampleArabic != nil || word.exampleEnglish != nil {
@@ -29,22 +34,13 @@ struct QuranWordDetailView: View {
                         tagsSection
                     }
                     
-                    // Root Section (moved up for prominence)
-                    rootSection
-                    
-                    // Related Words by Root
-                    relatedWordsSection
-                    
-                    // Morphology Section
-                    morphologySection
-                    
-                    // Statistics Section
-                    statsSection
-                    
                     // Notes Section (if available)
                     if let notes = word.notes, !notes.isEmpty {
                         notesSection
                     }
+                    
+                    // Metadata
+                    metadataSection
                 }
                 .padding()
             }
@@ -62,7 +58,7 @@ struct QuranWordDetailView: View {
     
     // MARK: - Header Card
     private var headerCard: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             // Arabic Text
             Text(word.arabicText)
                 .font(.system(size: 48, weight: .bold, design: .serif))
@@ -72,9 +68,8 @@ struct QuranWordDetailView: View {
             Text(word.englishMeaning)
                 .font(.title2)
                 .fontWeight(.medium)
-                .foregroundColor(.primary)
             
-            // Buckwalter
+            // Buckwalter Transliteration
             if let buckwalter = word.buckwalter {
                 Text(buckwalter)
                     .font(.title3)
@@ -82,15 +77,19 @@ struct QuranWordDetailView: View {
                     .italic()
             }
             
+            // Audio Player (if available)
+            if let audioURL = word.audioURL, let url = URL(string: audioURL) {
+                AudioPlayerView(audioURL: url)
+                    .padding(.top, 8)
+            }
+            
             // Badges
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 if let pos = word.morphology.partOfSpeech {
                     Badge(text: pos, color: .blue)
                 }
-                if let form = word.formDisplay {
-                    Badge(text: form, color: .green)
-                }
                 Badge(text: "#\(word.rank)", color: .orange)
+                Badge(text: "\(word.occurrenceCount)×", color: .green)
             }
         }
         .padding()
@@ -100,31 +99,135 @@ struct QuranWordDetailView: View {
         .shadow(radius: 2)
     }
     
+    // MARK: - Root Section
+    private var rootSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: "Root (المصدر)", icon: "arrow.branch")
+            
+            if let root = word.root, let arabic = root.arabic {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 12) {
+                        Text(arabic)
+                            .font(.system(size: 28, weight: .bold, design: .serif))
+                        
+                        if let trans = root.transliteration {
+                            Text(trans)
+                                .font(.body)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                    }
+                    
+                    if let meaning = root.meaning {
+                        Text("Meaning: \(meaning)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            } else {
+                Text("No root information")
+                    .foregroundColor(.secondary)
+                    .italic()
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Morphology Section
+    private var morphologySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(title: "Morphology (الصرف)", icon: "textformat")
+            
+            VStack(spacing: 8) {
+                // Part of Speech
+                MorphologyRow(label: "Part of Speech", value: word.morphology.posDescription ?? word.morphology.partOfSpeech ?? "N/A")
+                
+                // Lemma
+                if let lemma = word.morphology.lemma {
+                    MorphologyRow(label: "Lemma", value: lemma, isRTL: true)
+                }
+                
+                // Form
+                if let form = word.morphology.form {
+                    MorphologyRow(label: "Form", value: "Form \(form)")
+                }
+                
+                // Gender
+                if let gender = word.morphology.gender {
+                    MorphologyRow(label: "Gender", value: gender == "M" ? "Masculine" : "Feminine")
+                }
+                
+                // Number
+                if let number = word.morphology.number {
+                    let numberText: String = {
+                        switch number {
+                        case "S": return "Singular"
+                        case "D": return "Dual"
+                        case "P": return "Plural"
+                        default: return number
+                        }
+                    }()
+                    MorphologyRow(label: "Number", value: numberText)
+                }
+                
+                // Case
+                if let grammaticalCase = word.morphology.grammaticalCase {
+                    let caseText: String = {
+                        switch grammaticalCase {
+                        case "NOM": return "Nominative"
+                        case "ACC": return "Accusative"
+                        case "GEN": return "Genitive"
+                        default: return grammaticalCase
+                        }
+                    }()
+                    MorphologyRow(label: "Case", value: caseText)
+                }
+                
+                // State
+                if let state = word.morphology.state {
+                    MorphologyRow(label: "State", value: state)
+                }
+                
+                // Passive
+                if word.morphology.passive {
+                    MorphologyRow(label: "Voice", value: "Passive")
+                }
+                
+                // Breakdown
+                if let breakdown = word.morphology.breakdown {
+                    MorphologyRow(label: "Breakdown", value: breakdown)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+    }
+    
     // MARK: - Example Section
     private var exampleSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(title: "Example Usage", icon: "text.quote")
+            SectionHeader(title: "Example", icon: "text.quote")
             
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 8) {
                 if let exampleArabic = word.exampleArabic {
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text(exampleArabic)
-                            .font(.system(size: 20, weight: .medium, design: .serif))
-                            .multilineTextAlignment(.trailing)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                    }
+                    Text(exampleArabic)
+                        .font(.system(size: 18, weight: .medium, design: .serif))
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 
                 if let exampleEnglish = word.exampleEnglish {
                     Text(exampleEnglish)
                         .font(.body)
                         .foregroundColor(.secondary)
-                        .multilineTextAlignment(.leading)
                 }
             }
-            .padding()
-            .background(Color(.systemGray6).opacity(0.5))
-            .cornerRadius(8)
         }
         .padding()
         .background(Color(.systemBackground))
@@ -166,7 +269,6 @@ struct QuranWordDetailView: View {
             Text(word.notes ?? "")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-                .multilineTextAlignment(.leading)
         }
         .padding()
         .background(Color(.systemBackground))
@@ -174,225 +276,32 @@ struct QuranWordDetailView: View {
         .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
     }
     
-    // MARK: - Morphology Section
-    private var morphologySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(title: "Morphology", icon: "textformat")
-            
-            VStack(spacing: 8) {
-                MorphologyRow(label: "Part of Speech", value: word.morphology.partOfSpeech ?? "N/A")
-                if let desc = word.morphology.posDescription {
-                    MorphologyRow(label: "Arabic POS", value: desc, isRTL: true)
-                }
-                if let lemma = word.morphology.lemma {
-                    MorphologyRow(label: "Lemma", value: lemma, isRTL: true)
-                }
-                if let tense = word.morphology.tense {
-                    MorphologyRow(label: "Tense", value: tense)
-                }
-                if let gender = word.morphology.gender {
-                    MorphologyRow(label: "Gender", value: gender)
-                }
-                if let number = word.morphology.number {
-                    MorphologyRow(label: "Number", value: number)
-                }
-                if let grammaticalCase = word.morphology.grammaticalCase {
-                    MorphologyRow(label: "Case", value: grammaticalCase)
-                }
-                if let state = word.morphology.state {
-                    MorphologyRow(label: "State", value: state)
-                }
-                MorphologyRow(label: "Passive", value: word.morphology.passive ? "Yes" : "No")
-                if let breakdown = word.morphology.breakdown {
-                    MorphologyRow(label: "Breakdown", value: breakdown)
-                }
-            }
-        }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-    }
-    
-    // MARK: - Root Section
-    private var rootSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            SectionHeader(title: "Root Information", icon: "arrow.branch")
-            
-            if let root = word.root, let arabic = root.arabic {
-                VStack(alignment: .leading, spacing: 12) {
-                    // Root Arabic and Transliteration
-                    HStack(spacing: 16) {
-                        Text(arabic)
-                            .font(.system(size: 36, weight: .bold, design: .serif))
-                            .foregroundColor(.primary)
-                        
-                        if let trans = root.transliteration {
-                            Text(trans)
-                                .font(.title3)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Spacer()
-                    }
-                    
-                    Divider()
-                    
-                    // Root Stats (if available from quran_roots)
-                    HStack(spacing: 24) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Label("This word is derived from the Arabic root '\(arabic)'", systemImage: "info.circle")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
-                    }
-                }
-            } else {
-                VStack(spacing: 8) {
-                    Image(systemName: "minus.circle")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                    Text("No root information available")
-                        .foregroundColor(.secondary)
-                        .italic()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.vertical, 8)
-            }
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-    }
-    
-    // MARK: - Related Words Section
-    private var relatedWordsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+    // MARK: - Metadata Section
+    private var metadataSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
-                SectionHeader(title: "Words from Same Root", icon: "text.alignleft")
-                Spacer()
-                if isLoadingRelated {
-                    ProgressView()
-                        .scaleEffect(0.8)
-                }
-            }
-            
-            if let root = word.root?.arabic, !root.isEmpty {
-                if relatedWords.isEmpty && !isLoadingRelated {
-                    Button("Load related words") {
-                        Task { await loadRelatedWords() }
-                    }
-                    .buttonStyle(.bordered)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                } else if !relatedWords.isEmpty {
-                    // Show first 5 related words
-                    ForEach(relatedWords.prefix(5)) { relatedWord in
-                        RelatedWordRow(word: relatedWord)
-                    }
-                    
-                    if relatedWords.count > 5 {
-                        Text("+ \(relatedWords.count - 5) more words")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.top, 8)
-                    }
-                }
-            } else {
-                Text("No related words available")
-                    .font(.subheadline)
+                Text("Occurrences in Quran:")
+                    .font(.caption)
                     .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                Spacer()
+                Text("\(word.occurrenceCount)")
+                    .font(.caption)
+                    .fontWeight(.medium)
             }
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-        .task {
-            await loadRelatedWords()
-        }
-    }
-    
-    private func loadRelatedWords() async {
-        guard let root = word.root?.arabic, !root.isEmpty else { return }
-        
-        isLoadingRelated = true
-        defer { isLoadingRelated = false }
-        
-        do {
-            let words = try await FirebaseService.shared.fetchWordsByRoot(root: root, limit: 50)
-            await MainActor.run {
-                // Exclude current word from related words
-                relatedWords = words.filter { $0.id != word.id }
-            }
-        } catch {
-            print("❌ Error loading related words: \(error)")
-        }
-    }
-    
-    // MARK: - Stats Section
-    private var statsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(title: "Statistics", icon: "chart.bar")
             
-            HStack(spacing: 20) {
-                StatItem(value: "\(word.rank)", label: "Rank", color: .blue)
-                StatItem(value: word.occurrenceCount.formatted(), label: "Occurrences", color: .green)
+            HStack {
+                Text("Frequency Rank:")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text("#\(word.rank)")
+                    .font(.caption)
+                    .fontWeight(.medium)
             }
         }
         .padding()
         .background(Color(.systemGray6))
-        .cornerRadius(12)
-    }
-}
-
-// MARK: - Related Word Row
-struct RelatedWordRow: View {
-    let word: QuranWord
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            // Rank
-            Text("#\(word.rank)")
-                .font(.caption)
-                .fontWeight(.medium)
-                .foregroundColor(.secondary)
-                .frame(width: 40, alignment: .leading)
-            
-            // Arabic
-            Text(word.arabicText)
-                .font(.system(size: 18, weight: .medium, design: .serif))
-                .frame(width: 60, alignment: .trailing)
-            
-            // English
-            Text(word.englishMeaning)
-                .font(.subheadline)
-                .lineLimit(1)
-            
-            Spacer()
-            
-            // Occurrences
-            if word.occurrenceCount > 0 {
-                Text("\(word.occurrenceCount)×")
-                    .font(.caption)
-                    .foregroundColor(.green)
-            }
-            
-            // POS
-            if let pos = word.morphology.partOfSpeech {
-                Text(pos)
-                    .font(.caption2)
-                    .fontWeight(.medium)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Color.blue.opacity(0.15))
-                    .foregroundColor(.blue)
-                    .cornerRadius(4)
-            }
-        }
-        .padding(.vertical, 6)
+        .cornerRadius(8)
     }
 }
 
@@ -428,7 +337,23 @@ struct MorphologyRow: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(isRTL ? .trailing : .leading)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
+    }
+}
+
+struct Badge: View {
+    let text: String
+    let color: Color
+    
+    var body: some View {
+        Text(text)
+            .font(.subheadline)
+            .fontWeight(.medium)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(color.opacity(0.15))
+            .foregroundColor(color)
+            .cornerRadius(8)
     }
 }
 
@@ -451,52 +376,79 @@ struct StatItem: View {
     }
 }
 
-struct Badge: View {
-    let text: String
-    let color: Color
+// Simple Audio Player View
+struct AudioPlayerView: View {
+    let audioURL: URL
+    @State private var player: AVPlayer?
+    @State private var isPlaying = false
     
     var body: some View {
-        Text(text)
-            .font(.subheadline)
-            .fontWeight(.medium)
+        Button(action: {
+            togglePlayback()
+        }) {
+            HStack(spacing: 8) {
+                Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
+                    .font(.title2)
+                Text(isPlaying ? "Stop" : "Play Pronunciation")
+                    .font(.subheadline)
+            }
+            .foregroundColor(.accentColor)
             .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(color.opacity(0.15))
-            .foregroundColor(color)
+            .padding(.vertical, 8)
+            .background(Color.accentColor.opacity(0.1))
             .cornerRadius(8)
+        }
+    }
+    
+    private func togglePlayback() {
+        if isPlaying {
+            player?.pause()
+            player = nil
+            isPlaying = false
+        } else {
+            player = AVPlayer(url: audioURL)
+            player?.play()
+            isPlaying = true
+            
+            // Reset when finished
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main) { _ in
+                isPlaying = false
+                player = nil
+            }
+        }
     }
 }
 
 // MARK: - Preview
 #Preview {
     QuranWordDetailView(word: QuranWord(
-        id: "word_00001",
-        rank: 1,
-        arabicText: "فِى",
-        arabicWithoutDiacritics: "فى",
-        buckwalter: "fiY",
-        englishMeaning: "In",
-        root: QuranRoot(arabic: nil, transliteration: "N/A", meaning: nil),
+        id: "bb5a2111-1b6f-4078-bc1f-5e8646ec9c36",
+        rank: 145,
+        arabicText: "كِتَاب",
+        arabicWithoutDiacritics: "كتاب",
+        buckwalter: "kitAb",
+        englishMeaning: "book",
+        root: QuranRoot(arabic: "ك ت ب", transliteration: "k-t-b", meaning: nil),
         morphology: QuranMorphology(
-            partOfSpeech: "P",
-            posDescription: "حرف جر",
-            lemma: "فِي",
+            partOfSpeech: "N",
+            posDescription: "اسم",
+            lemma: "كِتَاب",
             form: nil,
             tense: nil,
-            gender: nil,
-            number: "Plural",
-            grammaticalCase: nil,
+            gender: "M",
+            number: "S",
+            grammaticalCase: "NOM",
             passive: false,
-            breakdown: "فِى[P]",
+            breakdown: "كِتَاب (فِعَال pattern from ك-ت-ب)",
             state: nil
         ),
-        occurrenceCount: 1098,
+        occurrenceCount: 230,
         exampleArabic: "قَرَأْتُ الكِتَابَ أَمْسِ",
         exampleEnglish: "I read the book yesterday",
-        audioURL: nil,
-        tags: ["common", "preposition"],
+        audioURL: "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/word-audio/bb5a2111-1b6f-4078-bc1f-5e8646ec9c36.mp3",
+        tags: ["education", "reading", "literature", "common"],
         notes: "Form I verbal noun pattern",
         createdAt: "2026-02-17T21:38:54.250Z",
-        updatedAt: "2026-02-17T21:40:18.701Z"
+        updatedAt: "2026-02-18T15:00:24.000Z"
     ))
 }

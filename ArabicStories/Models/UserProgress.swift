@@ -26,11 +26,15 @@ struct UserProgress: Identifiable, Codable {
     var totalWordsMastered: Int
     var wordsUnderReview: Int
     
-    // MARK: - Vocabulary Tracking (for Level 1 -> Level 2 unlock)
-    var learnedVocabularyIds: [String]
-    var masteredVocabularyIds: [String]
+    // MARK: - Vocabulary Tracking (full QuranWord objects)
+    var learnedVocabulary: [QuranWord]  // Full word data from quran_words
+    var learnedVocabularyIds: [String] { learnedVocabulary.map { $0.id } }
+    var masteredVocabularyIds: [String] { learnedVocabulary.filter { $0.isWordMastered }.map { $0.id } }
     var totalVocabularyLearned: Int {
-        learnedVocabularyIds.count
+        learnedVocabulary.count
+    }
+    var totalVocabularyMastered: Int {
+        learnedVocabulary.filter { $0.isWordMastered }.count
     }
     
     // MARK: - Story Statistics
@@ -69,8 +73,7 @@ struct UserProgress: Identifiable, Codable {
         self.totalWordsLearned = 0
         self.totalWordsMastered = 0
         self.wordsUnderReview = 0
-        self.learnedVocabularyIds = []
-        self.masteredVocabularyIds = []
+        self.learnedVocabulary = []
         self.completedStoryIds = []
         self.storiesCompleted = 0
         self.storiesInProgress = 0
@@ -133,31 +136,45 @@ struct UserProgress: Identifiable, Codable {
     
     // MARK: - Vocabulary Learning
     
-    mutating func recordVocabularyLearned(wordId: String) {
-        if !learnedVocabularyIds.contains(wordId) {
-            learnedVocabularyIds.append(wordId)
+    mutating func recordVocabularyLearned(_ word: QuranWord) {
+        if !learnedVocabulary.contains(where: { $0.id == word.id }) {
+            var wordWithProgress = word
+            wordWithProgress.mastery = wordWithProgress.mastery ?? 0.0
+            wordWithProgress.reviewCount = wordWithProgress.reviewCount ?? 0
+            learnedVocabulary.append(wordWithProgress)
             updatedAt = Date()
-            // Note: Level 2 is now unlocked by completing all Level 1 stories, not by vocabulary
         }
     }
     
-    mutating func recordVocabularyMastered(wordId: String) {
-        if !masteredVocabularyIds.contains(wordId) {
-            masteredVocabularyIds.append(wordId)
-        }
-        if !learnedVocabularyIds.contains(wordId) {
-            learnedVocabularyIds.append(wordId)
+    mutating func recordVocabularyMastered(_ word: QuranWord) {
+        if let index = learnedVocabulary.firstIndex(where: { $0.id == word.id }) {
+            learnedVocabulary[index].isMastered = true
+            learnedVocabulary[index].mastery = 1.0
+        } else {
+            var newWord = word
+            newWord.isMastered = true
+            newWord.mastery = 1.0
+            learnedVocabulary.append(newWord)
         }
         updatedAt = Date()
-        // Note: Level 2 is now unlocked by completing all Level 1 stories, not by vocabulary
+    }
+    
+    mutating func updateWordProgress(wordId: String, correct: Bool) {
+        guard let index = learnedVocabulary.firstIndex(where: { $0.id == wordId }) else { return }
+        learnedVocabulary[index].recordReview(correct: correct)
+        updatedAt = Date()
     }
     
     func hasLearnedVocabulary(_ wordId: String) -> Bool {
-        learnedVocabularyIds.contains(wordId)
+        learnedVocabulary.contains(where: { $0.id == wordId })
     }
     
     func hasMasteredVocabulary(_ wordId: String) -> Bool {
-        masteredVocabularyIds.contains(wordId)
+        learnedVocabulary.first(where: { $0.id == wordId })?.isWordMastered ?? false
+    }
+    
+    func getWordProgress(_ wordId: String) -> QuranWord? {
+        learnedVocabulary.first(where: { $0.id == wordId })
     }
     
     // MARK: - Streak Management

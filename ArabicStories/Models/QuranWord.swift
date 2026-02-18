@@ -6,8 +6,9 @@
 
 import Foundation
 
-// MARK: - Quran Word (matches quran_words collection)
+// MARK: - Quran Word (matches quran_words collection + user learning progress)
 struct QuranWord: Identifiable, Codable, Hashable {
+    // MARK: - Core Quran Word Data (from quran_words collection)
     var id: String
     var rank: Int
     var arabicText: String
@@ -24,6 +25,15 @@ struct QuranWord: Identifiable, Codable, Hashable {
     var notes: String?
     var createdAt: String?
     var updatedAt: String?
+    
+    // MARK: - User Learning Progress (stored in user collection)
+    var mastery: Double?           // 0.0 to 1.0
+    var isMastered: Bool?
+    var reviewCount: Int?
+    var lastReviewDate: Date?
+    var nextReviewDate: Date?
+    var isBookmarked: Bool?
+    var difficulty: Int?           // User's personal difficulty rating
     
     // MARK: - Coding Keys
     enum CodingKeys: String, CodingKey {
@@ -43,6 +53,13 @@ struct QuranWord: Identifiable, Codable, Hashable {
         case notes
         case createdAt
         case updatedAt
+        case mastery
+        case isMastered
+        case reviewCount
+        case lastReviewDate
+        case nextReviewDate
+        case isBookmarked
+        case difficulty
     }
     
     // MARK: - Computed Properties
@@ -52,6 +69,58 @@ struct QuranWord: Identifiable, Codable, Hashable {
     
     var displayTransliteration: String {
         buckwalter ?? ""
+    }
+    
+    var currentMastery: Double {
+        mastery ?? 0.0
+    }
+    
+    var isWordMastered: Bool {
+        isMastered ?? false
+    }
+    
+    // MARK: - Learning Progress Methods
+    mutating func recordReview(correct: Bool) {
+        reviewCount = (reviewCount ?? 0) + 1
+        lastReviewDate = Date()
+        
+        // Update mastery based on correct answer
+        let currentMastery = mastery ?? 0.0
+        if correct {
+            mastery = min(currentMastery + 0.1, 1.0)
+        } else {
+            mastery = max(currentMastery - 0.05, 0.0)
+        }
+        
+        // Check if mastered
+        if mastery ?? 0.0 >= 0.9 {
+            isMastered = true
+        }
+        
+        // Calculate next review date (simple SRS)
+        let daysUntilNextReview: Int = {
+            let count = reviewCount ?? 1
+            switch count {
+            case 1: return 1
+            case 2: return 3
+            case 3: return 7
+            case 4: return 14
+            default: return 30
+            }
+        }()
+        nextReviewDate = Calendar.current.date(byAdding: .day, value: daysUntilNextReview, to: Date())
+    }
+    
+    mutating func toggleBookmark() {
+        isBookmarked = !(isBookmarked ?? false)
+    }
+    
+    mutating func resetProgress() {
+        mastery = 0.0
+        isMastered = false
+        reviewCount = 0
+        lastReviewDate = nil
+        nextReviewDate = nil
     }
 }
 

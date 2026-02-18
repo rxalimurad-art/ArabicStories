@@ -352,7 +352,9 @@ class FirebaseService {
     
     // MARK: - Word Mastery
 
-    func saveWordMastery(_ mastery: [UUID: WordMastery], userId: String) async throws {
+    // MARK: - Word Mastery (String IDs for QuranWord)
+    
+    func saveWordMastery(_ mastery: [String: WordMastery], userId: String) async throws {
         print("💾 FirebaseService: Saving word mastery for user \(userId)")
         let encoder = JSONEncoder()
         let data = try encoder.encode(mastery)
@@ -364,7 +366,7 @@ class FirebaseService {
         print("💾 FirebaseService: Successfully saved \(mastery.count) word mastery entries to Firestore")
     }
 
-    func fetchWordMastery(userId: String) async throws -> [UUID: WordMastery] {
+    func fetchWordMastery(userId: String) async throws -> [String: WordMastery] {
         print("📂 FirebaseService: Fetching word mastery for user \(userId)")
         let doc = try await db.collection("users").document(userId).getDocument()
         
@@ -381,9 +383,61 @@ class FirebaseService {
 
         let jsonData = try JSONSerialization.data(withJSONObject: wordMasteryData)
         let decoder = JSONDecoder()
-        let mastery = try decoder.decode([UUID: WordMastery].self, from: jsonData)
+        let mastery = try decoder.decode([String: WordMastery].self, from: jsonData)
         print("📂 FirebaseService: Successfully loaded \(mastery.count) word mastery entries from Firestore")
         return mastery
+    }
+    
+    // MARK: - Learned Quran Words (New)
+    
+    func saveLearnedQuranWords(_ words: [QuranWord], userId: String) async throws {
+        print("💾 FirebaseService: Saving \(words.count) learned Quran words for user \(userId)")
+        let batch = db.batch()
+        let learnedWordsRef = db.collection("users").document(userId).collection("learnedQuranWords")
+        
+        for word in words {
+            let wordRef = learnedWordsRef.document(word.id)
+            let data = try quranWordToDictionary(word)
+            batch.setData(data, forDocument: wordRef, merge: true)
+        }
+        
+        try await batch.commit()
+        print("💾 FirebaseService: Successfully saved learned Quran words")
+    }
+    
+    func fetchLearnedQuranWords(userId: String) async throws -> [QuranWord] {
+        print("📂 FirebaseService: Fetching learned Quran words for user \(userId)")
+        let snapshot = try await db.collection("users")
+            .document(userId)
+            .collection("learnedQuranWords")
+            .getDocuments()
+        
+        var words: [QuranWord] = []
+        for doc in snapshot.documents {
+            do {
+                let word = try convertToQuranWord(doc.data(), id: doc.documentID)
+                words.append(word)
+            } catch {
+                print("❌ Failed to parse learned Quran word \(doc.documentID): \(error)")
+            }
+        }
+        print("📂 FirebaseService: Successfully loaded \(words.count) learned Quran words")
+        return words
+    }
+    
+    func updateLearnedQuranWordField(wordId: String, userId: String, field: String, value: Any) async throws {
+        try await db.collection("users")
+            .document(userId)
+            .collection("learnedQuranWords")
+            .document(wordId)
+            .updateData([field: value])
+    }
+    
+    private func quranWordToDictionary(_ word: QuranWord) throws -> [String: Any] {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let data = try encoder.encode(word)
+        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
     }
     
     // MARK: - Unlocked Words (New Optimized Structure)
@@ -741,6 +795,21 @@ class FirebaseService {
     private func convertToQuranWord(_ data: [String: Any], id: String) throws -> QuranWord {
         var jsonDict = data
         jsonDict["id"] = id
+        
+        // Convert Firestore Timestamps to ISO8601 strings
+        let dateFormatter = ISO8601DateFormatter()
+        
+        if let createdAt = jsonDict["createdAt"] as? Timestamp {
+            jsonDict["createdAt"] = dateFormatter.string(from: createdAt.dateValue())
+        } else {
+            jsonDict["createdAt"] = nil
+        }
+        
+        if let updatedAt = jsonDict["updatedAt"] as? Timestamp {
+            jsonDict["updatedAt"] = dateFormatter.string(from: updatedAt.dateValue())
+        } else {
+            jsonDict["updatedAt"] = nil
+        }
         
         // Ensure required fields have defaults
         if jsonDict["rank"] == nil {

@@ -331,9 +331,9 @@ class DataService {
         }
     }
 
-    // MARK: - Word Mastery (Firebase)
+    // MARK: - Word Mastery (Firebase) - Updated for QuranWord
 
-    func saveWordMastery(_ mastery: [UUID: WordMastery]) async {
+    func saveWordMastery(_ mastery: [String: WordMastery]) async {
         do {
             try await firebaseService.saveWordMastery(mastery, userId: getCurrentUserId())
             print("✅ Successfully saved \(mastery.count) word mastery entries to Firebase")
@@ -343,7 +343,7 @@ class DataService {
         }
     }
 
-    func fetchWordMastery() async -> [UUID: WordMastery] {
+    func fetchWordMastery() async -> [String: WordMastery] {
         do {
             let result = try await firebaseService.fetchWordMastery(userId: getCurrentUserId())
             print("✅ Successfully loaded \(result.count) word mastery entries from Firebase")
@@ -351,6 +351,42 @@ class DataService {
         } catch {
             print("❌ Error loading word mastery: \(error)")
             return [:]
+        }
+    }
+    
+    // MARK: - Learned Quran Words (New)
+    
+    func saveLearnedQuranWords(_ words: [QuranWord]) async {
+        do {
+            try await firebaseService.saveLearnedQuranWords(words, userId: getCurrentUserId())
+            print("✅ Successfully saved \(words.count) learned Quran words")
+        } catch {
+            print("❌ Error saving learned Quran words: \(error)")
+            errorPublisher.send(error)
+        }
+    }
+    
+    func fetchLearnedQuranWords() async -> [QuranWord] {
+        do {
+            let result = try await firebaseService.fetchLearnedQuranWords(userId: getCurrentUserId())
+            print("✅ Successfully loaded \(result.count) learned Quran words")
+            return result
+        } catch {
+            print("❌ Error loading learned Quran words: \(error)")
+            return []
+        }
+    }
+    
+    func updateQuranWordBookmark(wordId: String, isBookmarked: Bool) async {
+        do {
+            try await firebaseService.updateLearnedQuranWordField(
+                wordId: wordId,
+                userId: getCurrentUserId(),
+                field: "isBookmarked",
+                value: isBookmarked
+            )
+        } catch {
+            print("❌ Error updating Quran word bookmark: \(error)")
         }
     }
     
