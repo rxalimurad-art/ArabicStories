@@ -11,6 +11,7 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
+const Busboy = require('busboy');
 
 // Initialize Firebase Admin
 initializeApp();
@@ -902,15 +903,16 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
   }
 });
 
-// Upload audio for a quran word - Using multer for multipart/form-data
-app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
+// Upload audio for a quran word - Using busboy with rawBody (Firebase Functions compatible)
+app.post('/api/quran-words/:id/audio', async (req, res) => {
   try {
     const wordId = req.params.id;
     console.log('========================================');
-    console.log('AUDIO UPLOAD REQUEST RECEIVED (multipart)');
+    console.log('AUDIO UPLOAD REQUEST RECEIVED (busboy+rawBody)');
     console.log('Word ID:', wordId);
     console.log('Content-Type:', req.headers['content-type']);
-    console.log('Has file:', !!req.file);
+    console.log('Has rawBody:', !!req.rawBody);
+    console.log('rawBody length:', req.rawBody ? req.rawBody.length : 0);
     console.log('========================================');
     
     if (!wordId || wordId.trim() === '') {
@@ -918,22 +920,87 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
       return res.status(400).json({ error: 'Word ID is required' });
     }
 
-    // Check if file was uploaded via multer
-    if (!req.file) {
-      console.error('ERROR: No audio file provided in request');
+    // Check if rawBody is available (Firebase Functions provides this)
+    if (!req.rawBody) {
+      console.error('ERROR: No rawBody available in request');
+      return res.status(400).json({ error: 'No audio file data provided' });
+    }
+
+    // Use busboy to parse the multipart form data from rawBody
+    const parsedFile = await new Promise((resolve, reject) => {
+      const busboy = Busboy({ 
+        headers: req.headers,
+        limits: {
+          fileSize: 20 * 1024 * 1024, // 20MB limit
+          files: 1 // Only 1 file
+        }
+      });
+      
+      let fileBuffer = Buffer.alloc(0);
+      let fileInfo = null;
+      
+      busboy.on('file', (fieldname, file, info) => {
+        console.log('Busboy file event:', {
+          fieldname,
+          filename: info.filename,
+          mimeType: info.mimeType
+        });
+        
+        fileInfo = {
+          fieldname,
+          originalname: info.filename,
+          mimetype: info.mimeType
+        };
+        
+        const chunks = [];
+        
+        file.on('data', (data) => {
+          chunks.push(data);
+        });
+        
+        file.on('end', () => {
+          fileBuffer = Buffer.concat(chunks);
+          console.log('File received, size:', fileBuffer.length);
+        });
+      });
+      
+      busboy.on('finish', () => {
+        console.log('Busboy finished parsing');
+        if (fileInfo) {
+          resolve({
+            ...fileInfo,
+            buffer: fileBuffer,
+            size: fileBuffer.length
+          });
+        } else {
+          resolve(null);
+        }
+      });
+      
+      busboy.on('error', (error) => {
+        console.error('Busboy error:', error);
+        reject(error);
+      });
+      
+      // Use rawBody instead of piping the request (Firebase Functions specific)
+      busboy.end(req.rawBody);
+    });
+
+    if (!parsedFile) {
+      console.error('ERROR: No audio file found in form data');
       return res.status(400).json({ error: 'No audio file data provided' });
     }
 
     console.log('File upload details:', {
-      originalName: req.file.originalname,
-      mimeType: req.file.mimetype,
-      size: req.file.size,
-      bufferLength: req.file.buffer ? req.file.buffer.length : 0
+      originalName: parsedFile.originalname,
+      mimeType: parsedFile.mimetype,
+      size: parsedFile.size,
+      bufferLength: parsedFile.buffer.length
     });
 
-    const contentType = req.file.mimetype;
-    const fileBuffer = req.file.buffer;
-    const originalFileName = req.file.originalname;
+    const contentType = parsedFile.mimetype;
+    const fileBuffer = parsedFile.buffer;
+    const originalFileName = parsedFile.originalname;
 
     // Validate content type
     if (!contentType || !contentType.startsWith('audio/')) {
@@ -944,10 +1011,10 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
     }
 
     // Validate file size
-    if (req.file.size > 20 * 1024 * 1024) { // 20MB limit
-      console.error('ERROR: File too large:', req.file.size);
+    if (parsedFile.size > 20 * 1024 * 1024) { // 20MB limit
+      console.error('ERROR: File too large:', parsedFile.size);
       return res.status(400).json({ 
-        error: `File size must be less than 20MB. Received: ${(req.file.size / 1024 / 1024).toFixed(2)}MB` 
+        error: `File size must be less than 20MB. Received: ${(parsedFile.size / 1024 / 1024).toFixed(2)}MB` 
       });
     }
 
@@ -1061,7 +1128,7 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
       success: true, 
       audioURL: audioURL,
       message: `Audio uploaded successfully (${(fileBuffer.length / 1024).toFixed(1)} KB)`,
-      method: 'multipart_upload'
+      method: 'busboy_upload'
     });
     
   } catch (error) {
