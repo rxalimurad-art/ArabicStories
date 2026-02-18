@@ -68,6 +68,13 @@ try {
 // Create Express app
 const app = express();
 app.use(cors({ origin: true }));
+
+// Configure raw body parser for audio uploads
+app.use('/api/quran-words/:id/audio', express.raw({ 
+  type: 'audio/*', 
+  limit: '20mb' 
+}));
+
 app.use(express.json());
 
 /**
@@ -902,91 +909,89 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
   }
 });
 
-// Upload audio for a quran word
-app.post('/api/quran-words/:id/audio', (req, res, next) => {
-  console.log('========================================');
-  console.log('AUDIO UPLOAD REQUEST STARTED');
-  console.log('Word ID:', req.params.id);
-  console.log('Content-Type:', req.headers['content-type']);
-  console.log('Content-Length:', req.headers['content-length']);
-  console.log('========================================');
-  
-  upload.single('audio')(req, res, (err) => {
-    if (err) {
-      console.error('========================================');
-      console.error('MULTER ERROR OCCURRED:', err);
-      console.error('Error name:', err.name);
-      console.error('Error message:', err.message);
-      console.error('Error code:', err.code);
-      console.error('Error stack:', err.stack);
-      console.error('========================================');
-      
-      let errorMessage = err.message;
-      let statusCode = 400;
-      
-      // Handle specific multer errors
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        errorMessage = 'File too large. Maximum size is 20MB.';
-      } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-        errorMessage = 'Unexpected file field. Use "audio" as the field name.';
-      } else if (err.message.includes('Unexpected end of form')) {
-        errorMessage = 'File upload was interrupted or corrupted. Please try again.';
-      } else if (err.message.includes('Invalid file type')) {
-        errorMessage = err.message;
-      }
-      
-      return res.status(statusCode).json({
-        success: false,
-        error: errorMessage,
-        code: err.code,
-        details: 'Multer file upload error',
-        timestamp: new Date().toISOString()
-      });
-    }
-    
-    console.log('MULTER SUCCESS - proceeding to main handler');
-    next();
-  });
-}, async (req, res) => {
+// Upload audio for a quran word - DIRECT UPLOAD (no multer)
+app.post('/api/quran-words/:id/audio', async (req, res) => {
   try {
     const wordId = req.params.id;
     console.log('========================================');
-    console.log('AUDIO UPLOAD REQUEST RECEIVED');
+    console.log('DIRECT AUDIO UPLOAD REQUEST RECEIVED');
     console.log('Word ID:', wordId);
-    console.log('Request headers:', req.headers);
-    console.log('Has file:', !!req.file);
+    console.log('Content-Type:', req.headers['content-type']);
+    console.log('Content-Length:', req.headers['content-length']);
+    console.log('X-File-Name:', req.headers['x-file-name']);
+    console.log('X-Word-Id:', req.headers['x-word-id']);
+    console.log('========================================');
     
     if (!wordId || wordId.trim() === '') {
       console.error('ERROR: No word ID provided');
       return res.status(400).json({ error: 'Word ID is required' });
     }
 
-    if (!req.file) {
-      console.error('ERROR: No audio file in request');
-      console.log('Available form fields:', Object.keys(req.body || {}));
-      return res.status(400).json({ error: 'No audio file provided' });
-    }
+    const contentType = req.headers['content-type'];
+    const contentLength = parseInt(req.headers['content-length'] || '0');
+    const fileName = req.headers['x-file-name'] || 'audio.mp3';
 
-    console.log('File received successfully:', {
-      fieldname: req.file.fieldname,
-      originalname: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      encoding: req.file.encoding
+    console.log('Direct upload details:', {
+      contentType,
+      contentLength,
+      fileName,
+      hasBody: !!req.body
     });
 
-    // Validate file type and size
-    if (!req.file.mimetype || !req.file.mimetype.startsWith('audio/')) {
-      console.error('ERROR: Invalid file type:', req.file.mimetype);
-      return res.status(400).json({ error: `File must be an audio file. Received: ${req.file.mimetype}` });
+    // Validate content type
+    if (!contentType || !contentType.startsWith('audio/')) {
+      console.error('ERROR: Invalid content type:', contentType);
+      return res.status(400).json({ 
+        error: `Content must be audio type. Received: ${contentType}` 
+      });
     }
 
-    if (req.file.size > 20 * 1024 * 1024) { // 20MB limit
-      console.error('ERROR: File too large:', req.file.size);
-      return res.status(400).json({ error: `File size must be less than 20MB. Received: ${(req.file.size / 1024 / 1024).toFixed(2)}MB` });
+    // Validate file size
+    if (contentLength > 20 * 1024 * 1024) { // 20MB limit
+      console.error('ERROR: File too large:', contentLength);
+      return res.status(400).json({ 
+        error: `File size must be less than 20MB. Received: ${(contentLength / 1024 / 1024).toFixed(2)}MB` 
+      });
     }
 
-    console.log('File validation passed');
+    if (contentLength === 0) {
+      console.error('ERROR: No file data received');
+      return res.status(400).json({ error: 'No audio file data provided' });
+    }
+
+    console.log('Direct upload validation passed');
+
+    // Get raw body data
+    let fileBuffer;
+    if (req.body instanceof Buffer) {
+      fileBuffer = req.body;
+      console.log('Using req.body buffer:', fileBuffer.length);
+    } else {
+      // Convert raw body to buffer
+      const chunks = [];
+      req.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      
+      await new Promise((resolve, reject) => {
+        req.on('end', () => {
+          fileBuffer = Buffer.concat(chunks);
+          console.log('Assembled buffer from chunks:', fileBuffer.length);
+          resolve();
+        });
+        req.on('error', reject);
+      });
+    }
+
+    if (!fileBuffer || fileBuffer.length === 0) {
+      console.error('ERROR: Failed to read file data');
+      return res.status(400).json({ error: 'Failed to read audio file data' });
+    }
+
+    console.log('File buffer created:', {
+      size: fileBuffer.length,
+      type: typeof fileBuffer
+    });
 
     // Check if word exists
     console.log('Checking if word exists in database...');
@@ -1015,22 +1020,16 @@ app.post('/api/quran-words/:id/audio', (req, res, next) => {
     const file = bucket.file(fileName);
     console.log('Storage file path:', fileName);
     
-    // Set proper content type based on file
-    let contentType = 'audio/mpeg';
-    if (req.file.mimetype === 'audio/mp3' || req.file.originalname.toLowerCase().endsWith('.mp3')) {
-      contentType = 'audio/mpeg';
-    } else if (req.file.mimetype === 'audio/wav' || req.file.originalname.toLowerCase().endsWith('.wav')) {
-      contentType = 'audio/wav';
-    } else if (req.file.mimetype === 'audio/ogg' || req.file.originalname.toLowerCase().endsWith('.ogg')) {
-      contentType = 'audio/ogg';
-    }
+    // Content type is already validated and available from headers
+    const storageContentType = contentType;
+    console.log('Using content type for storage:', storageContentType);
 
     console.log('Uploading to Firebase Storage with content type:', contentType);
     
     try {
-      await file.save(req.file.buffer, {
+      await file.save(fileBuffer, {
         metadata: { 
-          contentType: contentType,
+          contentType: storageContentType,
           cacheControl: 'public, max-age=3600'
         }
       });
@@ -1078,8 +1077,9 @@ app.post('/api/quran-words/:id/audio', (req, res, next) => {
     try {
       await logAdminAction('UPLOAD_WORD_AUDIO', { 
         wordId, 
-        fileName: req.file.originalname,
-        fileSize: req.file.size,
+        fileName: fileName,
+        fileSize: fileBuffer.length,
+        contentType: storageContentType,
         audioURL: audioURL
       }, req.ip);
     } catch (logError) {
@@ -1093,7 +1093,8 @@ app.post('/api/quran-words/:id/audio', (req, res, next) => {
     res.json({ 
       success: true, 
       audioURL: audioURL,
-      message: `Audio uploaded successfully (${(req.file.size / 1024).toFixed(1)} KB)`
+      message: `Audio uploaded successfully (${(fileBuffer.length / 1024).toFixed(1)} KB)`,
+      method: 'direct_upload'
     });
     
   } catch (error) {
