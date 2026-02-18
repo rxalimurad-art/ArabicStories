@@ -181,6 +181,50 @@ async function testApiConnection() {
             addToDebugLog('success', 'POST audio upload route is accessible', {
               response: postTestData
             });
+            
+            // Test 5: Simple audio route (no multer)
+            const simpleTestResp = await fetch(`${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio/simple`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ test: 'simple upload test' })
+            });
+            
+            if (simpleTestResp.ok) {
+              const simpleTestData = await simpleTestResp.json();
+              addToDebugLog('success', 'Simple audio route works (no multer)', {
+                response: simpleTestData
+              });
+              
+              // Test 6: Test actual multer route with fake FormData
+              addToDebugLog('info', 'Testing multer route with FormData...');
+              const formData = new FormData();
+              formData.append('test', 'fake file test');
+              
+              const multerTestResp = await fetch(`${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio`, {
+                method: 'POST',
+                body: formData
+              });
+              
+              const multerContentType = multerTestResp.headers.get('content-type');
+              if (multerContentType && multerContentType.includes('application/json')) {
+                const multerTestData = await multerTestResp.json();
+                addToDebugLog('info', 'Multer route response (should show no file error)', {
+                  status: multerTestResp.status,
+                  response: multerTestData
+                });
+              } else {
+                const multerText = await multerTestResp.text();
+                addToDebugLog('error', 'Multer route returned HTML error (this is the problem!)', {
+                  status: multerTestResp.status,
+                  contentType: multerContentType,
+                  response: multerText.substring(0, 300)
+                });
+              }
+            } else {
+              addToDebugLog('error', 'Simple audio route failed', {
+                status: simpleTestResp.status
+              });
+            }
           } else {
             addToDebugLog('error', 'POST audio test failed', {
               status: postTestResp.status,
@@ -205,6 +249,70 @@ async function testApiConnection() {
     }
   } catch (error) {
     addToDebugLog('error', 'API connection test failed', {
+      error: error.message,
+      stack: error.stack
+    });
+  }
+}
+
+async function testFileUpload() {
+  addToDebugLog('info', 'Testing file upload with small test file...');
+  
+  try {
+    // Create a small test file (Blob)
+    const testContent = 'This is a test audio file content for debugging multer';
+    const testBlob = new Blob([testContent], { type: 'audio/mpeg' });
+    const testFile = new File([testBlob], 'test-audio.mp3', { type: 'audio/mpeg' });
+    
+    addToDebugLog('info', 'Created test file', {
+      name: testFile.name,
+      type: testFile.type,
+      size: testFile.size
+    });
+    
+    // Test with a known word ID (you might need to use a real word ID)
+    const testWordId = 'bb5a2111-1b6f-4078-bc1f-5e8646ec9c36'; // Use your actual word ID
+    
+    const formData = new FormData();
+    formData.append('audio', testFile);
+    
+    addToDebugLog('info', 'Sending test file upload...', {
+      endpoint: `${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio`,
+      formDataKeys: Array.from(formData.keys())
+    });
+    
+    const resp = await fetch(`${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const contentType = resp.headers.get('content-type');
+    
+    if (contentType && contentType.includes('application/json')) {
+      const data = await resp.json();
+      if (resp.ok) {
+        addToDebugLog('success', 'Test file upload succeeded!', {
+          status: resp.status,
+          response: data
+        });
+      } else {
+        addToDebugLog('info', 'Test file upload failed with JSON error (expected)', {
+          status: resp.status,
+          error: data.error,
+          details: data.details
+        });
+      }
+    } else {
+      const text = await resp.text();
+      addToDebugLog('error', 'Test file upload returned HTML error', {
+        status: resp.status,
+        contentType,
+        response: text.substring(0, 200)
+      });
+    }
+    
+  } catch (error) {
+    addToDebugLog('error', 'Test file upload threw exception', {
       error: error.message,
       stack: error.stack
     });
@@ -1965,7 +2073,7 @@ async function uploadWordAudio() {
   const wordId = document.getElementById('word-id').value;
   const audioFile = document.getElementById('word-audio-file')?.files?.[0];
 
-  addToDebugLog('info', `Starting audio upload for word: ${wordId}`);
+  addToDebugLog('info', `Starting DIRECT audio upload for word: ${wordId}`);
 
   if (!wordId || wordId.trim() === '') {
     addToDebugLog('error', 'No word ID found - word modal may not be properly loaded');
@@ -2015,7 +2123,7 @@ async function uploadWordAudio() {
       if (!wordCheck.word) {
         throw new Error('Word not found');
       }
-      addToDebugLog('success', 'Word exists, proceeding with upload', {
+      addToDebugLog('success', 'Word exists, proceeding with direct upload', {
         wordId: wordId,
         arabicText: wordCheck.word.arabicText
       });
@@ -2027,28 +2135,35 @@ async function uploadWordAudio() {
       throw new Error(`Cannot upload audio: ${checkError.message}`);
     }
 
-    const formData = new FormData();
-    formData.append('audio', audioFile);
-    
-    const uploadUrl = API.quranWordAudio(wordId);
-    addToDebugLog('info', 'Sending file to server...', {
-      endpoint: uploadUrl,
-      wordId: wordId,
-      apiBaseUrl: CONFIG.apiBaseUrl,
-      formDataKeys: Array.from(formData.keys())
+    // DIRECT UPLOAD APPROACH - Send raw file data
+    addToDebugLog('info', 'Using direct upload approach (no multer)', {
+      endpoint: API.quranWordAudio(wordId),
+      fileName: audioFile.name,
+      contentType: audioFile.type
     });
     
-    const resp = await fetch(uploadUrl, { 
-      method: 'POST', 
-      body: formData 
+    // Convert file to ArrayBuffer for direct upload
+    const fileBuffer = await audioFile.arrayBuffer();
+    addToDebugLog('info', 'File converted to buffer', {
+      bufferSize: fileBuffer.byteLength
     });
     
-    addToDebugLog('info', 'Raw server response', {
+    const resp = await fetch(API.quranWordAudio(wordId), {
+      method: 'POST',
+      headers: {
+        'Content-Type': audioFile.type,
+        'Content-Length': audioFile.size.toString(),
+        'X-File-Name': audioFile.name,
+        'X-Word-Id': wordId
+      },
+      body: fileBuffer
+    });
+    
+    addToDebugLog('info', 'Direct upload response received', {
       status: resp.status,
       ok: resp.ok,
       statusText: resp.statusText,
-      contentType: resp.headers.get('content-type'),
-      url: resp.url
+      contentType: resp.headers.get('content-type')
     });
 
     // Check if response is JSON before parsing
@@ -2080,13 +2195,13 @@ async function uploadWordAudio() {
     document.getElementById('word-audio-status').style.display = 'none';
     document.getElementById('delete-audio-btn').style.display = 'inline-block';
 
-    addToDebugLog('success', 'Audio upload completed successfully', { audioURL: data.audioURL });
+    addToDebugLog('success', 'Direct audio upload completed successfully', { audioURL: data.audioURL });
     showToast(data.message || 'Audio uploaded successfully', 'success');
     
     // Clear the file input
     document.getElementById('word-audio-file').value = '';
   } catch (error) {
-    addToDebugLog('error', 'Audio upload failed', {
+    addToDebugLog('error', 'Direct audio upload failed', {
       error: error.message,
       stack: error.stack
     });
@@ -2177,6 +2292,7 @@ window.toggleDebugConsole = toggleDebugConsole;
 window.clearDebugLog = clearDebugLog;
 window.exportDebugLog = exportDebugLog;
 window.testApiConnection = testApiConnection;
+window.testFileUpload = testFileUpload;
 
 // Format switching for story form
 function onFormatChange() {
