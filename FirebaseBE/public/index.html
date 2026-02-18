@@ -532,9 +532,10 @@
       </div>
       <div id="debug-content" style="padding: 8px; overflow-y: auto; max-height: 250px; display: block;">
         <div id="debug-log" style="white-space: pre-wrap; word-wrap: break-word;"></div>
-        <div style="margin-top: 8px; display: flex; gap: 8px;">
+        <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
           <button onclick="clearDebugLog()" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Clear</button>
           <button onclick="exportDebugLog()" style="background: #4444ff; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Export</button>
+          <button onclick="testApiConnection()" style="background: #44ff44; color: black; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Test API</button>
         </div>
       </div>
     </div>

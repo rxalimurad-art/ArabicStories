@@ -125,6 +125,54 @@ function exportDebugLog() {
   addToDebugLog('info', 'Debug log exported');
 }
 
+async function testApiConnection() {
+  addToDebugLog('info', 'Testing API connection...');
+  
+  try {
+    // Test 1: Basic health check
+    const healthUrl = `${CONFIG.apiBaseUrl}/`;
+    addToDebugLog('info', `Testing health endpoint: ${healthUrl}`);
+    
+    const healthResp = await fetch(healthUrl);
+    const healthText = await healthResp.text();
+    
+    addToDebugLog('info', 'Health check response', {
+      status: healthResp.status,
+      statusText: healthResp.statusText,
+      contentType: healthResp.headers.get('content-type'),
+      response: healthText.substring(0, 200)
+    });
+
+    // Test 2: API endpoint
+    if (healthResp.ok) {
+      addToDebugLog('success', 'Health check passed, testing API endpoint...');
+      
+      const apiResp = await fetch(`${CONFIG.apiBaseUrl}/api/stories?limit=1`);
+      const apiContentType = apiResp.headers.get('content-type');
+      
+      if (apiContentType && apiContentType.includes('application/json')) {
+        const apiData = await apiResp.json();
+        addToDebugLog('success', 'API endpoint working correctly', {
+          status: apiResp.status,
+          response: apiData
+        });
+      } else {
+        const apiText = await apiResp.text();
+        addToDebugLog('error', 'API returned non-JSON response', {
+          status: apiResp.status,
+          contentType: apiContentType,
+          response: apiText.substring(0, 200)
+        });
+      }
+    }
+  } catch (error) {
+    addToDebugLog('error', 'API connection test failed', {
+      error: error.message,
+      stack: error.stack
+    });
+  }
+}
+
 // Capture console errors
 window.addEventListener('error', (event) => {
   addToDebugLog('error', `JavaScript Error: ${event.message}`, {
@@ -1881,6 +1929,12 @@ async function uploadWordAudio() {
 
   addToDebugLog('info', `Starting audio upload for word: ${wordId}`);
 
+  if (!wordId || wordId.trim() === '') {
+    addToDebugLog('error', 'No word ID found - word modal may not be properly loaded');
+    showToast('Error: No word ID found. Please close and reopen the word.', 'error');
+    return;
+  }
+
   if (!audioFile) {
     addToDebugLog('error', 'No audio file selected');
     showToast('Please select an audio file', 'error');
@@ -1916,23 +1970,65 @@ async function uploadWordAudio() {
   btn.textContent = '⏳ Uploading...';
 
   try {
+    // First check if the word exists
+    addToDebugLog('info', 'Checking if word exists before upload...');
+    try {
+      const wordCheck = await apiRequest(API.quranWord(wordId));
+      if (!wordCheck.word) {
+        throw new Error('Word not found');
+      }
+      addToDebugLog('success', 'Word exists, proceeding with upload', {
+        wordId: wordId,
+        arabicText: wordCheck.word.arabicText
+      });
+    } catch (checkError) {
+      addToDebugLog('error', 'Word validation failed', {
+        error: checkError.message,
+        wordId: wordId
+      });
+      throw new Error(`Cannot upload audio: ${checkError.message}`);
+    }
+
     const formData = new FormData();
     formData.append('audio', audioFile);
     
+    const uploadUrl = API.quranWordAudio(wordId);
     addToDebugLog('info', 'Sending file to server...', {
-      endpoint: API.quranWordAudio(wordId),
+      endpoint: uploadUrl,
+      wordId: wordId,
+      apiBaseUrl: CONFIG.apiBaseUrl,
       formDataKeys: Array.from(formData.keys())
     });
     
-    const resp = await fetch(API.quranWordAudio(wordId), { 
+    const resp = await fetch(uploadUrl, { 
       method: 'POST', 
       body: formData 
     });
     
-    const data = await resp.json();
-    addToDebugLog('info', 'Server response received', {
+    addToDebugLog('info', 'Raw server response', {
       status: resp.status,
       ok: resp.ok,
+      statusText: resp.statusText,
+      contentType: resp.headers.get('content-type'),
+      url: resp.url
+    });
+
+    // Check if response is JSON before parsing
+    const contentType = resp.headers.get('content-type');
+    let data;
+    if (contentType && contentType.includes('application/json')) {
+      data = await resp.json();
+    } else {
+      // If not JSON, get text to see what we actually received
+      const text = await resp.text();
+      addToDebugLog('error', 'Server returned non-JSON response', {
+        contentType,
+        responseText: text.substring(0, 500) + (text.length > 500 ? '...' : '')
+      });
+      throw new Error(`Server returned ${contentType || 'non-JSON'} response: ${text.substring(0, 100)}...`);
+    }
+    
+    addToDebugLog('info', 'Server response parsed', {
       response: data
     });
 
@@ -2042,6 +2138,7 @@ window.confirmDeleteWord = confirmDeleteWord;
 window.toggleDebugConsole = toggleDebugConsole;
 window.clearDebugLog = clearDebugLog;
 window.exportDebugLog = exportDebugLog;
+window.testApiConnection = testApiConnection;
 
 // Format switching for story form
 function onFormatChange() {
