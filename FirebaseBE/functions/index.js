@@ -1016,9 +1016,9 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
       return res.status(500).json({ error: 'Storage service unavailable' });
     }
 
-    const fileName = `word-audio/${wordId}.mp3`;
-    const file = bucket.file(fileName);
-    console.log('Storage file path:', fileName);
+    const storageFileName = `word-audio/${wordId}.mp3`;
+    const file = bucket.file(storageFileName);
+    console.log('Storage file path:', storageFileName);
     
     // Content type is already validated and available from headers
     const storageContentType = contentType;
