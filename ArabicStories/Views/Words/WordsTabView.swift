@@ -5,6 +5,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct WordsTabView: View {
     @Binding var selectedTab: Int
