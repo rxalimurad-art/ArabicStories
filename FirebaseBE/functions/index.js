@@ -855,8 +855,28 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
   }
 });
 
-// Upload audio for a quran word
-app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
+// Upload audio for a quran word - with multer error handling
+app.post('/api/quran-words/:id/audio', (req, res, next) => {
+  // Custom multer error handler
+  upload.single('audio')(req, res, (err) => {
+    if (err) {
+      console.error('========================================');
+      console.error('MULTER ERROR:', err);
+      console.error('Error code:', err.code);
+      console.error('Error message:', err.message);
+      console.error('========================================');
+      
+      // Return JSON error instead of letting Express handle it
+      return res.status(400).json({
+        success: false,
+        error: 'File upload error: ' + err.message,
+        code: err.code,
+        details: 'Multer middleware failed to process the file upload'
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     const wordId = req.params.id;
     console.log('========================================');
