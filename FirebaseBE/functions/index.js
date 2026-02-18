@@ -69,8 +69,8 @@ try {
 const app = express();
 app.use(cors({ origin: true }));
 
-// Configure raw body parser for audio uploads
-app.use('/api/quran-words/:id/audio', express.raw({ 
+// Configure raw body parser for audio uploads BEFORE other middleware
+app.use('/api/quran-words/*/audio', express.raw({ 
   type: 'audio/*', 
   limit: '20mb' 
 }));
@@ -935,7 +935,11 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
       contentType,
       contentLength,
       fileName,
-      hasBody: !!req.body
+      hasBody: !!req.body,
+      bodyType: typeof req.body,
+      bodyLength: req.body ? (req.body.length || req.body.byteLength || 'unknown') : 0,
+      isBuffer: Buffer.isBuffer(req.body),
+      bodyConstructor: req.body ? req.body.constructor.name : 'none'
     });
 
     // Validate content type
@@ -961,36 +965,39 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
 
     console.log('Direct upload validation passed');
 
-    // Get raw body data
+    // Get raw body data - Express raw middleware should have parsed it
     let fileBuffer;
-    if (req.body instanceof Buffer) {
+    
+    if (Buffer.isBuffer(req.body)) {
       fileBuffer = req.body;
-      console.log('Using req.body buffer:', fileBuffer.length);
+      console.log('SUCCESS: Using req.body buffer directly:', fileBuffer.length, 'bytes');
+    } else if (req.body && req.body.byteLength) {
+      // Handle ArrayBuffer-like objects
+      fileBuffer = Buffer.from(req.body);
+      console.log('SUCCESS: Converted body to buffer:', fileBuffer.length, 'bytes');
+    } else if (typeof req.body === 'string') {
+      // Handle base64 or string data
+      fileBuffer = Buffer.from(req.body, 'binary');
+      console.log('SUCCESS: Converted string body to buffer:', fileBuffer.length, 'bytes');
     } else {
-      // Convert raw body to buffer
-      const chunks = [];
-      req.on('data', (chunk) => {
-        chunks.push(chunk);
+      console.error('ERROR: req.body is not in expected format:', {
+        hasBody: !!req.body,
+        bodyType: typeof req.body,
+        bodyConstructor: req.body ? req.body.constructor.name : 'none',
+        contentLength: contentLength
       });
-      
-      await new Promise((resolve, reject) => {
-        req.on('end', () => {
-          fileBuffer = Buffer.concat(chunks);
-          console.log('Assembled buffer from chunks:', fileBuffer.length);
-          resolve();
-        });
-        req.on('error', reject);
-      });
+      return res.status(400).json({ error: 'No audio file data provided' });
     }
 
     if (!fileBuffer || fileBuffer.length === 0) {
-      console.error('ERROR: Failed to read file data');
-      return res.status(400).json({ error: 'Failed to read audio file data' });
+      console.error('ERROR: File buffer is empty');
+      return res.status(400).json({ error: 'Audio file data is empty' });
     }
 
-    console.log('File buffer created:', {
+    console.log('File buffer created successfully:', {
       size: fileBuffer.length,
-      type: typeof fileBuffer
+      type: typeof fileBuffer,
+      isBuffer: Buffer.isBuffer(fileBuffer)
     });
 
     // Check if word exists
