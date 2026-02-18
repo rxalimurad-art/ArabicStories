@@ -2096,8 +2096,17 @@ async function uploadWordAudio() {
     name: audioFile.name,
     type: audioFile.type,
     size: audioFile.size,
-    sizeFormatted: `${(audioFile.size / 1024 / 1024).toFixed(2)} MB`
+    sizeFormatted: `${(audioFile.size / 1024 / 1024).toFixed(2)} MB`,
+    lastModified: audioFile.lastModified,
+    webkitRelativePath: audioFile.webkitRelativePath || 'none'
   });
+  
+  // Additional validation for the File object
+  if (audioFile.size === 0) {
+    addToDebugLog('error', 'Selected file has zero size');
+    showToast('Selected file appears to be empty', 'error');
+    return;
+  }
   
   if (!allowedTypes.includes(audioFile.type) && !allowedExtensions.some(ext => fileName.endsWith(ext))) {
     addToDebugLog('error', `Invalid file type: ${audioFile.type}`, { fileName });
@@ -2143,10 +2152,47 @@ async function uploadWordAudio() {
     });
     
     // Convert file to ArrayBuffer for direct upload
-    const fileBuffer = await audioFile.arrayBuffer();
-    addToDebugLog('info', 'File converted to buffer', {
-      bufferSize: fileBuffer.byteLength
-    });
+    addToDebugLog('info', 'Converting file to ArrayBuffer...');
+    let fileBuffer;
+    
+    try {
+      // Try modern arrayBuffer() method first
+      if (typeof audioFile.arrayBuffer === 'function') {
+        fileBuffer = await audioFile.arrayBuffer();
+        addToDebugLog('success', 'File converted using arrayBuffer()', {
+          bufferSize: fileBuffer.byteLength,
+          hasData: fileBuffer.byteLength > 0
+        });
+      } else {
+        // Fallback using FileReader for older browsers
+        addToDebugLog('info', 'Using FileReader fallback...');
+        fileBuffer = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsArrayBuffer(audioFile);
+        });
+        addToDebugLog('success', 'File converted using FileReader', {
+          bufferSize: fileBuffer.byteLength,
+          hasData: fileBuffer.byteLength > 0
+        });
+      }
+    } catch (bufferError) {
+      addToDebugLog('error', 'Failed to convert file to ArrayBuffer', {
+        error: bufferError.message,
+        stack: bufferError.stack
+      });
+      throw new Error('Failed to process audio file: ' + bufferError.message);
+    }
+    
+    if (!fileBuffer || fileBuffer.byteLength === 0) {
+      addToDebugLog('error', 'ArrayBuffer is empty or null', {
+        hasBuffer: !!fileBuffer,
+        byteLength: fileBuffer ? fileBuffer.byteLength : 'N/A',
+        originalFileSize: audioFile.size
+      });
+      throw new Error('No audio file data provided');
+    }
     
     const resp = await fetch(API.quranWordAudio(wordId), {
       method: 'POST',
