@@ -156,6 +156,44 @@ async function testApiConnection() {
           status: apiResp.status,
           response: apiData
         });
+        
+        // Test 3: Audio upload route (GET test)
+        addToDebugLog('info', 'Testing audio upload route...');
+        const testWordId = 'test-word-id';
+        const audioTestUrl = `${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio/test`;
+        
+        const audioTestResp = await fetch(audioTestUrl);
+        if (audioTestResp.ok) {
+          const audioTestData = await audioTestResp.json();
+          addToDebugLog('success', 'Audio upload route is accessible', {
+            response: audioTestData
+          });
+          
+          // Test 4: POST to audio route (without file)
+          const postTestResp = await fetch(`${CONFIG.apiBaseUrl}/api/quran-words/${testWordId}/audio/test`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ test: true })
+          });
+          
+          if (postTestResp.ok) {
+            const postTestData = await postTestResp.json();
+            addToDebugLog('success', 'POST audio upload route is accessible', {
+              response: postTestData
+            });
+          } else {
+            addToDebugLog('error', 'POST audio test failed', {
+              status: postTestResp.status,
+              statusText: postTestResp.statusText
+            });
+          }
+        } else {
+          addToDebugLog('error', 'Audio upload route test failed', {
+            status: audioTestResp.status,
+            statusText: audioTestResp.statusText
+          });
+        }
+        
       } else {
         const apiText = await apiResp.text();
         addToDebugLog('error', 'API returned non-JSON response', {

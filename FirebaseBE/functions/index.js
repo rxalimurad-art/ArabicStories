@@ -216,6 +216,28 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'Arabic Stories API' });
 });
 
+// Debug endpoint to test audio upload route
+app.get('/api/quran-words/:id/audio/test', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Audio upload route is reachable',
+    wordId: req.params.id,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Test POST endpoint without file upload
+app.post('/api/quran-words/:id/audio/test', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'POST audio upload route is reachable',
+    wordId: req.params.id,
+    hasBody: !!req.body,
+    contentType: req.headers['content-type'],
+    timestamp: new Date().toISOString()
+  });
+});
+
 // List all stories
 app.get('/api/stories', async (req, res) => {
   try {
