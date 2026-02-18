@@ -68,13 +68,6 @@ try {
 // Create Express app
 const app = express();
 app.use(cors({ origin: true }));
-
-// Configure raw body parser for audio uploads BEFORE other middleware
-app.use('/api/quran-words/*/audio', express.raw({ 
-  type: 'audio/*', 
-  limit: '20mb' 
-}));
-
 app.use(express.json());
 
 /**
@@ -909,17 +902,15 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
   }
 });
 
-// Upload audio for a quran word - DIRECT UPLOAD (no multer)
-app.post('/api/quran-words/:id/audio', async (req, res) => {
+// Upload audio for a quran word - Using multer for multipart/form-data
+app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
   try {
     const wordId = req.params.id;
     console.log('========================================');
-    console.log('DIRECT AUDIO UPLOAD REQUEST RECEIVED');
+    console.log('AUDIO UPLOAD REQUEST RECEIVED (multipart)');
     console.log('Word ID:', wordId);
     console.log('Content-Type:', req.headers['content-type']);
-    console.log('Content-Length:', req.headers['content-length']);
-    console.log('X-File-Name:', req.headers['x-file-name']);
-    console.log('X-Word-Id:', req.headers['x-word-id']);
+    console.log('Has file:', !!req.file);
     console.log('========================================');
     
     if (!wordId || wordId.trim() === '') {
@@ -927,20 +918,22 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
       return res.status(400).json({ error: 'Word ID is required' });
     }
 
-    const contentType = req.headers['content-type'];
-    const contentLength = parseInt(req.headers['content-length'] || '0');
-    const fileName = req.headers['x-file-name'] || 'audio.mp3';
+    // Check if file was uploaded via multer
+    if (!req.file) {
+      console.error('ERROR: No audio file provided in request');
+      return res.status(400).json({ error: 'No audio file data provided' });
+    }
 
-    console.log('Direct upload details:', {
-      contentType,
-      contentLength,
-      fileName,
-      hasBody: !!req.body,
-      bodyType: typeof req.body,
-      bodyLength: req.body ? (req.body.length || req.body.byteLength || 'unknown') : 0,
-      isBuffer: Buffer.isBuffer(req.body),
-      bodyConstructor: req.body ? req.body.constructor.name : 'none'
+    console.log('File upload details:', {
+      originalName: req.file.originalname,
+      mimeType: req.file.mimetype,
+      size: req.file.size,
+      bufferLength: req.file.buffer ? req.file.buffer.length : 0
     });
+
+    const contentType = req.file.mimetype;
+    const fileBuffer = req.file.buffer;
+    const originalFileName = req.file.originalname;
 
     // Validate content type
     if (!contentType || !contentType.startsWith('audio/')) {
@@ -951,42 +944,11 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
     }
 
     // Validate file size
-    if (contentLength > 20 * 1024 * 1024) { // 20MB limit
-      console.error('ERROR: File too large:', contentLength);
+    if (req.file.size > 20 * 1024 * 1024) { // 20MB limit
+      console.error('ERROR: File too large:', req.file.size);
       return res.status(400).json({ 
-        error: `File size must be less than 20MB. Received: ${(contentLength / 1024 / 1024).toFixed(2)}MB` 
+        error: `File size must be less than 20MB. Received: ${(req.file.size / 1024 / 1024).toFixed(2)}MB` 
       });
-    }
-
-    if (contentLength === 0) {
-      console.error('ERROR: No file data received');
-      return res.status(400).json({ error: 'No audio file data provided' });
-    }
-
-    console.log('Direct upload validation passed');
-
-    // Get raw body data - Express raw middleware should have parsed it
-    let fileBuffer;
-    
-    if (Buffer.isBuffer(req.body)) {
-      fileBuffer = req.body;
-      console.log('SUCCESS: Using req.body buffer directly:', fileBuffer.length, 'bytes');
-    } else if (req.body && req.body.byteLength) {
-      // Handle ArrayBuffer-like objects
-      fileBuffer = Buffer.from(req.body);
-      console.log('SUCCESS: Converted body to buffer:', fileBuffer.length, 'bytes');
-    } else if (typeof req.body === 'string') {
-      // Handle base64 or string data
-      fileBuffer = Buffer.from(req.body, 'binary');
-      console.log('SUCCESS: Converted string body to buffer:', fileBuffer.length, 'bytes');
-    } else {
-      console.error('ERROR: req.body is not in expected format:', {
-        hasBody: !!req.body,
-        bodyType: typeof req.body,
-        bodyConstructor: req.body ? req.body.constructor.name : 'none',
-        contentLength: contentLength
-      });
-      return res.status(400).json({ error: 'No audio file data provided' });
     }
 
     if (!fileBuffer || fileBuffer.length === 0) {
@@ -1027,16 +989,14 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
     const file = bucket.file(storageFileName);
     console.log('Storage file path:', storageFileName);
     
-    // Content type is already validated and available from headers
-    const storageContentType = contentType;
-    console.log('Using content type for storage:', storageContentType);
+    console.log('Using content type for storage:', contentType);
 
-    console.log('Uploading to Firebase Storage with content type:', contentType);
+    console.log('Uploading to Firebase Storage...');
     
     try {
       await file.save(fileBuffer, {
         metadata: { 
-          contentType: storageContentType,
+          contentType: contentType,
           cacheControl: 'public, max-age=3600'
         }
       });
@@ -1062,7 +1022,7 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
     }
 
     const bucketName = bucket.name;
-    const audioURL = `https://storage.googleapis.com/${bucketName}/${fileName}`;
+    const audioURL = `https://storage.googleapis.com/${bucketName}/${storageFileName}`;
     console.log('Generated audio URL:', audioURL);
 
     console.log('Updating Firestore with audio URL...');
@@ -1084,9 +1044,9 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
     try {
       await logAdminAction('UPLOAD_WORD_AUDIO', { 
         wordId, 
-        fileName: fileName,
+        fileName: originalFileName,
         fileSize: fileBuffer.length,
-        contentType: storageContentType,
+        contentType: contentType,
         audioURL: audioURL
       }, req.ip);
     } catch (logError) {
@@ -1101,7 +1061,7 @@ app.post('/api/quran-words/:id/audio', async (req, res) => {
       success: true, 
       audioURL: audioURL,
       message: `Audio uploaded successfully (${(fileBuffer.length / 1024).toFixed(1)} KB)`,
-      method: 'direct_upload'
+      method: 'multipart_upload'
     });
     
   } catch (error) {

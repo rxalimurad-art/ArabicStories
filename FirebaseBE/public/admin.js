@@ -2144,68 +2144,31 @@ async function uploadWordAudio() {
       throw new Error(`Cannot upload audio: ${checkError.message}`);
     }
 
-    // DIRECT UPLOAD APPROACH - Send raw file data
-    addToDebugLog('info', 'Using direct upload approach (no multer)', {
+    // MULTIPART UPLOAD APPROACH - Using FormData (more reliable with Firebase Functions)
+    addToDebugLog('info', 'Using multipart upload approach (FormData)', {
       endpoint: API.quranWordAudio(wordId),
       fileName: audioFile.name,
       contentType: audioFile.type
     });
     
-    // Convert file to ArrayBuffer for direct upload
-    addToDebugLog('info', 'Converting file to ArrayBuffer...');
-    let fileBuffer;
+    // Create FormData for multipart upload
+    addToDebugLog('info', 'Creating FormData...');
+    const formData = new FormData();
+    formData.append('audio', audioFile, audioFile.name);
     
-    try {
-      // Try modern arrayBuffer() method first
-      if (typeof audioFile.arrayBuffer === 'function') {
-        fileBuffer = await audioFile.arrayBuffer();
-        addToDebugLog('success', 'File converted using arrayBuffer()', {
-          bufferSize: fileBuffer.byteLength,
-          hasData: fileBuffer.byteLength > 0
-        });
-      } else {
-        // Fallback using FileReader for older browsers
-        addToDebugLog('info', 'Using FileReader fallback...');
-        fileBuffer = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = () => reject(reader.error);
-          reader.readAsArrayBuffer(audioFile);
-        });
-        addToDebugLog('success', 'File converted using FileReader', {
-          bufferSize: fileBuffer.byteLength,
-          hasData: fileBuffer.byteLength > 0
-        });
-      }
-    } catch (bufferError) {
-      addToDebugLog('error', 'Failed to convert file to ArrayBuffer', {
-        error: bufferError.message,
-        stack: bufferError.stack
-      });
-      throw new Error('Failed to process audio file: ' + bufferError.message);
-    }
-    
-    if (!fileBuffer || fileBuffer.byteLength === 0) {
-      addToDebugLog('error', 'ArrayBuffer is empty or null', {
-        hasBuffer: !!fileBuffer,
-        byteLength: fileBuffer ? fileBuffer.byteLength : 'N/A',
-        originalFileSize: audioFile.size
-      });
-      throw new Error('No audio file data provided');
-    }
+    addToDebugLog('success', 'FormData created', {
+      fileName: audioFile.name,
+      fileSize: audioFile.size,
+      fileType: audioFile.type
+    });
     
     const resp = await fetch(API.quranWordAudio(wordId), {
       method: 'POST',
-      headers: {
-        'Content-Type': audioFile.type,
-        'Content-Length': audioFile.size.toString(),
-        'X-File-Name': audioFile.name,
-        'X-Word-Id': wordId
-      },
-      body: fileBuffer
+      // Do NOT set Content-Type header - browser will set it with boundary for FormData
+      body: formData
     });
     
-    addToDebugLog('info', 'Direct upload response received', {
+    addToDebugLog('info', 'Multipart upload response received', {
       status: resp.status,
       ok: resp.ok,
       statusText: resp.statusText,
@@ -2241,13 +2204,13 @@ async function uploadWordAudio() {
     document.getElementById('word-audio-status').style.display = 'none';
     document.getElementById('delete-audio-btn').style.display = 'inline-block';
 
-    addToDebugLog('success', 'Direct audio upload completed successfully', { audioURL: data.audioURL });
+    addToDebugLog('success', 'Multipart audio upload completed successfully', { audioURL: data.audioURL });
     showToast(data.message || 'Audio uploaded successfully', 'success');
     
     // Clear the file input
     document.getElementById('word-audio-file').value = '';
   } catch (error) {
-    addToDebugLog('error', 'Direct audio upload failed', {
+    addToDebugLog('error', 'Multipart audio upload failed', {
       error: error.message,
       stack: error.stack
     });
