@@ -837,47 +837,70 @@ app.get('/api/quran-words/search/:text', async (req, res) => {
 app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) => {
   try {
     const wordId = req.params.id;
-    console.log('Audio upload request for word:', wordId);
-
-    if (!req.file) {
-      console.log('No audio file in request');
-      res.status(400).json({ error: 'No audio file provided' });
-      return;
+    console.log('========================================');
+    console.log('AUDIO UPLOAD REQUEST RECEIVED');
+    console.log('Word ID:', wordId);
+    console.log('Request headers:', req.headers);
+    console.log('Has file:', !!req.file);
+    
+    if (!wordId || wordId.trim() === '') {
+      console.error('ERROR: No word ID provided');
+      return res.status(400).json({ error: 'Word ID is required' });
     }
 
-    console.log('File received:', {
+    if (!req.file) {
+      console.error('ERROR: No audio file in request');
+      console.log('Available form fields:', Object.keys(req.body || {}));
+      return res.status(400).json({ error: 'No audio file provided' });
+    }
+
+    console.log('File received successfully:', {
       fieldname: req.file.fieldname,
       originalname: req.file.originalname,
       mimetype: req.file.mimetype,
-      size: req.file.size
+      size: req.file.size,
+      encoding: req.file.encoding
     });
 
     // Validate file type and size
-    if (!req.file.mimetype.startsWith('audio/')) {
-      console.log('Invalid file type:', req.file.mimetype);
-      res.status(400).json({ error: 'File must be an audio file' });
-      return;
+    if (!req.file.mimetype || !req.file.mimetype.startsWith('audio/')) {
+      console.error('ERROR: Invalid file type:', req.file.mimetype);
+      return res.status(400).json({ error: `File must be an audio file. Received: ${req.file.mimetype}` });
     }
 
     if (req.file.size > 20 * 1024 * 1024) { // 20MB limit
-      console.log('File too large:', req.file.size);
-      res.status(400).json({ error: 'File size must be less than 20MB' });
-      return;
+      console.error('ERROR: File too large:', req.file.size);
+      return res.status(400).json({ error: `File size must be less than 20MB. Received: ${(req.file.size / 1024 / 1024).toFixed(2)}MB` });
     }
 
+    console.log('File validation passed');
+
+    // Check if word exists
+    console.log('Checking if word exists in database...');
     const docRef = db.collection('quran_words').doc(wordId);
     const doc = await docRef.get();
     if (!doc.exists) {
-      console.log('Word not found:', wordId);
-      res.status(404).json({ error: 'Word not found' });
-      return;
+      console.error('ERROR: Word not found in database:', wordId);
+      return res.status(404).json({ error: 'Word not found' });
     }
 
+    console.log('Word found in database:', {
+      id: doc.id,
+      arabicText: doc.data().arabicText
+    });
+
+    // Get Firebase Storage bucket
+    console.log('Initializing Firebase Storage...');
     const bucket = storage.bucket();
+    
+    if (!bucket) {
+      console.error('ERROR: Could not initialize Firebase Storage bucket');
+      return res.status(500).json({ error: 'Storage service unavailable' });
+    }
+
     const fileName = `word-audio/${wordId}.mp3`;
     const file = bucket.file(fileName);
-
-    console.log('Uploading to storage:', fileName);
+    console.log('Storage file path:', fileName);
     
     // Set proper content type based on file
     let contentType = 'audio/mpeg';
@@ -889,36 +912,93 @@ app.post('/api/quran-words/:id/audio', upload.single('audio'), async (req, res) 
       contentType = 'audio/ogg';
     }
 
-    await file.save(req.file.buffer, {
-      metadata: { 
-        contentType: contentType,
-        cacheControl: 'public, max-age=3600'
-      }
-    });
+    console.log('Uploading to Firebase Storage with content type:', contentType);
+    
+    try {
+      await file.save(req.file.buffer, {
+        metadata: { 
+          contentType: contentType,
+          cacheControl: 'public, max-age=3600'
+        }
+      });
+      console.log('File uploaded to storage successfully');
+    } catch (storageError) {
+      console.error('ERROR: Failed to upload to storage:', storageError);
+      return res.status(500).json({ 
+        error: 'Failed to upload file to storage',
+        details: storageError.message
+      });
+    }
 
-    console.log('Making file public');
-    await file.makePublic();
-    const audioURL = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+    console.log('Making file public...');
+    try {
+      await file.makePublic();
+      console.log('File made public successfully');
+    } catch (publicError) {
+      console.error('ERROR: Failed to make file public:', publicError);
+      return res.status(500).json({ 
+        error: 'Failed to make file public',
+        details: publicError.message
+      });
+    }
 
-    console.log('Updating Firestore with URL:', audioURL);
-    await docRef.update({ audioURL, updatedAt: new Date() });
-    await logAdminAction('UPLOAD_WORD_AUDIO', { 
-      wordId, 
-      fileName: req.file.originalname,
-      fileSize: req.file.size 
-    }, req.ip);
+    const bucketName = bucket.name;
+    const audioURL = `https://storage.googleapis.com/${bucketName}/${fileName}`;
+    console.log('Generated audio URL:', audioURL);
 
-    console.log('Audio upload successful');
+    console.log('Updating Firestore with audio URL...');
+    try {
+      await docRef.update({ 
+        audioURL: audioURL, 
+        updatedAt: new Date() 
+      });
+      console.log('Firestore updated successfully');
+    } catch (firestoreError) {
+      console.error('ERROR: Failed to update Firestore:', firestoreError);
+      return res.status(500).json({ 
+        error: 'Failed to update database',
+        details: firestoreError.message
+      });
+    }
+
+    // Log admin action
+    try {
+      await logAdminAction('UPLOAD_WORD_AUDIO', { 
+        wordId, 
+        fileName: req.file.originalname,
+        fileSize: req.file.size,
+        audioURL: audioURL
+      }, req.ip);
+    } catch (logError) {
+      console.error('WARNING: Failed to log admin action:', logError);
+      // Don't fail the request for logging issues
+    }
+
+    console.log('Audio upload completed successfully');
+    console.log('========================================');
+    
     res.json({ 
       success: true, 
-      audioURL,
+      audioURL: audioURL,
       message: `Audio uploaded successfully (${(req.file.size / 1024).toFixed(1)} KB)`
     });
+    
   } catch (error) {
-    console.error('Error uploading word audio:', error);
+    console.error('========================================');
+    console.error('CRITICAL ERROR in audio upload:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      code: error.code
+    });
+    console.error('========================================');
+    
     res.status(500).json({ 
-      error: error.message,
-      details: 'Check server logs for more information'
+      success: false,
+      error: error.message || 'Internal server error during audio upload',
+      details: 'Check server logs for detailed error information',
+      timestamp: new Date().toISOString()
     });
   }
 });
