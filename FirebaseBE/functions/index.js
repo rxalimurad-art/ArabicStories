@@ -238,6 +238,31 @@ app.post('/api/quran-words/:id/audio/test', (req, res) => {
   });
 });
 
+// Test the actual audio upload endpoint without multer
+app.post('/api/quran-words/:id/audio/simple', async (req, res) => {
+  try {
+    console.log('SIMPLE AUDIO TEST - No multer involved');
+    console.log('Word ID:', req.params.id);
+    console.log('Content-Type:', req.headers['content-type']);
+    console.log('Has body:', !!req.body);
+    
+    res.json({
+      success: true,
+      message: 'Simple audio endpoint reached successfully',
+      wordId: req.params.id,
+      contentType: req.headers['content-type'],
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error in simple audio test:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: 'Simple audio test failed'
+    });
+  }
+});
+
 // List all stories
 app.get('/api/stories', async (req, res) => {
   try {
@@ -1343,6 +1368,43 @@ app.get('/api/completions', async (req, res) => {
     console.error('Error getting completions:', error);
     res.status(500).json({ error: error.message });
   }
+});
+
+// Global error handler to ensure all errors return JSON
+app.use((err, req, res, next) => {
+  console.error('========================================');
+  console.error('GLOBAL ERROR HANDLER CAUGHT:', err);
+  console.error('Request URL:', req.url);
+  console.error('Request Method:', req.method);
+  console.error('Error stack:', err.stack);
+  console.error('========================================');
+  
+  // Always return JSON error, never HTML
+  res.status(500).json({
+    success: false,
+    error: err.message || 'Internal server error',
+    details: 'Global error handler caught this error',
+    timestamp: new Date().toISOString(),
+    url: req.url,
+    method: req.method
+  });
+});
+
+// 404 handler - also return JSON
+app.use('*', (req, res) => {
+  console.log('404 - Route not found:', req.method, req.originalUrl);
+  res.status(404).json({
+    success: false,
+    error: 'Route not found',
+    method: req.method,
+    url: req.originalUrl,
+    availableRoutes: [
+      'GET /',
+      'GET /api/stories', 
+      'POST /api/quran-words/:id/audio',
+      'GET /api/quran-words/:id/audio/test'
+    ]
+  });
 });
 
 // Export the Express app as a Firebase Function
