@@ -521,8 +521,10 @@ class DataService {
 
         storyProgress.markWordAsLearned(wordId)
 
-        // Also update global vocabulary progress
-        await recordVocabularyLearned(wordId: wordId)
+        // Also update global vocabulary progress if we can fetch the word
+        if let quranWord = try? await firebaseService.fetchQuranWord(id: wordId) {
+            await recordVocabularyLearned(quranWord)
+        }
 
         do {
             try await firebaseService.saveStoryProgress(storyProgress)
