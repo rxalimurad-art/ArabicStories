@@ -431,7 +431,7 @@ struct AchievementBadge: View {
         switch achievement.category {
         case .streak:
             return Color.orange  // Fire/streak = orange
-        case .vocabulary:
+        case .vocabulary, .words:
             return Color.green   // Growth/words = green
         case .stories:
             return Color.blue    // Books/stories = blue
@@ -609,7 +609,7 @@ struct AchievementUnlockedView: View {
         switch achievement.category {
         case .streak:
             return Color.orange  // Fire/streak = orange
-        case .vocabulary:
+        case .vocabulary, .words:
             return Color.green   // Growth/words = green
         case .stories:
             return Color.blue    // Books/stories = blue
@@ -831,7 +831,7 @@ struct AchievementRow: View {
         switch achievement.category {
         case .streak:
             return Color.orange  // Fire/streak = orange
-        case .vocabulary:
+        case .vocabulary, .words:
             return Color.green   // Growth/words = green
         case .stories:
             return Color.blue    // Books/stories = blue

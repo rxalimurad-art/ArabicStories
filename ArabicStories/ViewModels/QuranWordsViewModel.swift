@@ -153,7 +153,7 @@ class QuranWordsViewModel {
             let sortField = sortOption == .occurrenceCount ? "totalOccurrences" :
                            sortOption == .rank ? "derivativeCount" : "totalOccurrences"
             
-            let (fetchedRoots, total) = try await firebaseService.fetchQuranRoots(
+            let (fetchedRoots, _) = try await firebaseService.fetchQuranRoots(
                 limit: 200,  // Load more roots for the filter
                 offset: 0,
                 sort: sortField

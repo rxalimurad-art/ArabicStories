@@ -682,7 +682,7 @@ class StoryReaderViewModel {
             var storyProgress = await dataService.fetchStoryProgress(storyId: story.id)
                 ?? StoryProgress(storyId: story.id.uuidString, userId: "")
             storyProgress.reset()
-            try? await dataService.updateStoryProgress(
+            await dataService.updateStoryProgress(
                 storyId: story.id,
                 readingProgress: 0.0,
                 currentSegmentIndex: 0

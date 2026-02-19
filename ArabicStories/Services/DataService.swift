@@ -207,10 +207,10 @@ class DataService {
 
     // MARK: - Vocabulary Learning
 
-    func recordVocabularyLearned(wordId: String) async {
+    func recordVocabularyLearned(_ word: QuranWord) async {
         guard var progress = await fetchUserProgress() else { return }
 
-        progress.recordVocabularyLearned(wordId: wordId)
+        progress.recordVocabularyLearned(word)
 
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
@@ -219,10 +219,10 @@ class DataService {
         }
     }
 
-    func recordVocabularyMastered(wordId: String) async {
+    func recordVocabularyMastered(_ word: QuranWord) async {
         guard var progress = await fetchUserProgress() else { return }
 
-        progress.recordVocabularyMastered(wordId: wordId)
+        progress.recordVocabularyMastered(word)
 
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())

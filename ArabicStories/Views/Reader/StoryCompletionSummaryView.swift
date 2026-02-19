@@ -400,7 +400,6 @@ struct AchievementUnlockedCard: View {
         case .rare: return .blue
         case .epic: return .purple
         case .legendary: return .orange
-        default: return .gray
         }
     }
 }

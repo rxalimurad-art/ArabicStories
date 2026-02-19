@@ -357,25 +357,6 @@ struct Badge: View {
     }
 }
 
-struct StatItem: View {
-    let value: String
-    let label: String
-    let color: Color
-    
-    var body: some View {
-        VStack(spacing: 4) {
-            Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(color)
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
 // Simple Audio Player View
 struct AudioPlayerView: View {
     let audioURL: URL
