@@ -357,7 +357,10 @@ class StoryReaderViewModel {
             Task {
                 // Save story progress and update global vocabulary
                 try? await dataService.saveStory(story)
-                await dataService.recordVocabularyLearned(wordId: word.id.uuidString)
+                // Fetch QuranWord and record as learned
+                if let quranWord = quranWordsInStory.first(where: { $0.id == word.id.uuidString }) {
+                    await dataService.recordVocabularyLearned(quranWord)
+                }
                 // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
         }
@@ -376,7 +379,7 @@ class StoryReaderViewModel {
         Task {
             // Save story progress and update global vocabulary
             try? await dataService.saveStory(story)
-            await dataService.recordVocabularyLearned(wordId: quranWord.id)
+            await dataService.recordVocabularyLearned(quranWord)
         }
     }
     
@@ -415,7 +418,10 @@ class StoryReaderViewModel {
             
             Task {
                 try? await dataService.saveStory(story)
-                await dataService.recordVocabularyLearned(wordId: wordId)
+                // Fetch QuranWord and record as learned
+                if let quranWord = quranWordsInStory.first(where: { $0.id == wordId }) {
+                    await dataService.recordVocabularyLearned(quranWord)
+                }
                 // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
         }
