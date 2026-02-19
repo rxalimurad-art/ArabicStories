@@ -168,9 +168,8 @@ class ProgressViewModel {
             
             // Calculate total occurrences of learned words using actual Quran occurrence data
             totalOccurrencesLearned = myWordsVM.unlockedWords.reduce(0) { sum, word in
-                // Use actual Quran occurrence count if available
-                let occurrences = word.quranOccurrenceCount ?? 0
-                return sum + occurrences
+                // Use actual Quran occurrence count
+                return sum + word.occurrenceCount
             }
         }
     }
