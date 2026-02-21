@@ -383,9 +383,22 @@ class FirebaseService {
 
         let jsonData = try JSONSerialization.data(withJSONObject: wordMasteryData)
         let decoder = JSONDecoder()
-        let mastery = try decoder.decode([String: WordMastery].self, from: jsonData)
-        print("📂 FirebaseService: Successfully loaded \(mastery.count) word mastery entries from Firestore")
-        return mastery
+        
+        // Try to decode as dictionary first (new format)
+        if let masteryDict = try? decoder.decode([String: WordMastery].self, from: jsonData) {
+            print("📂 FirebaseService: Successfully loaded \(masteryDict.count) word mastery entries (dictionary format)")
+            return masteryDict
+        }
+        
+        // Fall back to array format (old format) and convert to dictionary
+        if let masteryArray = try? decoder.decode([WordMastery].self, from: jsonData) {
+            let masteryDict = Dictionary(uniqueKeysWithValues: masteryArray.map { ($0.id, $0) })
+            print("📂 FirebaseService: Successfully loaded \(masteryDict.count) word mastery entries (array format converted)")
+            return masteryDict
+        }
+        
+        print("📂 FirebaseService: Could not decode word mastery data, returning empty")
+        return [:]
     }
     
     // MARK: - Learned Quran Words (New)
