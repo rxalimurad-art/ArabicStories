@@ -393,6 +393,15 @@ class DataService {
         }
     }
     
+    func isQuranWordLearned(_ wordId: String) async -> Bool {
+        do {
+            return try await firebaseService.isQuranWordLearned(wordId, userId: getCurrentUserId())
+        } catch {
+            print("❌ Error checking if Quran word is learned: \(error)")
+            return false
+        }
+    }
+    
     // MARK: - Unlocked Words (New Optimized)
     
     func saveUnlockedWords(_ words: [UnlockedWord]) async {

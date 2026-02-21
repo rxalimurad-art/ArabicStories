@@ -435,6 +435,15 @@ class FirebaseService {
         print("💾 FirebaseService: Successfully added '\(word.arabicText)' to learned vocabulary")
     }
     
+    func isQuranWordLearned(_ wordId: String, userId: String) async throws -> Bool {
+        let doc = try await db.collection("users")
+            .document(userId)
+            .collection("learnedQuranWords")
+            .document(wordId)
+            .getDocument()
+        return doc.exists
+    }
+    
     func fetchLearnedQuranWords(userId: String) async throws -> [QuranWord] {
         print("📂 FirebaseService: Fetching learned Quran words for user \(userId)")
         let snapshot = try await db.collection("users")

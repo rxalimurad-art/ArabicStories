@@ -519,7 +519,7 @@ class StoryReaderViewModel {
         print("📖 Complete story: Finished successfully")
     }
     
-    /// Extract Quran words from story and save to user's unlocked words collection
+    /// Extract Quran words from story and save to user's learned vocabulary
     private func extractAndSaveUnlockedWords() async {
         do {
             // Fetch Quran words for matching
@@ -534,44 +534,21 @@ class StoryReaderViewModel {
             let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
             print("📖 Complete story: Found \(matchedQuranWords.count) Quran words in story")
             
-            // Convert to UnlockedWord objects
-            var unlockedWords: [UnlockedWord] = []
+            // Save matched Quran words directly to learnedQuranWords collection
+            var newWordsCount = 0
             for quranWord in matchedQuranWords {
-                let wordUUID = UUID(uuidString: quranWord.id) ?? UUID()
-                
-                // Check if word is already unlocked (avoid duplicates)
-                let isUnlocked = await dataService.isWordUnlocked(wordUUID)
-                if !isUnlocked {
-                    let word = Word(
-                        id: wordUUID,
-                        arabicText: quranWord.arabicText,
-                        englishMeaning: quranWord.englishMeaning,
-                        partOfSpeech: PartOfSpeech(rawValue: quranWord.morphology.partOfSpeech ?? "unknown"),
-                        rootLetters: quranWord.root?.arabic,
-                        difficulty: quranWord.rank <= 1000 ? 1 : quranWord.rank <= 5000 ? 2 : 3,
-                        quranOccurrenceCount: quranWord.occurrenceCount,
-                        quranRank: quranWord.rank
-                    )
-                    
-                    let unlockedWord = UnlockedWord(
-                        id: wordUUID,
-                        wordData: word,
-                        unlockedAt: Date(),
-                        fromStoryId: story.id.uuidString,
-                        fromStoryTitle: story.title,
-                        difficultyLevel: story.difficultyLevel
-                    )
-                    
-                    unlockedWords.append(unlockedWord)
+                // Check if word is already learned (avoid duplicates)
+                let isAlreadyLearned = await dataService.isQuranWordLearned(quranWord.id)
+                if !isAlreadyLearned {
+                    await dataService.recordVocabularyLearned(quranWord)
+                    newWordsCount += 1
                 }
             }
             
-            // Save unlocked words to Firebase
-            if !unlockedWords.isEmpty {
-                await dataService.saveUnlockedWords(unlockedWords)
-                print("📖 Complete story: Saved \(unlockedWords.count) new words to user collection")
+            if newWordsCount > 0 {
+                print("📖 Complete story: Saved \(newWordsCount) new Quran words to learned vocabulary")
             } else {
-                print("📖 Complete story: No new words to save (all already unlocked)")
+                print("📖 Complete story: No new words to save (all already learned)")
             }
             
         } catch {
