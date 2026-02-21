@@ -1261,7 +1261,24 @@ app.post('/api/completions/story', async (req, res) => {
     // Save to Firestore
     const docRef = await db.collection(USER_COMPLETIONS_COLLECTION).add(completionData);
     
-    // Send email notification
+    // Check if we're in debug/development mode (skip emails in dev)
+    const isDebugMode = process.env.DEBUG_MODE === 'true' || 
+                        process.env.FUNCTIONS_EMULATOR === 'true' ||
+                        (process.env.GCLOUD_PROJECT && process.env.GCLOUD_PROJECT.includes('dev'));
+    
+    if (isDebugMode) {
+      console.log('🔧 Debug mode detected - skipping email notification');
+      res.status(201).json({
+        success: true,
+        message: 'Story completion tracked (debug mode - email skipped)',
+        completionId: docRef.id,
+        emailSent: false,
+        debug: true
+      });
+      return;
+    }
+    
+    // Send email notification (only in production)
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -1363,7 +1380,24 @@ app.post('/api/completions/level', async (req, res) => {
     // Save to Firestore
     const docRef = await db.collection(USER_COMPLETIONS_COLLECTION).add(completionData);
     
-    // Send email notification
+    // Check if we're in debug/development mode (skip emails in dev)
+    const isDebugMode = process.env.DEBUG_MODE === 'true' || 
+                        process.env.FUNCTIONS_EMULATOR === 'true' ||
+                        (process.env.GCLOUD_PROJECT && process.env.GCLOUD_PROJECT.includes('dev'));
+    
+    if (isDebugMode) {
+      console.log('🔧 Debug mode detected - skipping email notification for level completion');
+      res.status(201).json({
+        success: true,
+        message: 'Level completion tracked (debug mode - email skipped)',
+        completionId: docRef.id,
+        emailSent: false,
+        debug: true
+      });
+      return;
+    }
+    
+    // Send email notification (only in production)
     const emailHtml = `
       <!DOCTYPE html>
       <html>
