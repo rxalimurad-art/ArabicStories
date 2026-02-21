@@ -163,16 +163,20 @@ The script includes a 500ms delay between words. If you hit rate limits:
 
 ```
 quran_words_importer/
-├── index.js              # Main import script
-├── stats.js             # Check database stats
-├── tts.js               # TTS module
-├── verify.js            # Verify imported data
-├── test-tts.js          # Test TTS functionality
-├── package.json         # Dependencies
-├── README.md            # This file
-├── .env.example         # Environment template
-├── serviceAccountKey.json # (Optional) Firebase credentials
-└── .gitignore           # Git ignore file
+├── index.js                    # Main import script
+├── story-generator.js          # AI-powered story generator (Claude/OpenAI)
+├── story-generator-manual.js   # Template-based story generator (15 templates)
+├── story-prompt-generator.js   # Generate prompts for Kimi/AI
+├── story-insert.js             # Insert generated stories to Firestore
+├── stats.js                    # Check database stats
+├── tts.js                      # TTS module
+├── verify.js                   # Verify imported data
+├── test-tts.js                 # Test TTS functionality
+├── package.json                # Dependencies
+├── README.md                   # This file
+├── .env.example                # Environment template
+├── serviceAccountKey.json      # (Optional) Firebase credentials
+└── .gitignore                  # Git ignore file
 ```
 
 ## Customization
@@ -195,6 +199,109 @@ Edit the `QURAN_EXAMPLES` object in `index.js` to add specific examples for word
 ### Add Root Meanings
 
 Edit the `ROOT_MEANINGS` object in `index.js` to add meanings for Arabic roots.
+
+## Story Generation
+
+After importing Quran words, you can generate **45 stories** (15 stories × 3 levels) that use these words in a "mixed" format (Arabic words embedded in English text).
+
+**Configuration:**
+- 3 Levels (66 words per level = total 198 words)
+- 15 Stories per level
+- ~4-5 words per story (shuffled/randomized distribution)
+- 10 Segments per story
+
+### Option 1: Using Kimi (Me!) - Recommended Free Option
+
+Generate story prompts and have me (Kimi) create the stories for you!
+
+**Step 1: Generate Prompts**
+```bash
+npm run generate-prompts
+```
+
+This creates prompt files in `./story-prompts/`:
+- `all-prompts.txt` - All 45 story prompts ready to copy
+- `summary.txt` - Which words go to which stories
+- `story-metadata.json` - Data needed for insertion
+
+**Step 2: Have Kimi Generate Stories**
+
+Option A: Send me `all-prompts.txt` and I'll generate all 45 stories at once
+
+Option B: Copy each prompt individually and paste to me one by one
+
+**Step 3: Insert Generated Stories**
+
+For interactive mode (paste each story JSON):
+```bash
+npm run insert-stories
+```
+
+For batch mode (if you saved JSON files to `./story-prompts/generated/`):
+```bash
+npm run insert-stories-batch
+```
+
+### Option 2: AI-Powered Story Generation (Claude/OpenAI)
+
+Uses Claude (Anthropic) or GPT (OpenAI) to create unique, contextual stories.
+
+**Setup:**
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit .env and add your API key:
+# For Claude:
+AI_PROVIDER=anthropic
+ANTHROPIC_API_KEY=your_key_here
+
+# Or for OpenAI:
+AI_PROVIDER=openai
+OPENAI_API_KEY=your_key_here
+```
+
+**Run:**
+```bash
+npm run generate-stories
+```
+
+### Option 3: Template-Based Generation (No API Key)
+
+Uses 15 pre-written story templates with embedded Quran words. Words are shuffled and randomly distributed across stories.
+
+```bash
+npm run generate-stories-manual
+```
+
+Templates include:
+- The Journey, The Promise, The Garden
+- The Book, The Meeting, The Teacher
+- The Night, The River, The Gift
+- The Path, The Door, The Tree
+- The Letter, The Market, and more...
+
+### Story Structure
+
+Generated stories follow this format:
+```javascript
+{
+  title: "The Journey",
+  titleArabic: "الرحلة",
+  difficultyLevel: 1, // 1, 2, or 3
+  format: "mixed",
+  mixedSegments: [
+    {
+      index: 0,
+      text: "There كَانَ (was) a boy. He wanted to learn.",
+      linkedWordIds: ["word-id-1", "word-id-2"]
+    },
+    // ... 10 segments
+  ],
+  learnedWordIds: [/* all featured words */],
+  // ... other metadata
+}
+```
 
 ## License
 

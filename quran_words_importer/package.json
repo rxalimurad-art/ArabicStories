@@ -8,7 +8,13 @@
     "stats": "node stats.js",
     "verify": "node verify.js",
     "test-tts": "node test-tts.js",
-    "install-deps": "npm install"
+    "install-deps": "npm install",
+    "generate-stories": "node story-generator.js",
+    "generate-stories-manual": "node story-generator-manual.js",
+    "generate-prompts": "node story-prompt-generator.js",
+    "insert-stories": "node story-insert.js",
+    "insert-stories-batch": "node story-insert.js batch",
+    "generate-all-stories": "node generate-stories-complete.js"
   },
   "dependencies": {
     "firebase-admin": "^12.0.0",
