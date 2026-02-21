@@ -1,0 +1,33 @@
+{
+  "name": "quran-words-importer",
+  "version": "1.0.0",
+  "description": "Import top 200 Quran words to Firestore with TTS audio",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "stats": "node stats.js",
+    "verify": "node verify.js",
+    "test-tts": "node test-tts.js",
+    "install-deps": "npm install"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "google-tts-api": "^2.0.2",
+    "axios": "^1.6.0",
+    "uuid": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "quran",
+    "arabic",
+    "firestore",
+    "firebase",
+    "tts",
+    "import"
+  ],
+  "author": "",
+  "license": "MIT",
+  "private": true
+}

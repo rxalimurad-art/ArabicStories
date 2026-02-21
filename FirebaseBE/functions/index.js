@@ -1177,6 +1177,142 @@ app.delete('/api/quran-words/:id/audio', async (req, res) => {
   }
 });
 
+// Upload image for story cover
+app.post('/api/upload/image', async (req, res) => {
+  try {
+    console.log('========================================');
+    console.log('IMAGE UPLOAD REQUEST RECEIVED');
+    console.log('Content-Type:', req.headers['content-type']);
+    console.log('========================================');
+    
+    // Check if rawBody is available
+    if (!req.rawBody) {
+      console.error('ERROR: No rawBody available in request');
+      return res.status(400).json({ error: 'No image data provided' });
+    }
+    
+    // Use busboy to parse the multipart form data from rawBody
+    const parsedFile = await new Promise((resolve, reject) => {
+      const busboy = Busboy({ 
+        headers: req.headers,
+        limits: {
+          fileSize: 5 * 1024 * 1024, // 5MB limit
+          files: 1
+        }
+      });
+      
+      let fileBuffer = Buffer.alloc(0);
+      let fileInfo = null;
+      
+      busboy.on('file', (fieldname, file, info) => {
+        console.log('Busboy file event:', {
+          fieldname,
+          filename: info.filename,
+          mimeType: info.mimeType
+        });
+        
+        fileInfo = {
+          fieldname,
+          originalname: info.filename,
+          mimetype: info.mimeType
+        };
+        
+        const chunks = [];
+        
+        file.on('data', (data) => {
+          chunks.push(data);
+        });
+        
+        file.on('end', () => {
+          fileBuffer = Buffer.concat(chunks);
+          console.log('File received, size:', fileBuffer.length);
+        });
+      });
+      
+      busboy.on('finish', () => {
+        console.log('Busboy finished parsing');
+        if (fileInfo) {
+          resolve({
+            ...fileInfo,
+            buffer: fileBuffer,
+            size: fileBuffer.length
+          });
+        } else {
+          resolve(null);
+        }
+      });
+      
+      busboy.on('error', (error) => {
+        console.error('Busboy error:', error);
+        reject(error);
+      });
+      
+      busboy.end(req.rawBody);
+    });
+    
+    if (!parsedFile) {
+      console.error('ERROR: No image file found in form data');
+      return res.status(400).json({ error: 'No image file provided' });
+    }
+    
+    // Validate content type
+    const contentType = parsedFile.mimetype;
+    if (!contentType || !contentType.startsWith('image/')) {
+      console.error('ERROR: Invalid content type:', contentType);
+      return res.status(400).json({ error: 'File must be an image' });
+    }
+    
+    // Validate file size
+    if (parsedFile.size > 5 * 1024 * 1024) {
+      console.error('ERROR: File too large:', parsedFile.size);
+      return res.status(400).json({ error: 'Image must be less than 5MB' });
+    }
+    
+    // Get file extension
+    const ext = contentType.split('/')[1] || 'jpg';
+    const fileName = `story-covers/${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+    
+    console.log('Uploading image to:', fileName);
+    
+    // Get Firebase Storage bucket
+    const bucket = storage.bucket();
+    const file = bucket.file(fileName);
+    
+    // Upload to Firebase Storage
+    await file.save(parsedFile.buffer, {
+      metadata: {
+        contentType: contentType,
+        cacheControl: 'public, max-age=86400'
+      }
+    });
+    
+    console.log('Image uploaded successfully');
+    
+    // Make file public
+    await file.makePublic();
+    
+    // Generate public URL
+    const bucketName = bucket.name;
+    const imageURL = `https://storage.googleapis.com/${bucketName}/${fileName}`;
+    
+    console.log('Generated image URL:', imageURL);
+    console.log('========================================');
+    
+    res.json({
+      success: true,
+      imageURL: imageURL,
+      message: `Image uploaded successfully (${(parsedFile.size / 1024).toFixed(1)} KB)`
+    });
+    
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Internal server error during image upload'
+    });
+  }
+});
+
 // Delete quran word
 app.delete('/api/quran-words/:id', async (req, res) => {
   try {

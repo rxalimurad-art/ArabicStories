@@ -443,6 +443,9 @@ function setupEventListeners() {
   
   // Word modal
   document.getElementById('cancel-word')?.addEventListener('click', closeWordModal);
+  
+  // Cover image upload
+  document.getElementById('story-cover-file')?.addEventListener('change', handleCoverImageUpload);
 }
 
 // ============================================
@@ -2239,6 +2242,73 @@ async function deleteWordAudio() {
     showToast('Audio removed', 'success');
   } catch (error) {
     showToast(`Failed to remove audio: ${error.message}`, 'error');
+  }
+}
+
+// ============================================
+// Cover Image Upload
+// ============================================
+
+async function handleCoverImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+    showToast('Please select an image file', 'error');
+    return;
+  }
+  
+  // Validate file size (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('Image must be less than 5MB', 'error');
+    return;
+  }
+  
+  const statusEl = document.getElementById('story-cover-upload-status');
+  const filenameEl = document.getElementById('story-cover-filename');
+  const urlInput = document.getElementById('story-cover');
+  
+  statusEl.style.display = 'inline';
+  statusEl.textContent = '⏳ Uploading...';
+  filenameEl.textContent = file.name;
+  
+  try {
+    // Create FormData for multipart upload
+    const formData = new FormData();
+    formData.append('image', file, file.name);
+    
+    const resp = await fetch(`${CONFIG.apiBaseUrl}/api/upload/image`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!resp.ok) {
+      const errorData = await resp.json().catch(() => ({}));
+      throw new Error(errorData.error || `Upload failed: ${resp.status}`);
+    }
+    
+    const data = await resp.json();
+    
+    if (data.success && data.imageURL) {
+      urlInput.value = data.imageURL;
+      statusEl.textContent = '✅ Uploaded!';
+      statusEl.style.color = 'green';
+      showToast('Image uploaded successfully', 'success');
+      
+      // Clear status after 3 seconds
+      setTimeout(() => {
+        statusEl.style.display = 'none';
+        statusEl.style.color = '';
+      }, 3000);
+    } else {
+      throw new Error('No image URL returned');
+    }
+  } catch (error) {
+    console.error('Cover image upload error:', error);
+    statusEl.textContent = '❌ Failed';
+    statusEl.style.color = 'red';
+    showToast(`Upload failed: ${error.message}`, 'error');
   }
 }
 
