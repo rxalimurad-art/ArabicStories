@@ -214,6 +214,9 @@ class DataService {
 
         do {
             try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
+            
+            // Also save to learnedQuranWords collection for MyWords view
+            try await firebaseService.addLearnedQuranWord(word, userId: getCurrentUserId())
         } catch {
             errorPublisher.send(error)
         }

@@ -418,6 +418,23 @@ class FirebaseService {
         print("💾 FirebaseService: Successfully saved learned Quran words")
     }
     
+    func addLearnedQuranWord(_ word: QuranWord, userId: String) async throws {
+        print("💾 FirebaseService: Adding learned Quran word '\(word.arabicText)' for user \(userId)")
+        let learnedWordsRef = db.collection("users").document(userId).collection("learnedQuranWords")
+        let wordRef = learnedWordsRef.document(word.id)
+        
+        // Check if word already exists
+        let doc = try await wordRef.getDocument()
+        if doc.exists {
+            print("📂 Word '\(word.arabicText)' already in learned vocabulary, skipping")
+            return
+        }
+        
+        let data = try quranWordToDictionary(word)
+        try await wordRef.setData(data, merge: true)
+        print("💾 FirebaseService: Successfully added '\(word.arabicText)' to learned vocabulary")
+    }
+    
     func fetchLearnedQuranWords(userId: String) async throws -> [QuranWord] {
         print("📂 FirebaseService: Fetching learned Quran words for user \(userId)")
         let snapshot = try await db.collection("users")
