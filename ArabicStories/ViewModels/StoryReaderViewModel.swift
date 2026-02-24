@@ -647,12 +647,13 @@ class StoryReaderViewModel {
             print("📖 Complete story: Set isCompletingStory = true")
         }
         
-        // Save completion to user-specific story progress
+        // Save completion to user-specific story progress (immediate save)
         print("📖 Complete story: Saving story progress...")
         await dataService.updateStoryProgress(
             storyId: story.id,
             readingProgress: 1.0,
-            currentSegmentIndex: currentSegmentIndex
+            currentSegmentIndex: currentSegmentIndex,
+            immediate: true
         )
         print("📖 Complete story: Story progress saved")
         
@@ -690,54 +691,47 @@ class StoryReaderViewModel {
         print("📖 Complete story: Finished successfully")
     }
     
-    /// Extract words from story and save to user's learned vocabulary
+    /// Extract words from story and save to user's learned vocabulary (optimized batch version)
     private func extractAndSaveUnlockedWords() async {
         print("📖 Complete story: Saving unlocked words from completed story...")
         
-        var totalSaved = 0
-        var savedWordIds = Set<String>()  // Track saved words to avoid duplicates
+        var allWordsToSave: [QuranWord] = []
+        var wordIds = Set<String>()  // Track word IDs to avoid duplicates
         
-        // 1. First, save all pending words that were queued during reading (tapped or auto-learned)
+        // 1. First, collect all pending words that were queued during reading
         for quranWord in pendingLearnedWords {
-            let isAlreadyLearned = await dataService.isQuranWordLearned(quranWord.id)
-            if !isAlreadyLearned && !savedWordIds.contains(quranWord.id) {
-                await dataService.recordVocabularyLearned(quranWord)
-                savedWordIds.insert(quranWord.id)
-                totalSaved += 1
+            if !wordIds.contains(quranWord.id) {
+                allWordsToSave.append(quranWord)
+                wordIds.insert(quranWord.id)
             }
         }
         pendingLearnedWords.removeAll()
         
-        // 2. Save story's own vocabulary words (for mixed format stories) - ONLY if not already saved above
+        // 2. Collect story's own vocabulary words (for mixed format stories)
         if let storyWords = story.words, !storyWords.isEmpty {
             print("📖 Complete story: Processing \(storyWords.count) story vocabulary words")
             for storyWord in storyWords {
                 let wordId = storyWord.id.uuidString
                 
-                // Skip if already saved from pending
-                if savedWordIds.contains(wordId) {
+                // Skip if already in the list
+                if wordIds.contains(wordId) {
                     continue
                 }
                 
-                let isAlreadyLearned = await dataService.isQuranWordLearned(wordId)
-                if !isAlreadyLearned {
-                    // Convert story Word to QuranWord format
-                    let quranWord = storyWord.toQuranWord()
-                    await dataService.recordVocabularyLearned(quranWord)
-                    savedWordIds.insert(wordId)
-                    totalSaved += 1
-                    print("📖   Saved story word: '\(storyWord.arabicText)' = '\(storyWord.englishMeaning)'")
-                }
+                // Convert story Word to QuranWord format
+                let quranWord = storyWord.toQuranWord()
+                allWordsToSave.append(quranWord)
+                wordIds.insert(wordId)
             }
         }
         
-        // Note: We DON'T save additional Quran words found in story text to avoid duplicates
-        // The story's vocabulary words are the intended learning set
-        
-        if totalSaved > 0 {
-            print("📖 Complete story: Saved \(totalSaved) total new words to learned vocabulary")
+        // 3. Batch save all words at once (much faster than individual saves)
+        if !allWordsToSave.isEmpty {
+            print("📖 Complete story: Batch saving \(allWordsToSave.count) words...")
+            let savedCount = await dataService.recordVocabularyLearnedBatch(allWordsToSave)
+            print("📖 Complete story: Saved \(savedCount) new words to learned vocabulary (\(allWordsToSave.count - savedCount) were already learned)")
         } else {
-            print("📖 Complete story: No new words to save (all already learned)")
+            print("📖 Complete story: No new words to save")
         }
     }
     

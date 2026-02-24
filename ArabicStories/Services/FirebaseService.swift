@@ -313,6 +313,38 @@ class FirebaseService {
         print("💾 FirebaseService: Successfully added '\(word.arabicText)' to learned vocabulary")
     }
     
+    /// Batch add multiple learned Quran words at once (optimized for story completion)
+    func addLearnedQuranWordsBatch(_ words: [QuranWord], userId: String) async throws -> Int {
+        guard !words.isEmpty else { return 0 }
+        
+        print("💾 FirebaseService: Batch adding \(words.count) learned Quran words for user \(userId)")
+        let learnedWordsRef = db.collection("users").document(userId).collection("learnedQuranWords")
+        
+        // First, check which words already exist (single batch read)
+        let existingWordIds = try await fetchLearnedQuranWords(userId: userId).map { $0.id }
+        let existingSet = Set(existingWordIds)
+        
+        // Filter out already learned words
+        let newWords = words.filter { !existingSet.contains($0.id) }
+        
+        guard !newWords.isEmpty else {
+            print("📂 All \(words.count) words already in learned vocabulary, skipping")
+            return 0
+        }
+        
+        // Use batch write for all new words
+        let batch = db.batch()
+        for word in newWords {
+            let wordRef = learnedWordsRef.document(word.id)
+            let data = try quranWordToDictionary(word)
+            batch.setData(data, forDocument: wordRef, merge: true)
+        }
+        
+        try await batch.commit()
+        print("💾 FirebaseService: Successfully batch added \(newWords.count) new words to learned vocabulary")
+        return newWords.count
+    }
+    
     func isQuranWordLearned(_ wordId: String, userId: String) async throws -> Bool {
         let doc = try await db.collection("users")
             .document(userId)

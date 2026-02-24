@@ -38,8 +38,60 @@ class DataService {
     var isLoadingPublisher = CurrentValueSubject<Bool, Never>(false)
     var errorPublisher = PassthroughSubject<Error, Never>()
     var levelUnlockedPublisher = PassthroughSubject<Int, Never>()
+    
+    // MARK: - Progress Caching for Performance
+    
+    /// In-memory cache for story progress to reduce Firebase reads
+    private var storyProgressCache: [String: StoryProgress] = [:]
+    
+    /// Pending progress updates that haven't been saved to Firebase yet
+    private var pendingProgressUpdates: [String: StoryProgress] = [:]
+    
+    /// Timer for batch saving progress updates
+    private var progressSaveTimer: Timer?
+    
+    /// Debounce time for progress saves (seconds)
+    private let progressSaveDebounceInterval: TimeInterval = 5.0
 
-    private init() {}
+    private init() {
+        setupProgressSaveTimer()
+    }
+    
+    deinit {
+        progressSaveTimer?.invalidate()
+    }
+    
+    /// Setup timer to periodically save pending progress updates
+    private func setupProgressSaveTimer() {
+        progressSaveTimer = Timer.scheduledTimer(withTimeInterval: progressSaveDebounceInterval, repeats: true) { [weak self] _ in
+            Task {
+                await self?.flushPendingProgressUpdates()
+            }
+        }
+    }
+    
+    /// Flush all pending progress updates to Firebase
+    private func flushPendingProgressUpdates() async {
+        guard !pendingProgressUpdates.isEmpty else { return }
+        
+        let updates = pendingProgressUpdates
+        pendingProgressUpdates.removeAll()
+        
+        for (_, progress) in updates {
+            do {
+                try await firebaseService.saveStoryProgress(progress)
+            } catch {
+                print("❌ Failed to save progress for story \(progress.storyId): \(error)")
+                // Put back in pending to retry later
+                pendingProgressUpdates[progress.storyId] = progress
+            }
+        }
+    }
+    
+    /// Force immediate save of all pending progress (called on app background/termination)
+    func forceSaveAllProgress() async {
+        await flushPendingProgressUpdates()
+    }
     
     private func checkNetwork() throws {
         guard networkMonitor.isConnected else {
@@ -225,6 +277,29 @@ class DataService {
             try await firebaseService.addLearnedQuranWord(word, userId: getCurrentUserId())
         } catch {
             errorPublisher.send(error)
+        }
+    }
+    
+    /// Batch record multiple vocabulary words learned (optimized for story completion)
+    func recordVocabularyLearnedBatch(_ words: [QuranWord]) async -> Int {
+        guard !words.isEmpty else { return 0 }
+        guard var progress = await fetchUserProgress() else { return 0 }
+        
+        // Update user progress with all words
+        for word in words {
+            progress.recordVocabularyLearned(word)
+        }
+        
+        do {
+            // Save user progress once
+            try await firebaseService.saveUserProgress(progress, userId: getCurrentUserId())
+            
+            // Batch save all words to learnedQuranWords collection
+            let savedCount = try await firebaseService.addLearnedQuranWordsBatch(words, userId: getCurrentUserId())
+            return savedCount
+        } catch {
+            errorPublisher.send(error)
+            return 0
         }
     }
 
@@ -460,13 +535,27 @@ class DataService {
     // MARK: - Story Progress (User-Specific)
 
     func fetchStoryProgress(storyId: UUID) async -> StoryProgress? {
+        let cacheKey = "\(storyId.uuidString)_\(getCurrentUserId())"
+        
+        // Check in-memory cache first
+        if let cached = storyProgressCache[cacheKey] {
+            print("📋 Story progress cache hit for \(storyId.uuidString)")
+            return cached
+        }
+        
+        // Check pending updates
+        if let pending = pendingProgressUpdates[cacheKey] {
+            return pending
+        }
+        
         let userId = getCurrentUserId()
-
         do {
             if let progress = try await firebaseService.fetchStoryProgress(
                 storyId: storyId.uuidString,
                 userId: userId
             ) {
+                // Cache the result
+                storyProgressCache[cacheKey] = progress
                 return progress
             }
         } catch {
@@ -481,8 +570,10 @@ class DataService {
         storyId: UUID,
         readingProgress: Double? = nil,
         currentSegmentIndex: Int? = nil,
-        readingTime: TimeInterval? = nil
+        readingTime: TimeInterval? = nil,
+        immediate: Bool = false  // Set to true for completion, false for regular updates
     ) async {
+        let cacheKey = "\(storyId.uuidString)_\(getCurrentUserId())"
         var storyProgress = await fetchStoryProgress(storyId: storyId)
             ?? StoryProgress(storyId: storyId.uuidString, userId: getCurrentUserId())
 
@@ -497,23 +588,40 @@ class DataService {
             storyProgress.addReadingTime(time)
         }
 
-        // Save to Firebase
-        do {
-            print("💾 Saving story progress: storyId=\(storyProgress.storyId), userId=\(storyProgress.userId), progress=\(storyProgress.readingProgress), isCompleted=\(storyProgress.isCompleted)")
-            try await firebaseService.saveStoryProgress(storyProgress)
-            print("✅ Story progress saved successfully")
+        // Update cache
+        storyProgressCache[cacheKey] = storyProgress
 
-            // If story is completed, update user progress
-            if storyProgress.isCompleted {
-                print("🎉 Story completed! Updating user progress...")
-                if let story = await fetchStory(id: storyId) {
-                    let unlocked = await recordStoryCompleted(
-                        storyId: storyId.uuidString,
-                        difficultyLevel: story.difficultyLevel
-                    )
-                    print("🎉 Level 2 unlocked: \(unlocked)")
+        // For completion or immediate save, save right away
+        // For regular progress updates, queue for batch save
+        if immediate || storyProgress.isCompleted {
+            // Remove from pending if it was there
+            pendingProgressUpdates.removeValue(forKey: cacheKey)
+            
+            do {
+                print("💾 Saving story progress (immediate): storyId=\(storyProgress.storyId), progress=\(storyProgress.readingProgress), isCompleted=\(storyProgress.isCompleted)")
+                try await firebaseService.saveStoryProgress(storyProgress)
+                print("✅ Story progress saved successfully")
+
+                // If story is completed, update user progress
+                if storyProgress.isCompleted {
+                    print("🎉 Story completed! Updating user progress...")
+                    if let story = await fetchStory(id: storyId) {
+                        let unlocked = await recordStoryCompleted(
+                            storyId: storyId.uuidString,
+                            difficultyLevel: story.difficultyLevel
+                        )
+                        print("🎉 Level 2 unlocked: \(unlocked)")
+                    }
                 }
+            } catch {
+                print("❌ Error saving story progress: \(error)")
+                errorPublisher.send(error)
             }
+        } else {
+            // Queue for batch save
+            pendingProgressUpdates[cacheKey] = storyProgress
+            print("📋 Queued progress update for batch save: storyId=\(storyProgress.storyId), progress=\(storyProgress.readingProgress)")
+        }
         } catch {
             print("❌ Error saving story progress: \(error)")
             errorPublisher.send(error)
