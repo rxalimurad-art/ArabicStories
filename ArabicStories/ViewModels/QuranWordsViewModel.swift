@@ -10,7 +10,7 @@ import SwiftUI
 @Observable
 class QuranWordsViewModel {
     // Dependencies
-    private let firebaseService = FirebaseService.shared
+    private let offlineDataService = OfflineDataService.shared
     
     // State
     var words: [QuranWord] = []
@@ -22,9 +22,12 @@ class QuranWordsViewModel {
     // Pagination
     var currentPage = 1
     var pageSize = 100
-    var totalWords = 18994
+    var totalWords: Int {
+        offlineDataService.getQuranWordsCount()
+    }
     var totalPages: Int {
-        Int(ceil(Double(totalWords) / Double(pageSize)))
+        let count = offlineDataService.getQuranWordsCount()
+        return Int(ceil(Double(count) / Double(pageSize)))
     }
     
     // Filter & Sort
@@ -86,20 +89,12 @@ class QuranWordsViewModel {
         isLoading = true
         error = nil
         
-        do {
-            // Search from all words in Firebase
-            let results = try await firebaseService.searchQuranWords(query: query, limit: 100)
-            
-            await MainActor.run {
-                self.words = results
-                self.totalWords = results.count
-                self.isLoading = false
-            }
-        } catch {
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
-            }
+        // Search from offline bundle
+        let results = offlineDataService.searchQuranWords(query: query)
+        
+        await MainActor.run {
+            self.words = results
+            self.isLoading = false
         }
     }
     
@@ -113,34 +108,43 @@ class QuranWordsViewModel {
         isLoading = true
         error = nil
         
-        do {
-            let sortField = sortOption == .rank ? "rank" : 
-                           sortOption == .occurrenceCount ? "occurrenceCount" : 
-                           sortOption == .arabic ? "arabicText" : "rank"
+        // Load all words from offline bundle
+        var allWords = offlineDataService.loadQuranWords()
+        
+        // Apply local sorting
+        switch sortOption {
+        case .rank:
+            allWords.sort { $0.rank < $1.rank }
+        case .arabic:
+            allWords.sort { $0.arabicText < $1.arabicText }
+        case .occurrenceCount:
+            allWords.sort { $0.occurrenceCount > $1.occurrenceCount }
+        case .root:
+            allWords.sort { ($0.root?.arabic ?? "") < ($1.root?.arabic ?? "") }
+        }
+        
+        // Apply POS filter locally
+        if let pos = selectedPOS {
+            allWords = allWords.filter { $0.morphology.partOfSpeech == pos }
+        }
+        
+        // Apply Form filter locally
+        if let form = selectedForm {
+            allWords = allWords.filter { $0.morphology.form == form }
+        }
+        
+        // Apply pagination
+        let startIndex = (currentPage - 1) * pageSize
+        let endIndex = min(startIndex + pageSize, allWords.count)
+        let paginatedWords = startIndex < allWords.count ? Array(allWords[startIndex..<endIndex]) : []
+        
+        await MainActor.run {
+            self.words = paginatedWords
+            self.isLoading = false
             
-            let (fetchedWords, total) = try await firebaseService.fetchQuranWords(
-                limit: pageSize,
-                offset: (currentPage - 1) * pageSize,
-                sort: sortField,
-                pos: selectedPOS,
-                form: selectedForm
-            )
-            
-            await MainActor.run {
-                self.words = fetchedWords
-                self.totalWords = total
-                self.isLoading = false
-                
-                // Extract unique roots from fetched words for filtering
-                let rootsFromWords = Set(fetchedWords.compactMap { $0.root?.arabic })
-                if self.availableRoots.isEmpty {
-                    self.availableRoots = Array(rootsFromWords).sorted()
-                }
-            }
-        } catch {
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
+            // Extract unique roots from all words for filtering
+            if self.availableRoots.isEmpty {
+                self.availableRoots = offlineDataService.getUniqueRoots()
             }
         }
     }
@@ -149,38 +153,47 @@ class QuranWordsViewModel {
         isLoading = true
         error = nil
         
-        do {
-            let sortField = sortOption == .occurrenceCount ? "totalOccurrences" :
-                           sortOption == .rank ? "derivativeCount" : "totalOccurrences"
+        // Get all unique roots from offline bundle
+        let allRoots = offlineDataService.getUniqueRoots()
+        
+        // Create QuranRootDoc objects from unique roots
+        let rootDocs = allRoots.map { root -> QuranRootDoc in
+            let wordsWithRoot = offlineDataService.getQuranWordsByRoot(root: root)
+            let totalOccurrences = wordsWithRoot.reduce(0) { $0 + $1.occurrenceCount }
             
-            let (fetchedRoots, _) = try await firebaseService.fetchQuranRoots(
-                limit: 200,  // Load more roots for the filter
-                offset: 0,
-                sort: sortField
+            return QuranRootDoc(
+                id: root,
+                root: root,
+                transliteration: root, // Could add transliteration mapping
+                derivativeCount: wordsWithRoot.count,
+                totalOccurrences: totalOccurrences,
+                sampleDerivatives: wordsWithRoot.prefix(3).map { $0.arabicText }
             )
-            
-            await MainActor.run {
-                self.roots = fetchedRoots
-                // Extract unique root strings for the filter
-                self.availableRoots = fetchedRoots.compactMap { $0.root }.sorted()
-                self.isLoading = false
-            }
-        } catch {
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
-            }
+        }
+        
+        // Sort based on sortOption
+        var sortedRoots = rootDocs
+        switch sortOption {
+        case .occurrenceCount:
+            sortedRoots.sort { $0.totalOccurrences > $1.totalOccurrences }
+        case .root:
+            sortedRoots.sort { $0.root < $1.root }
+        default:
+            sortedRoots.sort { $0.totalOccurrences > $1.totalOccurrences }
+        }
+        
+        await MainActor.run {
+            self.roots = sortedRoots
+            self.availableRoots = allRoots
+            self.isLoading = false
         }
     }
     
     func loadStats() async {
-        do {
-            let fetchedStats = try await firebaseService.fetchQuranStats()
-            await MainActor.run {
-                self.stats = fetchedStats
-            }
-        } catch {
-            print("❌ Error loading Quran stats: \(error)")
+        // Get stats from offline data
+        let offlineStats = offlineDataService.getQuranStats()
+        await MainActor.run {
+            self.stats = offlineStats
         }
     }
     
@@ -193,17 +206,11 @@ class QuranWordsViewModel {
         isLoading = true
         error = nil
         
-        do {
-            let results = try await firebaseService.searchQuranWords(query: query, limit: 100)
-            await MainActor.run {
-                self.words = results
-                self.isLoading = false
-            }
-        } catch {
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
-            }
+        // Search from offline bundle
+        let results = offlineDataService.searchQuranWords(query: query)
+        await MainActor.run {
+            self.words = results
+            self.isLoading = false
         }
     }
     
@@ -211,17 +218,11 @@ class QuranWordsViewModel {
         isLoading = true
         error = nil
         
-        do {
-            let results = try await firebaseService.fetchWordsByRoot(root: root, limit: 500)
-            await MainActor.run {
-                self.words = results
-                self.isLoading = false
-            }
-        } catch {
-            await MainActor.run {
-                self.error = error
-                self.isLoading = false
-            }
+        // Load words by root from offline bundle
+        let results = offlineDataService.getQuranWordsByRoot(root: root)
+        await MainActor.run {
+            self.words = results
+            self.isLoading = false
         }
     }
     

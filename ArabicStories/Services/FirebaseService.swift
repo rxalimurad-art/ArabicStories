@@ -15,84 +15,54 @@ class FirebaseService {
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
     
-    // MARK: - Stories
+    // MARK: - Stories (Offline Mode)
     
+    /// Stories are now loaded from offline bundle (JSON files in app bundle)
+    /// This method is kept for backward compatibility but returns offline data
     func fetchStories() async throws -> [Story] {
-        print("📚 Fetching stories from Firestore...")
-        
-        do {
-            let snapshot = try await db.collection("stories").getDocuments()
-            print("✅ Got \(snapshot.documents.count) documents from Firestore")
-            
-            // Log all document IDs to check for duplicates at Firestore level
-            let docIDs = snapshot.documents.map { $0.documentID }
-            let normalizedDocIDs = docIDs.map { $0.lowercased() }
-            let uniqueDocIDs = Set(normalizedDocIDs)
-            print("📄 Firestore document IDs: \(docIDs)")
-            print("📄 Normalized IDs: \(Array(uniqueDocIDs))")
-            if normalizedDocIDs.count != uniqueDocIDs.count {
-                print("⚠️ DUPLICATE DOCUMENT IDs IN FIRESTORE!")
-            }
-            
-            var stories: [Story] = []
-            
-            for doc in snapshot.documents {
-                print("📄 Processing document: \(doc.documentID)")
-                do {
-                    let story = try convertToStory(doc.data(), id: doc.documentID)
-                    stories.append(story)
-                    print("✅ Parsed story: '\(story.title)' [StoryID: \(story.id)]")
-                } catch {
-                    print("❌ Failed to parse story \(doc.documentID): \(error)")
-                    print("   Data keys: \(doc.data().keys.sorted())")
-                }
-            }
-            
-            // Deduplicate stories by normalized ID
-            let uniqueStories = deduplicateStories(stories)
-            print("📚 Returning \(uniqueStories.count) unique stories from \(snapshot.documents.count) Firestore docs")
-            return uniqueStories
-        } catch {
-            print("❌ Firestore error: \(error)")
-            throw error
-        }
+        print("📚 Loading stories from offline bundle...")
+        return OfflineDataService.shared.loadStories()
     }
     
     func fetchStory(id: String) async throws -> Story? {
-        // Use lowercase ID to ensure consistency
-        let doc = try await db.collection("stories").document(id.lowercased()).getDocument()
-        guard let data = doc.data() else { return nil }
-        return try convertToStory(data, id: doc.documentID)
+        // Load from offline bundle instead of Firebase
+        guard let uuid = UUID(uuidString: id) else { return nil }
+        return OfflineDataService.shared.getStory(id: uuid)
     }
     
     func saveStory(_ story: Story) async throws {
-        let data = try storyToDictionary(story)
-        // Use lowercase ID to ensure consistency
-        let docID = story.id.uuidString.lowercased()
-        try await db.collection("stories").document(docID).setData(data)
-        print("💾 Saved story '\(story.title)' to Firestore document: \(docID)")
+        // Offline bundle is read-only; stories cannot be saved to bundle
+        // User progress is still saved to Firebase
+        print("⚠️ FirebaseService: saveStory not implemented for offline mode (bundle is read-only)")
     }
     
     func deleteStory(id: String) async throws {
-        // Use lowercase ID to ensure consistency
-        try await db.collection("stories").document(id.lowercased()).delete()
+        // Offline bundle is read-only; stories cannot be deleted from bundle
+        print("⚠️ FirebaseService: deleteStory not implemented for offline mode (bundle is read-only)")
     }
     
-    // MARK: - Words
+    // MARK: - Words (Offline Mode)
     
+    /// Words are now loaded from offline bundle with their stories
     func fetchWords(for storyId: String) async throws -> [Word] {
-        let snapshot = try await db.collection("stories").document(storyId).collection("words").getDocuments()
-        return snapshot.documents.compactMap { try? convertToWord($0.data()) }
+        // Load from offline bundle
+        guard let uuid = UUID(uuidString: storyId),
+              let story = OfflineDataService.shared.getStory(id: uuid) else {
+            return []
+        }
+        return story.words ?? []
     }
     
     func saveWord(_ word: Word, storyId: String) async throws {
-        let data = try wordToDictionary(word)
-        try await db.collection("stories").document(storyId).collection("words").document(word.id.uuidString).setData(data)
+        // Offline bundle is read-only
+        print("⚠️ FirebaseService: saveWord not implemented for offline mode (bundle is read-only)")
     }
     
-    // MARK: - Quran Words (quran_words collection)
+    // MARK: - Quran Words (Offline Mode)
     
-    /// Fetch words from quran_words collection with pagination
+    /// Quran words are now loaded from offline bundle (JSON files in app bundle)
+    /// These methods are kept for backward compatibility but return offline data
+    
     func fetchQuranWords(
         limit: Int = 100,
         offset: Int = 0,
@@ -100,238 +70,146 @@ class FirebaseService {
         pos: String? = nil,
         form: String? = nil
     ) async throws -> (words: [QuranWord], total: Int) {
-        print("📚 Fetching Quran words from Firestore... (offset: \(offset), limit: \(limit))")
+        print("📚 Loading Quran words from offline bundle...")
         
-        do {
-            var query: Query = db.collection("quran_words")
-            
-            // Apply filters
-            if let pos = pos {
-                query = query.whereField("morphology.partOfSpeech", isEqualTo: pos)
-            }
-            if let form = form {
-                query = query.whereField("morphology.form", isEqualTo: form)
-            }
-            
-            // Apply sorting
-            let sortField = sort == "occurrenceCount" ? "occurrenceCount" :
-                           sort == "arabicText" ? "arabicText" : "rank"
-            let descending = sort == "occurrenceCount"
-            
-            query = query.order(by: sortField, descending: descending)
-            
-            // For rank-based pagination (most efficient for ordered data)
-            // Calculate the starting rank based on offset
-            // Since rank starts at 1, page 1 = ranks 1-100, page 2 = ranks 101-200, etc.
-            let startRank = offset + 1
-            let endRank = offset + limit
-            
-            // Add range filter for efficient pagination when sorting by rank
-            if sort == "rank" && pos == nil && form == nil {
-                query = query
-                    .whereField("rank", isGreaterThanOrEqualTo: startRank)
-                    .whereField("rank", isLessThanOrEqualTo: endRank)
-            }
-            
-            let snapshot = try await query.limit(to: limit).getDocuments()
-            print("✅ Got \(snapshot.documents.count) Quran words from Firestore")
-            
-            var words: [QuranWord] = []
-            for doc in snapshot.documents {
-                do {
-                    let word = try convertToQuranWord(doc.data(), id: doc.documentID)
-                    words.append(word)
-                } catch {
-                    print("❌ Failed to parse Quran word \(doc.documentID): \(error)")
-                }
-            }
-            
-            // Get total count from stats
-            let stats = try? await fetchQuranStats()
-            let total = stats?.totalUniqueWords ?? 18994
-            
-            print("📚 Returning \(words.count) Quran words (total: \(total))")
-            return (words, total)
-        } catch {
-            print("❌ Firestore error fetching Quran words: \(error)")
-            throw error
+        // Load from offline bundle
+        var allWords = OfflineDataService.shared.loadQuranWords()
+        
+        // Apply filters
+        if let pos = pos {
+            allWords = allWords.filter { $0.morphology.partOfSpeech == pos }
         }
+        if let form = form {
+            allWords = allWords.filter { $0.morphology.form == form }
+        }
+        
+        // Apply sorting
+        switch sort {
+        case "occurrenceCount":
+            allWords.sort { $0.occurrenceCount > $1.occurrenceCount }
+        case "arabicText":
+            allWords.sort { $0.arabicText < $1.arabicText }
+        default:
+            allWords.sort { $0.rank < $1.rank }
+        }
+        
+        // Apply pagination
+        let startIndex = offset
+        let endIndex = min(offset + limit, allWords.count)
+        let paginatedWords = startIndex < allWords.count ? Array(allWords[startIndex..<endIndex]) : []
+        
+        print("📚 Returning \(paginatedWords.count) Quran words from offline bundle")
+        return (paginatedWords, allWords.count)
     }
     
-    /// Get a single Quran word by ID
     func fetchQuranWord(id: String) async throws -> QuranWord? {
-        let doc = try await db.collection("quran_words").document(id).getDocument()
-        guard let data = doc.data() else { return nil }
-        return try convertToQuranWord(data, id: doc.documentID)
+        return OfflineDataService.shared.getQuranWord(id: id)
     }
     
-    /// Search Quran words by Arabic text or English meaning
     func searchQuranWords(query: String, limit: Int = 100) async throws -> [QuranWord] {
-        print("🔍 Searching Quran words for: '\(query)'")
-        
-        // Check if query contains Arabic characters
-        let containsArabic = query.range(of: "[\\u0600-\\u06FF]", options: .regularExpression) != nil
-        
-        if containsArabic {
-            // Search by arabicWithoutDiacritics for better matching
-            let snapshot = try await db.collection("quran_words")
-                .whereField("arabicWithoutDiacritics", isGreaterThanOrEqualTo: query)
-                .whereField("arabicWithoutDiacritics", isLessThanOrEqualTo: query + "\u{f8ff}")
-                .limit(to: limit)
-                .getDocuments()
-            
-            let words = snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
-            print("✅ Found \(words.count) matching Quran words (Arabic search)")
-            return words
-        } else {
-            // Search by englishMeaning (case-insensitive prefix search)
-            let lowerQuery = query.lowercased()
-            let snapshot = try await db.collection("quran_words")
-                .whereField("englishMeaning", isGreaterThanOrEqualTo: lowerQuery)
-                .whereField("englishMeaning", isLessThanOrEqualTo: lowerQuery + "\u{f8ff}")
-                .limit(to: limit)
-                .getDocuments()
-            
-            let words = snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
-            print("✅ Found \(words.count) matching Quran words (English search)")
-            return words
-        }
+        print("🔍 Searching Quran words in offline bundle for: '\(query)'")
+        let results = OfflineDataService.shared.searchQuranWords(query: query)
+        print("✅ Found \(results.count) matching Quran words")
+        return Array(results.prefix(limit))
     }
     
-    /// Get words by root
     func fetchWordsByRoot(root: String, limit: Int = 100) async throws -> [QuranWord] {
-        let snapshot = try await db.collection("quran_words")
-            .whereField("root.arabic", isEqualTo: root)
-            .order(by: "rank")
-            .limit(to: limit)
-            .getDocuments()
-        
-        return snapshot.documents.compactMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+        let results = OfflineDataService.shared.getQuranWordsByRoot(root: root)
+        return Array(results.prefix(limit))
     }
     
-    /// Find a Quran word by its Arabic text (exact match)
     func findQuranWordByArabic(_ arabicText: String) async throws -> QuranWord? {
-        let normalizedText = ArabicTextUtils.normalizeForMatching(arabicText)
-        
-        // Search by arabicWithoutDiacritics for matching
-        let snapshot = try await db.collection("quran_words")
-            .whereField("arabicWithoutDiacritics", isEqualTo: normalizedText)
-            .limit(to: 1)
-            .getDocuments()
-        
-        return snapshot.documents.first.flatMap { try? convertToQuranWord($0.data(), id: $0.documentID) }
+        return OfflineDataService.shared.findQuranWordByArabic(arabicText)
     }
     
-    /// Check if a word exists in quran_words (for highlighting)
     func isWordInQuranWords(_ arabicText: String) async throws -> Bool {
-        let normalizedText = ArabicTextUtils.normalizeForMatching(arabicText)
-        
-        let snapshot = try await db.collection("quran_words")
-            .whereField("arabicWithoutDiacritics", isEqualTo: normalizedText)
-            .limit(to: 1)
-            .getDocuments()
-        
-        return !snapshot.documents.isEmpty
+        return OfflineDataService.shared.isWordInQuranWords(arabicText)
     }
     
-    // MARK: - Quran Stats (quran_stats collection)
+    // MARK: - Quran Stats (Offline Mode)
     
     func fetchQuranStats() async throws -> QuranStats {
-        let doc = try await db.collection("quran_stats").document("summary").getDocument()
-        guard let data = doc.data() else {
-            throw NSError(domain: "FirebaseService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Stats not found"])
-        }
-        
-        let jsonData = try JSONSerialization.data(withJSONObject: data)
-        return try JSONDecoder().decode(QuranStats.self, from: jsonData)
+        return OfflineDataService.shared.getQuranStats()
     }
     
-    // MARK: - Quran Roots (quran_roots collection)
+    // MARK: - Quran Roots (Offline Mode)
     
     func fetchQuranRoots(
         limit: Int = 100,
         offset: Int = 0,
         sort: String = "totalOccurrences"
     ) async throws -> (roots: [QuranRootDoc], total: Int) {
-        print("🌳 Fetching Quran roots from Firestore...")
+        print("🌳 Loading Quran roots from offline bundle...")
         
-        var query: Query = db.collection("quran_roots")
+        // Get unique roots from offline bundle
+        let allRoots = OfflineDataService.shared.getUniqueRoots()
+        
+        // Create QuranRootDoc objects
+        var roots: [QuranRootDoc] = allRoots.map { root in
+            let wordsWithRoot = OfflineDataService.shared.getQuranWordsByRoot(root: root)
+            let totalOccurrences = wordsWithRoot.reduce(0) { $0 + $1.occurrenceCount }
+            
+            return QuranRootDoc(
+                id: root,
+                root: root,
+                transliteration: root,
+                derivativeCount: wordsWithRoot.count,
+                totalOccurrences: totalOccurrences,
+                sampleDerivatives: wordsWithRoot.prefix(3).map { $0.arabicText }
+            )
+        }
         
         // Apply sorting
         switch sort {
         case "derivativeCount":
-            query = query.order(by: "derivativeCount", descending: true)
+            roots.sort { $0.derivativeCount > $1.derivativeCount }
         case "root":
-            query = query.order(by: "root")
+            roots.sort { $0.root < $1.root }
         default:
-            query = query.order(by: "totalOccurrences", descending: true)
+            roots.sort { $0.totalOccurrences > $1.totalOccurrences }
         }
         
-        let snapshot = try await query.limit(to: limit).getDocuments()
-        print("✅ Got \(snapshot.documents.count) Quran roots from Firestore")
+        // Apply pagination
+        let startIndex = offset
+        let endIndex = min(offset + limit, roots.count)
+        let paginatedRoots = startIndex < roots.count ? Array(roots[startIndex..<endIndex]) : []
         
-        var roots: [QuranRootDoc] = []
-        for doc in snapshot.documents {
-            do {
-                let root = try convertToQuranRootDoc(doc.data(), id: doc.documentID)
-                roots.append(root)
-            } catch {
-                print("❌ Failed to parse root \(doc.documentID): \(error)")
-            }
-        }
-        
-        // Get total count from stats
-        let stats = try? await fetchQuranStats()
-        let total = stats?.uniqueRoots ?? 1651
-        
-        print("🌳 Returning \(roots.count) roots (total: \(total))")
-        return (roots, total)
+        print("🌳 Returning \(paginatedRoots.count) roots from offline bundle")
+        return (paginatedRoots, roots.count)
     }
     
     func fetchQuranRoot(id: String) async throws -> QuranRootDoc? {
-        let doc = try await db.collection("quran_roots").document(id).getDocument()
-        guard let data = doc.data() else { return nil }
-        return try convertToQuranRootDoc(data, id: doc.documentID)
+        let wordsWithRoot = OfflineDataService.shared.getQuranWordsByRoot(root: id)
+        guard !wordsWithRoot.isEmpty else { return nil }
+        
+        let totalOccurrences = wordsWithRoot.reduce(0) { $0 + $1.occurrenceCount }
+        return QuranRootDoc(
+            id: id,
+            root: id,
+            transliteration: id,
+            derivativeCount: wordsWithRoot.count,
+            totalOccurrences: totalOccurrences,
+            sampleDerivatives: wordsWithRoot.prefix(3).map { $0.arabicText }
+        )
     }
     
-    // MARK: - Legacy Generic Words (for backward compatibility)
+    // MARK: - Legacy Generic Words (Offline Mode)
     
     func fetchGenericWords() async throws -> [Word] {
-        print("📚 Fetching generic words from Firestore...")
-        
-        do {
-            let snapshot = try await db.collection("words").getDocuments()
-            print("✅ Got \(snapshot.documents.count) generic words from Firestore")
-            
-            var words: [Word] = []
-            for doc in snapshot.documents {
-                do {
-                    let word = try convertToWord(doc.data())
-                    words.append(word)
-                } catch {
-                    print("❌ Failed to parse generic word \(doc.documentID): \(error)")
-                }
-            }
-            
-            print("📚 Returning \(words.count) generic words")
-            return words
-        } catch {
-            print("❌ Firestore error fetching generic words: \(error)")
-            throw error
-        }
+        print("📚 Loading generic words from offline bundle...")
+        // Return all words from all stories
+        let stories = OfflineDataService.shared.loadStories()
+        let allWords = stories.compactMap { $0.words }.flatMap { $0 }
+        print("📚 Returning \(allWords.count) generic words")
+        return allWords
     }
     
-    /// Search generic words by Arabic text (with normalization)
     func searchGenericWords(arabicText: String) async throws -> [Word] {
         print("🔍 Searching generic words for: '\(arabicText)'")
-        
-        // Fetch all and filter client-side with Arabic normalization
         let allWords = try await fetchGenericWords()
-        
         let matches = allWords.filter { word in
             ArabicTextUtils.wordsMatch(word.arabicText, arabicText)
         }
-        
         print("✅ Found \(matches.count) matching generic words")
         return matches
     }
@@ -550,21 +428,14 @@ class FirebaseService {
             .updateData([field: value])
     }
 
-    // MARK: - Search
+    // MARK: - Search (Offline Mode)
     
     func searchStories(query: String) async throws -> [Story] {
-        let snapshot = try await db.collection("stories")
-            .whereField("title", isGreaterThanOrEqualTo: query)
-            .whereField("title", isLessThanOrEqualTo: query + "\u{f8ff}")
-            .getDocuments()
-        return deduplicateStories(snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) })
+        return OfflineDataService.shared.searchStories(query: query)
     }
     
     func fetchStoriesByDifficulty(level: Int) async throws -> [Story] {
-        let snapshot = try await db.collection("stories")
-            .whereField("difficultyLevel", isEqualTo: level)
-            .getDocuments()
-        return deduplicateStories(snapshot.documents.compactMap { try? convertToStory($0.data(), id: $0.documentID) })
+        return OfflineDataService.shared.getStoriesByDifficulty(level: level)
     }
     
     // MARK: - Helper Functions

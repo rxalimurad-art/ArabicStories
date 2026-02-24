@@ -1,0 +1,490 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-02-24T00:00:00Z",
+  "stories": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "title": "Ahmad's Journey to Peace",
+      "titleArabic": "رحلة أحمد إلى السلام",
+      "storyDescription": "A beginner-friendly story about Ahmad's spiritual journey, introducing essential Arabic vocabulary. Perfect for Level 1 learners building their vocabulary foundation.",
+      "storyDescriptionArabic": "قصة مناسبة للمبتدئين عن الرحلة الروحية لأحمد، تقدم مفردات عربية أساسية. مثالية للمتعلمين في المستوى الأول لبناء أساس المفردات.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "religious",
+      "tags": ["beginner", "vocabulary", "spiritual", "islamic"],
+      "coverImageURL": "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
+      "audioNarrationURL": null,
+      "words": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440001",
+          "arabic": "اللَّهُ",
+          "transliteration": "Allah",
+          "english": "God - The one and only God in Islam",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440002",
+          "arabic": "رَبِّ",
+          "transliteration": "Rabb",
+          "english": "Lord - Master, Sustainer, Cherisher",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440003",
+          "arabic": "الْكِتَابُ",
+          "transliteration": "Al-Kitab",
+          "english": "The Book - Referring to the Quran",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440004",
+          "arabic": "السَّلَامُ",
+          "transliteration": "As-Salaam",
+          "english": "Peace - Also one of the names of Allah",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440005",
+          "arabic": "الصَّلَاةُ",
+          "transliteration": "As-Salah",
+          "english": "Prayer - The obligatory Islamic prayers",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440006",
+          "arabic": "الصَّوْمُ",
+          "transliteration": "As-Sawm",
+          "english": "Fasting - Especially during Ramadan",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440007",
+          "arabic": "النَّفْسُ",
+          "transliteration": "An-Nafs",
+          "english": "Soul - The self, the inner person",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440008",
+          "arabic": "الْعِلْمُ",
+          "transliteration": "Al-Ilm",
+          "english": "Knowledge - Sacred and worldly knowledge",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440009",
+          "arabic": "الْقَوْلُ",
+          "transliteration": "Al-Qawl",
+          "english": "Word - Speech, saying",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440010",
+          "arabic": "الْعَمَلُ",
+          "transliteration": "Al-Amal",
+          "english": "Deed - Action, work",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440011",
+          "arabic": "اليَوْمُ",
+          "transliteration": "Al-Yawm",
+          "english": "Day - Also refers to the Day of Judgment",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440012",
+          "arabic": "الدِّينُ",
+          "transliteration": "Ad-Din",
+          "english": "Religion - The way of life in Islam",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440013",
+          "arabic": "اللَّيْلُ",
+          "transliteration": "Al-Layl",
+          "english": "Night - The nighttime",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440014",
+          "arabic": "السَّمَاوَاتُ",
+          "transliteration": "As-Samawat",
+          "english": "Heavens - The skies, celestial realm",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440015",
+          "arabic": "الْأَرْضُ",
+          "transliteration": "Al-Ard",
+          "english": "Earth - The world, land",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440016",
+          "arabic": "الرَّحْمَةُ",
+          "transliteration": "Ar-Rahmah",
+          "english": "Mercy - Divine mercy and compassion",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440017",
+          "arabic": "الْقَلْبُ",
+          "transliteration": "Al-Qalb",
+          "english": "Heart - The spiritual heart",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440018",
+          "arabic": "النُّورُ",
+          "transliteration": "An-Noor",
+          "english": "Light - Divine light, guidance",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440019",
+          "arabic": "الْجَنَّةُ",
+          "transliteration": "Al-Jannah",
+          "english": "Paradise - The eternal garden of bliss",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440020",
+          "arabic": "النَّارُ",
+          "transliteration": "An-Nar",
+          "english": "Fire - Referring to Hellfire",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        }
+      ],
+      "mixedSegments": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440101",
+          "index": 0,
+          "text": "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440102",
+          "index": 1,
+          "text": "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440003", "550e8400-e29b-41d4-a716-446655440004"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440103",
+          "index": 2,
+          "text": "So he started performing his الصَّلَاةُ (As-Salah) five times a day and observed الصَّوْمُ (As-Sawm) during the month of Ramadan to purify his النَّفْسُ (An-Nafs) (soul).",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440005", "550e8400-e29b-41d4-a716-446655440006", "550e8400-e29b-41d4-a716-446655440007"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440104",
+          "index": 3,
+          "text": "As Ahmad studied more, he gained precious الْعِلْمُ (Al-Ilm) (knowledge). He understood that every الْقَوْلُ (Al-Qawl) (word) he spoke and every الْعَمَلُ (Al-Amal) (deed) he performed would be weighed on the اليَوْمُ (Al-Yawm) of الدِّينُ (Ad-Din) — the Day of Judgment.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440008", "550e8400-e29b-41d4-a716-446655440009", "550e8400-e29b-41d4-a716-446655440010", "550e8400-e29b-41d4-a716-446655440011", "550e8400-e29b-41d4-a716-446655440012"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440105",
+          "index": 4,
+          "text": "One اللَّيْلُ (Al-Layl) (night), while gazing at the sky, Ahmad marveled at the السَّمَاوَاتُ (As-Samawat) (heavens) full of stars, and the الْأَرْضُ (Al-Ard) (earth) beneath his feet. He realized how small he was compared to Allah's vast creation, yet how much الرَّحْمَةُ (Ar-Rahmah) (mercy) Allah had showered upon him.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440013", "550e8400-e29b-41d4-a716-446655440014", "550e8400-e29b-41d4-a716-446655440015", "550e8400-e29b-41d4-a716-446655440016"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440106",
+          "index": 5,
+          "text": "Ahmad worked hard to soften his الْقَلْبُ (Al-Qalb) (heart) and fill it with النُّورُ (An-Noor) (light). He knew that if he stayed on the right path, he would enter الْجَنَّةُ (Al-Jannah) (Paradise), a garden of eternal bliss. But if he turned away from Allah's guidance, he might face the النَّارُ (An-Nar) (fire).",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440017", "550e8400-e29b-41d4-a716-446655440018", "550e8400-e29b-41d4-a716-446655440019", "550e8400-e29b-41d4-a716-446655440020"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440107",
+          "index": 6,
+          "text": "From day to day, Ahmad grew closer to his religion, living a life of purpose and devotion. And in the end, his story became a light for others seeking the path to peace.",
+          "linkedWordIds": []
+        }
+      ],
+      "isUserCreated": false,
+      "isDownloaded": true,
+      "readingProgress": 0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "createdAt": "2026-02-12T00:00:00Z",
+      "updatedAt": "2026-02-12T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655441000",
+      "title": "The Merchant's Lesson",
+      "titleArabic": "درس التاجر",
+      "storyDescription": "A story about honesty in trade and business ethics, teaching important values through simple Arabic dialogue. Perfect for Level 1 learners.",
+      "storyDescriptionArabic": "قصة عن الصدق في التجارة وأخلاقيات العمل، تعلم قيمًا مهمة من خلال حوار عربي بسيط. مثالية للمتعلمين في المستوى الأول.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "children",
+      "tags": ["beginner", "morals", "business", "honesty"],
+      "coverImageURL": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800",
+      "audioNarrationURL": null,
+      "words": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441001",
+          "arabic": "التَّاجِرُ",
+          "transliteration": "At-Tajir",
+          "english": "Merchant - A person who buys and sells goods",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441002",
+          "arabic": "الصِّدْقُ",
+          "transliteration": "As-Sidq",
+          "english": "Truthfulness - Being honest and true",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441003",
+          "arabic": "الْمَالُ",
+          "transliteration": "Al-Mal",
+          "english": "Wealth - Money, property, possessions",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441004",
+          "arabic": "الثَّمَنُ",
+          "transliteration": "Ath-Thaman",
+          "english": "Price - The amount of money expected",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441005",
+          "arabic": "الْوَزْنُ",
+          "transliteration": "Al-Wazn",
+          "english": "Weight - The measurement of heaviness",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441006",
+          "arabic": "الصَّبْرُ",
+          "transliteration": "As-Sabr",
+          "english": "Patience - Enduring difficulties calmly",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441007",
+          "arabic": "الشُّكْرُ",
+          "transliteration": "Ash-Shukr",
+          "english": "Gratitude - Being thankful",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441008",
+          "arabic": "الْحِلْمُ",
+          "transliteration": "Al-Hilm",
+          "english": "Forbearance - Calmness, gentleness",
+          "partOfSpeech": "noun",
+          "difficulty": 1
+        }
+      ],
+      "mixedSegments": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441101",
+          "index": 0,
+          "text": "In a small village, there lived a kind التَّاجِرُ (At-Tajir) named Khalid. He was known for his الصِّدْقُ (As-Sidq) and fair dealing with all his customers.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441001", "550e8400-e29b-41d4-a716-446655441002"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441102",
+          "index": 1,
+          "text": "One day, a poor man came to buy dates. Khalid measured the dates with perfect الْوَزْنُ (Al-Wazn) and told him the true الثَّمَنُ (Ath-Thaman) without any extra charge.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441005", "550e8400-e29b-41d4-a716-446655441004"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441103",
+          "index": 2,
+          "text": "His son asked, 'Father, why don't we keep more الْمَالُ (Al-Mal) for ourselves?' Khalid smiled and said, 'True wealth comes from pleasing Allah through honesty.'",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441003"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441104",
+          "index": 3,
+          "text": "Khalid taught his son about الصَّبْرُ (As-Sabr) in difficult times and الشُّكْرُ (Ash-Shukr) in good times. He showed الْحِلْمُ (Al-Hilm) when customers were difficult.",
+          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441006", "550e8400-e29b-41d4-a716-446655441007", "550e8400-e29b-41d4-a716-446655441008"]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655441105",
+          "index": 4,
+          "text": "Years passed, and Khalid's business grew. People from far and wide came to trade with him because they trusted his word. His son understood that honesty brings true success.",
+          "linkedWordIds": []
+        }
+      ],
+      "isUserCreated": false,
+      "isDownloaded": true,
+      "readingProgress": 0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "createdAt": "2026-02-12T00:00:00Z",
+      "updatedAt": "2026-02-12T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655442000",
+      "title": "The Wise Judge",
+      "titleArabic": "القاضي الحكيم",
+      "storyDescription": "A classic story of wisdom and justice, teaching learners about conflict resolution and fair judgment in Arabic.",
+      "storyDescriptionArabic": "قصة كلاسيكية عن الحكمة والعدالة، تعلم المتعلمين عن حل النزاعات والحكم العادل باللغة العربية.",
+      "author": "Arabicly",
+      "format": "bilingual",
+      "difficultyLevel": 2,
+      "category": "folktale",
+      "tags": ["elementary", "wisdom", "justice", "tradition"],
+      "coverImageURL": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+      "audioNarrationURL": null,
+      "segments": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655442101",
+          "index": 0,
+          "arabicText": "كَانَ هُنَاكَ قَاضٍ حَكِيمٌ يُسَمَّى عَلِيٌّ. كَانَ النَّاسُ يَأْتُونَ إِلَيْهِ مِنْ كُلِّ مَكَانٍ لِلْحُصُولِ عَلَى الْعَدْلِ.",
+          "englishText": "There was a wise judge named Ali. People came to him from everywhere to seek justice.",
+          "transliteration": "Kana hunaka qadin hakimun yusamma Ali. Kana an-nasu ya'tuna ilayhi min kulli makanin lil-husuli ala al-adl.",
+          "culturalNote": "In Islamic tradition, judges (qadi) have historically been highly respected figures in society."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655442102",
+          "index": 1,
+          "arabicText": "فِي يَوْمٍ مِنَ الْأَيَّامِ، أَتَاهُ رَجُلَانِ يَتَشَاجَرَانِ عَلَى بَقَرَةٍ. كُلٌّ مِنْهُمَا قَالَ: 'هَذِهِ الْبَقَرَةُ لِي!'",
+          "englishText": "One day, two men came to him arguing over a cow. Each of them said: 'This cow is mine!'",
+          "transliteration": "Fi yawmin min al-ayyami, atahu rajulani yatashajirani ala baqarah. Kullun minhuma qala: 'Hadhi al-baqaratu li!'",
+          "grammarNote": "The verb قَالَ (said) is in the past tense, form I of the verb قَالَ."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655442103",
+          "index": 2,
+          "arabicText": "الْقَاضِي اسْتَمَعَ إِلَى كِلَيْهِمَا بِصَبْرٍ وَحِلْمٍ. ثُمَّ قَالَ: 'أَنَا سَأَحْكُمُ بَيْنَكُمَا بِالْعَدْلِ.'",
+          "englishText": "The judge listened to both of them with patience and forbearance. Then he said: 'I will judge between you with justice.'",
+          "transliteration": "Al-qadi istama'a ila kilayhima bi-sabrin wa-hilm. Thumma qala: 'Ana sa-ahkumu baynakuma bil-adl.'",
+          "culturalNote": "The phrase 'by justice' (بالعدل) is commonly used in Islamic legal contexts."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655442104",
+          "index": 3,
+          "arabicText": "أَمَرَ الْقَاضِي أَنْ يُؤْتَى بِالْبَقَرَةِ. نَظَرَ إِلَيْهَا بِعِنَايَةٍ، ثُمَّ قَالَ: 'هَذِهِ الْبَقَرَةُ لَيْسَتْ لِأَحَدِكُمَا! هِيَ لِرَجُلٍ ثَالِثٍ.'",
+          "englishText": "The judge ordered the cow to be brought. He looked at it carefully, then said: 'This cow does not belong to either of you! It belongs to a third man.'",
+          "transliteration": "Amara al-qadi an yu'ta bil-baqarah. Nazara ilayha bi-inayah, thumma qala: 'Hadhi al-baqaratu laysat li-ahadikuma! Hiya li-rajulin thalith.'",
+          "grammarNote": "Notice the use of لَيْسَتْ (is not) - the negative form for feminine subjects."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655442105",
+          "index": 4,
+          "arabicText": "تَعَجَّبَ الرَّجُلَانِ وَسَأَلَا: 'وَكَيْفَ عَلِمْتَ يَا قَاضِيَنَا؟' فَأَجَابَ: 'الْبَقَرَةُ حَامِلٌ، وَكِلَاكُمَا قَالَ إِنَّهَا لَبُونٌ!'",
+          "englishText": "The two men were amazed and asked: 'And how did you know, O our judge?' He answered: 'The cow is pregnant, and both of you said she gives milk!'",
+          "transliteration": "Ta'ajjaba ar-rajulani wa-s'ala: 'Wa-kayfa alimta ya qadiyana?' Fa-ajaba: 'Al-baqaratu hamil, wa-kilakuma qala innaha labun!'",
+          "culturalNote": "This demonstrates the importance of observation and attention to detail in Islamic judicial tradition."
+        }
+      ],
+      "isUserCreated": false,
+      "isDownloaded": true,
+      "readingProgress": 0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "createdAt": "2026-02-12T00:00:00Z",
+      "updatedAt": "2026-02-12T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655443000",
+      "title": "A Day in Cairo",
+      "titleArabic": "يوم في القاهرة",
+      "storyDescription": "Follow a day in the life of a student in Cairo, learning everyday vocabulary and modern Egyptian culture.",
+      "storyDescriptionArabic": "اتبع يومًا في حياة طالب في القاهرة، تعلم المفردات اليومية وثقافة مصر الحديثة.",
+      "author": "Arabicly",
+      "format": "bilingual",
+      "difficultyLevel": 2,
+      "category": "modern",
+      "tags": ["elementary", "daily-life", "egypt", "travel"],
+      "coverImageURL": "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
+      "audioNarrationURL": null,
+      "segments": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655443101",
+          "index": 0,
+          "arabicText": "صَبَاحُ الْخَيْرِ! أَنَا طَالِبٌ فِي الْجَامِعَةِ. أَسْكُنُ فِي الْقَاهِرَةِ مِنْذُ سَنَتَيْنِ.",
+          "englishText": "Good morning! I am a university student. I have been living in Cairo for two years.",
+          "transliteration": "Sabah al-khayr! Ana talibun fi al-jami'ah. Askunu fi al-Qahirati mundhu sanatayni.",
+          "culturalNote": "صباح الخير (Sabah al-khayr) is the standard morning greeting across the Arab world."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655443102",
+          "index": 1,
+          "arabicText": "أَسْتَيْقِظُ مُبَكِّرًا كُلَّ يَوْمٍ. أَشْرَبُ الْقَهْوَةَ وَآكُلُ الْفُطُورَ مَعَ أَصْدِقَائِي.",
+          "englishText": "I wake up early every day. I drink coffee and eat breakfast with my friends.",
+          "transliteration": "Astayqizu mubakkiran kulla yawmin. Ashrabu al-qahwata wa-akulu al-futura ma'a asdiqa'i.",
+          "grammarNote": "The verb form أَفْعَلُ (af'alu) indicates first person singular present tense."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655443103",
+          "index": 2,
+          "arabicText": "أَذْهَبُ إِلَى الْجَامِعَةِ بِالْأُتُوبِيسِ. الطَّرِيقُ مُزْدَحِمٌ دَائِمًا فِي الصَّبَاحِ.",
+          "englishText": "I go to university by bus. The road is always crowded in the morning.",
+          "transliteration": "Adhabu ila al-jami'ati bil-utubis. At-tariqu muzdahimun dayman fi as-sabahi.",
+          "culturalNote": "Cairo is known for its busy traffic, especially during rush hours."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655443104",
+          "index": 3,
+          "arabicText": "بَعْدَ الدِّرَاسَةِ، أَذْهَبُ إِلَى سُوقِ الْخَالِدِينِ. أُحِبُّ شِرَاءَ الْفَاكِهَةِ الطَّازَجَةِ هُنَاكَ.",
+          "englishText": "After studying, I go to Khan el-Khalili market. I love buying fresh fruit there.",
+          "transliteration": "Ba'da ad-dirasati, adhabu ila suq al-Khalidini. Uhibbu shira'a al-fakihati at-tazajati hunaka.",
+          "culturalNote": "Khan el-Khalili is a famous historic bazaar and souq in the historic center of Islamic Cairo."
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655443105",
+          "index": 4,
+          "arabicText": "فِي الْمَسَاءِ، أَجْلِسُ مَعَ عَائِلَتِي. نَتَنَاوَلُ الْعَشَاءَ وَنَتَحَدَّثُ عَنْ يَوْمِنَا.",
+          "englishText": "In the evening, I sit with my family. We have dinner and talk about our day.",
+          "transliteration": "Fi al-masa'i, ajlisu ma'a a'ilati. Natanawalu al-asha'a wa-natahaddathu an yawmina.",
+          "culturalNote": "Family dinners are an important tradition in Arab culture, often the main meal of the day."
+        }
+      ],
+      "isUserCreated": false,
+      "isDownloaded": true,
+      "readingProgress": 0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "createdAt": "2026-02-12T00:00:00Z",
+      "updatedAt": "2026-02-12T00:00:00Z"
+    }
+  ]
+}

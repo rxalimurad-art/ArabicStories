@@ -1,0 +1,627 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-02-24T00:00:00Z",
+  "totalWords": 100,
+  "words": [
+    {
+      "id": "word_001",
+      "rank": 1,
+      "arabicText": "ٱللَّه",
+      "arabicWithoutDiacritics": "الله",
+      "buckwalter": "All~ah",
+      "englishMeaning": "Allah, God",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "alh",
+        "meaning": "to be god, deity"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم علم",
+        "lemma": "ٱللَّه",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Proper noun for God",
+        "state": "definite"
+      },
+      "occurrenceCount": 2699,
+      "exampleArabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "exampleEnglish": "In the name of Allah, the Most Gracious, the Most Merciful",
+      "tags": ["name of Allah", "divine", "essential"],
+      "notes": "The most frequently occurring word in the Quran"
+    },
+    {
+      "id": "word_002",
+      "rank": 2,
+      "arabicText": "ٱلَّذِى",
+      "arabicWithoutDiacritics": "الذى",
+      "buckwalter": "Al~a*iy",
+      "englishMeaning": "who, which, that (masculine singular relative pronoun)",
+      "root": {
+        "arabic": "الذي",
+        "transliteration": "alDy",
+        "meaning": "relative pronoun"
+      },
+      "morphology": {
+        "partOfSpeech": "REL",
+        "posDescription": "اسم موصول",
+        "lemma": "ٱلَّذِى",
+        "form": null,
+        "tense": null,
+        "gender": "masculine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Masculine singular relative pronoun",
+        "state": "definite"
+      },
+      "occurrenceCount": 1003,
+      "exampleArabic": "ٱلْحَمْدُ لِلَّهِ ٱلَّذِى خَلَقَ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضَ",
+      "exampleEnglish": "All praise is due to Allah, who created the heavens and the earth",
+      "tags": ["relative pronoun", "grammar", "essential"],
+      "notes": "Used to introduce relative clauses"
+    },
+    {
+      "id": "word_003",
+      "rank": 3,
+      "arabicText": "قَالَ",
+      "arabicWithoutDiacritics": "قال",
+      "buckwalter": "qaAla",
+      "englishMeaning": "he said",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl",
+        "meaning": "to say, speak"
+      },
+      "morphology": {
+        "partOfSpeech": "V",
+        "posDescription": "فعل ماض",
+        "lemma": "قَالَ",
+        "form": "1",
+        "tense": "perfect",
+        "gender": "masculine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Form I perfect, 3rd person masculine singular",
+        "state": null
+      },
+      "occurrenceCount": 992,
+      "exampleArabic": "وَقَالَ ٱللَّهُ لَا تَتَّخِذُوٓا۟ إِلَـٰهَيْنِ ٱثْنَيْنِ",
+      "exampleEnglish": "And Allah said: Do not take two gods",
+      "tags": ["verb", "say", "speech", "essential"],
+      "notes": "Most common verb of speech in the Quran"
+    },
+    {
+      "id": "word_004",
+      "rank": 4,
+      "arabicText": "فِى",
+      "arabicWithoutDiacritics": "فى",
+      "buckwalter": "fiy",
+      "englishMeaning": "in, within, among",
+      "root": {
+        "arabic": "في",
+        "transliteration": "fy",
+        "meaning": "in"
+      },
+      "morphology": {
+        "partOfSpeech": "P",
+        "posDescription": "حرف جر",
+        "lemma": "فِى",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Preposition of location",
+        "state": null
+      },
+      "occurrenceCount": 877,
+      "exampleArabic": "وَمَا خَلَقْتُ ٱلْجِنَّ وَٱلْإِنسَ إِلَّا لِيَعْبُدُونِ",
+      "exampleEnglish": "And I did not create the jinn and mankind except to worship Me",
+      "tags": ["preposition", "location", "essential"],
+      "notes": "Most common preposition in the Quran"
+    },
+    {
+      "id": "word_005",
+      "rank": 5,
+      "arabicText": "إِنَّ",
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "in~a",
+      "englishMeaning": "indeed, truly, verily",
+      "root": {
+        "arabic": "ان",
+        "transliteration": "in",
+        "meaning": "emphatic particle"
+      },
+      "morphology": {
+        "partOfSpeech": "EMPH",
+        "posDescription": "حرف توكيد",
+        "lemma": "إِنَّ",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Emphatic particle introducing nominal sentences",
+        "state": null
+      },
+      "occurrenceCount": 874,
+      "exampleArabic": "إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ",
+      "exampleEnglish": "Indeed, Allah is with the patient",
+      "tags": ["particle", "emphasis", "essential"],
+      "notes": "Used to emphasize the truth of what follows"
+    },
+    {
+      "id": "word_006",
+      "rank": 6,
+      "arabicText": "مَا",
+      "arabicWithoutDiacritics": "ما",
+      "buckwalter": "mA",
+      "englishMeaning": "what, not, whatever",
+      "root": {
+        "arabic": "ما",
+        "transliteration": "mA",
+        "meaning": "interrogative/negative particle"
+      },
+      "morphology": {
+        "partOfSpeech": "INTG",
+        "posDescription": "اسم استفهام",
+        "lemma": "مَا",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Interrogative or negative particle",
+        "state": null
+      },
+      "occurrenceCount": 866,
+      "exampleArabic": "مَا ٱلْمَصِيرُ",
+      "exampleEnglish": "What is the destination?",
+      "tags": ["particle", "question", "negation", "essential"],
+      "notes": "Versatile particle used for questions and negation"
+    },
+    {
+      "id": "word_007",
+      "rank": 7,
+      "arabicText": "لَا",
+      "arabicWithoutDiacritics": "لا",
+      "buckwalter": "lA",
+      "englishMeaning": "no, not, do not",
+      "root": {
+        "arabic": "لا",
+        "transliteration": "lA",
+        "meaning": "negative particle"
+      },
+      "morphology": {
+        "partOfSpeech": "NEG",
+        "posDescription": "حرف نفي",
+        "lemma": "لَا",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Negative particle for present and future",
+        "state": null
+      },
+      "occurrenceCount": 812,
+      "exampleArabic": "لَآ إِلَـٰهَ إِلَّآ أَنتَ",
+      "exampleEnglish": "There is no god except You",
+      "tags": ["particle", "negation", "essential"],
+      "notes": "Primary negative particle in Arabic"
+    },
+    {
+      "id": "word_008",
+      "rank": 8,
+      "arabicText": "أَن",
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "an",
+      "englishMeaning": "that, to, indeed",
+      "root": {
+        "arabic": "ان",
+        "transliteration": "an",
+        "meaning": "subordinating conjunction"
+      },
+      "morphology": {
+        "partOfSpeech": "SUB",
+        "posDescription": "حرف مصدري",
+        "lemma": "أَن",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Subordinating conjunction introducing verbal clauses",
+        "state": null
+      },
+      "occurrenceCount": 749,
+      "exampleArabic": "عَلِمَ أَن لَّن تُطِيقُوهُ",
+      "exampleEnglish": "He knew that you would not be able to do it",
+      "tags": ["particle", "conjunction", "essential"],
+      "notes": "Introduces subordinate clauses"
+    },
+    {
+      "id": "word_009",
+      "rank": 9,
+      "arabicText": "ٱلَّتِى",
+      "arabicWithoutDiacritics": "التى",
+      "buckwalter": "Al~atiy",
+      "englishMeaning": "who, which, that (feminine singular relative pronoun)",
+      "root": {
+        "arabic": "التي",
+        "transliteration": "Alty",
+        "meaning": "relative pronoun"
+      },
+      "morphology": {
+        "partOfSpeech": "REL",
+        "posDescription": "اسم موصول",
+        "lemma": "ٱلَّتِى",
+        "form": null,
+        "tense": null,
+        "gender": "feminine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Feminine singular relative pronoun",
+        "state": "definite"
+      },
+      "occurrenceCount": 624,
+      "exampleArabic": "ٱلْجَنَّةُ ٱلَّتِى وُعِدَ ٱلْمُتَّقُونَ",
+      "exampleEnglish": "The Paradise which has been promised to the righteous",
+      "tags": ["relative pronoun", "grammar", "essential"],
+      "notes": "Feminine counterpart to ٱلَّذِى"
+    },
+    {
+      "id": "word_010",
+      "rank": 10,
+      "arabicText": "مِن",
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "min",
+      "englishMeaning": "from, of, among, than",
+      "root": {
+        "arabic": "من",
+        "transliteration": "mn",
+        "meaning": "from, of"
+      },
+      "morphology": {
+        "partOfSpeech": "P",
+        "posDescription": "حرف جر",
+        "lemma": "مِن",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Preposition indicating origin or source",
+        "state": null
+      },
+      "occurrenceCount": 607,
+      "exampleArabic": "خَلَقَ ٱلْإِنسَـٰنَ مِن صَلْصَـٰلٍۢ كَٱلْفَخَّارِ",
+      "exampleEnglish": "He created man from clay like pottery",
+      "tags": ["preposition", "origin", "essential"],
+      "notes": "Second most common preposition after في"
+    },
+    {
+      "id": "word_011",
+      "rank": 11,
+      "arabicText": "عَلَىٰ",
+      "arabicWithoutDiacritics": "على",
+      "buckwalter": "EalaY",
+      "englishMeaning": "upon, on, over, above",
+      "root": {
+        "arabic": "على",
+        "transliteration": "Ely",
+        "meaning": "to rise, be high"
+      },
+      "morphology": {
+        "partOfSpeech": "P",
+        "posDescription": "حرف جر",
+        "lemma": "عَلَىٰ",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Preposition of elevation or position",
+        "state": null
+      },
+      "occurrenceCount": 593,
+      "exampleArabic": "ٱصْبِرْ عَلَىٰ مَا يَقُولُونَ",
+      "exampleEnglish": "Be patient over what they say",
+      "tags": ["preposition", "position", "essential"],
+      "notes": "Commonly used for position and obligation"
+    },
+    {
+      "id": "word_012",
+      "rank": 12,
+      "arabicText": "أَنَّ",
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "an~a",
+      "englishMeaning": "that, indeed, truly (causative/cognitional)",
+      "root": {
+        "arabic": "ان",
+        "transliteration": "an",
+        "meaning": "emphatic particle"
+      },
+      "morphology": {
+        "partOfSpeech": "EMPH",
+        "posDescription": "حرف توكيد",
+        "lemma": "أَنَّ",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Emphatic particle with accusative effect",
+        "state": null
+      },
+      "occurrenceCount": 556,
+      "exampleArabic": "وَأَنَّ ٱلَّهَ كَانَ بِكُلِّ شَىْءٍۢ حَصِيرًۭا",
+      "exampleEnglish": "And that Allah is ever, over all things, a Witness",
+      "tags": ["particle", "emphasis", "essential"],
+      "notes": "Similar to إِنَّ but often used for cognitive emphasis"
+    },
+    {
+      "id": "word_013",
+      "rank": 13,
+      "arabicText": "أَرْض",
+      "arabicWithoutDiacritics": "ارض",
+      "buckwalter": "aroD",
+      "englishMeaning": "earth, land, ground",
+      "root": {
+        "arabic": "رضو",
+        "transliteration": "rDw",
+        "meaning": "to be pleased, satisfied"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم",
+        "lemma": "أَرْض",
+        "form": null,
+        "tense": null,
+        "gender": "feminine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Feminine noun referring to earth or land",
+        "state": "indefinite"
+      },
+      "occurrenceCount": 461,
+      "exampleArabic": "لَهُۥ مَا فِى ٱلسَّمَـٰوَٰتِ وَمَا فِى ٱلْأَرْضِ",
+      "exampleEnglish": "To Him belongs whatever is in the heavens and whatever is on the earth",
+      "tags": ["noun", "creation", "earth", "essential"],
+      "notes": "One of the most common nouns referring to creation"
+    },
+    {
+      "id": "word_014",
+      "rank": 14,
+      "arabicText": "نَفْس",
+      "arabicWithoutDiacritics": "نفس",
+      "buckwalter": "nafs",
+      "englishMeaning": "soul, self, person, life",
+      "root": {
+        "arabic": "نفس",
+        "transliteration": "nfs",
+        "meaning": "to breathe, soul"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم",
+        "lemma": "نَفْس",
+        "form": null,
+        "tense": null,
+        "gender": "feminine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Feminine noun referring to soul or self",
+        "state": "indefinite"
+      },
+      "occurrenceCount": 448,
+      "exampleArabic": "وَنَفْسٍۢ وَمَا سَوَّىٰهَا",
+      "exampleEnglish": "And by the soul and He who proportioned it",
+      "tags": ["noun", "soul", "self", "essential"],
+      "notes": "Central concept in Islamic spirituality"
+    },
+    {
+      "id": "word_015",
+      "rank": 15,
+      "arabicText": "كَانَ",
+      "arabicWithoutDiacritics": "كان",
+      "buckwalter": "kaAna",
+      "englishMeaning": "he was, it was, to be",
+      "root": {
+        "arabic": "كون",
+        "transliteration": "kwn",
+        "meaning": "to be, exist"
+      },
+      "morphology": {
+        "partOfSpeech": "V",
+        "posDescription": "فعل ماض",
+        "lemma": "كَانَ",
+        "form": "1",
+        "tense": "perfect",
+        "gender": "masculine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Kana sister verb, perfect tense",
+        "state": null
+      },
+      "occurrenceCount": 440,
+      "exampleArabic": "وَكَانَ ٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرًا",
+      "exampleEnglish": "And Allah is ever, over all things, Competent",
+      "tags": ["verb", "to be", "existence", "essential"],
+      "notes": "Hollow verb used as auxiliary and main verb"
+    },
+    {
+      "id": "word_016",
+      "rank": 16,
+      "arabicText": "قَدْ",
+      "arabicWithoutDiacritics": "قد",
+      "buckwalter": "qado",
+      "englishMeaning": "indeed, certainly, already (emphasis)",
+      "root": {
+        "arabic": "قد",
+        "transliteration": "qd",
+        "meaning": "emphatic particle"
+      },
+      "morphology": {
+        "partOfSpeech": "CERT",
+        "posDescription": "حرف تحقيق",
+        "lemma": "قَدْ",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Particle of emphasis/certainty",
+        "state": null
+      },
+      "occurrenceCount": 401,
+      "exampleArabic": "قَدْ أَفْلَحَ ٱلْمُؤْمِنُونَ",
+      "exampleEnglish": "Certainly will the believers have succeeded",
+      "tags": ["particle", "emphasis", "certainty", "essential"],
+      "notes": "Adds emphasis and certainty to statements"
+    },
+    {
+      "id": "word_017",
+      "rank": 17,
+      "arabicText": "رَبِّ",
+      "arabicWithoutDiacritics": "رب",
+      "buckwalter": "rabi~",
+      "englishMeaning": "Lord, Master, Sustainer",
+      "root": {
+        "arabic": "ربو",
+        "transliteration": "rbw",
+        "meaning": "to grow, increase, lord"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم",
+        "lemma": "رَبٌّ",
+        "form": null,
+        "tense": null,
+        "gender": "masculine",
+        "number": "singular",
+        "grammaticalCase": "genitive",
+        "passive": false,
+        "breakdown": "Noun of lordship with genitive case",
+        "state": "definite"
+      },
+      "occurrenceCount": 975,
+      "exampleArabic": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
+      "exampleEnglish": "All praise is due to Allah, Lord of the worlds",
+      "tags": ["noun", "divine", "lord", "essential"],
+      "notes": "Essential divine name, often paired with Allah"
+    },
+    {
+      "id": "word_018",
+      "rank": 18,
+      "arabicText": "يَوْم",
+      "arabicWithoutDiacritics": "يوم",
+      "buckwalter": "yawom",
+      "englishMeaning": "day, daytime",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm",
+        "meaning": "day"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم",
+        "lemma": "يَوْمٌ",
+        "form": null,
+        "tense": null,
+        "gender": "masculine",
+        "number": "singular",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Masculine noun referring to a day",
+        "state": "indefinite"
+      },
+      "occurrenceCount": 373,
+      "exampleArabic": "مَالِكِ يَوْمِ ٱلدِّينِ",
+      "exampleEnglish": "Master of the Day of Judgment",
+      "tags": ["noun", "time", "day", "essential"],
+      "notes": "Often used in reference to the Day of Judgment"
+    },
+    {
+      "id": "word_019",
+      "rank": 19,
+      "arabicText": "ٱلنَّاس",
+      "arabicWithoutDiacritics": "الناس",
+      "buckwalter": "Al~nAs",
+      "englishMeaning": "people, mankind, humans",
+      "root": {
+        "arabic": "نوس",
+        "transliteration": "nws",
+        "meaning": "to be sociable, people"
+      },
+      "morphology": {
+        "partOfSpeech": "N",
+        "posDescription": "اسم",
+        "lemma": "نَاسٌ",
+        "form": null,
+        "tense": null,
+        "gender": "masculine",
+        "number": "plural",
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Plural noun referring to people",
+        "state": "definite"
+      },
+      "occurrenceCount": 351,
+      "exampleArabic": "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
+      "exampleEnglish": "Say: I seek refuge in the Lord of mankind",
+      "tags": ["noun", "people", "plural", "essential"],
+      "notes": "Collective noun for human beings"
+    },
+    {
+      "id": "word_020",
+      "rank": 20,
+      "arabicText": "إِلَىٰ",
+      "arabicWithoutDiacritics": "الى",
+      "buckwalter": "<ilaY",
+      "englishMeaning": "to, toward, until",
+      "root": {
+        "arabic": "الى",
+        "transliteration": "<ly",
+        "meaning": "toward, to"
+      },
+      "morphology": {
+        "partOfSpeech": "P",
+        "posDescription": "حرف جر",
+        "lemma": "إِلَىٰ",
+        "form": null,
+        "tense": null,
+        "gender": null,
+        "number": null,
+        "grammaticalCase": null,
+        "passive": false,
+        "breakdown": "Preposition of direction or destination",
+        "state": null
+      },
+      "occurrenceCount": 345,
+      "exampleArabic": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ",
+      "exampleEnglish": "Guide us to the straight path, the path of those upon whom You have bestowed favor",
+      "tags": ["preposition", "direction", "essential"],
+      "notes": "Primary preposition for direction and movement"
+    }
+  ]
+}

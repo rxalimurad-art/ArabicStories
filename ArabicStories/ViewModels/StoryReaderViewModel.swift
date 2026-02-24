@@ -114,32 +114,27 @@ class StoryReaderViewModel {
     
     /// Pre-load all Quran words to enable highlighting and find words in story
     private func preloadQuranWords() async {
-        do {
-            // Load first 1000 Quran words for matching (sorted by rank)
-            let result = try await FirebaseService.shared.fetchQuranWords(limit: 1000, offset: 0, sort: "rank")
-            quranWords = result.words
-            hasLoadedQuranWords = true
-            print("✅ Pre-loaded \(quranWords.count) Quran words for highlighting")
-            
-            // Find Quran words that exist in this story's text
-            let matchedWords = story.findQuranWordsInStory(from: quranWords)
-            await MainActor.run {
-                self.quranWordsInStory = matchedWords
-                print("📖 Found \(matchedWords.count) Quran words in story '\(self.story.title)':")
-                for word in matchedWords.prefix(10) {
-                    print("   - '\(word.arabicText)' = '\(word.englishMeaning)' (rank: \(word.rank))")
-                }
-                if matchedWords.count > 10 {
-                    print("   ... and \(matchedWords.count - 10) more")
-                }
+        // Load Quran words from offline bundle
+        quranWords = OfflineDataService.shared.loadQuranWords()
+        hasLoadedQuranWords = true
+        print("✅ Pre-loaded \(quranWords.count) Quran words for highlighting")
+        
+        // Find Quran words that exist in this story's text
+        let matchedWords = story.findQuranWordsInStory(from: quranWords)
+        await MainActor.run {
+            self.quranWordsInStory = matchedWords
+            print("📖 Found \(matchedWords.count) Quran words in story '\(self.story.title)':")
+            for word in matchedWords.prefix(10) {
+                print("   - '\(word.arabicText)' = '\(word.englishMeaning)' (rank: \(word.rank))")
             }
-            
-            // Notify UI to refresh highlighting
-            await MainActor.run {
-                self.onGenericWordsLoaded?()
+            if matchedWords.count > 10 {
+                print("   ... and \(matchedWords.count - 10) more")
             }
-        } catch {
-            print("❌ Failed to preload Quran words: \(error)")
+        }
+        
+        // Notify UI to refresh highlighting
+        await MainActor.run {
+            self.onGenericWordsLoaded?()
         }
     }
     
@@ -317,27 +312,23 @@ class StoryReaderViewModel {
             return
         }
         
-        // If not in cache, try Firestore search
-        do {
-            if let quranWord = try await FirebaseService.shared.findQuranWordByArabic(arabicText) {
-                await MainActor.run {
-                    print("✅ Found word match in Firestore: '\(quranWord.arabicText)' = '\(quranWord.englishMeaning)'")
-                    showWordDetails(quranWord: quranWord, position: position)
-                }
-            } else {
-                await MainActor.run {
-                    print("❌ No word match found for '\(arabicText)'")
-                    // Show original tapped text as unknown word (simple popover)
-                    let unknownWord = Word(
-                        arabicText: arabicText,
-                        englishMeaning: "Unknown word",
-                        difficulty: 1
-                    )
-                    showWordDetails(word: unknownWord, position: position)
-                }
+        // If not in cache, try offline bundle search
+        if let quranWord = OfflineDataService.shared.findQuranWordByArabic(arabicText) {
+            await MainActor.run {
+                print("✅ Found word match in offline bundle: '\(quranWord.arabicText)' = '\(quranWord.englishMeaning)'")
+                showWordDetails(quranWord: quranWord, position: position)
             }
-        } catch {
-            print("❌ Error searching Quran words: \(error)")
+        } else {
+            await MainActor.run {
+                print("❌ No word match found for '\(arabicText)'")
+                // Show original tapped text as unknown word (simple popover)
+                let unknownWord = Word(
+                    arabicText: arabicText,
+                    englishMeaning: "Unknown word",
+                    difficulty: 1
+                )
+                showWordDetails(word: unknownWord, position: position)
+            }
         }
     }
     
@@ -521,39 +512,28 @@ class StoryReaderViewModel {
     
     /// Extract Quran words from story and save to user's learned vocabulary
     private func extractAndSaveUnlockedWords() async {
-        do {
-            // Fetch Quran words for matching
-            let quranWordsResult = try await FirebaseService.shared.fetchQuranWords(
-                limit: 1000,
-                offset: 0,
-                sort: "rank"
-            )
-            let quranWords = quranWordsResult.words
-            
-            // Use Story's algorithm to find Quran words in story text
-            let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
-            print("📖 Complete story: Found \(matchedQuranWords.count) Quran words in story")
-            
-            // Save matched Quran words directly to learnedQuranWords collection
-            var newWordsCount = 0
-            for quranWord in matchedQuranWords {
-                // Check if word is already learned (avoid duplicates)
-                let isAlreadyLearned = await dataService.isQuranWordLearned(quranWord.id)
-                if !isAlreadyLearned {
-                    await dataService.recordVocabularyLearned(quranWord)
-                    newWordsCount += 1
-                }
+        // Load Quran words from offline bundle for matching
+        let quranWords = OfflineDataService.shared.loadQuranWords()
+        
+        // Use Story's algorithm to find Quran words in story text
+        let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
+        print("📖 Complete story: Found \(matchedQuranWords.count) Quran words in story")
+        
+        // Save matched Quran words directly to learnedQuranWords collection
+        var newWordsCount = 0
+        for quranWord in matchedQuranWords {
+            // Check if word is already learned (avoid duplicates)
+            let isAlreadyLearned = await dataService.isQuranWordLearned(quranWord.id)
+            if !isAlreadyLearned {
+                await dataService.recordVocabularyLearned(quranWord)
+                newWordsCount += 1
             }
-            
-            if newWordsCount > 0 {
-                print("📖 Complete story: Saved \(newWordsCount) new Quran words to learned vocabulary")
-            } else {
-                print("📖 Complete story: No new words to save (all already learned)")
-            }
-            
-        } catch {
-            print("📖 Complete story: Error extracting/saving words: \(error)")
-            // Don't fail the whole completion if word extraction fails
+        }
+        
+        if newWordsCount > 0 {
+            print("📖 Complete story: Saved \(newWordsCount) new Quran words to learned vocabulary")
+        } else {
+            print("📖 Complete story: No new words to save (all already learned)")
         }
     }
     

@@ -30,6 +30,7 @@ class DataService {
     static let shared = DataService()
 
     private let firebaseService = FirebaseService.shared
+    private let offlineDataService = OfflineDataService.shared
     private let networkMonitor = NetworkMonitor.shared
 
     // Publishers for reactive updates
@@ -76,26 +77,20 @@ class DataService {
         return progress?.vocabularyRemainingForLevel2 ?? 20
     }
 
-    // MARK: - Story Operations
+    // MARK: - Story Operations (Offline)
 
     func fetchAllStories() async -> [Story] {
         isLoadingPublisher.send(true)
         defer { isLoadingPublisher.send(false) }
 
-        print("📱 DataService: Fetching all stories from Firebase...")
-
-        do {
-            print("📱 DataService: Calling firebaseService.fetchStories()")
-            let stories = try await firebaseService.fetchStories()
-            print("📱 DataService: Got \(stories.count) stories from Firebase")
-            
-            storiesPublisher.send(stories)
-            return stories
-        } catch {
-            print("📱 DataService: Error fetching from Firebase: \(error)")
-            errorPublisher.send(error)
-            return []
-        }
+        print("📱 DataService: Loading stories from offline bundle...")
+        
+        // Load stories from offline bundle (no network required)
+        let stories = offlineDataService.loadStories()
+        print("📱 DataService: Loaded \(stories.count) stories from offline bundle")
+        
+        storiesPublisher.send(stories)
+        return stories
     }
 
     func fetchStories(
@@ -155,15 +150,8 @@ class DataService {
     }
 
     func fetchStory(id: UUID) async -> Story? {
-        do {
-            if let story = try await firebaseService.fetchStory(id: id.uuidString) {
-                return story
-            }
-        } catch {
-            errorPublisher.send(error)
-        }
-
-        return nil
+        // Load from offline bundle instead of Firebase
+        return offlineDataService.getStory(id: id)
     }
 
     func saveStory(_ story: Story) async throws {
@@ -193,6 +181,24 @@ class DataService {
     func fetchAllWords() async -> [Word] {
         let stories = await fetchAllStories()
         return stories.compactMap { $0.words }.flatMap { $0 }
+    }
+    
+    // MARK: - Quran Words Operations (Offline)
+    
+    func fetchAllQuranWords() -> [QuranWord] {
+        return offlineDataService.loadQuranWords()
+    }
+    
+    func fetchQuranWord(id: String) -> QuranWord? {
+        return offlineDataService.getQuranWord(id: id)
+    }
+    
+    func searchQuranWords(query: String) -> [QuranWord] {
+        return offlineDataService.searchQuranWords(query: query)
+    }
+    
+    func isWordInQuranWords(_ arabicText: String) -> Bool {
+        return offlineDataService.isWordInQuranWords(arabicText)
     }
 
     func fetchBookmarkedWords() async -> [Word] {
@@ -533,8 +539,8 @@ class DataService {
 
         storyProgress.markWordAsLearned(wordId)
 
-        // Also update global vocabulary progress if we can fetch the word
-        if let quranWord = try? await firebaseService.fetchQuranWord(id: wordId) {
+        // Also update global vocabulary progress if we can fetch the word from offline bundle
+        if let quranWord = offlineDataService.getQuranWord(id: wordId) {
             await recordVocabularyLearned(quranWord)
         }
 
