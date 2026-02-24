@@ -1,0 +1,799 @@
+{
+  "metadata": {
+    "level": 5,
+    "phase": "Daily Life",
+    "theme": "Daily Actions",
+    "new_words_count": 20,
+    "review_words_count": 10,
+    "total_words": 30,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00289",
+      "word_00316",
+      "word_00324",
+      "word_00331",
+      "word_00342",
+      "word_00379",
+      "word_00424",
+      "word_00521",
+      "word_00529",
+      "word_00532",
+      "word_00548",
+      "word_00552",
+      "word_00556",
+      "word_00624",
+      "word_00634",
+      "word_00653",
+      "word_00713",
+      "word_00741",
+      "word_00753",
+      "word_00754"
+    ],
+    "review_word_ids": [
+      "word_00727",
+      "word_00007",
+      "word_00528",
+      "word_01617",
+      "word_00167",
+      "word_01273",
+      "word_00216",
+      "word_01948",
+      "word_00313",
+      "word_01910"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00289",
+      "arabicText": "يَقُولُ",
+      "englishMeaning": "say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يَقُولُ[V]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يقول",
+      "buckwalter": "yaquwlu",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 35,
+      "rank": 289
+    },
+    {
+      "id": "word_00316",
+      "arabicText": "ءَامَنَّا",
+      "englishMeaning": "We believed",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "ءَامَ[V] + نَّا[N]",
+        "grammaticalCase": null,
+        "lemma": "آمَنَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءامنا",
+      "buckwalter": "'aAman~aA",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 31,
+      "rank": 316
+    },
+    {
+      "id": "word_00324",
+      "arabicText": "أُوتُوا۟",
+      "englishMeaning": "were given",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أُوتُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "آتَى",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": true
+      },
+      "arabicWithoutDiacritics": "اوتوا۟",
+      "buckwalter": ">uwtuwA@",
+      "root": {
+        "arabic": "أتي",
+        "transliteration": "Aty"
+      },
+      "occurrenceCount": 31,
+      "rank": 324
+    },
+    {
+      "id": "word_00331",
+      "arabicText": "قُلِ",
+      "englishMeaning": "Say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "قُلِ[V]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قل",
+      "buckwalter": "quli",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 30,
+      "rank": 331
+    },
+    {
+      "id": "word_00342",
+      "arabicText": "وَيَقُولُونَ",
+      "englishMeaning": "And they say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "وَ[P] + يَقُولُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ويقولون",
+      "buckwalter": "wayaquwluwna",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 28,
+      "rank": 342
+    },
+    {
+      "id": "word_00379",
+      "arabicText": "ءَامَنَ",
+      "englishMeaning": "believed",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "ءَامَنَ[V]",
+        "grammaticalCase": null,
+        "lemma": "آمَنَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءامن",
+      "buckwalter": "'aAmana",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 26,
+      "rank": 379
+    },
+    {
+      "id": "word_00424",
+      "arabicText": "كَفَرُوٓا۟",
+      "englishMeaning": "disbelieve(d)",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كَفَرُ[V] + وٓا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "كَفَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كفروا۟",
+      "buckwalter": "kafaruw^A@",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 23,
+      "rank": 424
+    },
+    {
+      "id": "word_00521",
+      "arabicText": "تَتَّقُونَ",
+      "englishMeaning": "become righteous",
+      "morphology": {
+        "number": null,
+        "form": "8",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَتَّقُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "اتَّقَى",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تتقون",
+      "buckwalter": "tat~aquwna",
+      "root": {
+        "arabic": "وقي",
+        "transliteration": "wqy"
+      },
+      "occurrenceCount": 19,
+      "rank": 521
+    },
+    {
+      "id": "word_00529",
+      "arabicText": "يُؤْمِنُ",
+      "englishMeaning": "believes",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يُؤْمِنُ[V]",
+        "grammaticalCase": null,
+        "lemma": "آمَنَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يومن",
+      "buckwalter": "yu&ominu",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 18,
+      "rank": 529
+    },
+    {
+      "id": "word_00532",
+      "arabicText": "وَٱعْلَمُوٓا۟",
+      "englishMeaning": "and know",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "وَ[P] + ٱعْلَمُ[V] + وٓا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "عَلِمَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واعلموا۟",
+      "buckwalter": "wa{Eolamuw^A@",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 18,
+      "rank": 532
+    },
+    {
+      "id": "word_00548",
+      "arabicText": "كَفَرَ",
+      "englishMeaning": "disbelieved",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كَفَرَ[V]",
+        "grammaticalCase": null,
+        "lemma": "كَفَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كفر",
+      "buckwalter": "kafara",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 18,
+      "rank": 548
+    },
+    {
+      "id": "word_00552",
+      "arabicText": "يَتَّقُونَ",
+      "englishMeaning": "(become) righteous",
+      "morphology": {
+        "number": null,
+        "form": "8",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يَتَّقُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "اتَّقَى",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يتقون",
+      "buckwalter": "yat~aquwna",
+      "root": {
+        "arabic": "وقي",
+        "transliteration": "wqy"
+      },
+      "occurrenceCount": 18,
+      "rank": 552
+    },
+    {
+      "id": "word_00556",
+      "arabicText": "خَلَقْنَا",
+      "englishMeaning": "We created",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "خَلَقْ[V] + نَا[N]",
+        "grammaticalCase": null,
+        "lemma": "خَلَقَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "خلقنا",
+      "buckwalter": "xalaqonaA",
+      "root": {
+        "arabic": "خلق",
+        "transliteration": "khlq"
+      },
+      "occurrenceCount": 18,
+      "rank": 556
+    },
+    {
+      "id": "word_00624",
+      "arabicText": "كُلُوا۟",
+      "englishMeaning": "Eat",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كُلُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "أَكَلَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كلوا۟",
+      "buckwalter": "kuluwA@",
+      "root": {
+        "arabic": "أكل",
+        "transliteration": "Akl"
+      },
+      "occurrenceCount": 15,
+      "rank": 624
+    },
+    {
+      "id": "word_00634",
+      "arabicText": "ٱتَّخَذَ",
+      "englishMeaning": "has taken",
+      "morphology": {
+        "number": null,
+        "form": "8",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "ٱتَّخَذَ[V]",
+        "grammaticalCase": null,
+        "lemma": "اتَّخَذَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اتخذ",
+      "buckwalter": "{t~axa*a",
+      "root": {
+        "arabic": "أخذ",
+        "transliteration": "Akhdh"
+      },
+      "occurrenceCount": 15,
+      "rank": 634
+    },
+    {
+      "id": "word_00653",
+      "arabicText": "أَحْسَنَ",
+      "englishMeaning": "did good",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أَحْسَنَ[V]",
+        "grammaticalCase": null,
+        "lemma": "أَحْسَنَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "احسن",
+      "buckwalter": ">aHosana",
+      "root": {
+        "arabic": "حسن",
+        "transliteration": "hsn"
+      },
+      "occurrenceCount": 15,
+      "rank": 653
+    },
+    {
+      "id": "word_00713",
+      "arabicText": "أُوتِىَ",
+      "englishMeaning": "was given",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أُوتِىَ[V]",
+        "grammaticalCase": null,
+        "lemma": "آتَى",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": true
+      },
+      "arabicWithoutDiacritics": "اوتى",
+      "buckwalter": ">uwtiYa",
+      "root": {
+        "arabic": "أتي",
+        "transliteration": "Aty"
+      },
+      "occurrenceCount": 14,
+      "rank": 713
+    },
+    {
+      "id": "word_00741",
+      "arabicText": "أَدْرَىٰكَ",
+      "englishMeaning": "will make you know",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أَدْرَىٰ[V] + كَ[N]",
+        "grammaticalCase": null,
+        "lemma": "أَدْرَى",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ادرىاك",
+      "buckwalter": ">adoraY`ka",
+      "root": {
+        "arabic": "دري",
+        "transliteration": "dry"
+      },
+      "occurrenceCount": 13,
+      "rank": 741
+    },
+    {
+      "id": "word_00753",
+      "arabicText": "تَقُولُوا۟",
+      "englishMeaning": "say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَقُولُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تقولوا۟",
+      "buckwalter": "taquwluwA@",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 13,
+      "rank": 753
+    },
+    {
+      "id": "word_00754",
+      "arabicText": "يَفْعَلُونَ",
+      "englishMeaning": "(to) doing (it)",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يَفْعَلُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "فَعَلَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يفعلون",
+      "buckwalter": "yafoEaluwna",
+      "root": {
+        "arabic": "فعل",
+        "transliteration": "f`l"
+      },
+      "occurrenceCount": 13,
+      "rank": 754
+    },
+    {
+      "id": "word_00727",
+      "arabicText": "ٱلْمَدِينَةِ",
+      "englishMeaning": "the city",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مَدِينَةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مَدِينَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المدينة",
+      "buckwalter": "{lomadiynapi",
+      "root": {
+        "arabic": "مدن",
+        "transliteration": "mdn"
+      },
+      "occurrenceCount": 13,
+      "rank": 727
+    },
+    {
+      "id": "word_00007",
+      "arabicText": "لَا",
+      "englishMeaning": "no",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَا[P]",
+        "grammaticalCase": null,
+        "lemma": "لا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لا",
+      "buckwalter": "laA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 616,
+      "rank": 7
+    },
+    {
+      "id": "word_00528",
+      "arabicText": "قَوْمِهِۦ",
+      "englishMeaning": "his people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومهۦ",
+      "buckwalter": "qawomihi.",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 18,
+      "rank": 528
+    },
+    {
+      "id": "word_01617",
+      "arabicText": "صِرَٰطٌ",
+      "englishMeaning": "(is) the path",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "صِرَٰطٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "صِراط",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "صراط",
+      "buckwalter": "Sira`TN",
+      "root": {
+        "arabic": "صرط",
+        "transliteration": "srt"
+      },
+      "occurrenceCount": 6,
+      "rank": 1617
+    },
+    {
+      "id": "word_00167",
+      "arabicText": "تَعْلَمُونَ",
+      "englishMeaning": "[you] know",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَعْلَمُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "عَلِمَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تعلمون",
+      "buckwalter": "taEolamuwna",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 54,
+      "rank": 167
+    },
+    {
+      "id": "word_01273",
+      "arabicText": "ٱلْبَيْتِ",
+      "englishMeaning": "the House",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + بَيْتِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَيْت",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "البيت",
+      "buckwalter": "{lobayoti",
+      "root": {
+        "arabic": "بيت",
+        "transliteration": "byt"
+      },
+      "occurrenceCount": 8,
+      "rank": 1273
+    },
+    {
+      "id": "word_00216",
+      "arabicText": "قُل",
+      "englishMeaning": "Say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "قُل[V]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قل",
+      "buckwalter": "qul",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 45,
+      "rank": 216
+    },
+    {
+      "id": "word_01948",
+      "arabicText": "صِرَٰطِ",
+      "englishMeaning": "the Path",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "صِرَٰطِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "صِراط",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "صراط",
+      "buckwalter": "Sira`Ti",
+      "root": {
+        "arabic": "صرط",
+        "transliteration": "srt"
+      },
+      "occurrenceCount": 5,
+      "rank": 1948
+    },
+    {
+      "id": "word_00313",
+      "arabicText": "ٱلْقَوْمِ",
+      "englishMeaning": "the people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + قَوْمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "القوم",
+      "buckwalter": "{loqawomi",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 31,
+      "rank": 313
+    },
+    {
+      "id": "word_01910",
+      "arabicText": "ٱلْمِهَادُ",
+      "englishMeaning": "[the] resting-place",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مِهَادُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مِهاد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المهاد",
+      "buckwalter": "{lomihaAdu",
+      "root": {
+        "arabic": "مهد",
+        "transliteration": "mhd"
+      },
+      "occurrenceCount": 5,
+      "rank": 1910
+    }
+  ]
+}

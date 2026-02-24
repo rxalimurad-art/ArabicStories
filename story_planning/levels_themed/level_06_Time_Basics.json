@@ -1,0 +1,799 @@
+{
+  "metadata": {
+    "level": 6,
+    "phase": "Daily Life",
+    "theme": "Time Basics",
+    "new_words_count": 20,
+    "review_words_count": 10,
+    "total_words": 30,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00018",
+      "word_00066",
+      "word_00100",
+      "word_00109",
+      "word_00118",
+      "word_00130",
+      "word_00150",
+      "word_00162",
+      "word_00170",
+      "word_00181",
+      "word_00217",
+      "word_00222",
+      "word_00264",
+      "word_00323",
+      "word_00330",
+      "word_00340",
+      "word_00353",
+      "word_00354",
+      "word_00356",
+      "word_00374"
+    ],
+    "review_word_ids": [
+      "word_00556",
+      "word_00521",
+      "word_00043",
+      "word_00753",
+      "word_00106",
+      "word_00624",
+      "word_00216",
+      "word_00046",
+      "word_00424",
+      "word_00092"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00018",
+      "arabicText": "ثُمَّ",
+      "englishMeaning": "then",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "ثُمَّ[P]",
+        "grammaticalCase": null,
+        "lemma": "ثُمّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ثم",
+      "buckwalter": "vum~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 337,
+      "rank": 18
+    },
+    {
+      "id": "word_00066",
+      "arabicText": "يَوْمَ",
+      "englishMeaning": "(on the) Day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَوْمَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يوم",
+      "buckwalter": "yawoma",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 133,
+      "rank": 66
+    },
+    {
+      "id": "word_00100",
+      "arabicText": "بَعْدِ",
+      "englishMeaning": "after",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَعْدِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَعْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بعد",
+      "buckwalter": "baEodi",
+      "root": {
+        "arabic": "بعد",
+        "transliteration": "b`d"
+      },
+      "occurrenceCount": 82,
+      "rank": 100
+    },
+    {
+      "id": "word_00109",
+      "arabicText": "فَلَمَّا",
+      "englishMeaning": "then when",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + لَمَّا[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فلما",
+      "buckwalter": "falam~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 79,
+      "rank": 109
+    },
+    {
+      "id": "word_00118",
+      "arabicText": "فَإِذَا",
+      "englishMeaning": "Then when",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + إِذَا[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فاذا",
+      "buckwalter": "fa<i*aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 76,
+      "rank": 118
+    },
+    {
+      "id": "word_00130",
+      "arabicText": "قَبْلُ",
+      "englishMeaning": "before",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلُ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبل",
+      "buckwalter": "qabolu",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 70,
+      "rank": 130
+    },
+    {
+      "id": "word_00150",
+      "arabicText": "يَوْمَئِذٍ",
+      "englishMeaning": "that day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "يَوْمَ[N] + ئِذٍ[N]",
+        "grammaticalCase": null,
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يوميذ",
+      "buckwalter": "yawoma}i*K",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 59,
+      "rank": 150
+    },
+    {
+      "id": "word_00162",
+      "arabicText": "ٱلْءَاخِرَةِ",
+      "englishMeaning": "the Hereafter",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + ءَاخِرَةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آخِر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الءاخرة",
+      "buckwalter": "{lo'aAxirapi",
+      "root": {
+        "arabic": "أخر",
+        "transliteration": "Akhr"
+      },
+      "occurrenceCount": 55,
+      "rank": 162
+    },
+    {
+      "id": "word_00170",
+      "arabicText": "بَعْدَ",
+      "englishMeaning": "after",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَعْدَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بَعْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بعد",
+      "buckwalter": "baEoda",
+      "root": {
+        "arabic": "بعد",
+        "transliteration": "b`d"
+      },
+      "occurrenceCount": 54,
+      "rank": 170
+    },
+    {
+      "id": "word_00181",
+      "arabicText": "فَمَن",
+      "englishMeaning": "then whoever",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + مَن[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فمن",
+      "buckwalter": "faman",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 51,
+      "rank": 181
+    },
+    {
+      "id": "word_00217",
+      "arabicText": "أَفَلَا",
+      "englishMeaning": "Then will not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَ[N] + فَ[P] + لَا[P]",
+        "grammaticalCase": null,
+        "lemma": "أ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "افلا",
+      "buckwalter": ">afalaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 45,
+      "rank": 217
+    },
+    {
+      "id": "word_00222",
+      "arabicText": "وَيَوْمَ",
+      "englishMeaning": "and (on the) Day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + يَوْمَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ويوم",
+      "buckwalter": "wayawoma",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 44,
+      "rank": 222
+    },
+    {
+      "id": "word_00264",
+      "arabicText": "ٱلْيَوْمَ",
+      "englishMeaning": "today",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + يَوْمَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اليوم",
+      "buckwalter": "{loyawoma",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 38,
+      "rank": 264
+    },
+    {
+      "id": "word_00323",
+      "arabicText": "يَوْمِ",
+      "englishMeaning": "(of the) Day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَوْمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يوم",
+      "buckwalter": "yawomi",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 31,
+      "rank": 323
+    },
+    {
+      "id": "word_00330",
+      "arabicText": "ٱلَّيْلِ",
+      "englishMeaning": "of the night",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلَّ[P] + يْلِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "لَيْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اليل",
+      "buckwalter": "{l~ayoli",
+      "root": {
+        "arabic": "ليل",
+        "transliteration": "lyl"
+      },
+      "occurrenceCount": 30,
+      "rank": 330
+    },
+    {
+      "id": "word_00340",
+      "arabicText": "قَبْلِهِمْ",
+      "englishMeaning": "before them",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبلهم",
+      "buckwalter": "qabolihimo",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 29,
+      "rank": 340
+    },
+    {
+      "id": "word_00353",
+      "arabicText": "فَهُوَ",
+      "englishMeaning": "then it",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + هُوَ[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فهو",
+      "buckwalter": "fahuwa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 353
+    },
+    {
+      "id": "word_00354",
+      "arabicText": "يَوْمٍ",
+      "englishMeaning": "(of) a day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَوْمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يوم",
+      "buckwalter": "yawomK",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 28,
+      "rank": 354
+    },
+    {
+      "id": "word_00356",
+      "arabicText": "قَبْلِكَ",
+      "englishMeaning": "before you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلِ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبلك",
+      "buckwalter": "qabolika",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 28,
+      "rank": 356
+    },
+    {
+      "id": "word_00374",
+      "arabicText": "فَسَوْفَ",
+      "englishMeaning": "then soon",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + سَوْفَ[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فسوف",
+      "buckwalter": "fasawofa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 26,
+      "rank": 374
+    },
+    {
+      "id": "word_00556",
+      "arabicText": "خَلَقْنَا",
+      "englishMeaning": "We created",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "خَلَقْ[V] + نَا[N]",
+        "grammaticalCase": null,
+        "lemma": "خَلَقَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "خلقنا",
+      "buckwalter": "xalaqonaA",
+      "root": {
+        "arabic": "خلق",
+        "transliteration": "khlq"
+      },
+      "occurrenceCount": 18,
+      "rank": 556
+    },
+    {
+      "id": "word_00521",
+      "arabicText": "تَتَّقُونَ",
+      "englishMeaning": "become righteous",
+      "morphology": {
+        "number": null,
+        "form": "8",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَتَّقُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "اتَّقَى",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تتقون",
+      "buckwalter": "tat~aquwna",
+      "root": {
+        "arabic": "وقي",
+        "transliteration": "wqy"
+      },
+      "occurrenceCount": 19,
+      "rank": 521
+    },
+    {
+      "id": "word_00043",
+      "arabicText": "قَالُوا۟",
+      "englishMeaning": "they (will) say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "قَالُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قالوا۟",
+      "buckwalter": "qaAluwA@",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 173,
+      "rank": 43
+    },
+    {
+      "id": "word_00753",
+      "arabicText": "تَقُولُوا۟",
+      "englishMeaning": "say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَقُولُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تقولوا۟",
+      "buckwalter": "taquwluwA@",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 13,
+      "rank": 753
+    },
+    {
+      "id": "word_00106",
+      "arabicText": "يَعْلَمُونَ",
+      "englishMeaning": "they know",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يَعْلَمُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "عَلِمَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يعلمون",
+      "buckwalter": "yaEolamuwna",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 81,
+      "rank": 106
+    },
+    {
+      "id": "word_00624",
+      "arabicText": "كُلُوا۟",
+      "englishMeaning": "Eat",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كُلُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "أَكَلَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كلوا۟",
+      "buckwalter": "kuluwA@",
+      "root": {
+        "arabic": "أكل",
+        "transliteration": "Akl"
+      },
+      "occurrenceCount": 15,
+      "rank": 624
+    },
+    {
+      "id": "word_00216",
+      "arabicText": "قُل",
+      "englishMeaning": "Say",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "قُل[V]",
+        "grammaticalCase": null,
+        "lemma": "قالَ",
+        "posDescription": "فعل",
+        "tense": "Imperative",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قل",
+      "buckwalter": "qul",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 45,
+      "rank": 216
+    },
+    {
+      "id": "word_00046",
+      "arabicText": "كَفَرُوا۟",
+      "englishMeaning": "disbelieve[d]",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كَفَرُ[V] + وا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "كَفَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كفروا۟",
+      "buckwalter": "kafaruwA@",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 166,
+      "rank": 46
+    },
+    {
+      "id": "word_00424",
+      "arabicText": "كَفَرُوٓا۟",
+      "englishMeaning": "disbelieve(d)",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "كَفَرُ[V] + وٓا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "كَفَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كفروا۟",
+      "buckwalter": "kafaruw^A@",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 23,
+      "rank": 424
+    },
+    {
+      "id": "word_00092",
+      "arabicText": "يُؤْمِنُونَ",
+      "englishMeaning": "believe",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يُؤْمِنُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "آمَنَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يومنون",
+      "buckwalter": "yu&ominuwna",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 86,
+      "rank": 92
+    }
+  ]
+}

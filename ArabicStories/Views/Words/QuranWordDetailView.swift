@@ -24,11 +24,6 @@ struct QuranWordDetailView: View {
                     // Morphology Section
                     morphologySection
                     
-                    // Example Section (if available)
-                    if word.exampleArabic != nil || word.exampleEnglish != nil {
-                        exampleSection
-                    }
-                    
                     // Tags Section (if available)
                     if let tags = word.tags, !tags.isEmpty {
                         tagsSection

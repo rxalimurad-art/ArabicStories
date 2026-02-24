@@ -91,6 +91,7 @@ struct StoryReaderView: View {
                         totalCount: viewModel.totalVocabularyCount,
                         isNightMode: viewModel.isNightMode
                     )
+                    .id(wordsLoadedRefresh)  // Force refresh when words are learned
                     .padding(.horizontal)
                 }
                 
@@ -115,6 +116,10 @@ struct StoryReaderView: View {
                                         viewModel.resetProgress()
                                     }
                                 )
+                                .onAppear {
+                                    // Auto-learn words when segment appears
+                                    viewModel.autoLearnWordsForCurrentSegment()
+                                }
                             } else {
                                 ContentUnavailableView("No Content", systemImage: "doc.text")
                             }
@@ -126,6 +131,10 @@ struct StoryReaderView: View {
                                     viewModel: viewModel,
                                     refreshTrigger: wordsLoadedRefresh
                                 )
+                                .onAppear {
+                                    // Auto-learn words when segment appears
+                                    viewModel.autoLearnWordsForCurrentSegment()
+                                }
                             } else {
                                 ContentUnavailableView("No Content", systemImage: "doc.text")
                             }
@@ -227,6 +236,10 @@ struct StoryReaderView: View {
             viewModel.startReadingSession() // Start tracking reading time
             // Set up callback for when generic words load
             viewModel.onGenericWordsLoaded = {
+                wordsLoadedRefresh.toggle()
+            }
+            // Set up callback for when vocabulary progress updates
+            viewModel.vocabularyProgressUpdated = {
                 wordsLoadedRefresh.toggle()
             }
         }

@@ -187,70 +187,62 @@ struct ContinueReadingCard: View {
     
     var body: some View {
         NavigationLink(value: story) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    HStack(spacing: 6) {
+            HStack(spacing: 12) {
+                // Story Cover
+                StoryCoverImage(url: story.coverImageURL)
+                    .frame(width: 50, height: 65)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    // Continue Reading badge
+                    HStack(spacing: 4) {
                         Image(systemName: "arrow.clockwise")
-                            .font(.caption.weight(.semibold))
+                            .font(.caption2)
                         Text("Continue Reading")
-                            .font(.caption.weight(.semibold))
+                            .font(.caption2.weight(.semibold))
                     }
                     .foregroundStyle(Color.hikayaTeal)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Color.hikayaTeal.opacity(0.15))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.hikayaTeal.opacity(0.12))
                     .clipShape(Capsule())
                     
-                    Spacer()
+                    Text(story.title)
+                        .font(.subheadline.weight(.semibold))
+                        .lineLimit(1)
                     
-                    Text("\(Int(readingProgress * 100))%")
-                        .font(.caption.weight(.medium))
+                    Text(story.author)
+                        .font(.caption2)
                         .foregroundStyle(.secondary)
-                }
-                
-                HStack(spacing: 12) {
-                    // Story Cover
-                    StoryCoverImage(url: story.coverImageURL)
-                        .frame(width: 60, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(story.title)
-                            .font(.subheadline.weight(.semibold))
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
-                        
-                        Text(story.author)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        
-                        Spacer()
-                        
-                        // Progress bar
-                        GeometryReader { geometry in
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 3)
-                                    .fill(Color(.systemGray5))
-                                    .frame(height: 6)
-                                
-                                RoundedRectangle(cornerRadius: 3)
-                                    .fill(Color.hikayaTeal)
-                                    .frame(width: geometry.size.width * readingProgress, height: 6)
-                            }
+                    // Progress bar
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color(.systemGray5))
+                                .frame(height: 4)
+                            
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color.hikayaTeal)
+                                .frame(width: geometry.size.width * readingProgress, height: 4)
                         }
-                        .frame(height: 6)
                     }
-                    
-                    Spacer()
-                    
-                    Image(systemName: "chevron.right")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                    .frame(height: 4)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                // Progress percentage
+                Text("\(Int(readingProgress * 100))%")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(Color.hikayaTeal)
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
             }
-            .padding()
+            .padding(12)
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
         }
         .buttonStyle(.plain)
@@ -695,33 +687,30 @@ struct StoryCoverImage: View {
     let url: String?
     
     var body: some View {
-        Group {
-            if let urlString = url,
-               let url = URL(string: urlString) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        skeleton
-                    case .success(let image):
+        GeometryReader { geometry in
+            Group {
+                if let urlString = url,
+                   let url = URL(string: urlString) {
+                    CachedAsyncImage(url: url) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                    case .failure:
-                        placeholder
-                    @unknown default:
-                        placeholder
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipped()
+                    } placeholder: {
+                        skeleton
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                     }
+                } else {
+                    placeholder
+                        .frame(width: geometry.size.width, height: geometry.size.height)
                 }
-            } else {
-                placeholder
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .clipped()
     }
     
     private var skeleton: some View {
-        RoundedRectangle(cornerRadius: 16)
+        Rectangle()
             .fill(Color(.systemGray5))
             .shimmering()
     }
@@ -735,7 +724,7 @@ struct StoryCoverImage: View {
             )
             
             Image(systemName: "book.closed")
-                .font(.system(size: 40))
+                .font(.system(size: 32))
                 .foregroundStyle(Color.hikayaTeal.opacity(0.5))
         }
     }

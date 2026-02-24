@@ -1,0 +1,509 @@
+{
+  "metadata": {
+    "level": 1,
+    "theme": "Self & Pronouns",
+    "story_count": 10,
+    "format": "mixed",
+    "created": "2026-02-25"
+  },
+  "stories": [
+    {
+      "id": "story_l1_001",
+      "title": "The Lost Key",
+      "titleArabic": "المفتاح المفقود",
+      "storyDescription": "A story about patience and searching for what matters",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Ahmad was looking for something important. It was <b>فِى</b> (in) his house, but he couldn't find it.",
+          "linkedWordIds": ["word_00001"]
+        },
+        {
+          "index": 1,
+          "text": "He looked everywhere—from the kitchen <b>إِلَى</b> (to) the bedroom. <b>إِنَّ</b> (Indeed), it was lost!",
+          "linkedWordIds": ["word_00028", "word_00008"]
+        },
+        {
+          "index": 2,
+          "text": "His mother said, 'There is <b>لَا</b> (no) need to worry. The key is <b>عَلَىٰ</b> (on) the table.'",
+          "linkedWordIds": ["word_00007", "word_00017"]
+        },
+        {
+          "index": 3,
+          "text": "Ahmad smiled. <b>إِن</b> (if) you look carefully, you will find what you seek.",
+          "linkedWordIds": ["word_00027"]
+        },
+        {
+          "index": 4,
+          "text": "He learned that day: Never give up, <b>وَلَا</b> (and not) stop searching for what matters.",
+          "linkedWordIds": ["word_00009"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "In", "difficulty": 1},
+        {"id": "w2", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w3", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w4", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w5", "arabicText": "عَلَىٰ", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w6", "arabicText": "إِن", "englishMeaning": "if", "difficulty": 1},
+        {"id": "w7", "arabicText": "وَلَا", "englishMeaning": "and not", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_002",
+      "title": "The Garden",
+      "titleArabic": "الحديقة",
+      "storyDescription": "A story about nature and gratitude",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Little Sara walked <b>فِى</b> (in) the garden. She saw flowers <b>عَلَى</b> (on) every side.",
+          "linkedWordIds": ["word_00001", "word_00028"]
+        },
+        {
+          "index": 1,
+          "text": "The flowers were beautiful—from red roses <b>أَوْ</b> (or) white lilies.",
+          "linkedWordIds": ["word_00023"]
+        },
+        {
+          "index": 2,
+          "text": "<b>إِنَّ</b> (Indeed), the garden was full of colors. There was <b>لَا</b> (no) sadness there.",
+          "linkedWordIds": ["word_00008", "word_00007"]
+        },
+        {
+          "index": 3,
+          "text": "Sara picked one flower. She felt joy <b>بِهِۦ</b> (therewith) and smiled brightly.",
+          "linkedWordIds": ["word_00024"]
+        },
+        {
+          "index": 4,
+          "text": "Her father said, 'Everything beautiful comes <b>مِنَ</b> (from) Allah's mercy.'",
+          "linkedWordIds": ["word_00014"]
+        },
+        {
+          "index": 5,
+          "text": "Sara understood: We take <b>مِن</b> (from) nature, but we must also give back.",
+          "linkedWordIds": ["word_00005"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "In", "difficulty": 1},
+        {"id": "w2", "arabicText": "عَلَى", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w3", "arabicText": "أَوْ", "englishMeaning": "Or", "difficulty": 1},
+        {"id": "w4", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w5", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w6", "arabicText": "بِهِۦ", "englishMeaning": "therewith", "difficulty": 1},
+        {"id": "w7", "arabicText": "مِنَ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w8", "arabicText": "مِن", "englishMeaning": "from", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_003",
+      "title": "The Two Friends",
+      "titleArabic": "الصديقان",
+      "storyDescription": "A story about true friendship",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Omar and Khalid were friends. <b>إِنَّ</b> (Indeed), their friendship was strong.",
+          "linkedWordIds": ["word_00008"]
+        },
+        {
+          "index": 1,
+          "text": "One day, Omar was sad. He had <b>لَا</b> (no) reason to smile.",
+          "linkedWordIds": ["word_00007"]
+        },
+        {
+          "index": 2,
+          "text": "Khalid came to him. He sat <b>عَلَىٰ</b> (on) the chair beside Omar.",
+          "linkedWordIds": ["word_00017"]
+        },
+        {
+          "index": 3,
+          "text": "'What is <b>فِى</b> (in) your heart?' asked Khalid. 'Tell me everything.'",
+          "linkedWordIds": ["word_00001"]
+        },
+        {
+          "index": 4,
+          "text": "Omar shared his worries. He spoke <b>مِنَ</b> (from) his heart honestly.",
+          "linkedWordIds": ["word_00014"]
+        },
+        {
+          "index": 5,
+          "text": "Khalid listened. <b>وَلَا</b> (and not) once did he interrupt his friend.",
+          "linkedWordIds": ["word_00009"]
+        },
+        {
+          "index": 6,
+          "text": "They learned that day: A true friend listens <b>إِلَى</b> (to) you.",
+          "linkedWordIds": ["word_00028"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w2", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w3", "arabicText": "عَلَىٰ", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w4", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w5", "arabicText": "مِنَ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w6", "arabicText": "وَلَا", "englishMeaning": "and not", "difficulty": 1},
+        {"id": "w7", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_004",
+      "title": "The Rainy Day",
+      "titleArabic": "يوم ممطر",
+      "storyDescription": "A story about finding joy indoors",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "It was raining outside. The water fell <b>مِن</b> (from) the sky gently.",
+          "linkedWordIds": ["word_00005"]
+        },
+        {
+          "index": 1,
+          "text": "The children stayed <b>فِى</b> (in) the house. There was <b>لَا</b> (no) place to play outside.",
+          "linkedWordIds": ["word_00001", "word_00007"]
+        },
+        {
+          "index": 2,
+          "text": "<b>إِنَّ</b> (Indeed), they were bored at first. But then they found a game.",
+          "linkedWordIds": ["word_00008"]
+        },
+        {
+          "index": 3,
+          "text": "They played together. Joy came <b>مِنْ</b> (from) their hearts, <b>لَا</b> (no) toys needed.",
+          "linkedWordIds": ["word_00025", "word_00007"]
+        },
+        {
+          "index": 4,
+          "text": "Sometimes, happiness is <b>فِيهَا</b> (therein)—hidden <b>فِى</b> (in) simple moments.",
+          "linkedWordIds": ["word_00036", "word_00001"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "مِن", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w2", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w3", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w4", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w5", "arabicText": "مِنْ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w6", "arabicText": "فِيهَا", "englishMeaning": "therein", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_005",
+      "title": "The Wise Teacher",
+      "titleArabic": "المعلم الحكيم",
+      "storyDescription": "A story about learning and wisdom",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "The teacher stood <b>عَلَىٰ</b> (on) the platform. His students sat before him.",
+          "linkedWordIds": ["word_00017"]
+        },
+        {
+          "index": 1,
+          "text": "He said, '<b>إِنَّ</b> (Indeed), knowledge comes <b>مِن</b> (from) asking questions.'",
+          "linkedWordIds": ["word_00008", "word_00005"]
+        },
+        {
+          "index": 2,
+          "text": "A young boy raised his hand. '<b>أَن</b> (To) learn, must we always ask?'",
+          "linkedWordIds": ["word_00013"]
+        },
+        {
+          "index": 3,
+          "text": "The teacher smiled. 'Yes, <b>إِلَّا</b> (except) when you already know the answer.'",
+          "linkedWordIds": ["word_00011"]
+        },
+        {
+          "index": 4,
+          "text": "Another student asked, 'Is there <b>لَا</b> (no) limit to what we can learn?'",
+          "linkedWordIds": ["word_00007"]
+        },
+        {
+          "index": 5,
+          "text": "'Knowledge is vast,' he replied. 'It is <b>فِى</b> (in) books, <b>أَوْ</b> (or) in experience.'",
+          "linkedWordIds": ["word_00001", "word_00023"]
+        },
+        {
+          "index": 6,
+          "text": "'We learn <b>مِنَ</b> (from) our mistakes, <b>وَلَا</b> (and not) just from success.'",
+          "linkedWordIds": ["word_00014", "word_00009"]
+        },
+        {
+          "index": 7,
+          "text": "The students listened well. They knew wisdom was <b>عَلَى</b> (to) those who seek it.",
+          "linkedWordIds": ["word_00028"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "عَلَىٰ", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w2", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w3", "arabicText": "مِن", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w4", "arabicText": "أَن", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w5", "arabicText": "إِلَّا", "englishMeaning": "except", "difficulty": 1},
+        {"id": "w6", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w7", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w8", "arabicText": "أَوْ", "englishMeaning": "Or", "difficulty": 1},
+        {"id": "w9", "arabicText": "مِنَ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w10", "arabicText": "وَلَا", "englishMeaning": "and not", "difficulty": 1},
+        {"id": "w11", "arabicText": "عَلَى", "englishMeaning": "to", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_006",
+      "title": "The Golden Box",
+      "titleArabic": "الصندوق الذهبي",
+      "storyDescription": "A story about family heritage",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Ali found a box <b>فِى</b> (in) his grandmother's attic. It was old but beautiful.",
+          "linkedWordIds": ["word_00001"]
+        },
+        {
+          "index": 1,
+          "text": "<b>إِنَّ</b> (Indeed), he was curious. What was <b>فِيهَا</b> (therein)?",
+          "linkedWordIds": ["word_00008", "word_00036"]
+        },
+        {
+          "index": 2,
+          "text": "He opened it carefully. Inside were letters <b>مِن</b> (from) many years ago.",
+          "linkedWordIds": ["word_00005"]
+        },
+        {
+          "index": 3,
+          "text": "The letters told stories <b>عَلَى</b> (to) him about his family's past.",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 4,
+          "text": "<b>وَمَا</b> (but not) one letter was sad. All spoke <b>مِنَ</b> (from) love and hope.",
+          "linkedWordIds": ["word_00012", "word_00014"]
+        },
+        {
+          "index": 5,
+          "text": "Ali learned: Our history lives <b>فِى</b> (in) stories passed <b>إِلَى</b> (to) us.",
+          "linkedWordIds": ["word_00001", "word_00028"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w2", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w3", "arabicText": "فِيهَا", "englishMeaning": "therein", "difficulty": 1},
+        {"id": "w4", "arabicText": "مِن", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w5", "arabicText": "عَلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w6", "arabicText": "وَمَا", "englishMeaning": "but not", "difficulty": 1},
+        {"id": "w7", "arabicText": "مِنَ", "englishMeaning": "from", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_007",
+      "title": "The Kind Stranger",
+      "titleArabic": "الغريب الطيب",
+      "storyDescription": "A story about helping others",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Fatima was lost <b>فِى</b> (in) the big city. She felt scared and alone.",
+          "linkedWordIds": ["word_00001"]
+        },
+        {
+          "index": 1,
+          "text": "An old woman approached her. '<b>إِن</b> (if) you need help, I am here,' she said kindly.",
+          "linkedWordIds": ["word_00027"]
+        },
+        {
+          "index": 2,
+          "text": "Fatima asked, 'Can you show me the way <b>إِلَى</b> (to) the mosque?'",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 3,
+          "text": "The woman smiled. 'Come with me. It is <b>لَا</b> (no) trouble at all.'",
+          "linkedWordIds": ["word_00007"]
+        },
+        {
+          "index": 4,
+          "text": "As they walked, she shared wisdom. 'Kindness comes <b>مِنْ</b> (from) the heart.'",
+          "linkedWordIds": ["word_00025"]
+        },
+        {
+          "index": 5,
+          "text": "'<b>إِنَّ</b> (Indeed), when we help others, Allah rewards <b>لَهُمْ</b> (to them).'",
+          "linkedWordIds": ["word_00008", "word_00033"]
+        },
+        {
+          "index": 6,
+          "text": "Fatima was grateful. She learned to be kind <b>إِلَى</b> (to) everyone she meets.",
+          "linkedWordIds": ["word_00028"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w2", "arabicText": "إِن", "englishMeaning": "if", "difficulty": 1},
+        {"id": "w3", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w4", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w5", "arabicText": "مِنْ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w6", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w7", "arabicText": "لَهُمْ", "englishMeaning": "to them", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_008",
+      "title": "The New Student",
+      "titleArabic": "التلميذ الجديد",
+      "storyDescription": "A story about welcoming others",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "Yusuf was new <b>فِى</b> (in) the school. He knew <b>لَا</b> (no) one there.",
+          "linkedWordIds": ["word_00001", "word_00007"]
+        },
+        {
+          "index": 1,
+          "text": "He sat alone <b>عَلَىٰ</b> (on) a bench, watching others play.",
+          "linkedWordIds": ["word_00017"]
+        },
+        {
+          "index": 2,
+          "text": "A boy came <b>إِلَى</b> (to) him. 'I am Sami,' he said with a smile.",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 3,
+          "text": "'<b>إِن</b> (if) you want, you can play with us,' Sami offered kindly.",
+          "linkedWordIds": ["word_00027"]
+        },
+        {
+          "index": 4,
+          "text": "Yusuf felt happy. <b>إِنَّ</b> (Indeed), a small kindness can change everything.",
+          "linkedWordIds": ["word_00008"]
+        },
+        {
+          "index": 5,
+          "text": "They became friends. Yusuf was <b>لَا</b> (no) longer alone.",
+          "linkedWordIds": ["word_00007"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w2", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w3", "arabicText": "عَلَىٰ", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w4", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w5", "arabicText": "إِن", "englishMeaning": "if", "difficulty": 1},
+        {"id": "w6", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_009",
+      "title": "The Special Gift",
+      "titleArabic": "الهدية المميزة",
+      "storyDescription": "A story about giving",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "It was Mother's Day. Hana wanted to give something special <b>إِلَى</b> (to) her mother.",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 1,
+          "text": "She looked <b>فِى</b> (in) her room for ideas. She had <b>لَا</b> (no) money to buy a gift.",
+          "linkedWordIds": ["word_00001", "word_00007"]
+        },
+        {
+          "index": 2,
+          "text": "Then she had an idea. She made a card <b>بِهِۦ</b> (therewith) all her love.",
+          "linkedWordIds": ["word_00024"]
+        },
+        {
+          "index": 3,
+          "text": "Her mother smiled when she saw it. <b>إِنَّ</b> (Indeed), it was the best gift.",
+          "linkedWordIds": ["word_00008"]
+        },
+        {
+          "index": 4,
+          "text": "'Gifts <b>مِن</b> (from) the heart are better than anything money can buy,' she said.",
+          "linkedWordIds": ["word_00005"]
+        },
+        {
+          "index": 5,
+          "text": "Hana learned that day: Love needs <b>لَا</b> (no) expensive price <b>إِلَّا</b> (except) sincerity.",
+          "linkedWordIds": ["word_00007", "word_00011"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w2", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w3", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w4", "arabicText": "بِهِۦ", "englishMeaning": "therewith", "difficulty": 1},
+        {"id": "w5", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w6", "arabicText": "مِن", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w7", "arabicText": "إِلَّا", "englishMeaning": "except", "difficulty": 1}
+      ]
+    },
+    {
+      "id": "story_l1_010",
+      "title": "The Brave Child",
+      "titleArabic": "الطفل الشجاع",
+      "storyDescription": "A story about courage",
+      "difficultyLevel": 1,
+      "mixedSegments": [
+        {
+          "index": 0,
+          "text": "There was a dark room <b>فِى</b> (in) the house. The children were afraid <b>مِنْ</b> (from) it.",
+          "linkedWordIds": ["word_00001", "word_00025"]
+        },
+        {
+          "index": 1,
+          "text": "<b>إِنَّ</b> (Indeed), there was <b>لَا</b> (no) monster there. But fear made them think so.",
+          "linkedWordIds": ["word_00008", "word_00007"]
+        },
+        {
+          "index": 2,
+          "text": "Little Noor decided to check. She walked <b>إِلَى</b> (to) the door slowly.",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 3,
+          "text": "She turned <b>عَلَى</b> (on) the light. <b>إِن</b> (if) you face your fears, they disappear.",
+          "linkedWordIds": ["word_00028", "word_00027"]
+        },
+        {
+          "index": 4,
+          "text": "The room was normal—<b>لَا</b> (no) monsters, <b>لَا</b> (no) ghosts, just a cozy space.",
+          "linkedWordIds": ["word_00007"]
+        },
+        {
+          "index": 5,
+          "text": "Her brothers were amazed. Courage brings light <b>إِلَى</b> (to) darkness.",
+          "linkedWordIds": ["word_00028"]
+        },
+        {
+          "index": 6,
+          "text": "<b>إِنَّ</b> (Indeed), bravery is <b>فِى</b> (in) every heart. We just need to find it.",
+          "linkedWordIds": ["word_00008", "word_00001"]
+        }
+      ],
+      "words": [
+        {"id": "w1", "arabicText": "فِى", "englishMeaning": "in", "difficulty": 1},
+        {"id": "w2", "arabicText": "مِنْ", "englishMeaning": "from", "difficulty": 1},
+        {"id": "w3", "arabicText": "إِنَّ", "englishMeaning": "Indeed", "difficulty": 1},
+        {"id": "w4", "arabicText": "لَا", "englishMeaning": "no", "difficulty": 1},
+        {"id": "w5", "arabicText": "إِلَى", "englishMeaning": "to", "difficulty": 1},
+        {"id": "w6", "arabicText": "عَلَى", "englishMeaning": "on", "difficulty": 1},
+        {"id": "w7", "arabicText": "إِن", "englishMeaning": "if", "difficulty": 1}
+      ]
+    }
+  ]
+}

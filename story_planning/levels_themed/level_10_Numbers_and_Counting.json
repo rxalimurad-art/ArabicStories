@@ -1,0 +1,799 @@
+{
+  "metadata": {
+    "level": 10,
+    "phase": "Daily Life",
+    "theme": "Numbers & Counting",
+    "new_words_count": 20,
+    "review_words_count": 10,
+    "total_words": 30,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00030",
+      "word_00034",
+      "word_00124",
+      "word_00145",
+      "word_00163",
+      "word_00200",
+      "word_00207",
+      "word_00211",
+      "word_00271",
+      "word_00287",
+      "word_00308",
+      "word_00346",
+      "word_00364",
+      "word_00368",
+      "word_00381",
+      "word_00398",
+      "word_00419",
+      "word_00423",
+      "word_00443",
+      "word_00453"
+    ],
+    "review_word_ids": [
+      "word_00280",
+      "word_00358",
+      "word_00410",
+      "word_00148",
+      "word_00140",
+      "word_00268",
+      "word_00571",
+      "word_00121",
+      "word_00327",
+      "word_00537"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00030",
+      "arabicText": "مَن",
+      "englishMeaning": "(are some) who",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَن[N]",
+        "grammaticalCase": null,
+        "lemma": "مَن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "man",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 223,
+      "rank": 30
+    },
+    {
+      "id": "word_00034",
+      "arabicText": "ٱلَّذِى",
+      "englishMeaning": "(of) the one who",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلَّذِى[N]",
+        "grammaticalCase": null,
+        "lemma": "الَّذِي",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الذى",
+      "buckwalter": "{l~a*iY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 216,
+      "rank": 34
+    },
+    {
+      "id": "word_00124",
+      "arabicText": "عَلِيمٌ",
+      "englishMeaning": "(is) All-Knowing",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَلِيمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَلِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عليم",
+      "buckwalter": "EaliymN",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 73,
+      "rank": 124
+    },
+    {
+      "id": "word_00145",
+      "arabicText": "ٱلْعَٰلَمِينَ",
+      "englishMeaning": "(of all) the worlds",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَٰلَمِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عالَم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العالمين",
+      "buckwalter": "{loEa`lamiyna",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 61,
+      "rank": 145
+    },
+    {
+      "id": "word_00163",
+      "arabicText": "قَلِيلًا",
+      "englishMeaning": "small",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَلِيلًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَلِيل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قليلا",
+      "buckwalter": "qaliylFA",
+      "root": {
+        "arabic": "قلل",
+        "transliteration": "qll"
+      },
+      "occurrenceCount": 55,
+      "rank": 163
+    },
+    {
+      "id": "word_00200",
+      "arabicText": "جَمِيعًا",
+      "englishMeaning": "all",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "جَمِيعًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "جَمِيع",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "جميعا",
+      "buckwalter": "jamiyEFA",
+      "root": {
+        "arabic": "جمع",
+        "transliteration": "jm`"
+      },
+      "occurrenceCount": 48,
+      "rank": 200
+    },
+    {
+      "id": "word_00207",
+      "arabicText": "كُلُّ",
+      "englishMeaning": "all",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "كُلُّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كُلّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كل",
+      "buckwalter": "kul~u",
+      "root": {
+        "arabic": "كلل",
+        "transliteration": "kll"
+      },
+      "occurrenceCount": 47,
+      "rank": 207
+    },
+    {
+      "id": "word_00211",
+      "arabicText": "ٱلْعَزِيزُ",
+      "englishMeaning": "the All-Mighty",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَزِيزُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَزِيز",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العزيز",
+      "buckwalter": "{loEaziyzu",
+      "root": {
+        "arabic": "عزز",
+        "transliteration": "`zz"
+      },
+      "occurrenceCount": 46,
+      "rank": 211
+    },
+    {
+      "id": "word_00271",
+      "arabicText": "بَعْضٍ",
+      "englishMeaning": "some (others)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بَعْضٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَعْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بعض",
+      "buckwalter": "baEoDK",
+      "root": {
+        "arabic": "بعض",
+        "transliteration": "b`d"
+      },
+      "occurrenceCount": 37,
+      "rank": 271
+    },
+    {
+      "id": "word_00287",
+      "arabicText": "حَكِيمٌ",
+      "englishMeaning": "All-Wise",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "حَكِيمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "حَكِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "حكيم",
+      "buckwalter": "HakiymN",
+      "root": {
+        "arabic": "حكم",
+        "transliteration": "hkm"
+      },
+      "occurrenceCount": 35,
+      "rank": 287
+    },
+    {
+      "id": "word_00308",
+      "arabicText": "ٱلْحَكِيمُ",
+      "englishMeaning": "the All-Wise",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + حَكِيمُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "حَكِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الحكيم",
+      "buckwalter": "{loHakiymu",
+      "root": {
+        "arabic": "حكم",
+        "transliteration": "hkm"
+      },
+      "occurrenceCount": 33,
+      "rank": 308
+    },
+    {
+      "id": "word_00346",
+      "arabicText": "ٱلْعَلِيمُ",
+      "englishMeaning": "(are) the All-Knowing",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَلِيمُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَلِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العليم",
+      "buckwalter": "{loEaliymu",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 28,
+      "rank": 346
+    },
+    {
+      "id": "word_00364",
+      "arabicText": "أَوْلِيَآءَ",
+      "englishMeaning": "(as) allies",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَوْلِيَآءَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "وَلِيّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اولياء",
+      "buckwalter": ">awoliyaA^'a",
+      "root": {
+        "arabic": "ولي",
+        "transliteration": "wly"
+      },
+      "occurrenceCount": 27,
+      "rank": 364
+    },
+    {
+      "id": "word_00368",
+      "arabicText": "عَلِيمٌۢ",
+      "englishMeaning": "(is) All-Knower",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَلِيمٌۢ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَلِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عليمۢ",
+      "buckwalter": "EaliymN[",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 27,
+      "rank": 368
+    },
+    {
+      "id": "word_00381",
+      "arabicText": "ٱلْحَمْدُ",
+      "englishMeaning": "All praises and thanks",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + حَمْدُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "حَمْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الحمد",
+      "buckwalter": "{loHamodu",
+      "root": {
+        "arabic": "حمد",
+        "transliteration": "hmd"
+      },
+      "occurrenceCount": 26,
+      "rank": 381
+    },
+    {
+      "id": "word_00398",
+      "arabicText": "مَّنْ",
+      "englishMeaning": "(are some) who",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَّنْ[N]",
+        "grammaticalCase": null,
+        "lemma": "مَن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "m~ano",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 398
+    },
+    {
+      "id": "word_00419",
+      "arabicText": "أَجْمَعِينَ",
+      "englishMeaning": "all together",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَجْمَعِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَجْمَع",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اجمعين",
+      "buckwalter": ">ajomaEiyna",
+      "root": {
+        "arabic": "جمع",
+        "transliteration": "jm`"
+      },
+      "occurrenceCount": 23,
+      "rank": 419
+    },
+    {
+      "id": "word_00423",
+      "arabicText": "عَزِيزٌ",
+      "englishMeaning": "(is) All-Mighty",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَزِيزٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَزِيز",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عزيز",
+      "buckwalter": "EaziyzN",
+      "root": {
+        "arabic": "عزز",
+        "transliteration": "`zz"
+      },
+      "occurrenceCount": 23,
+      "rank": 423
+    },
+    {
+      "id": "word_00443",
+      "arabicText": "كُلٌّ",
+      "englishMeaning": "All",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "كُلٌّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كُلّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كل",
+      "buckwalter": "kul~N",
+      "root": {
+        "arabic": "كلل",
+        "transliteration": "kll"
+      },
+      "occurrenceCount": 22,
+      "rank": 443
+    },
+    {
+      "id": "word_00453",
+      "arabicText": "عَلِيمًا",
+      "englishMeaning": "All-Knowing",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَلِيمًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَلِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عليما",
+      "buckwalter": "EaliymFA",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 22,
+      "rank": 453
+    },
+    {
+      "id": "word_00280",
+      "arabicText": "صَٰلِحًا",
+      "englishMeaning": "righteous deeds",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "صَٰلِحًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "صالِح",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "صالحا",
+      "buckwalter": "Sa`liHFA",
+      "root": {
+        "arabic": "صلح",
+        "transliteration": "slh"
+      },
+      "occurrenceCount": 36,
+      "rank": 280
+    },
+    {
+      "id": "word_00358",
+      "arabicText": "عِلْمٍ",
+      "englishMeaning": "(any) knowledge",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "عِلْمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عِلْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "علم",
+      "buckwalter": "EilomK",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 27,
+      "rank": 358
+    },
+    {
+      "id": "word_00410",
+      "arabicText": "ٱلظَّٰلِمُونَ",
+      "englishMeaning": "(are) the wrongdoers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + ظَّٰلِمُونَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "ظالِم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الظالمون",
+      "buckwalter": "{lZ~a`limuwna",
+      "root": {
+        "arabic": "ظلم",
+        "transliteration": "zlm"
+      },
+      "occurrenceCount": 24,
+      "rank": 410
+    },
+    {
+      "id": "word_00148",
+      "arabicText": "ٱلصَّٰلِحَٰتِ",
+      "englishMeaning": "[the] righteous deeds",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + صَّٰلِحَٰتِ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "صالِحَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الصالحات",
+      "buckwalter": "{lS~a`liHa`ti",
+      "root": {
+        "arabic": "صلح",
+        "transliteration": "slh"
+      },
+      "occurrenceCount": 59,
+      "rank": 148
+    },
+    {
+      "id": "word_00140",
+      "arabicText": "ٱلظَّٰلِمِينَ",
+      "englishMeaning": "the wrongdoers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + ظَّٰلِمِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ظالِم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الظالمين",
+      "buckwalter": "{lZ~a`limiyna",
+      "root": {
+        "arabic": "ظلم",
+        "transliteration": "zlm"
+      },
+      "occurrenceCount": 64,
+      "rank": 140
+    },
+    {
+      "id": "word_00268",
+      "arabicText": "ٱلْحَيَوٰةِ",
+      "englishMeaning": "the life",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + حَيَوٰةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "حَياة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الحيواة",
+      "buckwalter": "{loHayaw`pi",
+      "root": {
+        "arabic": "حيي",
+        "transliteration": "hyy"
+      },
+      "occurrenceCount": 37,
+      "rank": 268
+    },
+    {
+      "id": "word_00571",
+      "arabicText": "ٱلصَّٰدِقِينَ",
+      "englishMeaning": "the truthful",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + صَّٰدِقِينَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "صادِق",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الصادقين",
+      "buckwalter": "{lS~a`diqiyna",
+      "root": {
+        "arabic": "صدق",
+        "transliteration": "sdq"
+      },
+      "occurrenceCount": 17,
+      "rank": 571
+    },
+    {
+      "id": "word_00121",
+      "arabicText": "بِٱلْحَقِّ",
+      "englishMeaning": "with the truth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱلْ[P] + حَقِّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "حَقّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالحق",
+      "buckwalter": "bi{loHaq~i",
+      "root": {
+        "arabic": "حقق",
+        "transliteration": "hqq"
+      },
+      "occurrenceCount": 74,
+      "rank": 121
+    },
+    {
+      "id": "word_00327",
+      "arabicText": "ٱلْمُحْسِنِينَ",
+      "englishMeaning": "the good-doers (in reward)",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مُحْسِنِينَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "مُحْسِن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المحسنين",
+      "buckwalter": "{lomuHosiniyna",
+      "root": {
+        "arabic": "حسن",
+        "transliteration": "hsn"
+      },
+      "occurrenceCount": 30,
+      "rank": 327
+    },
+    {
+      "id": "word_00537",
+      "arabicText": "حَسَنًا",
+      "englishMeaning": "good",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "حَسَنًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "حَسَن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "حسنا",
+      "buckwalter": "HasanFA",
+      "root": {
+        "arabic": "حسن",
+        "transliteration": "hsn"
+      },
+      "occurrenceCount": 18,
+      "rank": 537
+    }
+  ]
+}

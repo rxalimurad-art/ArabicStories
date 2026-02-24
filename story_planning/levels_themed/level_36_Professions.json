@@ -1,0 +1,5219 @@
+{
+  "metadata": {
+    "level": 36,
+    "phase": "Complex Expression",
+    "theme": "Professions",
+    "new_words_count": 120,
+    "review_words_count": 80,
+    "total_words": 200,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00133",
+      "word_00144",
+      "word_00156",
+      "word_00164",
+      "word_00165",
+      "word_00177",
+      "word_00179",
+      "word_00185",
+      "word_00192",
+      "word_00193",
+      "word_00195",
+      "word_00196",
+      "word_00202",
+      "word_00209",
+      "word_00219",
+      "word_00221",
+      "word_00227",
+      "word_00230",
+      "word_00236",
+      "word_00238",
+      "word_00239",
+      "word_00240",
+      "word_00243",
+      "word_00252",
+      "word_00258",
+      "word_00263",
+      "word_00266",
+      "word_00269",
+      "word_00282",
+      "word_00288",
+      "word_00290",
+      "word_00291",
+      "word_00293",
+      "word_00297",
+      "word_00298",
+      "word_00302",
+      "word_00303",
+      "word_00304",
+      "word_00310",
+      "word_00320",
+      "word_00322",
+      "word_00334",
+      "word_00336",
+      "word_00343",
+      "word_00349",
+      "word_00351",
+      "word_00352",
+      "word_00360",
+      "word_00361",
+      "word_00370",
+      "word_00371",
+      "word_00373",
+      "word_00377",
+      "word_00382",
+      "word_00383",
+      "word_00384",
+      "word_00386",
+      "word_00390",
+      "word_00392",
+      "word_00393",
+      "word_00395",
+      "word_00399",
+      "word_00402",
+      "word_00406",
+      "word_00413",
+      "word_00416",
+      "word_00422",
+      "word_00431",
+      "word_00435",
+      "word_00437",
+      "word_00438",
+      "word_00440",
+      "word_00441",
+      "word_00445",
+      "word_00446",
+      "word_00447",
+      "word_00455",
+      "word_00456",
+      "word_00460",
+      "word_00466",
+      "word_00471",
+      "word_00473",
+      "word_00474",
+      "word_00478",
+      "word_00481",
+      "word_00482",
+      "word_00485",
+      "word_00486",
+      "word_00487",
+      "word_00489",
+      "word_00493",
+      "word_00494",
+      "word_00495",
+      "word_00496",
+      "word_00497",
+      "word_00498",
+      "word_00499",
+      "word_00511",
+      "word_00512",
+      "word_00514",
+      "word_00519",
+      "word_00524",
+      "word_00533",
+      "word_00544",
+      "word_00550",
+      "word_00551",
+      "word_00554",
+      "word_00557",
+      "word_00559",
+      "word_00563",
+      "word_00565",
+      "word_00568",
+      "word_00573",
+      "word_00575",
+      "word_00579",
+      "word_00581",
+      "word_00585",
+      "word_00596",
+      "word_00601",
+      "word_00602"
+    ],
+    "review_word_ids": [
+      "word_03896",
+      "word_02360",
+      "word_02732",
+      "word_02217",
+      "word_01107",
+      "word_03145",
+      "word_00089",
+      "word_00977",
+      "word_00203",
+      "word_01565",
+      "word_03193",
+      "word_01439",
+      "word_01715",
+      "word_00934",
+      "word_00212",
+      "word_01524",
+      "word_02442",
+      "word_01282",
+      "word_02158",
+      "word_03534",
+      "word_02117",
+      "word_00648",
+      "word_01708",
+      "word_01490",
+      "word_02224",
+      "word_00403",
+      "word_02803",
+      "word_04313",
+      "word_01601",
+      "word_01878",
+      "word_01577",
+      "word_04162",
+      "word_03826",
+      "word_02985",
+      "word_00654",
+      "word_00739",
+      "word_03168",
+      "word_00429",
+      "word_03898",
+      "word_01816",
+      "word_02984",
+      "word_01559",
+      "word_04430",
+      "word_02921",
+      "word_00756",
+      "word_00315",
+      "word_00873",
+      "word_02737",
+      "word_04273",
+      "word_03331",
+      "word_03061",
+      "word_02539",
+      "word_03922",
+      "word_02416",
+      "word_01808",
+      "word_00261",
+      "word_01285",
+      "word_03810",
+      "word_04038",
+      "word_03099",
+      "word_00528",
+      "word_02730",
+      "word_01158",
+      "word_03025",
+      "word_03473",
+      "word_00292",
+      "word_02898",
+      "word_02425",
+      "word_03396",
+      "word_03071",
+      "word_01241",
+      "word_00234",
+      "word_04045",
+      "word_02129",
+      "word_02245",
+      "word_02489",
+      "word_00312",
+      "word_02270",
+      "word_02996",
+      "word_01960"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00133",
+      "arabicText": "بَيْنَ",
+      "englishMeaning": "(in) front",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَيْنَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بَيْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بين",
+      "buckwalter": "bayona",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 70,
+      "rank": 133
+    },
+    {
+      "id": "word_00144",
+      "arabicText": "كَيْفَ",
+      "englishMeaning": "How",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "كَيْفَ[N]",
+        "grammaticalCase": null,
+        "lemma": "كَيْف",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كيف",
+      "buckwalter": "kayofa",
+      "root": {
+        "arabic": "كيف",
+        "transliteration": "kyf"
+      },
+      "occurrenceCount": 62,
+      "rank": 144
+    },
+    {
+      "id": "word_00156",
+      "arabicText": "مُوسَىٰ",
+      "englishMeaning": "Musa",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُوسَىٰ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مُوسَى",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "موسىا",
+      "buckwalter": "muwsaY`",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 57,
+      "rank": 156
+    },
+    {
+      "id": "word_00164",
+      "arabicText": "نَحْنُ",
+      "englishMeaning": "we",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "نَحْنُ[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "نحن",
+      "buckwalter": "naHonu",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 55,
+      "rank": 164
+    },
+    {
+      "id": "word_00165",
+      "arabicText": "أَنتَ",
+      "englishMeaning": "You",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنتَ[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انت",
+      "buckwalter": ">anta",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 55,
+      "rank": 165
+    },
+    {
+      "id": "word_00177",
+      "arabicText": "ٱلْكَٰفِرِينَ",
+      "englishMeaning": "the disbelievers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + كَٰفِرِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "كافِر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الكافرين",
+      "buckwalter": "{loka`firiyna",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 52,
+      "rank": 177
+    },
+    {
+      "id": "word_00179",
+      "arabicText": "ٱلَّذِىٓ",
+      "englishMeaning": "(is) that",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلَّذِىٓ[N]",
+        "grammaticalCase": null,
+        "lemma": "الَّذِي",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الذى",
+      "buckwalter": "{l~a*iY^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 52,
+      "rank": 179
+    },
+    {
+      "id": "word_00185",
+      "arabicText": "غَفُورٌ",
+      "englishMeaning": "(is) Oft-Forgiving",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "غَفُورٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "غَفُور",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "غفور",
+      "buckwalter": "gafuwrN",
+      "root": {
+        "arabic": "غفر",
+        "transliteration": "ghfr"
+      },
+      "occurrenceCount": 51,
+      "rank": 185
+    },
+    {
+      "id": "word_00192",
+      "arabicText": "مَعَ",
+      "englishMeaning": "with",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَعَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "مَع",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مع",
+      "buckwalter": "maEa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 49,
+      "rank": 192
+    },
+    {
+      "id": "word_00193",
+      "arabicText": "مَّن",
+      "englishMeaning": "who",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَّن[N]",
+        "grammaticalCase": null,
+        "lemma": "مَن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "m~an",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 49,
+      "rank": 193
+    },
+    {
+      "id": "word_00195",
+      "arabicText": "أَنتُمْ",
+      "englishMeaning": "you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنتُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انتم",
+      "buckwalter": ">antumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 49,
+      "rank": 195
+    },
+    {
+      "id": "word_00196",
+      "arabicText": "كُلَّ",
+      "englishMeaning": "every",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "كُلَّ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "كُلّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كل",
+      "buckwalter": "kul~a",
+      "root": {
+        "arabic": "كلل",
+        "transliteration": "kll"
+      },
+      "occurrenceCount": 49,
+      "rank": 196
+    },
+    {
+      "id": "word_00202",
+      "arabicText": "فِرْعَوْنَ",
+      "englishMeaning": "(of) Firaun",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "فِرْعَوْنَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "فِرْعَوْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فرعون",
+      "buckwalter": "firoEawona",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 48,
+      "rank": 202
+    },
+    {
+      "id": "word_00209",
+      "arabicText": "هِىَ",
+      "englishMeaning": "it (is)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "هِىَ[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "هى",
+      "buckwalter": "hiYa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 47,
+      "rank": 209
+    },
+    {
+      "id": "word_00219",
+      "arabicText": "أَنَا۠",
+      "englishMeaning": "I",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنَا۠[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انا۠",
+      "buckwalter": ">anaA\"",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 44,
+      "rank": 219
+    },
+    {
+      "id": "word_00221",
+      "arabicText": "مُّبِينٌ",
+      "englishMeaning": "clear",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُّبِينٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مُبِين",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مبين",
+      "buckwalter": "m~ubiynN",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 44,
+      "rank": 221
+    },
+    {
+      "id": "word_00227",
+      "arabicText": "ٱلَّتِى",
+      "englishMeaning": "whose",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلَّتِى[N]",
+        "grammaticalCase": null,
+        "lemma": "الَّذِي",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "التى",
+      "buckwalter": "{l~atiY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 43,
+      "rank": 227
+    },
+    {
+      "id": "word_00230",
+      "arabicText": "خَٰلِدِينَ",
+      "englishMeaning": "(Will) abide forever",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "خَٰلِدِينَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "خالِد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "خالدين",
+      "buckwalter": "xa`lidiyna",
+      "root": {
+        "arabic": "خلد",
+        "transliteration": "khld"
+      },
+      "occurrenceCount": 43,
+      "rank": 230
+    },
+    {
+      "id": "word_00236",
+      "arabicText": "بَيْنَهُمْ",
+      "englishMeaning": "between them",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَيْنَ[N] + هُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بَيْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بينهم",
+      "buckwalter": "bayonahumo",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 42,
+      "rank": 236
+    },
+    {
+      "id": "word_00238",
+      "arabicText": "أَصْحَٰبُ",
+      "englishMeaning": "(are the) companions",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَصْحَٰبُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَصْحاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اصحاب",
+      "buckwalter": ">aSoHa`bu",
+      "root": {
+        "arabic": "صحب",
+        "transliteration": "shb"
+      },
+      "occurrenceCount": 41,
+      "rank": 238
+    },
+    {
+      "id": "word_00239",
+      "arabicText": "إِسْرَٰٓءِيلَ",
+      "englishMeaning": "(of) Israel!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "إِسْرَٰٓءِيلَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "إِسْرائِيل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اسراءيل",
+      "buckwalter": "<isora`^'iyla",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 41,
+      "rank": 239
+    },
+    {
+      "id": "word_00240",
+      "arabicText": "بِغَيْرِ",
+      "englishMeaning": "without (any)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + غَيْرِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "غَيْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بغير",
+      "buckwalter": "bigayori",
+      "root": {
+        "arabic": "غير",
+        "transliteration": "ghyr"
+      },
+      "occurrenceCount": 41,
+      "rank": 240
+    },
+    {
+      "id": "word_00243",
+      "arabicText": "بِـَٔايَٰتِنَا",
+      "englishMeaning": "Our Signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ـَٔايَٰتِ[N] + نَا[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بـاياتنا",
+      "buckwalter": "bi_#aAya`tinaA",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 41,
+      "rank": 243
+    },
+    {
+      "id": "word_00252",
+      "arabicText": "غَيْرَ",
+      "englishMeaning": "other (than)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "غَيْرَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "غَيْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "غير",
+      "buckwalter": "gayora",
+      "root": {
+        "arabic": "غير",
+        "transliteration": "ghyr"
+      },
+      "occurrenceCount": 39,
+      "rank": 252
+    },
+    {
+      "id": "word_00258",
+      "arabicText": "إِبْرَٰهِيمَ",
+      "englishMeaning": "(of) Ibrahim",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "إِبْرَٰهِيمَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "إِبْراهِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ابراهيم",
+      "buckwalter": "<ibora`hiyma",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 38,
+      "rank": 258
+    },
+    {
+      "id": "word_00263",
+      "arabicText": "مُّبِينٍ",
+      "englishMeaning": "clear",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُّبِينٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُبِين",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مبين",
+      "buckwalter": "m~ubiynK",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 38,
+      "rank": 263
+    },
+    {
+      "id": "word_00266",
+      "arabicText": "عَذَابًا",
+      "englishMeaning": "(with) a punishment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "عَذَابًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَذاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عذابا",
+      "buckwalter": "Ea*aAbFA",
+      "root": {
+        "arabic": "عذب",
+        "transliteration": "`dhb"
+      },
+      "occurrenceCount": 38,
+      "rank": 266
+    },
+    {
+      "id": "word_00269",
+      "arabicText": "عَذَابَ",
+      "englishMeaning": "(from the) punishment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "عَذَابَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَذاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عذاب",
+      "buckwalter": "Ea*aAba",
+      "root": {
+        "arabic": "عذب",
+        "transliteration": "`dhb"
+      },
+      "occurrenceCount": 37,
+      "rank": 269
+    },
+    {
+      "id": "word_00282",
+      "arabicText": "هُم",
+      "englishMeaning": "they",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "هُم[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "هم",
+      "buckwalter": "hum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 36,
+      "rank": 282
+    },
+    {
+      "id": "word_00288",
+      "arabicText": "أَلِيمٌ",
+      "englishMeaning": "painful",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَلِيمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَلِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اليم",
+      "buckwalter": ">aliymN",
+      "root": {
+        "arabic": "ألم",
+        "transliteration": "Alm"
+      },
+      "occurrenceCount": 35,
+      "rank": 288
+    },
+    {
+      "id": "word_00290",
+      "arabicText": "أَوَلَمْ",
+      "englishMeaning": "Have not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَ[N] + وَ[P] + لَمْ[P]",
+        "grammaticalCase": null,
+        "lemma": "أ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اولم",
+      "buckwalter": ">awalamo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 35,
+      "rank": 290
+    },
+    {
+      "id": "word_00291",
+      "arabicText": "ٱلْعَذَابِ",
+      "englishMeaning": "torment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَذَابِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عَذاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العذاب",
+      "buckwalter": "{loEa*aAbi",
+      "root": {
+        "arabic": "عذب",
+        "transliteration": "`dhb"
+      },
+      "occurrenceCount": 35,
+      "rank": 291
+    },
+    {
+      "id": "word_00293",
+      "arabicText": "فَبِأَىِّ",
+      "englishMeaning": "So in what",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "فَ[P] + بِ[P] + أَىِّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَيّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فباى",
+      "buckwalter": "fabi>aY~i",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 35,
+      "rank": 293
+    },
+    {
+      "id": "word_00297",
+      "arabicText": "أَنفُسَهُمْ",
+      "englishMeaning": "themselves",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنفُسَ[N] + هُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "نَفْس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انفسهم",
+      "buckwalter": ">anfusahumo",
+      "root": {
+        "arabic": "نفس",
+        "transliteration": "nfs"
+      },
+      "occurrenceCount": 34,
+      "rank": 297
+    },
+    {
+      "id": "word_00298",
+      "arabicText": "تَحْتِهَا",
+      "englishMeaning": "under them",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "تَحْتِ[N] + هَا[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "تَحْت",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تحتها",
+      "buckwalter": "taHotihaA",
+      "root": {
+        "arabic": "تحت",
+        "transliteration": "tht"
+      },
+      "occurrenceCount": 34,
+      "rank": 298
+    },
+    {
+      "id": "word_00302",
+      "arabicText": "ٱلشَّيْطَٰنُ",
+      "englishMeaning": "the Shaitaan",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + شَّيْطَٰنُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "شَيْطان",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الشيطان",
+      "buckwalter": "{l$~ayoTa`nu",
+      "root": {
+        "arabic": "شطن",
+        "transliteration": "shtn"
+      },
+      "occurrenceCount": 34,
+      "rank": 302
+    },
+    {
+      "id": "word_00303",
+      "arabicText": "بِـَٔايَٰتِ",
+      "englishMeaning": "in (the) Signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ـَٔايَٰتِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بـايات",
+      "buckwalter": "bi_#aAya`ti",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 34,
+      "rank": 303
+    },
+    {
+      "id": "word_00304",
+      "arabicText": "بِكُلِّ",
+      "englishMeaning": "of every",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + كُلِّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "كُلّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بكل",
+      "buckwalter": "bikul~i",
+      "root": {
+        "arabic": "كلل",
+        "transliteration": "kll"
+      },
+      "occurrenceCount": 33,
+      "rank": 304
+    },
+    {
+      "id": "word_00310",
+      "arabicText": "ءَالَآءِ",
+      "englishMeaning": "the Favors",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَالَآءِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آلاء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءالاء",
+      "buckwalter": "'aAlaA^'i",
+      "root": {
+        "arabic": "ألو",
+        "transliteration": "Alw"
+      },
+      "occurrenceCount": 32,
+      "rank": 310
+    },
+    {
+      "id": "word_00320",
+      "arabicText": "عَظِيمٌ",
+      "englishMeaning": "great",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَظِيمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَظِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عظيم",
+      "buckwalter": "EaZiymN",
+      "root": {
+        "arabic": "عظم",
+        "transliteration": "`zm"
+      },
+      "occurrenceCount": 31,
+      "rank": 320
+    },
+    {
+      "id": "word_00322",
+      "arabicText": "أَلَا",
+      "englishMeaning": "Unquestionably!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَ[N] + لَا[P]",
+        "grammaticalCase": null,
+        "lemma": "أ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الا",
+      "buckwalter": ">alaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 31,
+      "rank": 322
+    },
+    {
+      "id": "word_00334",
+      "arabicText": "لَءَايَٰتٍ",
+      "englishMeaning": "surely (are) Signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "لَ[P] + ءَايَٰتٍ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لءايات",
+      "buckwalter": "la'aAya`tK",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 29,
+      "rank": 334
+    },
+    {
+      "id": "word_00336",
+      "arabicText": "حَيْثُ",
+      "englishMeaning": "(from) wherever",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "حَيْثُ[N]",
+        "grammaticalCase": null,
+        "lemma": "حَيْث",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "حيث",
+      "buckwalter": "Hayovu",
+      "root": {
+        "arabic": "حيث",
+        "transliteration": "hyth"
+      },
+      "occurrenceCount": 29,
+      "rank": 336
+    },
+    {
+      "id": "word_00343",
+      "arabicText": "سَبِيلًا",
+      "englishMeaning": "(find) a way",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "سَبِيلًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "سَبِيل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "سبيلا",
+      "buckwalter": "sabiylFA",
+      "root": {
+        "arabic": "سبل",
+        "transliteration": "sbl"
+      },
+      "occurrenceCount": 28,
+      "rank": 343
+    },
+    {
+      "id": "word_00349",
+      "arabicText": "مَرْيَمَ",
+      "englishMeaning": "(of) Maryam",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "مَرْيَمَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مَرْيَم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مريم",
+      "buckwalter": "maroyama",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 349
+    },
+    {
+      "id": "word_00351",
+      "arabicText": "ٱلْعَذَابَ",
+      "englishMeaning": "the punishment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَذَابَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَذاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العذاب",
+      "buckwalter": "{loEa*aAba",
+      "root": {
+        "arabic": "عذب",
+        "transliteration": "`dhb"
+      },
+      "occurrenceCount": 28,
+      "rank": 351
+    },
+    {
+      "id": "word_00352",
+      "arabicText": "ٱلْءَايَٰتِ",
+      "englishMeaning": "the signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + ءَايَٰتِ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الءايات",
+      "buckwalter": "{lo'aAya`ti",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 28,
+      "rank": 352
+    },
+    {
+      "id": "word_00360",
+      "arabicText": "تِلْكَ",
+      "englishMeaning": "That",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "تِ[N] + لْ[P] + كَ[P]",
+        "grammaticalCase": null,
+        "lemma": "ذا",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تلك",
+      "buckwalter": "tiloka",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 27,
+      "rank": 360
+    },
+    {
+      "id": "word_00361",
+      "arabicText": "ٱلدِّينِ",
+      "englishMeaning": "(of) [the] Judgment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + دِّينِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "دِين",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الدين",
+      "buckwalter": "{ld~iyni",
+      "root": {
+        "arabic": "دين",
+        "transliteration": "dyn"
+      },
+      "occurrenceCount": 27,
+      "rank": 361
+    },
+    {
+      "id": "word_00370",
+      "arabicText": "هُدًى",
+      "englishMeaning": "a Guidance",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "هُدًى[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "هُدًى",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "هدى",
+      "buckwalter": "hudFY",
+      "root": {
+        "arabic": "هدي",
+        "transliteration": "hdy"
+      },
+      "occurrenceCount": 27,
+      "rank": 370
+    },
+    {
+      "id": "word_00371",
+      "arabicText": "أَبَدًا",
+      "englishMeaning": "forever",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَبَدًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَبَدًا",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ابدا",
+      "buckwalter": ">abadFA",
+      "root": {
+        "arabic": "أبد",
+        "transliteration": "Abd"
+      },
+      "occurrenceCount": 26,
+      "rank": 371
+    },
+    {
+      "id": "word_00373",
+      "arabicText": "ذَٰلِكُمْ",
+      "englishMeaning": "That",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ذَٰ[N] + لِ[P] + كُمْ[P]",
+        "grammaticalCase": null,
+        "lemma": "ذا",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ذالكم",
+      "buckwalter": "*a`likumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 26,
+      "rank": 373
+    },
+    {
+      "id": "word_00377",
+      "arabicText": "عَٰقِبَةُ",
+      "englishMeaning": "(the) end",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "عَٰقِبَةُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عاقِبَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عاقبة",
+      "buckwalter": "Ea`qibapu",
+      "root": {
+        "arabic": "عقب",
+        "transliteration": "`qb"
+      },
+      "occurrenceCount": 26,
+      "rank": 377
+    },
+    {
+      "id": "word_00382",
+      "arabicText": "مُوسَىٰٓ",
+      "englishMeaning": "(for) Musa",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُوسَىٰٓ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُوسَى",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "موسىا",
+      "buckwalter": "muwsaY`^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 382
+    },
+    {
+      "id": "word_00383",
+      "arabicText": "مُّؤْمِنِينَ",
+      "englishMeaning": "believers",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مُّؤْمِنِينَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "مُؤْمِن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مومنين",
+      "buckwalter": "m~u&ominiyna",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 25,
+      "rank": 383
+    },
+    {
+      "id": "word_00384",
+      "arabicText": "ذُو",
+      "englishMeaning": "(is the) Possessor",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ذُو[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "ذُو",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ذو",
+      "buckwalter": "*uw",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 384
+    },
+    {
+      "id": "word_00386",
+      "arabicText": "قُلُوبِهِمْ",
+      "englishMeaning": "their hearts",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قُلُوبِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَلْب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قلوبهم",
+      "buckwalter": "quluwbihimo",
+      "root": {
+        "arabic": "قلب",
+        "transliteration": "qlb"
+      },
+      "occurrenceCount": 25,
+      "rank": 386
+    },
+    {
+      "id": "word_00390",
+      "arabicText": "أَكْثَرَ",
+      "englishMeaning": "most",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَكْثَرَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَكْثَر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اكثر",
+      "buckwalter": ">akovara",
+      "root": {
+        "arabic": "كثر",
+        "transliteration": "kthr"
+      },
+      "occurrenceCount": 25,
+      "rank": 390
+    },
+    {
+      "id": "word_00392",
+      "arabicText": "إِذَآ",
+      "englishMeaning": "when",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "إِذَآ[N]",
+        "grammaticalCase": null,
+        "lemma": "إِذا",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اذا",
+      "buckwalter": "<i*aA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 392
+    },
+    {
+      "id": "word_00393",
+      "arabicText": "أَنتُم",
+      "englishMeaning": "you (have become)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنتُم[N]",
+        "grammaticalCase": null,
+        "lemma": null,
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انتم",
+      "buckwalter": ">antum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 393
+    },
+    {
+      "id": "word_00395",
+      "arabicText": "أَيْدِيهِمْ",
+      "englishMeaning": "their hands",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَيْدِي[N] + هِمْ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "يَد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ايديهم",
+      "buckwalter": ">ayodiyhimo",
+      "root": {
+        "arabic": "يدي",
+        "transliteration": "ydy"
+      },
+      "occurrenceCount": 25,
+      "rank": 395
+    },
+    {
+      "id": "word_00399",
+      "arabicText": "ضَلَٰلٍ",
+      "englishMeaning": "(the) error",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ضَلَٰلٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ضَلال",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ضلال",
+      "buckwalter": "Dala`lK",
+      "root": {
+        "arabic": "ضلل",
+        "transliteration": "dll"
+      },
+      "occurrenceCount": 24,
+      "rank": 399
+    },
+    {
+      "id": "word_00402",
+      "arabicText": "ٱلزَّكَوٰةَ",
+      "englishMeaning": "zakah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + زَّكَوٰةَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "زَكاة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الزكواة",
+      "buckwalter": "{lz~akaw`pa",
+      "root": {
+        "arabic": "زكو",
+        "transliteration": "zkw"
+      },
+      "occurrenceCount": 24,
+      "rank": 402
+    },
+    {
+      "id": "word_00406",
+      "arabicText": "بِٱلْبَيِّنَٰتِ",
+      "englishMeaning": "with [the] clear signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱلْ[P] + بَيِّنَٰتِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَيِّنَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالبينات",
+      "buckwalter": "bi{lobay~ina`ti",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 24,
+      "rank": 406
+    },
+    {
+      "id": "word_00413",
+      "arabicText": "خَٰلِدُونَ",
+      "englishMeaning": "(will) abide forever",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "خَٰلِدُونَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "خالِد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "خالدون",
+      "buckwalter": "xa`liduwna",
+      "root": {
+        "arabic": "خلد",
+        "transliteration": "khld"
+      },
+      "occurrenceCount": 24,
+      "rank": 413
+    },
+    {
+      "id": "word_00416",
+      "arabicText": "ٱلْمَصِيرُ",
+      "englishMeaning": "(is) the destination",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مَصِيرُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مَصِير",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المصير",
+      "buckwalter": "{lomaSiyru",
+      "root": {
+        "arabic": "صير",
+        "transliteration": "syr"
+      },
+      "occurrenceCount": 23,
+      "rank": 416
+    },
+    {
+      "id": "word_00422",
+      "arabicText": "ٱلْءَاخِرِ",
+      "englishMeaning": "[the] Last",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + ءَاخِرِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آخِر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الءاخر",
+      "buckwalter": "{lo'aAxiri",
+      "root": {
+        "arabic": "أخر",
+        "transliteration": "Akhr"
+      },
+      "occurrenceCount": 23,
+      "rank": 422
+    },
+    {
+      "id": "word_00431",
+      "arabicText": "أَنفُسِهِمْ",
+      "englishMeaning": "their (inner) souls",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَنفُسِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "نَفْس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انفسهم",
+      "buckwalter": ">anfusihimo",
+      "root": {
+        "arabic": "نفس",
+        "transliteration": "nfs"
+      },
+      "occurrenceCount": 23,
+      "rank": 431
+    },
+    {
+      "id": "word_00435",
+      "arabicText": "بِإِذْنِ",
+      "englishMeaning": "by (the) permission",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + إِذْنِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "إِذْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "باذن",
+      "buckwalter": "bi<i*oni",
+      "root": {
+        "arabic": "أذن",
+        "transliteration": "Adhn"
+      },
+      "occurrenceCount": 23,
+      "rank": 435
+    },
+    {
+      "id": "word_00437",
+      "arabicText": "بَيْنَهُمَا",
+      "englishMeaning": "between themselves",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَيْنَ[N] + هُمَا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بَيْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بينهما",
+      "buckwalter": "bayonahumaA",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 22,
+      "rank": 437
+    },
+    {
+      "id": "word_00438",
+      "arabicText": "ءَايَةً",
+      "englishMeaning": "a sign",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَايَةً[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاية",
+      "buckwalter": "'aAyapF",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 22,
+      "rank": 438
+    },
+    {
+      "id": "word_00440",
+      "arabicText": "نَذِيرٌ",
+      "englishMeaning": "a warner",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "نَذِيرٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "نَذِير",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "نذير",
+      "buckwalter": "na*iyrN",
+      "root": {
+        "arabic": "نذر",
+        "transliteration": "ndhr"
+      },
+      "occurrenceCount": 22,
+      "rank": 440
+    },
+    {
+      "id": "word_00441",
+      "arabicText": "نُوحٍ",
+      "englishMeaning": "Nuh",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "نُوحٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "نُوح",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "نوح",
+      "buckwalter": "nuwHK",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 441
+    },
+    {
+      "id": "word_00445",
+      "arabicText": "ٱلْمُؤْمِنُونَ",
+      "englishMeaning": "the believers",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مُؤْمِنُونَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مُؤْمِن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المومنون",
+      "buckwalter": "{lomu&ominuwna",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 22,
+      "rank": 445
+    },
+    {
+      "id": "word_00446",
+      "arabicText": "أَجْرًا",
+      "englishMeaning": "a reward",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَجْرًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَجْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اجرا",
+      "buckwalter": ">ajorFA",
+      "root": {
+        "arabic": "أجر",
+        "transliteration": "Ajr"
+      },
+      "occurrenceCount": 22,
+      "rank": 446
+    },
+    {
+      "id": "word_00447",
+      "arabicText": "ٱلْعَذَابُ",
+      "englishMeaning": "the punishment",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَذَابُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَذاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العذاب",
+      "buckwalter": "{loEa*aAbu",
+      "root": {
+        "arabic": "عذب",
+        "transliteration": "`dhb"
+      },
+      "occurrenceCount": 22,
+      "rank": 447
+    },
+    {
+      "id": "word_00455",
+      "arabicText": "دُونِهِۦ",
+      "englishMeaning": "other than Him",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "دُونِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "دُون",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "دونهۦ",
+      "buckwalter": "duwnihi.",
+      "root": {
+        "arabic": "دون",
+        "transliteration": "dwn"
+      },
+      "occurrenceCount": 22,
+      "rank": 455
+    },
+    {
+      "id": "word_00456",
+      "arabicText": "مُّسَمًّى",
+      "englishMeaning": "fixed",
+      "morphology": {
+        "number": null,
+        "form": "2",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُّسَمًّى[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُسَمًّى",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مسمى",
+      "buckwalter": "m~usam~FY",
+      "root": {
+        "arabic": "سمو",
+        "transliteration": "smw"
+      },
+      "occurrenceCount": 21,
+      "rank": 456
+    },
+    {
+      "id": "word_00460",
+      "arabicText": "عَظِيمًا",
+      "englishMeaning": "great",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَظِيمًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَظِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عظيما",
+      "buckwalter": "EaZiymFA",
+      "root": {
+        "arabic": "عظم",
+        "transliteration": "`zm"
+      },
+      "occurrenceCount": 21,
+      "rank": 460
+    },
+    {
+      "id": "word_00466",
+      "arabicText": "ءَايَٰتِ",
+      "englishMeaning": "(the) Verses",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَايَٰتِ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءايات",
+      "buckwalter": "'aAya`ti",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 21,
+      "rank": 466
+    },
+    {
+      "id": "word_00471",
+      "arabicText": "عِندِ",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عِندِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عِند",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عند",
+      "buckwalter": "Eindi",
+      "root": {
+        "arabic": "عند",
+        "transliteration": "`nd"
+      },
+      "occurrenceCount": 21,
+      "rank": 471
+    },
+    {
+      "id": "word_00473",
+      "arabicText": "لَءَايَةً",
+      "englishMeaning": "(is) surely a sign",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "لَ[P] + ءَايَةً[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لءاية",
+      "buckwalter": "la'aAyapF",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 20,
+      "rank": 473
+    },
+    {
+      "id": "word_00474",
+      "arabicText": "مَّآ",
+      "englishMeaning": "what",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَّآ[N]",
+        "grammaticalCase": null,
+        "lemma": "ما",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ما",
+      "buckwalter": "m~aA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 20,
+      "rank": 474
+    },
+    {
+      "id": "word_00478",
+      "arabicText": "غَيْرُ",
+      "englishMeaning": "other than",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "غَيْرُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "غَيْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "غير",
+      "buckwalter": "gayoru",
+      "root": {
+        "arabic": "غير",
+        "transliteration": "ghyr"
+      },
+      "occurrenceCount": 20,
+      "rank": 478
+    },
+    {
+      "id": "word_00481",
+      "arabicText": "فَضْلِهِۦ",
+      "englishMeaning": "His Grace",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "فَضْلِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "فَضْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فضلهۦ",
+      "buckwalter": "faDolihi.",
+      "root": {
+        "arabic": "فضل",
+        "transliteration": "fdl"
+      },
+      "occurrenceCount": 20,
+      "rank": 481
+    },
+    {
+      "id": "word_00482",
+      "arabicText": "غَفُورًا",
+      "englishMeaning": "Oft-Forgiving",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "غَفُورًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "غَفُور",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "غفورا",
+      "buckwalter": "gafuwrFA",
+      "root": {
+        "arabic": "غفر",
+        "transliteration": "ghfr"
+      },
+      "occurrenceCount": 20,
+      "rank": 482
+    },
+    {
+      "id": "word_00485",
+      "arabicText": "مَعَهُۥ",
+      "englishMeaning": "with him",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "مَعَ[N] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "مَع",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "معهۥ",
+      "buckwalter": "maEahu,",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 20,
+      "rank": 485
+    },
+    {
+      "id": "word_00486",
+      "arabicText": "ٱلسَّبِيلِ",
+      "englishMeaning": "(of) the way",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + سَّبِيلِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "سَبِيل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "السبيل",
+      "buckwalter": "{ls~abiyli",
+      "root": {
+        "arabic": "سبل",
+        "transliteration": "sbl"
+      },
+      "occurrenceCount": 20,
+      "rank": 486
+    },
+    {
+      "id": "word_00487",
+      "arabicText": "ءَايَٰتِنَا",
+      "englishMeaning": "Our verses",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَايَٰتِ[N] + نَا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاياتنا",
+      "buckwalter": "'aAya`tinaA",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 20,
+      "rank": 487
+    },
+    {
+      "id": "word_00489",
+      "arabicText": "خَيْرُ",
+      "englishMeaning": "(is the) best",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "خَيْرُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "خَيْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "خير",
+      "buckwalter": "xayoru",
+      "root": {
+        "arabic": "خير",
+        "transliteration": "khyr"
+      },
+      "occurrenceCount": 20,
+      "rank": 489
+    },
+    {
+      "id": "word_00493",
+      "arabicText": "مُّسْتَقِيمٍ",
+      "englishMeaning": "straight",
+      "morphology": {
+        "number": null,
+        "form": "10",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُّسْتَقِيمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُسْتَقِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مستقيم",
+      "buckwalter": "m~usotaqiymK",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 20,
+      "rank": 493
+    },
+    {
+      "id": "word_00494",
+      "arabicText": "نَفْسٍ",
+      "englishMeaning": "soul",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "نَفْسٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "نَفْس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "نفس",
+      "buckwalter": "nafosK",
+      "root": {
+        "arabic": "نفس",
+        "transliteration": "nfs"
+      },
+      "occurrenceCount": 20,
+      "rank": 494
+    },
+    {
+      "id": "word_00495",
+      "arabicText": "بِٱلْمَعْرُوفِ",
+      "englishMeaning": "with suitable",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱلْ[P] + مَعْرُوفِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مَعْرُوف",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالمعروف",
+      "buckwalter": "bi{lomaEoruwfi",
+      "root": {
+        "arabic": "عرف",
+        "transliteration": "`rf"
+      },
+      "occurrenceCount": 20,
+      "rank": 495
+    },
+    {
+      "id": "word_00496",
+      "arabicText": "ٱلْمُجْرِمِينَ",
+      "englishMeaning": "(of) the criminals",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مُجْرِمِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُجْرِم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المجرمين",
+      "buckwalter": "{lomujorimiyna",
+      "root": {
+        "arabic": "جرم",
+        "transliteration": "jrm"
+      },
+      "occurrenceCount": 19,
+      "rank": 496
+    },
+    {
+      "id": "word_00497",
+      "arabicText": "عَدُوٌّ",
+      "englishMeaning": "(as) enemy",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "عَدُوٌّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَدُوّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عدو",
+      "buckwalter": "Eaduw~N",
+      "root": {
+        "arabic": "عدو",
+        "transliteration": "`dw"
+      },
+      "occurrenceCount": 19,
+      "rank": 497
+    },
+    {
+      "id": "word_00498",
+      "arabicText": "ذِى",
+      "englishMeaning": "(who is)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ذِى[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ذُو",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ذى",
+      "buckwalter": "*iY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 19,
+      "rank": 498
+    },
+    {
+      "id": "word_00499",
+      "arabicText": "مُلْكُ",
+      "englishMeaning": "(is the) Kingdom",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مُلْكُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مُلْك",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ملك",
+      "buckwalter": "muloku",
+      "root": {
+        "arabic": "ملك",
+        "transliteration": "mlk"
+      },
+      "occurrenceCount": 19,
+      "rank": 499
+    },
+    {
+      "id": "word_00511",
+      "arabicText": "ٱلْغَيْبِ",
+      "englishMeaning": "(of) the unseen",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + غَيْبِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "غَيْب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الغيب",
+      "buckwalter": "{logayobi",
+      "root": {
+        "arabic": "غيب",
+        "transliteration": "ghyb"
+      },
+      "occurrenceCount": 19,
+      "rank": 511
+    },
+    {
+      "id": "word_00512",
+      "arabicText": "ٱلْعَظِيمِ",
+      "englishMeaning": "[the] Great",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَظِيمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عَظِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العظيم",
+      "buckwalter": "{loEaZiymi",
+      "root": {
+        "arabic": "عظم",
+        "transliteration": "`zm"
+      },
+      "occurrenceCount": 19,
+      "rank": 512
+    },
+    {
+      "id": "word_00514",
+      "arabicText": "ءَايَٰتِهِۦ",
+      "englishMeaning": "His Signs",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَايَٰتِ[N] + هِۦ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاياتهۦ",
+      "buckwalter": "'aAya`tihi.",
+      "root": {
+        "arabic": "أيي",
+        "transliteration": "Ayy"
+      },
+      "occurrenceCount": 19,
+      "rank": 514
+    },
+    {
+      "id": "word_00519",
+      "arabicText": "ٱلشَّيْطَٰنِ",
+      "englishMeaning": "the Shaitaan",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + شَّيْطَٰنِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "شَيْطان",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الشيطان",
+      "buckwalter": "{l$~ayoTa`ni",
+      "root": {
+        "arabic": "شطن",
+        "transliteration": "shtn"
+      },
+      "occurrenceCount": 19,
+      "rank": 519
+    },
+    {
+      "id": "word_00524",
+      "arabicText": "سَلَٰمٌ",
+      "englishMeaning": "Peace",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "سَلَٰمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "سَلام",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "سلام",
+      "buckwalter": "sala`mN",
+      "root": {
+        "arabic": "سلم",
+        "transliteration": "slm"
+      },
+      "occurrenceCount": 19,
+      "rank": 524
+    },
+    {
+      "id": "word_00533",
+      "arabicText": "قَرْيَةٍ",
+      "englishMeaning": "a township",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "قَرْيَةٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَرْيَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قرية",
+      "buckwalter": "qaroyapK",
+      "root": {
+        "arabic": "قري",
+        "transliteration": "qry"
+      },
+      "occurrenceCount": 18,
+      "rank": 533
+    },
+    {
+      "id": "word_00544",
+      "arabicText": "عَظِيمٍ",
+      "englishMeaning": "great",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عَظِيمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عَظِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عظيم",
+      "buckwalter": "EaZiymK",
+      "root": {
+        "arabic": "عظم",
+        "transliteration": "`zm"
+      },
+      "occurrenceCount": 18,
+      "rank": 544
+    },
+    {
+      "id": "word_00550",
+      "arabicText": "بَيْنَكُمْ",
+      "englishMeaning": "among you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَيْنَ[N] + كُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بَيْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بينكم",
+      "buckwalter": "bayonakumo",
+      "root": {
+        "arabic": "بين",
+        "transliteration": "byn"
+      },
+      "occurrenceCount": 18,
+      "rank": 550
+    },
+    {
+      "id": "word_00551",
+      "arabicText": "قَوْلًا",
+      "englishMeaning": "(the) word",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْلًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قولا",
+      "buckwalter": "qawolFA",
+      "root": {
+        "arabic": "قول",
+        "transliteration": "qwl"
+      },
+      "occurrenceCount": 18,
+      "rank": 551
+    },
+    {
+      "id": "word_00554",
+      "arabicText": "أَشَدُّ",
+      "englishMeaning": "stronger",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَشَدُّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَشَدّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اشد",
+      "buckwalter": ">a$ad~u",
+      "root": {
+        "arabic": "شدد",
+        "transliteration": "shdd"
+      },
+      "occurrenceCount": 18,
+      "rank": 554
+    },
+    {
+      "id": "word_00557",
+      "arabicText": "أَمْرًا",
+      "englishMeaning": "a matter",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَمْرًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَمْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "امرا",
+      "buckwalter": ">amorFA",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 17,
+      "rank": 557
+    },
+    {
+      "id": "word_00559",
+      "arabicText": "عِبَادِهِۦ",
+      "englishMeaning": "His servants",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "عِبَادِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "عَبْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عبادهۦ",
+      "buckwalter": "EibaAdihi.",
+      "root": {
+        "arabic": "عبد",
+        "transliteration": "`bd"
+      },
+      "occurrenceCount": 17,
+      "rank": 559
+    },
+    {
+      "id": "word_00563",
+      "arabicText": "كَبِيرًا",
+      "englishMeaning": "large",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "كَبِيرًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "كَبِير",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كبيرا",
+      "buckwalter": "kabiyrFA",
+      "root": {
+        "arabic": "كبر",
+        "transliteration": "kbr"
+      },
+      "occurrenceCount": 17,
+      "rank": 563
+    },
+    {
+      "id": "word_00565",
+      "arabicText": "فِرْعَوْنُ",
+      "englishMeaning": "Firaun",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "فِرْعَوْنُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "فِرْعَوْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فرعون",
+      "buckwalter": "firoEawonu",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 17,
+      "rank": 565
+    },
+    {
+      "id": "word_00568",
+      "arabicText": "أَعْمَٰلَهُمْ",
+      "englishMeaning": "their deeds",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَعْمَٰلَ[N] + هُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "عَمَل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اعمالهم",
+      "buckwalter": ">aEoma`lahumo",
+      "root": {
+        "arabic": "عمل",
+        "transliteration": "`ml"
+      },
+      "occurrenceCount": 17,
+      "rank": 568
+    },
+    {
+      "id": "word_00573",
+      "arabicText": "حَقًّا",
+      "englishMeaning": "a duty",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "حَقًّا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "حَقّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "حقا",
+      "buckwalter": "Haq~FA",
+      "root": {
+        "arabic": "حقق",
+        "transliteration": "hqq"
+      },
+      "occurrenceCount": 17,
+      "rank": 573
+    },
+    {
+      "id": "word_00575",
+      "arabicText": "ٱلْكَٰفِرُونَ",
+      "englishMeaning": "(are) the disbelievers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + كَٰفِرُونَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كافِر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الكافرون",
+      "buckwalter": "{loka`firuwna",
+      "root": {
+        "arabic": "كفر",
+        "transliteration": "kfr"
+      },
+      "occurrenceCount": 17,
+      "rank": 575
+    },
+    {
+      "id": "word_00579",
+      "arabicText": "وَعْدَ",
+      "englishMeaning": "A Promise",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَعْدَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "وَعْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وعد",
+      "buckwalter": "waEoda",
+      "root": {
+        "arabic": "وعد",
+        "transliteration": "w`d"
+      },
+      "occurrenceCount": 17,
+      "rank": 579
+    },
+    {
+      "id": "word_00581",
+      "arabicText": "مَثَلًا",
+      "englishMeaning": "an example",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مَثَلًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "مَثَل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مثلا",
+      "buckwalter": "mavalFA",
+      "root": {
+        "arabic": "مثل",
+        "transliteration": "mthl"
+      },
+      "occurrenceCount": 17,
+      "rank": 581
+    },
+    {
+      "id": "word_00585",
+      "arabicText": "شَهِيدًا",
+      "englishMeaning": "a witness",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "شَهِيدًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "شَهِيد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "شهيدا",
+      "buckwalter": "$ahiydFA",
+      "root": {
+        "arabic": "شهد",
+        "transliteration": "shhd"
+      },
+      "occurrenceCount": 16,
+      "rank": 585
+    },
+    {
+      "id": "word_00596",
+      "arabicText": "ٱلْأَلْبَٰبِ",
+      "englishMeaning": "(of) understanding",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَلْبَٰبِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَلْباب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الالباب",
+      "buckwalter": "{lo>aloba`bi",
+      "root": {
+        "arabic": "لبب",
+        "transliteration": "lbb"
+      },
+      "occurrenceCount": 16,
+      "rank": 596
+    },
+    {
+      "id": "word_00601",
+      "arabicText": "ٱلْعَظِيمُ",
+      "englishMeaning": "the Most Great",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + عَظِيمُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "عَظِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "العظيم",
+      "buckwalter": "{loEaZiymu",
+      "root": {
+        "arabic": "عظم",
+        "transliteration": "`zm"
+      },
+      "occurrenceCount": 16,
+      "rank": 601
+    },
+    {
+      "id": "word_00602",
+      "arabicText": "ٱلْفَوْزُ",
+      "englishMeaning": "(is) the success",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + فَوْزُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "فَوْز",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الفوز",
+      "buckwalter": "{lofawozu",
+      "root": {
+        "arabic": "فوز",
+        "transliteration": "fwz"
+      },
+      "occurrenceCount": 16,
+      "rank": 602
+    },
+    {
+      "id": "word_03896",
+      "arabicText": "أُمَّ",
+      "englishMeaning": "(the) mother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أُمَّ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أُمّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ام",
+      "buckwalter": ">um~a",
+      "root": {
+        "arabic": "أمم",
+        "transliteration": "Amm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3896
+    },
+    {
+      "id": "word_02360",
+      "arabicText": "أَخَاهُ",
+      "englishMeaning": "his brother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَخَا[N] + هُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اخاه",
+      "buckwalter": ">axaAhu",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 4,
+      "rank": 2360
+    },
+    {
+      "id": "word_02732",
+      "arabicText": "أَبِيكُمْ",
+      "englishMeaning": "(of) your father",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَبِي[N] + كُمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ابيكم",
+      "buckwalter": ">abiykumo",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 4,
+      "rank": 2732
+    },
+    {
+      "id": "word_02217",
+      "arabicText": "رَجُلٍ",
+      "englishMeaning": "a man",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَجُلٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَجُل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رجل",
+      "buckwalter": "rajulK",
+      "root": {
+        "arabic": "رجل",
+        "transliteration": "rjl"
+      },
+      "occurrenceCount": 5,
+      "rank": 2217
+    },
+    {
+      "id": "word_01107",
+      "arabicText": "ءَالِ",
+      "englishMeaning": "(the) people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ءَالِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءال",
+      "buckwalter": "'aAli",
+      "root": {
+        "arabic": "أول",
+        "transliteration": "Awl"
+      },
+      "occurrenceCount": 9,
+      "rank": 1107
+    },
+    {
+      "id": "word_03145",
+      "arabicText": "ءَابَآءَنَآ",
+      "englishMeaning": "our forefathers (following)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآءَ[N] + نَآ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاباءنا",
+      "buckwalter": "'aAbaA^'anaA^",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 3,
+      "rank": 3145
+    },
+    {
+      "id": "word_00089",
+      "arabicText": "ٱلنَّاسِ",
+      "englishMeaning": "the people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّاسِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ناس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الناس",
+      "buckwalter": "{ln~aAsi",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 92,
+      "rank": 89
+    },
+    {
+      "id": "word_00977",
+      "arabicText": "أَخِيهِ",
+      "englishMeaning": "his brother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَخِي[N] + هِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اخيه",
+      "buckwalter": ">axiyhi",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 10,
+      "rank": 977
+    },
+    {
+      "id": "word_00203",
+      "arabicText": "ٱلنَّاسَ",
+      "englishMeaning": "[the] people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّاسَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "ناس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الناس",
+      "buckwalter": "{ln~aAsa",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 48,
+      "rank": 203
+    },
+    {
+      "id": "word_01565",
+      "arabicText": "ءَابَآؤُنَا",
+      "englishMeaning": "our forefathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآؤُ[N] + نَا[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاباونا",
+      "buckwalter": "'aAbaA^&unaA",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 6,
+      "rank": 1565
+    },
+    {
+      "id": "word_03193",
+      "arabicText": "قَوْمُهُۥ",
+      "englishMeaning": "his people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمُ[N] + هُۥ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومهۥ",
+      "buckwalter": "qawomuhu,",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3193
+    },
+    {
+      "id": "word_01439",
+      "arabicText": "ءَابَآءَنَا",
+      "englishMeaning": "our forefathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآءَ[N] + نَا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاباءنا",
+      "buckwalter": "'aAbaA^'anaA",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 7,
+      "rank": 1439
+    },
+    {
+      "id": "word_01715",
+      "arabicText": "وَكَأَيِّن",
+      "englishMeaning": "And how many",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + كَأَيِّن[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وكاين",
+      "buckwalter": "waka>ay~in",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 6,
+      "rank": 1715
+    },
+    {
+      "id": "word_00934",
+      "arabicText": "يَٰبَنِىٓ",
+      "englishMeaning": "O Children",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "يَٰ[P] + بَنِىٓ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "بُنَىّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يابنى",
+      "buckwalter": "ya`baniY^",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 11,
+      "rank": 934
+    },
+    {
+      "id": "word_00212",
+      "arabicText": "كَثِيرًا",
+      "englishMeaning": "many",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "كَثِيرًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "كَثِير",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كثيرا",
+      "buckwalter": "kaviyrFA",
+      "root": {
+        "arabic": "كثر",
+        "transliteration": "kthr"
+      },
+      "occurrenceCount": 46,
+      "rank": 212
+    },
+    {
+      "id": "word_01524",
+      "arabicText": "رَجُلٌ",
+      "englishMeaning": "a man",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَجُلٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَجُل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رجل",
+      "buckwalter": "rajulN",
+      "root": {
+        "arabic": "رجل",
+        "transliteration": "rjl"
+      },
+      "occurrenceCount": 7,
+      "rank": 1524
+    },
+    {
+      "id": "word_02442",
+      "arabicText": "وَبَنَاتِ",
+      "englishMeaning": "and (the) daughters",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + بَنَاتِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بِنْت",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وبنات",
+      "buckwalter": "wabanaAti",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 4,
+      "rank": 2442
+    },
+    {
+      "id": "word_01282",
+      "arabicText": "أَهْلُ",
+      "englishMeaning": "(the) People",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَهْلُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اهل",
+      "buckwalter": ">aholu",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 8,
+      "rank": 1282
+    },
+    {
+      "id": "word_02158",
+      "arabicText": "أُمِرْتُ",
+      "englishMeaning": "[I] am commanded",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أُمِرْ[V] + تُ[N]",
+        "grammaticalCase": null,
+        "lemma": "أَمَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": true
+      },
+      "arabicWithoutDiacritics": "امرت",
+      "buckwalter": ">umirotu",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 5,
+      "rank": 2158
+    },
+    {
+      "id": "word_03534",
+      "arabicText": "لِحُكْمِ",
+      "englishMeaning": "for (the) Command",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + حُكْمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "حُكْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لحكم",
+      "buckwalter": "liHukomi",
+      "root": {
+        "arabic": "حكم",
+        "transliteration": "hkm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3534
+    },
+    {
+      "id": "word_02117",
+      "arabicText": "بِوَكِيلٍ",
+      "englishMeaning": "a manager",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + وَكِيلٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "وَكِيل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بوكيل",
+      "buckwalter": "biwakiylK",
+      "root": {
+        "arabic": "وكل",
+        "transliteration": "wkl"
+      },
+      "occurrenceCount": 5,
+      "rank": 2117
+    },
+    {
+      "id": "word_00648",
+      "arabicText": "لِقَوْمٍ",
+      "englishMeaning": "for people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + قَوْمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لقوم",
+      "buckwalter": "liqawomK",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 15,
+      "rank": 648
+    },
+    {
+      "id": "word_01708",
+      "arabicText": "وَكَثِيرٌ",
+      "englishMeaning": "but many",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + كَثِيرٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كَثِير",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وكثير",
+      "buckwalter": "wakaviyrN",
+      "root": {
+        "arabic": "كثر",
+        "transliteration": "kthr"
+      },
+      "occurrenceCount": 6,
+      "rank": 1708
+    },
+    {
+      "id": "word_01490",
+      "arabicText": "وَكَمْ",
+      "englishMeaning": "And how many",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + كَمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وكم",
+      "buckwalter": "wakamo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 7,
+      "rank": 1490
+    },
+    {
+      "id": "word_02224",
+      "arabicText": "وَٱلنَّاسِ",
+      "englishMeaning": "and the mankind",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱل[P] + نَّاسِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ناس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والناس",
+      "buckwalter": "wa{ln~aAsi",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 5,
+      "rank": 2224
+    },
+    {
+      "id": "word_00403",
+      "arabicText": "تَعْقِلُونَ",
+      "englishMeaning": "you use reason",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "تَعْقِلُ[V] + ونَ[N]",
+        "grammaticalCase": null,
+        "lemma": "عَقَلُ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "تعقلون",
+      "buckwalter": "taEoqiluwna",
+      "root": {
+        "arabic": "عقل",
+        "transliteration": "`ql"
+      },
+      "occurrenceCount": 24,
+      "rank": 403
+    },
+    {
+      "id": "word_02803",
+      "arabicText": "لِبَشَرٍ",
+      "englishMeaning": "for a human",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + بَشَرٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَشَر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لبشر",
+      "buckwalter": "liba$arK",
+      "root": {
+        "arabic": "بشر",
+        "transliteration": "bshr"
+      },
+      "occurrenceCount": 4,
+      "rank": 2803
+    },
+    {
+      "id": "word_04313",
+      "arabicText": "ٱلْإِنسُ",
+      "englishMeaning": "the mankind",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + إِنسُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "إِنس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الانس",
+      "buckwalter": "{lo<insu",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 2,
+      "rank": 4313
+    },
+    {
+      "id": "word_01601",
+      "arabicText": "يَٰبُنَىَّ",
+      "englishMeaning": "O my son",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَٰ[P] + بُنَىَّ[N] + [N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "بُنَىّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يابنى",
+      "buckwalter": "ya`bunaY~a",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 6,
+      "rank": 1601
+    },
+    {
+      "id": "word_01878",
+      "arabicText": "قَوْمَهُۥ",
+      "englishMeaning": "(from) his people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمَ[N] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومهۥ",
+      "buckwalter": "qawomahu,",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 5,
+      "rank": 1878
+    },
+    {
+      "id": "word_01577",
+      "arabicText": "وَبَنِينَ",
+      "englishMeaning": "and sons",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + بَنِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بُنَىّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وبنين",
+      "buckwalter": "wabaniyna",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 6,
+      "rank": 1577
+    },
+    {
+      "id": "word_04162",
+      "arabicText": "قَوْمِكَ",
+      "englishMeaning": "your people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمِ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومك",
+      "buckwalter": "qawomika",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 2,
+      "rank": 4162
+    },
+    {
+      "id": "word_03826",
+      "arabicText": "وَءَابَآؤُكُم",
+      "englishMeaning": "and your forefathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ءَابَآؤُ[N] + كُم[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وءاباوكم",
+      "buckwalter": "wa'aAbaA^&ukum",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 3,
+      "rank": 3826
+    },
+    {
+      "id": "word_02985",
+      "arabicText": "لِّلْقَوْمِ",
+      "englishMeaning": "for the people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "لِّ[P] + لْ[P] + قَوْمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "للقوم",
+      "buckwalter": "l~iloqawomi",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 2985
+    },
+    {
+      "id": "word_00654",
+      "arabicText": "بَشَرٌ",
+      "englishMeaning": "any man",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بَشَرٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "بَشَر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بشر",
+      "buckwalter": "ba$arN",
+      "root": {
+        "arabic": "بشر",
+        "transliteration": "bshr"
+      },
+      "occurrenceCount": 15,
+      "rank": 654
+    },
+    {
+      "id": "word_00739",
+      "arabicText": "وَلَدًا",
+      "englishMeaning": "a son",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَلَدًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "وَلَد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولدا",
+      "buckwalter": "waladFA",
+      "root": {
+        "arabic": "ولد",
+        "transliteration": "wld"
+      },
+      "occurrenceCount": 13,
+      "rank": 739
+    },
+    {
+      "id": "word_03168",
+      "arabicText": "بِٱلنَّاسِ",
+      "englishMeaning": "(is) to [the] mankind",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱل[P] + نَّاسِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ناس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالناس",
+      "buckwalter": "bi{ln~aAsi",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 3,
+      "rank": 3168
+    },
+    {
+      "id": "word_00429",
+      "arabicText": "أَهْلِ",
+      "englishMeaning": "(the) People",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَهْلِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اهل",
+      "buckwalter": ">aholi",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 23,
+      "rank": 429
+    },
+    {
+      "id": "word_03898",
+      "arabicText": "أُمِّ",
+      "englishMeaning": "(the) mother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أُمِّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أُمّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ام",
+      "buckwalter": ">um~i",
+      "root": {
+        "arabic": "أمم",
+        "transliteration": "Amm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3898
+    },
+    {
+      "id": "word_01816",
+      "arabicText": "قَوْمًۢا",
+      "englishMeaning": "a people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمًۢا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومۢا",
+      "buckwalter": "qawomF[A",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 5,
+      "rank": 1816
+    },
+    {
+      "id": "word_02984",
+      "arabicText": "قَوْمُكَ",
+      "englishMeaning": "your people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمُ[N] + كَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومك",
+      "buckwalter": "qawomuka",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 2984
+    },
+    {
+      "id": "word_01559",
+      "arabicText": "ٱبْنِ",
+      "englishMeaning": "son",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱبْنِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ابْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ابن",
+      "buckwalter": "{boni",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 6,
+      "rank": 1559
+    },
+    {
+      "id": "word_04430",
+      "arabicText": "مَوْلُودٌ",
+      "englishMeaning": "(the) father",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مَوْلُودٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مَوْلُود",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مولود",
+      "buckwalter": "mawoluwdN",
+      "root": {
+        "arabic": "ولد",
+        "transliteration": "wld"
+      },
+      "occurrenceCount": 2,
+      "rank": 4430
+    },
+    {
+      "id": "word_02921",
+      "arabicText": "وَأَهْلَكَ",
+      "englishMeaning": "and your family",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + أَهْلَ[N] + كَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واهلك",
+      "buckwalter": "wa>aholaka",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 3,
+      "rank": 2921
+    },
+    {
+      "id": "word_00756",
+      "arabicText": "يَٰٓأَهْلَ",
+      "englishMeaning": "O People",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَٰٓ[P] + أَهْلَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يااهل",
+      "buckwalter": "ya`^>ahola",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 13,
+      "rank": 756
+    },
+    {
+      "id": "word_00315",
+      "arabicText": "ٱلْأَوَّلِينَ",
+      "englishMeaning": "(of) the former (people)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَوَّلِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَوَّل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الاولين",
+      "buckwalter": "{lo>aw~aliyna",
+      "root": {
+        "arabic": "أول",
+        "transliteration": "Awl"
+      },
+      "occurrenceCount": 31,
+      "rank": 315
+    },
+    {
+      "id": "word_00873",
+      "arabicText": "كَمْ",
+      "englishMeaning": "how many",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "كَمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "كَم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كم",
+      "buckwalter": "kamo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 11,
+      "rank": 873
+    },
+    {
+      "id": "word_02737",
+      "arabicText": "بِأَمْرِهِۦٓ",
+      "englishMeaning": "His Command",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + أَمْرِ[N] + هِۦٓ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَمْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بامرهۦ",
+      "buckwalter": "bi>amorihi.^",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 4,
+      "rank": 2737
+    },
+    {
+      "id": "word_04273",
+      "arabicText": "ءَابَآئِهِنَّ",
+      "englishMeaning": "their fathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآئِ[N] + هِنَّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءابايهن",
+      "buckwalter": "'aAbaA^}ihin~a",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 2,
+      "rank": 4273
+    },
+    {
+      "id": "word_03331",
+      "arabicText": "وَقَوْمَ",
+      "englishMeaning": "And (the) people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + قَوْمَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وقوم",
+      "buckwalter": "waqawoma",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3331
+    },
+    {
+      "id": "word_03061",
+      "arabicText": "إِنسٌ",
+      "englishMeaning": "any man",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "إِنسٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "إِنس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انس",
+      "buckwalter": "<insN",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 3,
+      "rank": 3061
+    },
+    {
+      "id": "word_02539",
+      "arabicText": "قَوْمَكَ",
+      "englishMeaning": "your people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمَ[N] + كَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومك",
+      "buckwalter": "qawomaka",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 4,
+      "rank": 2539
+    },
+    {
+      "id": "word_03922",
+      "arabicText": "سَوْءٍ",
+      "englishMeaning": "an evil man",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "سَوْءٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "سَوْء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "سوء",
+      "buckwalter": "sawo'K",
+      "root": {
+        "arabic": "سوأ",
+        "transliteration": "swA"
+      },
+      "occurrenceCount": 3,
+      "rank": 3922
+    },
+    {
+      "id": "word_02416",
+      "arabicText": "ٱلسِّجْنِ",
+      "englishMeaning": "(of) the prison!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + سِّجْنِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "سِجْن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "السجن",
+      "buckwalter": "{ls~ijoni",
+      "root": {
+        "arabic": "سجن",
+        "transliteration": "sjn"
+      },
+      "occurrenceCount": 4,
+      "rank": 2416
+    },
+    {
+      "id": "word_01808",
+      "arabicText": "وَأُمِرْتُ",
+      "englishMeaning": "and I have been commanded",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "وَ[P] + أُمِرْ[V] + تُ[N]",
+        "grammaticalCase": null,
+        "lemma": "أَمَرَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": true
+      },
+      "arabicWithoutDiacritics": "وامرت",
+      "buckwalter": "wa>umirotu",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 6,
+      "rank": 1808
+    },
+    {
+      "id": "word_00261",
+      "arabicText": "يَٰقَوْمِ",
+      "englishMeaning": "O my people!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَٰ[P] + قَوْمِ[N] + [N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ياقوم",
+      "buckwalter": "ya`qawomi",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 38,
+      "rank": 261
+    },
+    {
+      "id": "word_01285",
+      "arabicText": "أَهْلِهِۦ",
+      "englishMeaning": "its people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَهْلِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اهلهۦ",
+      "buckwalter": ">aholihi.",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 8,
+      "rank": 1285
+    },
+    {
+      "id": "word_03810",
+      "arabicText": "بِأَهْلِكَ",
+      "englishMeaning": "with your family",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + أَهْلِ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "باهلك",
+      "buckwalter": "bi>aholika",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 3,
+      "rank": 3810
+    },
+    {
+      "id": "word_04038",
+      "arabicText": "جَهْرَةً",
+      "englishMeaning": "manifestly",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "جَهْرَةً[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "جَهْرَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "جهرة",
+      "buckwalter": "jahorapF",
+      "root": {
+        "arabic": "جهر",
+        "transliteration": "jhr"
+      },
+      "occurrenceCount": 3,
+      "rank": 4038
+    },
+    {
+      "id": "word_03099",
+      "arabicText": "ءَابَآءَهُمْ",
+      "englishMeaning": "their fathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآءَ[N] + هُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءاباءهم",
+      "buckwalter": "'aAbaA^'ahumo",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 3,
+      "rank": 3099
+    },
+    {
+      "id": "word_00528",
+      "arabicText": "قَوْمِهِۦ",
+      "englishMeaning": "his people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومهۦ",
+      "buckwalter": "qawomihi.",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 18,
+      "rank": 528
+    },
+    {
+      "id": "word_02730",
+      "arabicText": "ٱمْرَأَتُ",
+      "englishMeaning": "(the) wife",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱمْرَأَتُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "امْرَأَت",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "امرات",
+      "buckwalter": "{mora>atu",
+      "root": {
+        "arabic": "مرأ",
+        "transliteration": "mrA"
+      },
+      "occurrenceCount": 4,
+      "rank": 2730
+    },
+    {
+      "id": "word_01158",
+      "arabicText": "وَيَٰقَوْمِ",
+      "englishMeaning": "And O my people!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + يَٰ[P] + قَوْمِ[N] + [N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وياقوم",
+      "buckwalter": "waya`qawomi",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 9,
+      "rank": 1158
+    },
+    {
+      "id": "word_03025",
+      "arabicText": "لِإِخْوَٰنِهِمْ",
+      "englishMeaning": "about their brothers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + إِخْوَٰنِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لاخوانهم",
+      "buckwalter": "li<ixowa`nihimo",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 3,
+      "rank": 3025
+    },
+    {
+      "id": "word_03473",
+      "arabicText": "وَٱلْأَمْرُ",
+      "englishMeaning": "and the command",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱلْ[P] + أَمْرُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَمْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والامر",
+      "buckwalter": "wa{lo>amoru",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 3,
+      "rank": 3473
+    },
+    {
+      "id": "word_00292",
+      "arabicText": "قَوْمًا",
+      "englishMeaning": "a people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قوما",
+      "buckwalter": "qawomFA",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 35,
+      "rank": 292
+    },
+    {
+      "id": "word_02898",
+      "arabicText": "أَهْلَهُۥ",
+      "englishMeaning": "its people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَهْلَ[N] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اهلهۥ",
+      "buckwalter": ">aholahu,",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 4,
+      "rank": 2898
+    },
+    {
+      "id": "word_02425",
+      "arabicText": "أَخُوهُمْ",
+      "englishMeaning": "their brother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَخُو[N] + هُمْ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اخوهم",
+      "buckwalter": ">axuwhumo",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 4,
+      "rank": 2425
+    },
+    {
+      "id": "word_03396",
+      "arabicText": "وَأَخَاهُ",
+      "englishMeaning": "and his brother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + أَخَا[N] + هُ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واخاه",
+      "buckwalter": "wa>axaAhu",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 3,
+      "rank": 3396
+    },
+    {
+      "id": "word_03071",
+      "arabicText": "لِقَوْمِهِ",
+      "englishMeaning": "to his people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + قَوْمِ[N] + هِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لقومه",
+      "buckwalter": "liqawomihi",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 3071
+    },
+    {
+      "id": "word_01241",
+      "arabicText": "أَخَاهُمْ",
+      "englishMeaning": "(We sent) their brother",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "أَخَا[N] + هُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَخ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اخاهم",
+      "buckwalter": ">axaAhumo",
+      "root": {
+        "arabic": "أخو",
+        "transliteration": "Akhw"
+      },
+      "occurrenceCount": 8,
+      "rank": 1241
+    },
+    {
+      "id": "word_00234",
+      "arabicText": "ٱلنَّاسُ",
+      "englishMeaning": "the people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّاسُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "ناس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الناس",
+      "buckwalter": "{ln~aAsu",
+      "root": {
+        "arabic": "أنس",
+        "transliteration": "Ans"
+      },
+      "occurrenceCount": 42,
+      "rank": 234
+    },
+    {
+      "id": "word_04045",
+      "arabicText": "بِقَوْمٍ",
+      "englishMeaning": "a people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + قَوْمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بقوم",
+      "buckwalter": "biqawomK",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 3,
+      "rank": 4045
+    },
+    {
+      "id": "word_02129",
+      "arabicText": "قَوْمِى",
+      "englishMeaning": "my people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "قَوْمِ[N] + ى[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قومى",
+      "buckwalter": "qawomiY",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 5,
+      "rank": 2129
+    },
+    {
+      "id": "word_02245",
+      "arabicText": "ٱمْرِئٍ",
+      "englishMeaning": "person",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱمْرِئٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "امْرِئ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "امري",
+      "buckwalter": "{mori}K",
+      "root": {
+        "arabic": "مرأ",
+        "transliteration": "mrA"
+      },
+      "occurrenceCount": 4,
+      "rank": 2245
+    },
+    {
+      "id": "word_02489",
+      "arabicText": "لِّبَنِىٓ",
+      "englishMeaning": "for (the) Children",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "لِّ[P] + بَنِىٓ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بُنَىّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لبنى",
+      "buckwalter": "l~ibaniY^",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 4,
+      "rank": 2489
+    },
+    {
+      "id": "word_00312",
+      "arabicText": "بَنِىٓ",
+      "englishMeaning": "(from the) Children",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَنِىٓ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بُنَىّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بنى",
+      "buckwalter": "baniY^",
+      "root": {
+        "arabic": "بني",
+        "transliteration": "bny"
+      },
+      "occurrenceCount": 31,
+      "rank": 312
+    },
+    {
+      "id": "word_02270",
+      "arabicText": "وَهَٰمَٰنَ",
+      "englishMeaning": "and Haman",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + هَٰمَٰنَ[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وهامان",
+      "buckwalter": "waha`ma`na",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 4,
+      "rank": 2270
+    },
+    {
+      "id": "word_02996",
+      "arabicText": "ءَابَآئِهِمْ",
+      "englishMeaning": "their fathers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَابَآئِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آباء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءابايهم",
+      "buckwalter": "'aAbaA^}ihimo",
+      "root": {
+        "arabic": "أبو",
+        "transliteration": "Abw"
+      },
+      "occurrenceCount": 3,
+      "rank": 2996
+    },
+    {
+      "id": "word_01960",
+      "arabicText": "ٱلْقَوْمُ",
+      "englishMeaning": "the people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + قَوْمُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "قَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "القوم",
+      "buckwalter": "{loqawomu",
+      "root": {
+        "arabic": "قوم",
+        "transliteration": "qwm"
+      },
+      "occurrenceCount": 5,
+      "rank": 1960
+    }
+  ]
+}

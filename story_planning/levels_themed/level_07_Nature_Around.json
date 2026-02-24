@@ -1,0 +1,799 @@
+{
+  "metadata": {
+    "level": 7,
+    "phase": "Daily Life",
+    "theme": "Nature Around",
+    "new_words_count": 20,
+    "review_words_count": 10,
+    "total_words": 30,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00031",
+      "word_00079",
+      "word_00102",
+      "word_00131",
+      "word_00215",
+      "word_00241",
+      "word_00250",
+      "word_00420",
+      "word_00427",
+      "word_00469",
+      "word_00509",
+      "word_00578",
+      "word_00675",
+      "word_00730",
+      "word_00762",
+      "word_00862",
+      "word_00879",
+      "word_00921",
+      "word_00938",
+      "word_01045"
+    ],
+    "review_word_ids": [
+      "word_00222",
+      "word_00018",
+      "word_00340",
+      "word_00162",
+      "word_00356",
+      "word_00323",
+      "word_00374",
+      "word_00353",
+      "word_00130",
+      "word_00100"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00031",
+      "arabicText": "ٱلْأَرْضِ",
+      "englishMeaning": "the earth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَرْضِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَرْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الارض",
+      "buckwalter": "{lo>aroDi",
+      "root": {
+        "arabic": "أرض",
+        "transliteration": "Ard"
+      },
+      "occurrenceCount": 219,
+      "rank": 31
+    },
+    {
+      "id": "word_00079",
+      "arabicText": "وَٱلْأَرْضِ",
+      "englishMeaning": "and the earth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱلْ[P] + أَرْضِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَرْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والارض",
+      "buckwalter": "wa{lo>aroDi",
+      "root": {
+        "arabic": "أرض",
+        "transliteration": "Ard"
+      },
+      "occurrenceCount": 108,
+      "rank": 79
+    },
+    {
+      "id": "word_00102",
+      "arabicText": "ٱلسَّمَآءِ",
+      "englishMeaning": "the sky",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + سَّمَآءِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "سَماء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "السماء",
+      "buckwalter": "{ls~amaA^'i",
+      "root": {
+        "arabic": "سمو",
+        "transliteration": "smw"
+      },
+      "occurrenceCount": 81,
+      "rank": 102
+    },
+    {
+      "id": "word_00131",
+      "arabicText": "ٱلنَّارِ",
+      "englishMeaning": "(of) the Fire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّارِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "نار",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "النار",
+      "buckwalter": "{ln~aAri",
+      "root": {
+        "arabic": "نور",
+        "transliteration": "nwr"
+      },
+      "occurrenceCount": 70,
+      "rank": 131
+    },
+    {
+      "id": "word_00215",
+      "arabicText": "ٱلْأَرْضَ",
+      "englishMeaning": "the earth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَرْضَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَرْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الارض",
+      "buckwalter": "{lo>aroDa",
+      "root": {
+        "arabic": "أرض",
+        "transliteration": "Ard"
+      },
+      "occurrenceCount": 45,
+      "rank": 215
+    },
+    {
+      "id": "word_00241",
+      "arabicText": "وَٱلْأَرْضَ",
+      "englishMeaning": "and the earth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱلْ[P] + أَرْضَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَرْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والارض",
+      "buckwalter": "wa{lo>aroDa",
+      "root": {
+        "arabic": "أرض",
+        "transliteration": "Ard"
+      },
+      "occurrenceCount": 41,
+      "rank": 241
+    },
+    {
+      "id": "word_00250",
+      "arabicText": "ٱلْأَنْهَٰرُ",
+      "englishMeaning": "the rivers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَنْهَٰرُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "نَهَر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الانهار",
+      "buckwalter": "{lo>anoha`ru",
+      "root": {
+        "arabic": "نهر",
+        "transliteration": "nhr"
+      },
+      "occurrenceCount": 40,
+      "rank": 250
+    },
+    {
+      "id": "word_00420",
+      "arabicText": "ٱلْأَرْضُ",
+      "englishMeaning": "the earth",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + أَرْضُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "أَرْض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الارض",
+      "buckwalter": "{lo>aroDu",
+      "root": {
+        "arabic": "أرض",
+        "transliteration": "Ard"
+      },
+      "occurrenceCount": 23,
+      "rank": 420
+    },
+    {
+      "id": "word_00427",
+      "arabicText": "مَآءً",
+      "englishMeaning": "water",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مَآءً[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "ماء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ماء",
+      "buckwalter": "maA^'F",
+      "root": {
+        "arabic": "موه",
+        "transliteration": "mwh"
+      },
+      "occurrenceCount": 23,
+      "rank": 427
+    },
+    {
+      "id": "word_00469",
+      "arabicText": "ٱلنَّارُ",
+      "englishMeaning": "the Fire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّارُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "نار",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "النار",
+      "buckwalter": "{ln~aAru",
+      "root": {
+        "arabic": "نور",
+        "transliteration": "nwr"
+      },
+      "occurrenceCount": 21,
+      "rank": 469
+    },
+    {
+      "id": "word_00509",
+      "arabicText": "نَارًا",
+      "englishMeaning": "a fire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "نَارًا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "نار",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "نارا",
+      "buckwalter": "naArFA",
+      "root": {
+        "arabic": "نور",
+        "transliteration": "nwr"
+      },
+      "occurrenceCount": 19,
+      "rank": 509
+    },
+    {
+      "id": "word_00578",
+      "arabicText": "ٱلْجَحِيمِ",
+      "englishMeaning": "(of) the blazing Fire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + جَحِيمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "جَحِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الجحيم",
+      "buckwalter": "{lojaHiymi",
+      "root": {
+        "arabic": "جحم",
+        "transliteration": "jhm"
+      },
+      "occurrenceCount": 17,
+      "rank": 578
+    },
+    {
+      "id": "word_00675",
+      "arabicText": "ٱلْبَحْرِ",
+      "englishMeaning": "the sea",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + بَحْرِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَحْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "البحر",
+      "buckwalter": "{lobaHori",
+      "root": {
+        "arabic": "بحر",
+        "transliteration": "bhr"
+      },
+      "occurrenceCount": 14,
+      "rank": 675
+    },
+    {
+      "id": "word_00730",
+      "arabicText": "ٱلسَّمَآءَ",
+      "englishMeaning": "(rain from) the sky",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + سَّمَآءَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "سَماء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "السماء",
+      "buckwalter": "{ls~amaA^'a",
+      "root": {
+        "arabic": "سمو",
+        "transliteration": "smw"
+      },
+      "occurrenceCount": 13,
+      "rank": 730
+    },
+    {
+      "id": "word_00762",
+      "arabicText": "وَٱلْقَمَرَ",
+      "englishMeaning": "and the moon",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱلْ[P] + قَمَرَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قَمَر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والقمر",
+      "buckwalter": "wa{loqamara",
+      "root": {
+        "arabic": "قمر",
+        "transliteration": "qmr"
+      },
+      "occurrenceCount": 13,
+      "rank": 762
+    },
+    {
+      "id": "word_00862",
+      "arabicText": "ٱلْجِبَالُ",
+      "englishMeaning": "the mountains",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + جِبَالُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "جَبَل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الجبال",
+      "buckwalter": "{lojibaAlu",
+      "root": {
+        "arabic": "جبل",
+        "transliteration": "jbl"
+      },
+      "occurrenceCount": 11,
+      "rank": 862
+    },
+    {
+      "id": "word_00879",
+      "arabicText": "مَّرَضٌ",
+      "englishMeaning": "(is) a disease",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "مَّرَضٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "مَرَض",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "مرض",
+      "buckwalter": "m~araDN",
+      "root": {
+        "arabic": "مرض",
+        "transliteration": "mrd"
+      },
+      "occurrenceCount": 11,
+      "rank": 879
+    },
+    {
+      "id": "word_00921",
+      "arabicText": "ٱلنَّارَ",
+      "englishMeaning": "the Fire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّارَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "نار",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "النار",
+      "buckwalter": "{ln~aAra",
+      "root": {
+        "arabic": "نور",
+        "transliteration": "nwr"
+      },
+      "occurrenceCount": 11,
+      "rank": 921
+    },
+    {
+      "id": "word_00938",
+      "arabicText": "ٱلشَّمْسَ",
+      "englishMeaning": "the sun",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + شَّمْسَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "شَمْس",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الشمس",
+      "buckwalter": "{l$~amosa",
+      "root": {
+        "arabic": "شمس",
+        "transliteration": "shms"
+      },
+      "occurrenceCount": 11,
+      "rank": 938
+    },
+    {
+      "id": "word_01045",
+      "arabicText": "رَوَٰسِىَ",
+      "englishMeaning": "firm mountains",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "رَوَٰسِىَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَواسِي",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رواسى",
+      "buckwalter": "rawa`siYa",
+      "root": {
+        "arabic": "رسو",
+        "transliteration": "rsw"
+      },
+      "occurrenceCount": 9,
+      "rank": 1045
+    },
+    {
+      "id": "word_00222",
+      "arabicText": "وَيَوْمَ",
+      "englishMeaning": "and (on the) Day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + يَوْمَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ويوم",
+      "buckwalter": "wayawoma",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 44,
+      "rank": 222
+    },
+    {
+      "id": "word_00018",
+      "arabicText": "ثُمَّ",
+      "englishMeaning": "then",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "ثُمَّ[P]",
+        "grammaticalCase": null,
+        "lemma": "ثُمّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ثم",
+      "buckwalter": "vum~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 337,
+      "rank": 18
+    },
+    {
+      "id": "word_00340",
+      "arabicText": "قَبْلِهِمْ",
+      "englishMeaning": "before them",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلِ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبلهم",
+      "buckwalter": "qabolihimo",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 29,
+      "rank": 340
+    },
+    {
+      "id": "word_00162",
+      "arabicText": "ٱلْءَاخِرَةِ",
+      "englishMeaning": "the Hereafter",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + ءَاخِرَةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آخِر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الءاخرة",
+      "buckwalter": "{lo'aAxirapi",
+      "root": {
+        "arabic": "أخر",
+        "transliteration": "Akhr"
+      },
+      "occurrenceCount": 55,
+      "rank": 162
+    },
+    {
+      "id": "word_00356",
+      "arabicText": "قَبْلِكَ",
+      "englishMeaning": "before you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلِ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبلك",
+      "buckwalter": "qabolika",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 28,
+      "rank": 356
+    },
+    {
+      "id": "word_00323",
+      "arabicText": "يَوْمِ",
+      "englishMeaning": "(of the) Day",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "يَوْمِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "يَوْم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يوم",
+      "buckwalter": "yawomi",
+      "root": {
+        "arabic": "يوم",
+        "transliteration": "ywm"
+      },
+      "occurrenceCount": 31,
+      "rank": 323
+    },
+    {
+      "id": "word_00374",
+      "arabicText": "فَسَوْفَ",
+      "englishMeaning": "then soon",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + سَوْفَ[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فسوف",
+      "buckwalter": "fasawofa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 26,
+      "rank": 374
+    },
+    {
+      "id": "word_00353",
+      "arabicText": "فَهُوَ",
+      "englishMeaning": "then it",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + هُوَ[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فهو",
+      "buckwalter": "fahuwa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 353
+    },
+    {
+      "id": "word_00130",
+      "arabicText": "قَبْلُ",
+      "englishMeaning": "before",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلُ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبل",
+      "buckwalter": "qabolu",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 70,
+      "rank": 130
+    },
+    {
+      "id": "word_00100",
+      "arabicText": "بَعْدِ",
+      "englishMeaning": "after",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَعْدِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَعْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بعد",
+      "buckwalter": "baEodi",
+      "root": {
+        "arabic": "بعد",
+        "transliteration": "b`d"
+      },
+      "occurrenceCount": 82,
+      "rank": 100
+    }
+  ]
+}

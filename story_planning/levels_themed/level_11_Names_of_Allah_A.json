@@ -1,0 +1,1319 @@
+{
+  "metadata": {
+    "level": 11,
+    "phase": "Divine Foundation",
+    "theme": "Names of Allah A",
+    "new_words_count": 35,
+    "review_words_count": 15,
+    "total_words": 50,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00002",
+      "word_00004",
+      "word_00010",
+      "word_00029",
+      "word_00062",
+      "word_00083",
+      "word_00105",
+      "word_00107",
+      "word_00111",
+      "word_00115",
+      "word_00137",
+      "word_00149",
+      "word_00158",
+      "word_00168",
+      "word_00178",
+      "word_00206",
+      "word_00235",
+      "word_00247",
+      "word_00274",
+      "word_00294",
+      "word_00319",
+      "word_00332",
+      "word_00355",
+      "word_00359",
+      "word_00366",
+      "word_00367",
+      "word_00401",
+      "word_00408",
+      "word_00417",
+      "word_00434",
+      "word_00442",
+      "word_00448",
+      "word_00457",
+      "word_00458",
+      "word_00467"
+    ],
+    "review_word_ids": [
+      "word_00011",
+      "word_00016",
+      "word_00024",
+      "word_00014",
+      "word_00007",
+      "word_00028",
+      "word_00005",
+      "word_00001",
+      "word_00036",
+      "word_00027",
+      "word_00013",
+      "word_00023",
+      "word_00025",
+      "word_00008",
+      "word_00009"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00002",
+      "arabicText": "ٱللَّهِ",
+      "englishMeaning": "(of) Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱللَّهِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الله",
+      "buckwalter": "{ll~ahi",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 828,
+      "rank": 2
+    },
+    {
+      "id": "word_00004",
+      "arabicText": "ٱللَّهُ",
+      "englishMeaning": "Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱللَّهُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الله",
+      "buckwalter": "{ll~ahu",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 733,
+      "rank": 4
+    },
+    {
+      "id": "word_00010",
+      "arabicText": "ٱللَّهَ",
+      "englishMeaning": "Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱللَّهَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الله",
+      "buckwalter": "{ll~aha",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 592,
+      "rank": 10
+    },
+    {
+      "id": "word_00029",
+      "arabicText": "وَٱللَّهُ",
+      "englishMeaning": "And Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + ٱللَّهُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والله",
+      "buckwalter": "wa{ll~ahu",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 239,
+      "rank": 29
+    },
+    {
+      "id": "word_00062",
+      "arabicText": "بِٱللَّهِ",
+      "englishMeaning": "in Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱللَّهِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالله",
+      "buckwalter": "bi{ll~ahi",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 139,
+      "rank": 62
+    },
+    {
+      "id": "word_00083",
+      "arabicText": "لِلَّهِ",
+      "englishMeaning": "(be) to Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "لِ[P] + لَّهِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لله",
+      "buckwalter": "lil~ahi",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 102,
+      "rank": 83
+    },
+    {
+      "id": "word_00105",
+      "arabicText": "رَبِّ",
+      "englishMeaning": "(the) Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رب",
+      "buckwalter": "rab~i",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 81,
+      "rank": 105
+    },
+    {
+      "id": "word_00107",
+      "arabicText": "رَبِّكَ",
+      "englishMeaning": "(of) your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربك",
+      "buckwalter": "rab~ika",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 81,
+      "rank": 107
+    },
+    {
+      "id": "word_00111",
+      "arabicText": "ٱلْكِتَٰبَ",
+      "englishMeaning": "the Book",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + كِتَٰبَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "كِتاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الكتاب",
+      "buckwalter": "{lokita`ba",
+      "root": {
+        "arabic": "كتب",
+        "transliteration": "ktb"
+      },
+      "occurrenceCount": 78,
+      "rank": 111
+    },
+    {
+      "id": "word_00115",
+      "arabicText": "ٱلْكِتَٰبِ",
+      "englishMeaning": "the Book",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + كِتَٰبِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "كِتاب",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الكتاب",
+      "buckwalter": "{lokita`bi",
+      "root": {
+        "arabic": "كتب",
+        "transliteration": "ktb"
+      },
+      "occurrenceCount": 77,
+      "rank": 115
+    },
+    {
+      "id": "word_00137",
+      "arabicText": "رَبِّى",
+      "englishMeaning": "(is) my Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N] + ى[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربى",
+      "buckwalter": "rab~iY",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 65,
+      "rank": 137
+    },
+    {
+      "id": "word_00149",
+      "arabicText": "رَبِّهِمْ",
+      "englishMeaning": "their Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N] + هِمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربهم",
+      "buckwalter": "rab~ihimo",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 59,
+      "rank": 149
+    },
+    {
+      "id": "word_00158",
+      "arabicText": "رَّحِيمٌ",
+      "englishMeaning": "Most Merciful",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "رَّحِيمٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَحِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رحيم",
+      "buckwalter": "r~aHiymN",
+      "root": {
+        "arabic": "رحم",
+        "transliteration": "rhm"
+      },
+      "occurrenceCount": 56,
+      "rank": 158
+    },
+    {
+      "id": "word_00168",
+      "arabicText": "جَهَنَّمَ",
+      "englishMeaning": "Hell",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "جَهَنَّمَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "جَهَنَّم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "جهنم",
+      "buckwalter": "jahan~ama",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 54,
+      "rank": 168
+    },
+    {
+      "id": "word_00178",
+      "arabicText": "رَبَّكَ",
+      "englishMeaning": "(to) your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبَّ[N] + كَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربك",
+      "buckwalter": "rab~aka",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 52,
+      "rank": 178
+    },
+    {
+      "id": "word_00206",
+      "arabicText": "ٱلصَّلَوٰةَ",
+      "englishMeaning": "the prayer",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + صَّلَوٰةَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "صَلاة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الصلواة",
+      "buckwalter": "{lS~alaw`pa",
+      "root": {
+        "arabic": "صلو",
+        "transliteration": "slw"
+      },
+      "occurrenceCount": 47,
+      "rank": 206
+    },
+    {
+      "id": "word_00235",
+      "arabicText": "رَبُّكَ",
+      "englishMeaning": "your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبُّ[N] + كَ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربك",
+      "buckwalter": "rab~uka",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 42,
+      "rank": 235
+    },
+    {
+      "id": "word_00247",
+      "arabicText": "رَبَّنَا",
+      "englishMeaning": "(saying), \"Our Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبَّ[N] + نَا[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربنا",
+      "buckwalter": "rab~anaA",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 41,
+      "rank": 247
+    },
+    {
+      "id": "word_00274",
+      "arabicText": "إِلَٰهَ",
+      "englishMeaning": "god",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "إِلَٰهَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِلٰه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الاه",
+      "buckwalter": "<ila`ha",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 37,
+      "rank": 274
+    },
+    {
+      "id": "word_00294",
+      "arabicText": "رَّبِّكَ",
+      "englishMeaning": "your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَّبِّ[N] + كَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربك",
+      "buckwalter": "r~ab~ika",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 35,
+      "rank": 294
+    },
+    {
+      "id": "word_00319",
+      "arabicText": "رَبِّكُمَا",
+      "englishMeaning": "(of) your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N] + كُمَا[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربكما",
+      "buckwalter": "rab~ikumaA",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 31,
+      "rank": 319
+    },
+    {
+      "id": "word_00332",
+      "arabicText": "رَّبِّكُمْ",
+      "englishMeaning": "your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَّبِّ[N] + كُمْ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربكم",
+      "buckwalter": "r~ab~ikumo",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 30,
+      "rank": 332
+    },
+    {
+      "id": "word_00355",
+      "arabicText": "ٱلرَّحِيمُ",
+      "englishMeaning": "the Most Merciful",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + رَّحِيمُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَحِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الرحيم",
+      "buckwalter": "{lr~aHiymu",
+      "root": {
+        "arabic": "رحم",
+        "transliteration": "rhm"
+      },
+      "occurrenceCount": 28,
+      "rank": 355
+    },
+    {
+      "id": "word_00359",
+      "arabicText": "ٱلْجَنَّةِ",
+      "englishMeaning": "(of) Paradise",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + جَنَّةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "جَنَّة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الجنة",
+      "buckwalter": "{lojan~api",
+      "root": {
+        "arabic": "جنن",
+        "transliteration": "jnn"
+      },
+      "occurrenceCount": 27,
+      "rank": 359
+    },
+    {
+      "id": "word_00366",
+      "arabicText": "رَبَّنَآ",
+      "englishMeaning": "Our Lord!",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبَّ[N] + نَآ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربنا",
+      "buckwalter": "rab~anaA^",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 27,
+      "rank": 366
+    },
+    {
+      "id": "word_00367",
+      "arabicText": "وَلِلَّهِ",
+      "englishMeaning": "And for Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + لِ[P] + لَّهِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولله",
+      "buckwalter": "walil~ahi",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 27,
+      "rank": 367
+    },
+    {
+      "id": "word_00401",
+      "arabicText": "ٱلْمُرْسَلِينَ",
+      "englishMeaning": "the Messengers",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مُرْسَلِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُرْسَل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المرسلين",
+      "buckwalter": "{lomurosaliyna",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 24,
+      "rank": 401
+    },
+    {
+      "id": "word_00408",
+      "arabicText": "ٱلْمُشْرِكِينَ",
+      "englishMeaning": "those who associate partners (with Allah)",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مُشْرِكِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مُشْرِك",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "المشركين",
+      "buckwalter": "{lomu$orikiyna",
+      "root": {
+        "arabic": "شرك",
+        "transliteration": "shrk"
+      },
+      "occurrenceCount": 24,
+      "rank": 408
+    },
+    {
+      "id": "word_00417",
+      "arabicText": "رَبُّكُمْ",
+      "englishMeaning": "your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبُّ[N] + كُمْ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربكم",
+      "buckwalter": "rab~ukumo",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 23,
+      "rank": 417
+    },
+    {
+      "id": "word_00434",
+      "arabicText": "وَرَسُولَهُۥ",
+      "englishMeaning": "and His Messenger",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + رَسُولَ[N] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَسُول",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ورسولهۥ",
+      "buckwalter": "warasuwlahu,",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 23,
+      "rank": 434
+    },
+    {
+      "id": "word_00442",
+      "arabicText": "ٱلْقُرْءَانَ",
+      "englishMeaning": "(on) the Quran",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + قُرْءَانَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "قُرْءان",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "القرءان",
+      "buckwalter": "{loquro'aAna",
+      "root": {
+        "arabic": "قرأ",
+        "transliteration": "qrA"
+      },
+      "occurrenceCount": 22,
+      "rank": 442
+    },
+    {
+      "id": "word_00448",
+      "arabicText": "رَبِّهِۦ",
+      "englishMeaning": "his Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبِّ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربهۦ",
+      "buckwalter": "rab~ihi.",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 22,
+      "rank": 448
+    },
+    {
+      "id": "word_00457",
+      "arabicText": "ٱلرَّحْمَٰنُ",
+      "englishMeaning": "the Most Gracious",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + رَّحْمَٰنُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَحْمٰن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الرحمان",
+      "buckwalter": "{lr~aHoma`nu",
+      "root": {
+        "arabic": "رحم",
+        "transliteration": "rhm"
+      },
+      "occurrenceCount": 21,
+      "rank": 457
+    },
+    {
+      "id": "word_00458",
+      "arabicText": "ٱلرَّحْمَٰنِ",
+      "englishMeaning": "the Most Gracious",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + رَّحْمَٰنِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَحْمٰن",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الرحمان",
+      "buckwalter": "{lr~aHoma`ni",
+      "root": {
+        "arabic": "رحم",
+        "transliteration": "rhm"
+      },
+      "occurrenceCount": 21,
+      "rank": 458
+    },
+    {
+      "id": "word_00467",
+      "arabicText": "وَرَسُولِهِۦ",
+      "englishMeaning": "and His Messenger",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + رَسُولِ[N] + هِۦ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "رَسُول",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ورسولهۦ",
+      "buckwalter": "warasuwlihi.",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 21,
+      "rank": 467
+    },
+    {
+      "id": "word_00011",
+      "arabicText": "إِلَّا",
+      "englishMeaning": "except",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِلَّا[P]",
+        "grammaticalCase": null,
+        "lemma": "إِلّا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الا",
+      "buckwalter": "<il~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 562,
+      "rank": 11
+    },
+    {
+      "id": "word_00016",
+      "arabicText": "مِّن",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِّن[P]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "m~in",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 372,
+      "rank": 16
+    },
+    {
+      "id": "word_00024",
+      "arabicText": "بِهِۦ",
+      "englishMeaning": "therewith",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + هِۦ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بهۦ",
+      "buckwalter": "bihi.",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 258,
+      "rank": 24
+    },
+    {
+      "id": "word_00014",
+      "arabicText": "مِنَ",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِنَ[P]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "mina",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 412,
+      "rank": 14
+    },
+    {
+      "id": "word_00007",
+      "arabicText": "لَا",
+      "englishMeaning": "no",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَا[P]",
+        "grammaticalCase": null,
+        "lemma": "لا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لا",
+      "buckwalter": "laA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 616,
+      "rank": 7
+    },
+    {
+      "id": "word_00028",
+      "arabicText": "عَلَى",
+      "englishMeaning": "to",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَلَى[P]",
+        "grammaticalCase": null,
+        "lemma": "عَلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "على",
+      "buckwalter": "EalaY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 242,
+      "rank": 28
+    },
+    {
+      "id": "word_00005",
+      "arabicText": "مِن",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِن[P]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "min",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 728,
+      "rank": 5
+    },
+    {
+      "id": "word_00001",
+      "arabicText": "فِى",
+      "englishMeaning": "In",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فِى[P]",
+        "grammaticalCase": null,
+        "lemma": "فِي",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فى",
+      "buckwalter": "fiY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 1098,
+      "rank": 1
+    },
+    {
+      "id": "word_00036",
+      "arabicText": "فِيهَا",
+      "englishMeaning": "therein",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فِي[P] + هَا[N]",
+        "grammaticalCase": null,
+        "lemma": "فِي",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فيها",
+      "buckwalter": "fiyhaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 212,
+      "rank": 36
+    },
+    {
+      "id": "word_00027",
+      "arabicText": "إِن",
+      "englishMeaning": "if",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِن[P]",
+        "grammaticalCase": null,
+        "lemma": "إِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "<in",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 253,
+      "rank": 27
+    },
+    {
+      "id": "word_00013",
+      "arabicText": "أَن",
+      "englishMeaning": "to",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَن[P]",
+        "grammaticalCase": null,
+        "lemma": "أَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": ">an",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 461,
+      "rank": 13
+    },
+    {
+      "id": "word_00023",
+      "arabicText": "أَوْ",
+      "englishMeaning": "Or",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَوْ[P]",
+        "grammaticalCase": null,
+        "lemma": "أَو",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "او",
+      "buckwalter": ">awo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 263,
+      "rank": 23
+    },
+    {
+      "id": "word_00025",
+      "arabicText": "مِنْ",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِنْ[P]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "mino",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 253,
+      "rank": 25
+    },
+    {
+      "id": "word_00008",
+      "arabicText": "إِنَّ",
+      "englishMeaning": "Indeed",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنَّ[P]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "<in~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 609,
+      "rank": 8
+    },
+    {
+      "id": "word_00009",
+      "arabicText": "وَلَا",
+      "englishMeaning": "and not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + لَا[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولا",
+      "buckwalter": "walaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 605,
+      "rank": 9
+    }
+  ]
+}

@@ -1,0 +1,2619 @@
+{
+  "metadata": {
+    "level": 23,
+    "phase": "Sentence Building",
+    "theme": "Question Words",
+    "new_words_count": 60,
+    "review_words_count": 40,
+    "total_words": 100,
+    "format": "mixed"
+  },
+  "word_breakdown": {
+    "new_word_ids": [
+      "word_00338",
+      "word_00339",
+      "word_00341",
+      "word_00344",
+      "word_00347",
+      "word_00348",
+      "word_00365",
+      "word_00369",
+      "word_00372",
+      "word_00378",
+      "word_00385",
+      "word_00388",
+      "word_00391",
+      "word_00394",
+      "word_00396",
+      "word_00397",
+      "word_00407",
+      "word_00409",
+      "word_00411",
+      "word_00412",
+      "word_00414",
+      "word_00421",
+      "word_00425",
+      "word_00428",
+      "word_00433",
+      "word_00436",
+      "word_00439",
+      "word_00450",
+      "word_00451",
+      "word_00452",
+      "word_00454",
+      "word_00459",
+      "word_00462",
+      "word_00472",
+      "word_00477",
+      "word_00484",
+      "word_00491",
+      "word_00506",
+      "word_00516",
+      "word_00517",
+      "word_00526",
+      "word_00527",
+      "word_00535",
+      "word_00540",
+      "word_00546",
+      "word_00547",
+      "word_00574",
+      "word_00576",
+      "word_00577",
+      "word_00580",
+      "word_00587",
+      "word_00593",
+      "word_00600",
+      "word_00606",
+      "word_00613",
+      "word_00614",
+      "word_00623",
+      "word_00628",
+      "word_00630",
+      "word_00635"
+    ],
+    "review_word_ids": [
+      "word_00781",
+      "word_02510",
+      "word_00429",
+      "word_00237",
+      "word_00109",
+      "word_00060",
+      "word_00097",
+      "word_00140",
+      "word_03990",
+      "word_00142",
+      "word_02220",
+      "word_01696",
+      "word_00153",
+      "word_01115",
+      "word_01406",
+      "word_00675",
+      "word_00039",
+      "word_00181",
+      "word_00902",
+      "word_01283",
+      "word_05723",
+      "word_01461",
+      "word_00026",
+      "word_01107",
+      "word_02181",
+      "word_02076",
+      "word_00367",
+      "word_01138",
+      "word_00104",
+      "word_00008",
+      "word_00100",
+      "word_04323",
+      "word_00147",
+      "word_00122",
+      "word_00539",
+      "word_00130",
+      "word_00001",
+      "word_00014",
+      "word_00207",
+      "word_00187"
+    ]
+  },
+  "words": [
+    {
+      "id": "word_00338",
+      "arabicText": "فِيهَآ",
+      "englishMeaning": "therein",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فِي[P] + هَآ[N]",
+        "grammaticalCase": null,
+        "lemma": "فِي",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فيها",
+      "buckwalter": "fiyhaA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 29,
+      "rank": 338
+    },
+    {
+      "id": "word_00339",
+      "arabicText": "بِهِ",
+      "englishMeaning": "thereby",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + هِ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "به",
+      "buckwalter": "bihi",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 29,
+      "rank": 339
+    },
+    {
+      "id": "word_00341",
+      "arabicText": "وَمِنْ",
+      "englishMeaning": "And from",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + مِنْ[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ومن",
+      "buckwalter": "wamino",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 29,
+      "rank": 341
+    },
+    {
+      "id": "word_00344",
+      "arabicText": "وَإِنَّا",
+      "englishMeaning": "and indeed we",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + إِنَّ[P] + ا[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وانا",
+      "buckwalter": "wa<in~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 344
+    },
+    {
+      "id": "word_00347",
+      "arabicText": "فَإِنَّمَا",
+      "englishMeaning": "[so] only",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + إِنَّ[P] + مَا[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فانما",
+      "buckwalter": "fa<in~amaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 347
+    },
+    {
+      "id": "word_00348",
+      "arabicText": "إِنَّمَآ",
+      "englishMeaning": "Only",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنَّ[P] + مَآ[P]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انما",
+      "buckwalter": "<in~amaA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 28,
+      "rank": 348
+    },
+    {
+      "id": "word_00365",
+      "arabicText": "بِكُمْ",
+      "englishMeaning": "for you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بكم",
+      "buckwalter": "bikumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 27,
+      "rank": 365
+    },
+    {
+      "id": "word_00369",
+      "arabicText": "لَفِى",
+      "englishMeaning": "(are) surely in",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَ[P] + فِى[P]",
+        "grammaticalCase": null,
+        "lemma": "ل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لفى",
+      "buckwalter": "lafiY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 27,
+      "rank": 369
+    },
+    {
+      "id": "word_00372",
+      "arabicText": "مِّنكُمْ",
+      "englishMeaning": "of you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِّن[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "منكم",
+      "buckwalter": "m~inkumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 26,
+      "rank": 372
+    },
+    {
+      "id": "word_00378",
+      "arabicText": "وَفِى",
+      "englishMeaning": "And in",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + فِى[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وفى",
+      "buckwalter": "wafiY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 26,
+      "rank": 378
+    },
+    {
+      "id": "word_00385",
+      "arabicText": "لَمَّا",
+      "englishMeaning": "when",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَمَّا[P]",
+        "grammaticalCase": null,
+        "lemma": "لَمّا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لما",
+      "buckwalter": "lam~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 385
+    },
+    {
+      "id": "word_00388",
+      "arabicText": "عَلَيْكُم",
+      "englishMeaning": "to you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَلَيْ[P] + كُم[N]",
+        "grammaticalCase": null,
+        "lemma": "عَلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عليكم",
+      "buckwalter": "Ealayokum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 388
+    },
+    {
+      "id": "word_00391",
+      "arabicText": "بِهِمْ",
+      "englishMeaning": "at them",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + هِمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بهم",
+      "buckwalter": "bihimo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 391
+    },
+    {
+      "id": "word_00394",
+      "arabicText": "وَأَمَّا",
+      "englishMeaning": "And as for",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + أَمَّا[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واما",
+      "buckwalter": "wa>am~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 394
+    },
+    {
+      "id": "word_00396",
+      "arabicText": "وَأُو۟لَٰٓئِكَ",
+      "englishMeaning": "and those",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + أُو۟لَٰٓئِ[N] + كَ[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واو۟لايك",
+      "buckwalter": "wa>uw@la`^}ika",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 396
+    },
+    {
+      "id": "word_00397",
+      "arabicText": "إِلَىَّ",
+      "englishMeaning": "to Myself",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِلَىَّ[P] + [N]",
+        "grammaticalCase": null,
+        "lemma": "إِلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الى",
+      "buckwalter": "<ilaY~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 25,
+      "rank": 397
+    },
+    {
+      "id": "word_00407",
+      "arabicText": "بِأَنَّهُمْ",
+      "englishMeaning": "because they",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + أَنَّ[P] + هُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بانهم",
+      "buckwalter": "bi>an~ahumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 407
+    },
+    {
+      "id": "word_00409",
+      "arabicText": "إِنَّكُمْ",
+      "englishMeaning": "Indeed you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنَّ[P] + كُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انكم",
+      "buckwalter": "<in~akumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 409
+    },
+    {
+      "id": "word_00411",
+      "arabicText": "وَإِنَّهُۥ",
+      "englishMeaning": "and indeed he",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + إِنَّ[P] + هُۥ[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وانهۥ",
+      "buckwalter": "wa<in~ahu,",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 411
+    },
+    {
+      "id": "word_00412",
+      "arabicText": "لَهُۥٓ",
+      "englishMeaning": "for him",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَ[P] + هُۥٓ[N]",
+        "grammaticalCase": null,
+        "lemma": "ل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لهۥ",
+      "buckwalter": "lahu,^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 412
+    },
+    {
+      "id": "word_00414",
+      "arabicText": "فَإِنْ",
+      "englishMeaning": "So if",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + إِنْ[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فان",
+      "buckwalter": "fa<ino",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 24,
+      "rank": 414
+    },
+    {
+      "id": "word_00421",
+      "arabicText": "هَٰذِهِ",
+      "englishMeaning": "this",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "هَٰ[P] + ذِهِ[N]",
+        "grammaticalCase": null,
+        "lemma": "ه",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "هاذه",
+      "buckwalter": "ha`*ihi",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 23,
+      "rank": 421
+    },
+    {
+      "id": "word_00425",
+      "arabicText": "وَعَلَى",
+      "englishMeaning": "And on",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + عَلَى[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وعلى",
+      "buckwalter": "waEalaY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 23,
+      "rank": 425
+    },
+    {
+      "id": "word_00428",
+      "arabicText": "أَلَآ",
+      "englishMeaning": "Beware",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَلَآ[P]",
+        "grammaticalCase": null,
+        "lemma": "أَلا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الا",
+      "buckwalter": ">alaA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 23,
+      "rank": 428
+    },
+    {
+      "id": "word_00433",
+      "arabicText": "وَهُم",
+      "englishMeaning": "and they (are)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + هُم[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وهم",
+      "buckwalter": "wahum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 23,
+      "rank": 433
+    },
+    {
+      "id": "word_00436",
+      "arabicText": "وَإِلَيْهِ",
+      "englishMeaning": "and to Him",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + إِلَيْ[P] + هِ[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "واليه",
+      "buckwalter": "wa<ilayohi",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 436
+    },
+    {
+      "id": "word_00439",
+      "arabicText": "لَّن",
+      "englishMeaning": "never",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَّن[P]",
+        "grammaticalCase": null,
+        "lemma": "لَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لن",
+      "buckwalter": "l~an",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 439
+    },
+    {
+      "id": "word_00450",
+      "arabicText": "فَهَلْ",
+      "englishMeaning": "So will",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + هَلْ[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فهل",
+      "buckwalter": "fahalo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 450
+    },
+    {
+      "id": "word_00451",
+      "arabicText": "وَلَئِن",
+      "englishMeaning": "And if",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + لَ[P] + ئِن[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولين",
+      "buckwalter": "wala}in",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 451
+    },
+    {
+      "id": "word_00452",
+      "arabicText": "وَمِنْهُم",
+      "englishMeaning": "And from those",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + مِنْ[P] + هُم[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ومنهم",
+      "buckwalter": "waminohum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 452
+    },
+    {
+      "id": "word_00454",
+      "arabicText": "عَنْهَا",
+      "englishMeaning": "from it",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَنْ[P] + هَا[N]",
+        "grammaticalCase": null,
+        "lemma": "عَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عنها",
+      "buckwalter": "EanohaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 22,
+      "rank": 454
+    },
+    {
+      "id": "word_00459",
+      "arabicText": "لَمِنَ",
+      "englishMeaning": "surely (will be) among",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَ[P] + مِنَ[P]",
+        "grammaticalCase": null,
+        "lemma": "ل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لمن",
+      "buckwalter": "lamina",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 21,
+      "rank": 459
+    },
+    {
+      "id": "word_00462",
+      "arabicText": "لِّمَا",
+      "englishMeaning": "that which",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لِّ[P] + مَا[N]",
+        "grammaticalCase": null,
+        "lemma": "ل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لما",
+      "buckwalter": "l~imaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 21,
+      "rank": 462
+    },
+    {
+      "id": "word_00472",
+      "arabicText": "وَلَن",
+      "englishMeaning": "and never",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + لَن[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولن",
+      "buckwalter": "walan",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 21,
+      "rank": 472
+    },
+    {
+      "id": "word_00477",
+      "arabicText": "أَنِ",
+      "englishMeaning": "that",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَنِ[P]",
+        "grammaticalCase": null,
+        "lemma": "أَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": ">ani",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 20,
+      "rank": 477
+    },
+    {
+      "id": "word_00484",
+      "arabicText": "كَلَّا",
+      "englishMeaning": "Nay",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "كَلَّا[P]",
+        "grammaticalCase": null,
+        "lemma": "كَلّا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كلا",
+      "buckwalter": "kal~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 20,
+      "rank": 484
+    },
+    {
+      "id": "word_00491",
+      "arabicText": "لَوْلَآ",
+      "englishMeaning": "Why not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَوْلَآ[P]",
+        "grammaticalCase": null,
+        "lemma": "لَوْلا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لولا",
+      "buckwalter": "lawolaA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 20,
+      "rank": 491
+    },
+    {
+      "id": "word_00506",
+      "arabicText": "فَلَن",
+      "englishMeaning": "so never",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + لَن[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فلن",
+      "buckwalter": "falan",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 19,
+      "rank": 506
+    },
+    {
+      "id": "word_00516",
+      "arabicText": "فِيمَا",
+      "englishMeaning": "in what",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فِي[P] + مَا[N]",
+        "grammaticalCase": null,
+        "lemma": "فِي",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فيما",
+      "buckwalter": "fiymaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 19,
+      "rank": 516
+    },
+    {
+      "id": "word_00517",
+      "arabicText": "وَإِنْ",
+      "englishMeaning": "and not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + إِنْ[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وان",
+      "buckwalter": "wa<ino",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 19,
+      "rank": 517
+    },
+    {
+      "id": "word_00526",
+      "arabicText": "إِلَيْكُمْ",
+      "englishMeaning": "to you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِلَيْ[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "إِلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اليكم",
+      "buckwalter": "<ilayokumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 19,
+      "rank": 526
+    },
+    {
+      "id": "word_00527",
+      "arabicText": "بَلَىٰ",
+      "englishMeaning": "Yes",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بَلَىٰ[P]",
+        "grammaticalCase": null,
+        "lemma": "بَلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بلىا",
+      "buckwalter": "balaY`",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 18,
+      "rank": 527
+    },
+    {
+      "id": "word_00535",
+      "arabicText": "لَّوْ",
+      "englishMeaning": "if",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَّوْ[P]",
+        "grammaticalCase": null,
+        "lemma": "لَو",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لو",
+      "buckwalter": "l~awo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 18,
+      "rank": 535
+    },
+    {
+      "id": "word_00540",
+      "arabicText": "عَنكُمْ",
+      "englishMeaning": "[on] you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَن[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "عَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عنكم",
+      "buckwalter": "Eankumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 18,
+      "rank": 540
+    },
+    {
+      "id": "word_00546",
+      "arabicText": "عَلَيْكُمُ",
+      "englishMeaning": "[over] you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَلَيْ[P] + كُمُ[N]",
+        "grammaticalCase": null,
+        "lemma": "عَلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عليكم",
+      "buckwalter": "Ealayokumu",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 18,
+      "rank": 546
+    },
+    {
+      "id": "word_00547",
+      "arabicText": "مِّنْهَا",
+      "englishMeaning": "from it",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِّنْ[P] + هَا[N]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "منها",
+      "buckwalter": "m~inohaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 18,
+      "rank": 547
+    },
+    {
+      "id": "word_00574",
+      "arabicText": "وَلَوْلَا",
+      "englishMeaning": "And if not",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + لَوْلَا[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولولا",
+      "buckwalter": "walawolaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 17,
+      "rank": 574
+    },
+    {
+      "id": "word_00576",
+      "arabicText": "وَإِلَى",
+      "englishMeaning": "And to",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + إِلَى[P]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "والى",
+      "buckwalter": "wa<ilaY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 17,
+      "rank": 576
+    },
+    {
+      "id": "word_00577",
+      "arabicText": "لَهُوَ",
+      "englishMeaning": "surely it (is)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَ[P] + هُوَ[N]",
+        "grammaticalCase": null,
+        "lemma": "ل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لهو",
+      "buckwalter": "lahuwa",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 17,
+      "rank": 577
+    },
+    {
+      "id": "word_00580",
+      "arabicText": "أَنَّهُۥ",
+      "englishMeaning": "that [He]",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَنَّ[P] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "أَنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انهۥ",
+      "buckwalter": ">an~ahu,",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 17,
+      "rank": 580
+    },
+    {
+      "id": "word_00587",
+      "arabicText": "أَوِ",
+      "englishMeaning": "or",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "أَوِ[P]",
+        "grammaticalCase": null,
+        "lemma": "أَو",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "او",
+      "buckwalter": ">awi",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 587
+    },
+    {
+      "id": "word_00593",
+      "arabicText": "إِلَيْنَا",
+      "englishMeaning": "to us",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِلَيْ[P] + نَا[N]",
+        "grammaticalCase": null,
+        "lemma": "إِلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الينا",
+      "buckwalter": "<ilayonaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 593
+    },
+    {
+      "id": "word_00600",
+      "arabicText": "وَأَنَا۠",
+      "englishMeaning": "and I (am)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + أَنَا۠[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "وانا۠",
+      "buckwalter": "wa>anaA\"",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 600
+    },
+    {
+      "id": "word_00606",
+      "arabicText": "هَٰذِهِۦ",
+      "englishMeaning": "This",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "هَٰ[P] + ذِهِۦ[N]",
+        "grammaticalCase": null,
+        "lemma": "ه",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "هاذهۦ",
+      "buckwalter": "ha`*ihi.",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 606
+    },
+    {
+      "id": "word_00613",
+      "arabicText": "بَل",
+      "englishMeaning": "Nay",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بَل[P]",
+        "grammaticalCase": null,
+        "lemma": "بَل",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بل",
+      "buckwalter": "bal",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 613
+    },
+    {
+      "id": "word_00614",
+      "arabicText": "مِّنَّا",
+      "englishMeaning": "from Us",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِّنَّ[P] + ا[N]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "منا",
+      "buckwalter": "m~in~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 614
+    },
+    {
+      "id": "word_00623",
+      "arabicText": "عَنْهُم",
+      "englishMeaning": "from them",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَنْ[P] + هُم[N]",
+        "grammaticalCase": null,
+        "lemma": "عَن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "عنهم",
+      "buckwalter": "Eanohum",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 16,
+      "rank": 623
+    },
+    {
+      "id": "word_00628",
+      "arabicText": "وَلَكُمْ",
+      "englishMeaning": "and for you",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + لَ[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولكم",
+      "buckwalter": "walakumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 15,
+      "rank": 628
+    },
+    {
+      "id": "word_00630",
+      "arabicText": "عَلَىَّ",
+      "englishMeaning": "[on] me",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "عَلَىَّ[P] + [N]",
+        "grammaticalCase": null,
+        "lemma": "عَلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "على",
+      "buckwalter": "EalaY~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 15,
+      "rank": 630
+    },
+    {
+      "id": "word_00635",
+      "arabicText": "لَّآ",
+      "englishMeaning": "(there is) no",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَّآ[P]",
+        "grammaticalCase": null,
+        "lemma": "لا",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لا",
+      "buckwalter": "l~aA^",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 15,
+      "rank": 635
+    },
+    {
+      "id": "word_00781",
+      "arabicText": "رَبَّهُۥ",
+      "englishMeaning": "his Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبَّ[N] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ربهۥ",
+      "buckwalter": "rab~ahu,",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 13,
+      "rank": 781
+    },
+    {
+      "id": "word_02510",
+      "arabicText": "كَلِمَةُ",
+      "englishMeaning": "(the) Word of your Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "كَلِمَةُ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كَلِمَة",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كلمة",
+      "buckwalter": "kalimapu",
+      "root": {
+        "arabic": "كلم",
+        "transliteration": "klm"
+      },
+      "occurrenceCount": 4,
+      "rank": 2510
+    },
+    {
+      "id": "word_00429",
+      "arabicText": "أَهْلِ",
+      "englishMeaning": "(the) People",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَهْلِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَهْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اهل",
+      "buckwalter": ">aholi",
+      "root": {
+        "arabic": "أهل",
+        "transliteration": "Ahl"
+      },
+      "occurrenceCount": 23,
+      "rank": 429
+    },
+    {
+      "id": "word_00237",
+      "arabicText": "ءَامَنُوٓا۟",
+      "englishMeaning": "believe[d]",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "ءَامَنُ[V] + وٓا۟[N]",
+        "grammaticalCase": null,
+        "lemma": "آمَنَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءامنوا۟",
+      "buckwalter": "'aAmanuw^A@",
+      "root": {
+        "arabic": "أمن",
+        "transliteration": "Amn"
+      },
+      "occurrenceCount": 41,
+      "rank": 237
+    },
+    {
+      "id": "word_00109",
+      "arabicText": "فَلَمَّا",
+      "englishMeaning": "then when",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + لَمَّا[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فلما",
+      "buckwalter": "falam~aA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 79,
+      "rank": 109
+    },
+    {
+      "id": "word_00060",
+      "arabicText": "إِنَّهُۥ",
+      "englishMeaning": "Indeed He",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنَّ[P] + هُۥ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انهۥ",
+      "buckwalter": "<in~ahu,",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 141,
+      "rank": 60
+    },
+    {
+      "id": "word_00097",
+      "arabicText": "كَذَٰلِكَ",
+      "englishMeaning": "Like this",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "كَ[P] + ذَٰ[N] + لِ[P] + كَ[P]",
+        "grammaticalCase": null,
+        "lemma": "ك",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كذالك",
+      "buckwalter": "ka*a`lika",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 83,
+      "rank": 97
+    },
+    {
+      "id": "word_00140",
+      "arabicText": "ٱلظَّٰلِمِينَ",
+      "englishMeaning": "the wrongdoers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + ظَّٰلِمِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ظالِم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الظالمين",
+      "buckwalter": "{lZ~a`limiyna",
+      "root": {
+        "arabic": "ظلم",
+        "transliteration": "zlm"
+      },
+      "occurrenceCount": 64,
+      "rank": 140
+    },
+    {
+      "id": "word_03990",
+      "arabicText": "ءَالِهَتَكُمْ",
+      "englishMeaning": "your gods",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ءَالِهَتَ[N] + كُمْ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِلٰه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءالهتكم",
+      "buckwalter": "'aAlihatakumo",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 3,
+      "rank": 3990
+    },
+    {
+      "id": "word_00142",
+      "arabicText": "يَعْلَمُ",
+      "englishMeaning": "knows",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "يَعْلَمُ[V]",
+        "grammaticalCase": null,
+        "lemma": "عَلِمَ",
+        "posDescription": "فعل",
+        "tense": "Imperfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "يعلم",
+      "buckwalter": "yaEolamu",
+      "root": {
+        "arabic": "علم",
+        "transliteration": "`lm"
+      },
+      "occurrenceCount": 62,
+      "rank": 142
+    },
+    {
+      "id": "word_02220",
+      "arabicText": "ٱلسُّوٓءَ",
+      "englishMeaning": "the evil",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + سُّوٓءَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "سُوء",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "السوء",
+      "buckwalter": "{ls~uw^'a",
+      "root": {
+        "arabic": "سوأ",
+        "transliteration": "swA"
+      },
+      "occurrenceCount": 5,
+      "rank": 2220
+    },
+    {
+      "id": "word_01696",
+      "arabicText": "حَقٍّ",
+      "englishMeaning": "right",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "حَقٍّ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "حَقّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "حق",
+      "buckwalter": "Haq~K",
+      "root": {
+        "arabic": "حقق",
+        "transliteration": "hqq"
+      },
+      "occurrenceCount": 6,
+      "rank": 1696
+    },
+    {
+      "id": "word_00153",
+      "arabicText": "مِنكُمْ",
+      "englishMeaning": "among you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِن[P] + كُمْ[N]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "منكم",
+      "buckwalter": "minkumo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 58,
+      "rank": 153
+    },
+    {
+      "id": "word_01115",
+      "arabicText": "أَمْرِ",
+      "englishMeaning": "(the) command",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "أَمْرِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "أَمْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "امر",
+      "buckwalter": ">amori",
+      "root": {
+        "arabic": "أمر",
+        "transliteration": "Amr"
+      },
+      "occurrenceCount": 9,
+      "rank": 1115
+    },
+    {
+      "id": "word_01406",
+      "arabicText": "رُسُلٌ",
+      "englishMeaning": "Messengers",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "رُسُلٌ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَسُول",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رسل",
+      "buckwalter": "rusulN",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 7,
+      "rank": 1406
+    },
+    {
+      "id": "word_00675",
+      "arabicText": "ٱلْبَحْرِ",
+      "englishMeaning": "the sea",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + بَحْرِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَحْر",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "البحر",
+      "buckwalter": "{lobaHori",
+      "root": {
+        "arabic": "بحر",
+        "transliteration": "bhr"
+      },
+      "occurrenceCount": 14,
+      "rank": 675
+    },
+    {
+      "id": "word_00039",
+      "arabicText": "وَمَن",
+      "englishMeaning": "And whoever",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "وَ[P] + مَن[N]",
+        "grammaticalCase": null,
+        "lemma": "و",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ومن",
+      "buckwalter": "waman",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 187,
+      "rank": 39
+    },
+    {
+      "id": "word_00181",
+      "arabicText": "فَمَن",
+      "englishMeaning": "then whoever",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + مَن[N]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فمن",
+      "buckwalter": "faman",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 51,
+      "rank": 181
+    },
+    {
+      "id": "word_00902",
+      "arabicText": "ءَالَ",
+      "englishMeaning": "(the) people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ءَالَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "آل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءال",
+      "buckwalter": "'aAla",
+      "root": {
+        "arabic": "أول",
+        "transliteration": "Awl"
+      },
+      "occurrenceCount": 11,
+      "rank": 902
+    },
+    {
+      "id": "word_01283",
+      "arabicText": "ٱلْمَلَٰٓئِكَةِ",
+      "englishMeaning": "the angels",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱلْ[P] + مَلَٰٓئِكَةِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "مَلَك",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "الملايكة",
+      "buckwalter": "{lomala`^}ikapi",
+      "root": {
+        "arabic": "ملك",
+        "transliteration": "mlk"
+      },
+      "occurrenceCount": 8,
+      "rank": 1283
+    },
+    {
+      "id": "word_05723",
+      "arabicText": "بِجَهَنَّمَ",
+      "englishMeaning": "(is) Hell",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + جَهَنَّمَ[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بجهنم",
+      "buckwalter": "bijahan~ama",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 2,
+      "rank": 5723
+    },
+    {
+      "id": "word_01461",
+      "arabicText": "أَرْسَلْنَآ",
+      "englishMeaning": "We sent (Messengers)",
+      "morphology": {
+        "number": null,
+        "form": "4",
+        "gender": null,
+        "partOfSpeech": "V",
+        "breakdown": "أَرْسَلْ[V] + نَآ[N]",
+        "grammaticalCase": null,
+        "lemma": "أَرْسَلَ",
+        "posDescription": "فعل",
+        "tense": "Perfect",
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ارسلنا",
+      "buckwalter": ">arosalonaA^",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 7,
+      "rank": 1461
+    },
+    {
+      "id": "word_00026",
+      "arabicText": "بِمَا",
+      "englishMeaning": "because",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "بِ[P] + مَا[N]",
+        "grammaticalCase": null,
+        "lemma": "ب",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بما",
+      "buckwalter": "bimaA",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 253,
+      "rank": 26
+    },
+    {
+      "id": "word_01107",
+      "arabicText": "ءَالِ",
+      "englishMeaning": "(the) people",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "ءَالِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "آل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ءال",
+      "buckwalter": "'aAli",
+      "root": {
+        "arabic": "أول",
+        "transliteration": "Awl"
+      },
+      "occurrenceCount": 9,
+      "rank": 1107
+    },
+    {
+      "id": "word_02181",
+      "arabicText": "رَسُولَ",
+      "englishMeaning": "(the) Messenger",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَسُولَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "رَسُول",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رسول",
+      "buckwalter": "rasuwla",
+      "root": {
+        "arabic": "رسل",
+        "transliteration": "rsl"
+      },
+      "occurrenceCount": 5,
+      "rank": 2181
+    },
+    {
+      "id": "word_02076",
+      "arabicText": "بِٱلظَّٰلِمِينَ",
+      "englishMeaning": "of the wrongdoers",
+      "morphology": {
+        "number": null,
+        "form": "1",
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بِ[P] + ٱل[P] + ظَّٰلِمِينَ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "ظالِم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بالظالمين",
+      "buckwalter": "bi{lZ~a`limiyna",
+      "root": {
+        "arabic": "ظلم",
+        "transliteration": "zlm"
+      },
+      "occurrenceCount": 5,
+      "rank": 2076
+    },
+    {
+      "id": "word_00367",
+      "arabicText": "وَلِلَّهِ",
+      "englishMeaning": "And for Allah",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "وَ[P] + لِ[P] + لَّهِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "اللَّه",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ولله",
+      "buckwalter": "walil~ahi",
+      "root": {
+        "arabic": "أله",
+        "transliteration": "Alh"
+      },
+      "occurrenceCount": 27,
+      "rank": 367
+    },
+    {
+      "id": "word_01138",
+      "arabicText": "ٱلنَّبِيِّۦنَ",
+      "englishMeaning": "the Prophets",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "ٱل[P] + نَّبِيِّۦنَ[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "نَبِيّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "النبيۦن",
+      "buckwalter": "{ln~abiy~i.na",
+      "root": {
+        "arabic": "نبأ",
+        "transliteration": "nbA"
+      },
+      "occurrenceCount": 9,
+      "rank": 1138
+    },
+    {
+      "id": "word_00104",
+      "arabicText": "إِنِّى",
+      "englishMeaning": "Indeed, I (am)",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنِّ[P] + ى[N]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "انى",
+      "buckwalter": "<in~iY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 81,
+      "rank": 104
+    },
+    {
+      "id": "word_00008",
+      "arabicText": "إِنَّ",
+      "englishMeaning": "Indeed",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِنَّ[P]",
+        "grammaticalCase": "Accusative",
+        "lemma": "إِنّ",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "ان",
+      "buckwalter": "<in~a",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 609,
+      "rank": 8
+    },
+    {
+      "id": "word_00100",
+      "arabicText": "بَعْدِ",
+      "englishMeaning": "after",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "بَعْدِ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "بَعْد",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "بعد",
+      "buckwalter": "baEodi",
+      "root": {
+        "arabic": "بعد",
+        "transliteration": "b`d"
+      },
+      "occurrenceCount": 82,
+      "rank": 100
+    },
+    {
+      "id": "word_04323",
+      "arabicText": "جَحِيمٍ",
+      "englishMeaning": "(in) Hellfire",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Feminine",
+        "partOfSpeech": "N",
+        "breakdown": "جَحِيمٍ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "جَحِيم",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "جحيم",
+      "buckwalter": "jaHiymK",
+      "root": {
+        "arabic": "جحم",
+        "transliteration": "jhm"
+      },
+      "occurrenceCount": 2,
+      "rank": 4323
+    },
+    {
+      "id": "word_00147",
+      "arabicText": "لَوْ",
+      "englishMeaning": "if",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "لَوْ[P]",
+        "grammaticalCase": null,
+        "lemma": "لَو",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "لو",
+      "buckwalter": "lawo",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 59,
+      "rank": 147
+    },
+    {
+      "id": "word_00122",
+      "arabicText": "إِلَيْكَ",
+      "englishMeaning": "to you",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "إِلَيْ[P] + كَ[N]",
+        "grammaticalCase": null,
+        "lemma": "إِلَى",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "اليك",
+      "buckwalter": "<ilayoka",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 74,
+      "rank": 122
+    },
+    {
+      "id": "word_00539",
+      "arabicText": "رَبُّ",
+      "englishMeaning": "(is) the Lord",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "رَبُّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "رَبّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "رب",
+      "buckwalter": "rab~u",
+      "root": {
+        "arabic": "ربب",
+        "transliteration": "rbb"
+      },
+      "occurrenceCount": 18,
+      "rank": 539
+    },
+    {
+      "id": "word_00130",
+      "arabicText": "قَبْلُ",
+      "englishMeaning": "before",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "N",
+        "breakdown": "قَبْلُ[N]",
+        "grammaticalCase": "Genitive",
+        "lemma": "قَبْل",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "قبل",
+      "buckwalter": "qabolu",
+      "root": {
+        "arabic": "قبل",
+        "transliteration": "qbl"
+      },
+      "occurrenceCount": 70,
+      "rank": 130
+    },
+    {
+      "id": "word_00001",
+      "arabicText": "فِى",
+      "englishMeaning": "In",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فِى[P]",
+        "grammaticalCase": null,
+        "lemma": "فِي",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فى",
+      "buckwalter": "fiY",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 1098,
+      "rank": 1
+    },
+    {
+      "id": "word_00014",
+      "arabicText": "مِنَ",
+      "englishMeaning": "from",
+      "morphology": {
+        "number": "Plural",
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "مِنَ[P]",
+        "grammaticalCase": null,
+        "lemma": "مِن",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "من",
+      "buckwalter": "mina",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 412,
+      "rank": 14
+    },
+    {
+      "id": "word_00207",
+      "arabicText": "كُلُّ",
+      "englishMeaning": "all",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": "Masculine",
+        "partOfSpeech": "N",
+        "breakdown": "كُلُّ[N]",
+        "grammaticalCase": "Nominative",
+        "lemma": "كُلّ",
+        "posDescription": "اسم",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "كل",
+      "buckwalter": "kul~u",
+      "root": {
+        "arabic": "كلل",
+        "transliteration": "kll"
+      },
+      "occurrenceCount": 47,
+      "rank": 207
+    },
+    {
+      "id": "word_00187",
+      "arabicText": "فَقَدْ",
+      "englishMeaning": "so certainly",
+      "morphology": {
+        "number": null,
+        "form": null,
+        "gender": null,
+        "partOfSpeech": "P",
+        "breakdown": "فَ[P] + قَدْ[P]",
+        "grammaticalCase": null,
+        "lemma": "ف",
+        "posDescription": "حرف جر",
+        "tense": null,
+        "passive": false
+      },
+      "arabicWithoutDiacritics": "فقد",
+      "buckwalter": "faqado",
+      "root": {
+        "arabic": null,
+        "transliteration": "N/A"
+      },
+      "occurrenceCount": 50,
+      "rank": 187
+    }
+  ]
+}

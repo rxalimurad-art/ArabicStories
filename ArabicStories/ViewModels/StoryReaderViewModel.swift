@@ -56,8 +56,18 @@ class StoryReaderViewModel {
     // Trigger UI refresh when generic words load
     var onGenericWordsLoaded: (() -> Void)?
     
+    // Trigger UI refresh when vocabulary progress changes
+    var vocabularyProgressUpdated: (() -> Void)?
+    
     // Mixed format state
     var learnedWordIdsInSession: Set<String> = []
+    
+    // Auto-learn tracking - words learned by appearing on screen
+    private var autoLearnedWordIds: Set<String> = []
+    private var hasAutoLearnedForCurrentSegment = false
+    
+    // Words pending save - only saved when story is completed
+    private var pendingLearnedWords: [QuranWord] = []
     
     // Reading Time Tracking
     private var readingSessionStartTime: Date?
@@ -138,17 +148,129 @@ class StoryReaderViewModel {
         }
     }
     
-    /// Check if a word has a meaning available (in story words or Quran words)
-    func hasMeaningAvailable(for wordText: String) -> Bool {
-        // Check story words first
-        if let storyWords = story.words {
-            let hasStoryMatch = storyWords.contains { word in
-                ArabicTextUtils.wordsMatch(word.arabicText, wordText)
-            }
-            if hasStoryMatch { return true }
+    // MARK: - Auto-Learn Words on Screen
+    
+    /// Automatically mark words as learned when they appear on screen
+    /// Call this when a segment is displayed
+    func autoLearnWordsForCurrentSegment() {
+        guard !hasAutoLearnedForCurrentSegment else { return }
+        
+        let wordsToLearn: [String]
+        
+        if story.format == .mixed, let segment = currentMixedSegment {
+            // For mixed format: learn linked words in the segment
+            wordsToLearn = segment.linkedWordIds ?? []
+        } else if story.format == .bilingual, let segment = currentSegment {
+            // For bilingual format: learn Arabic words that have meanings
+            wordsToLearn = extractLearnableWords(from: segment.arabicText)
+        } else {
+            return
         }
         
-        // Check Quran words with normalization
+        guard !wordsToLearn.isEmpty else { return }
+        
+        print("📚 Auto-learning \(wordsToLearn.count) words for segment \(currentSegmentIndex)")
+        
+        for wordId in wordsToLearn {
+            autoLearnWord(wordId)
+        }
+        
+        hasAutoLearnedForCurrentSegment = true
+    }
+    
+    /// Reset auto-learn flag when navigating to a new segment
+    func resetAutoLearnForNewSegment() {
+        hasAutoLearnedForCurrentSegment = false
+    }
+    
+    /// Extract learnable Arabic words from text
+    private func extractLearnableWords(from text: String) -> [String] {
+        var words: [String] = []
+        var currentIndex = text.startIndex
+        
+        while currentIndex < text.endIndex {
+            let char = text[currentIndex]
+            
+            if ArabicTextUtils.isArabicCharacter(char) {
+                var arabicWord = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex &&
+                      (ArabicTextUtils.isArabicCharacter(text[endIndex]) ||
+                       ArabicTextUtils.isDiacritic(text[endIndex])) {
+                    arabicWord.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !arabicWord.isEmpty && hasMeaningAvailable(for: arabicWord) {
+                    // Find the Quran word ID for this Arabic text
+                    if let quranWord = quranWords.first(where: { 
+                        ArabicTextUtils.wordsMatch($0.arabicText, arabicWord)
+                    }) {
+                        if !words.contains(quranWord.id) {
+                            words.append(quranWord.id)
+                        }
+                    }
+                }
+                currentIndex = endIndex
+            } else {
+                currentIndex = text.index(after: currentIndex)
+            }
+        }
+        
+        return words
+    }
+    
+    /// Auto-learn a word by its ID (without requiring user tap)
+    /// Words are tracked locally but NOT saved to Firebase until story is completed
+    private func autoLearnWord(_ wordId: String) {
+        // Skip if already learned in this session or previously
+        if learnedWordIdsInSession.contains(wordId) || story.isWordLearned(wordId) {
+            return
+        }
+        
+        // Skip if already auto-learned
+        if autoLearnedWordIds.contains(wordId) {
+            return
+        }
+        
+        autoLearnedWordIds.insert(wordId)
+        learnedWordIdsInSession.insert(wordId)
+        
+        // Mark in story
+        var updatedStory = story
+        updatedStory.markWordAsLearned(wordId)
+        story = updatedStory
+        
+        // Track locally but DON'T save to Firebase yet - only save when story completes
+        if let quranWord = quranWords.first(where: { $0.id == wordId }) {
+            if !pendingLearnedWords.contains(where: { $0.id == wordId }) {
+                pendingLearnedWords.append(quranWord)
+                print("📚 Queued word for learning on story completion: '\(quranWord.arabicText)' = '\(quranWord.englishMeaning)'")
+            }
+        } else if let quranWord = quranWordsInStory.first(where: { $0.id == wordId }) {
+            if !pendingLearnedWords.contains(where: { $0.id == wordId }) {
+                pendingLearnedWords.append(quranWord)
+                print("📚 Queued story word for learning on story completion: '\(quranWord.arabicText)' = '\(quranWord.englishMeaning)'")
+            }
+        }
+        
+        // Notify UI to refresh vocabulary progress
+        vocabularyProgressUpdated?()
+    }
+    
+    /// Get all learned word IDs (from story + session + auto-learned)
+    var allLearnedWordIds: Set<String> {
+        var all = Set(story.learnedWordIds ?? [])
+        all.formUnion(learnedWordIdsInSession)
+        all.formUnion(autoLearnedWordIds)
+        return all
+    }
+    
+    /// Check if a word has a meaning available (in story words or Quran words)
+    func hasMeaningAvailable(for wordText: String) -> Bool {
+        // Only highlight words that exist in the Quran words collection
+        // This ensures users only tap on words with proper Quran definitions
         let hasQuranMatch = quranWords.contains { quranWord in
             ArabicTextUtils.wordsMatch(quranWord.arabicText, wordText)
         }
@@ -208,18 +330,21 @@ class StoryReaderViewModel {
             return 
         }
         currentSegmentIndex += 1
+        hasAutoLearnedForCurrentSegment = false  // Reset for new segment
         await updateStoryProgress()
     }
     
     func goToPreviousSegment() async {
         guard canGoPrevious else { return }
         currentSegmentIndex -= 1
+        hasAutoLearnedForCurrentSegment = false  // Reset for new segment
         await updateStoryProgress()
     }
     
     func goToSegment(_ index: Int) async {
         guard index >= 0 && index < totalSegments else { return }
         currentSegmentIndex = index
+        hasAutoLearnedForCurrentSegment = false  // Reset for new segment
         await updateStoryProgress()
     }
     
@@ -339,20 +464,24 @@ class StoryReaderViewModel {
         popoverPosition = position
         showWordPopover = true
         
-        // Mark word as learned (only if it's from story or known generic word)
+        // Mark word as learned locally (only if it's from story or known generic word)
+        // Words are NOT saved to Firebase until the story is completed
         if word.englishMeaning != "Unknown word" {
             var updatedStory = story
             updatedStory.markWordAsLearned(word.id.uuidString)
             story = updatedStory
             
-            Task {
-                // Save story progress and update global vocabulary
-                try? await dataService.saveStory(story)
-                // Fetch QuranWord and record as learned
-                if let quranWord = quranWordsInStory.first(where: { $0.id == word.id.uuidString }) {
-                    await dataService.recordVocabularyLearned(quranWord)
+            // Queue for saving on story completion
+            if let quranWord = quranWordsInStory.first(where: { $0.id == word.id.uuidString }) {
+                if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
+                    pendingLearnedWords.append(quranWord)
+                    print("📚 Queued tapped word for learning on story completion: '\(quranWord.arabicText)'")
                 }
-                // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
+            }
+            
+            // Save story progress locally
+            Task {
+                try? await dataService.saveStory(story)
             }
         }
     }
@@ -362,15 +491,20 @@ class StoryReaderViewModel {
         selectedQuranWord = quranWord
         showQuranWordDetail = true
         
-        // Mark word as learned
+        // Mark word as learned locally
         var updatedStory = story
         updatedStory.markWordAsLearned(quranWord.id)
         story = updatedStory
         
+        // Queue for saving on story completion
+        if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
+            pendingLearnedWords.append(quranWord)
+            print("📚 Queued tapped Quran word for learning on story completion: '\(quranWord.arabicText)'")
+        }
+        
+        // Save story progress locally
         Task {
-            // Save story progress and update global vocabulary
             try? await dataService.saveStory(story)
-            await dataService.recordVocabularyLearned(quranWord)
         }
     }
     
@@ -399,7 +533,7 @@ class StoryReaderViewModel {
         popoverPosition = position
         showWordPopover = true
         
-        // Mark as learned
+        // Mark as learned locally (but don't save to Firebase until story is completed)
         if !learnedWordIdsInSession.contains(wordId) {
             learnedWordIdsInSession.insert(wordId)
             
@@ -407,23 +541,27 @@ class StoryReaderViewModel {
             updatedStory.markWordAsLearned(wordId)
             story = updatedStory
             
+            // Queue for saving on story completion
+            if let quranWord = quranWordsInStory.first(where: { $0.id == wordId }) {
+                if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
+                    pendingLearnedWords.append(quranWord)
+                    print("📚 Queued mixed word for learning on story completion: '\(quranWord.arabicText)'")
+                }
+            }
+            
+            // Save story progress locally
             Task {
                 try? await dataService.saveStory(story)
-                // Fetch QuranWord and record as learned
-                if let quranWord = quranWordsInStory.first(where: { $0.id == wordId }) {
-                    await dataService.recordVocabularyLearned(quranWord)
-                }
-                // Note: Level 2 is unlocked by completing all Level 1 stories, not by vocabulary
             }
         }
     }
     
     func isMixedWordLearned(_ wordId: String) -> Bool {
-        story.isWordLearned(wordId) || learnedWordIdsInSession.contains(wordId)
+        story.isWordLearned(wordId) || learnedWordIdsInSession.contains(wordId) || autoLearnedWordIds.contains(wordId)
     }
     
     func isWordLearned(_ wordId: String) -> Bool {
-        story.isWordLearned(wordId)
+        story.isWordLearned(wordId) || autoLearnedWordIds.contains(wordId)
     }
     
     func toggleWordBookmark(_ word: Word) {
@@ -510,28 +648,52 @@ class StoryReaderViewModel {
         print("📖 Complete story: Finished successfully")
     }
     
-    /// Extract Quran words from story and save to user's learned vocabulary
+    /// Extract words from story and save to user's learned vocabulary
     private func extractAndSaveUnlockedWords() async {
-        // Load Quran words from offline bundle for matching
-        let quranWords = OfflineDataService.shared.loadQuranWords()
+        print("📖 Complete story: Saving unlocked words from completed story...")
         
-        // Use Story's algorithm to find Quran words in story text
-        let matchedQuranWords = story.findQuranWordsInStory(from: quranWords)
-        print("📖 Complete story: Found \(matchedQuranWords.count) Quran words in story")
+        var totalSaved = 0
+        var savedWordIds = Set<String>()  // Track saved words to avoid duplicates
         
-        // Save matched Quran words directly to learnedQuranWords collection
-        var newWordsCount = 0
-        for quranWord in matchedQuranWords {
-            // Check if word is already learned (avoid duplicates)
+        // 1. First, save all pending words that were queued during reading (tapped or auto-learned)
+        for quranWord in pendingLearnedWords {
             let isAlreadyLearned = await dataService.isQuranWordLearned(quranWord.id)
-            if !isAlreadyLearned {
+            if !isAlreadyLearned && !savedWordIds.contains(quranWord.id) {
                 await dataService.recordVocabularyLearned(quranWord)
-                newWordsCount += 1
+                savedWordIds.insert(quranWord.id)
+                totalSaved += 1
+            }
+        }
+        pendingLearnedWords.removeAll()
+        
+        // 2. Save story's own vocabulary words (for mixed format stories) - ONLY if not already saved above
+        if let storyWords = story.words, !storyWords.isEmpty {
+            print("📖 Complete story: Processing \(storyWords.count) story vocabulary words")
+            for storyWord in storyWords {
+                let wordId = storyWord.id.uuidString
+                
+                // Skip if already saved from pending
+                if savedWordIds.contains(wordId) {
+                    continue
+                }
+                
+                let isAlreadyLearned = await dataService.isQuranWordLearned(wordId)
+                if !isAlreadyLearned {
+                    // Convert story Word to QuranWord format
+                    let quranWord = storyWord.toQuranWord()
+                    await dataService.recordVocabularyLearned(quranWord)
+                    savedWordIds.insert(wordId)
+                    totalSaved += 1
+                    print("📖   Saved story word: '\(storyWord.arabicText)' = '\(storyWord.englishMeaning)'")
+                }
             }
         }
         
-        if newWordsCount > 0 {
-            print("📖 Complete story: Saved \(newWordsCount) new Quran words to learned vocabulary")
+        // Note: We DON'T save additional Quran words found in story text to avoid duplicates
+        // The story's vocabulary words are the intended learning set
+        
+        if totalSaved > 0 {
+            print("📖 Complete story: Saved \(totalSaved) total new words to learned vocabulary")
         } else {
             print("📖 Complete story: No new words to save (all already learned)")
         }
@@ -604,12 +766,8 @@ class StoryReaderViewModel {
     private func getWordsUnlockedInSession() -> [Word] {
         guard let storyWords = story.words else { return [] }
         
-        // Get words that were learned in this session
-        let sessionWordIds = learnedWordIdsInSession
-        
-        // Also include words that were already marked as learned in the story
-        let learnedIds = story.learnedWordIds ?? []
-        let allLearnedIds = sessionWordIds.union(Set(learnedIds))
+        // Get all learned word IDs (story + session + auto-learned)
+        let allLearnedIds = allLearnedWordIds
         
         return storyWords.filter { word in
             allLearnedIds.contains(word.id.uuidString)
@@ -667,12 +825,13 @@ class StoryReaderViewModel {
     
     var vocabularyProgress: Double {
         guard let words = story.words, !words.isEmpty else { return 0 }
-        let learned = story.learnedVocabularyCount
+        let learned = allLearnedWordIds.count
         return Double(learned) / Double(words.count)
     }
     
     var learnedVocabularyCount: Int {
-        story.learnedVocabularyCount + learnedWordIdsInSession.count
+        // Include story learned words + session learned + auto-learned
+        allLearnedWordIds.count
     }
     
     var totalVocabularyCount: Int {

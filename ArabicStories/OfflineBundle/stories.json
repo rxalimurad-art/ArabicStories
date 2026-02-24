@@ -1,490 +1,2858 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-02-24T00:00:00Z",
+  "lastUpdated": "2026-02-25T04:25:00Z",
   "stories": [
     {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
-      "title": "Ahmad's Journey to Peace",
-      "titleArabic": "رحلة أحمد إلى السلام",
-      "storyDescription": "A beginner-friendly story about Ahmad's spiritual journey, introducing essential Arabic vocabulary. Perfect for Level 1 learners building their vocabulary foundation.",
-      "storyDescriptionArabic": "قصة مناسبة للمبتدئين عن الرحلة الروحية لأحمد، تقدم مفردات عربية أساسية. مثالية للمتعلمين في المستوى الأول لبناء أساس المفردات.",
+      "id": "cb516772-9d26-4555-98d2-01e4f90b9738",
+      "title": "The Lost Key",
+      "titleArabic": "المفتاح المفقود",
+      "storyDescription": "A story about patience and searching for what matters",
+      "storyDescriptionArabic": null,
       "author": "Arabicly",
       "format": "mixed",
       "difficultyLevel": 1,
-      "category": "religious",
-      "tags": ["beginner", "vocabulary", "spiritual", "islamic"],
-      "coverImageURL": "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FTheLostKEy.png?alt=media&token=710c036b-25ff-48c7-be14-a6df10b99334",
       "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "ee1012a8-af71-4a5c-a917-b5089485abfe",
+          "index": 0,
+          "text": "Ahmad was looking for something important. It was <b>فِى</b> (in) his house, but he couldn't find it.",
+          "linkedWordIds": [
+            "word_00001"
+          ]
+        },
+        {
+          "id": "dea84850-cd7e-4b8b-809c-594a02d1bd4e",
+          "index": 1,
+          "text": "He looked everywhere—from the kitchen <b>إِلَى</b> (to) the bedroom. <b>إِنَّ</b> (Indeed), it was lost!",
+          "linkedWordIds": [
+            "word_00028",
+            "word_00008"
+          ]
+        },
+        {
+          "id": "4f985dcf-67db-452b-a01a-2dad3086d236",
+          "index": 2,
+          "text": "His mother said, 'There is <b>لَا</b> (no) need to worry. The key is <b>عَلَىٰ</b> (on) the table.'",
+          "linkedWordIds": [
+            "word_00007",
+            "word_00017"
+          ]
+        },
+        {
+          "id": "7b1fcf56-c927-4bae-8537-83641c393cba",
+          "index": 3,
+          "text": "Ahmad smiled. <b>إِن</b> (if) you look carefully, you will find what you seek.",
+          "linkedWordIds": [
+            "word_00027"
+          ]
+        },
+        {
+          "id": "f1d08707-2a36-4132-a82a-65f063208189",
+          "index": 4,
+          "text": "He learned that day: Never give up, <b>وَلَا</b> (and not) stop searching for what matters.",
+          "linkedWordIds": [
+            "word_00009"
+          ]
+        }
+      ],
       "words": [
         {
-          "id": "550e8400-e29b-41d4-a716-446655440001",
-          "arabic": "اللَّهُ",
-          "transliteration": "Allah",
-          "english": "God - The one and only God in Islam",
-          "partOfSpeech": "noun",
+          "id": "c9ff2244-7693-492b-bff4-4d86a5e213f2",
+          "arabic": "فِى",
+          "english": "In",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440002",
-          "arabic": "رَبِّ",
-          "transliteration": "Rabb",
-          "english": "Lord - Master, Sustainer, Cherisher",
-          "partOfSpeech": "noun",
+          "id": "b1c31d88-0cf2-4282-b343-70282b3faf53",
+          "arabic": "إِلَى",
+          "english": "to",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440003",
-          "arabic": "الْكِتَابُ",
-          "transliteration": "Al-Kitab",
-          "english": "The Book - Referring to the Quran",
-          "partOfSpeech": "noun",
+          "id": "fb2389f6-d396-4659-b1f7-7d727f0e16fe",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440004",
-          "arabic": "السَّلَامُ",
-          "transliteration": "As-Salaam",
-          "english": "Peace - Also one of the names of Allah",
-          "partOfSpeech": "noun",
+          "id": "7bedd62a-c640-48ca-9884-e4033eb4932d",
+          "arabic": "لَا",
+          "english": "no",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440005",
-          "arabic": "الصَّلَاةُ",
-          "transliteration": "As-Salah",
-          "english": "Prayer - The obligatory Islamic prayers",
-          "partOfSpeech": "noun",
+          "id": "1d356918-825b-44f0-b0c1-2f960bd403d7",
+          "arabic": "عَلَىٰ",
+          "english": "on",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440006",
-          "arabic": "الصَّوْمُ",
-          "transliteration": "As-Sawm",
-          "english": "Fasting - Especially during Ramadan",
-          "partOfSpeech": "noun",
+          "id": "8426fb8c-f904-4a05-8802-fe1644deb989",
+          "arabic": "إِن",
+          "english": "if",
           "difficulty": 1
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440007",
-          "arabic": "النَّفْسُ",
-          "transliteration": "An-Nafs",
-          "english": "Soul - The self, the inner person",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440008",
-          "arabic": "الْعِلْمُ",
-          "transliteration": "Al-Ilm",
-          "english": "Knowledge - Sacred and worldly knowledge",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440009",
-          "arabic": "الْقَوْلُ",
-          "transliteration": "Al-Qawl",
-          "english": "Word - Speech, saying",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440010",
-          "arabic": "الْعَمَلُ",
-          "transliteration": "Al-Amal",
-          "english": "Deed - Action, work",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440011",
-          "arabic": "اليَوْمُ",
-          "transliteration": "Al-Yawm",
-          "english": "Day - Also refers to the Day of Judgment",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440012",
-          "arabic": "الدِّينُ",
-          "transliteration": "Ad-Din",
-          "english": "Religion - The way of life in Islam",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440013",
-          "arabic": "اللَّيْلُ",
-          "transliteration": "Al-Layl",
-          "english": "Night - The nighttime",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440014",
-          "arabic": "السَّمَاوَاتُ",
-          "transliteration": "As-Samawat",
-          "english": "Heavens - The skies, celestial realm",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440015",
-          "arabic": "الْأَرْضُ",
-          "transliteration": "Al-Ard",
-          "english": "Earth - The world, land",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440016",
-          "arabic": "الرَّحْمَةُ",
-          "transliteration": "Ar-Rahmah",
-          "english": "Mercy - Divine mercy and compassion",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440017",
-          "arabic": "الْقَلْبُ",
-          "transliteration": "Al-Qalb",
-          "english": "Heart - The spiritual heart",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440018",
-          "arabic": "النُّورُ",
-          "transliteration": "An-Noor",
-          "english": "Light - Divine light, guidance",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440019",
-          "arabic": "الْجَنَّةُ",
-          "transliteration": "Al-Jannah",
-          "english": "Paradise - The eternal garden of bliss",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440020",
-          "arabic": "النَّارُ",
-          "transliteration": "An-Nar",
-          "english": "Fire - Referring to Hellfire",
-          "partOfSpeech": "noun",
+          "id": "3b560736-b540-4861-8bc0-d3de749c95ec",
+          "arabic": "وَلَا",
+          "english": "and not",
           "difficulty": 1
         }
       ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A young boy searching under furniture with a flashlight in a cozy living room, orange cat watching, warm golden light, fireplace glow, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge, rich warm colors"
+    },
+    {
+      "id": "8f348dc1-a8d8-4d78-95cf-89ed97a36f12",
+      "title": "The Garden",
+      "titleArabic": "الحديقة",
+      "storyDescription": "A story about nature and gratitude",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FTheGarden.png?alt=media&token=9fdb37bc-8f6f-4622-82f7-4c182e57bd54",
+      "audioNarrationURL": null,
+      "segments": null,
       "mixedSegments": [
         {
-          "id": "550e8400-e29b-41d4-a716-446655440101",
+          "id": "c0a28e1e-7d5a-4137-8044-aafc768848a1",
           "index": 0,
-          "text": "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440001", "550e8400-e29b-41d4-a716-446655440002"]
+          "text": "Little Sara walked <b>فِى</b> (in) the garden. She saw flowers <b>عَلَى</b> (on) every side.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00028"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440102",
+          "id": "32292770-24da-401e-a704-b6e09dc0cfbf",
           "index": 1,
-          "text": "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440003", "550e8400-e29b-41d4-a716-446655440004"]
+          "text": "The flowers were beautiful—from red roses <b>أَوْ</b> (or) white lilies.",
+          "linkedWordIds": [
+            "word_00023"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440103",
+          "id": "706ee776-eec9-440a-82c4-1e34f19c556a",
           "index": 2,
-          "text": "So he started performing his الصَّلَاةُ (As-Salah) five times a day and observed الصَّوْمُ (As-Sawm) during the month of Ramadan to purify his النَّفْسُ (An-Nafs) (soul).",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440005", "550e8400-e29b-41d4-a716-446655440006", "550e8400-e29b-41d4-a716-446655440007"]
+          "text": "<b>إِنَّ</b> (Indeed), the garden was full of colors. There was <b>لَا</b> (no) sadness there.",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00007"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440104",
+          "id": "3747c1f8-870b-4aa9-8fd5-c1e983d278ae",
           "index": 3,
-          "text": "As Ahmad studied more, he gained precious الْعِلْمُ (Al-Ilm) (knowledge). He understood that every الْقَوْلُ (Al-Qawl) (word) he spoke and every الْعَمَلُ (Al-Amal) (deed) he performed would be weighed on the اليَوْمُ (Al-Yawm) of الدِّينُ (Ad-Din) — the Day of Judgment.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440008", "550e8400-e29b-41d4-a716-446655440009", "550e8400-e29b-41d4-a716-446655440010", "550e8400-e29b-41d4-a716-446655440011", "550e8400-e29b-41d4-a716-446655440012"]
+          "text": "Sara picked one flower. She felt joy <b>بِهِۦ</b> (therewith) and smiled brightly.",
+          "linkedWordIds": [
+            "word_00024"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440105",
+          "id": "ba9389ec-fca7-40bf-9e45-63dac8d8fd79",
           "index": 4,
-          "text": "One اللَّيْلُ (Al-Layl) (night), while gazing at the sky, Ahmad marveled at the السَّمَاوَاتُ (As-Samawat) (heavens) full of stars, and the الْأَرْضُ (Al-Ard) (earth) beneath his feet. He realized how small he was compared to Allah's vast creation, yet how much الرَّحْمَةُ (Ar-Rahmah) (mercy) Allah had showered upon him.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440013", "550e8400-e29b-41d4-a716-446655440014", "550e8400-e29b-41d4-a716-446655440015", "550e8400-e29b-41d4-a716-446655440016"]
+          "text": "Her father said, 'Everything beautiful comes <b>مِنَ</b> (from) Allah's mercy.'",
+          "linkedWordIds": [
+            "word_00014"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655440106",
+          "id": "34070848-c69e-4a22-bbfb-3cbb0a9c7384",
           "index": 5,
-          "text": "Ahmad worked hard to soften his الْقَلْبُ (Al-Qalb) (heart) and fill it with النُّورُ (An-Noor) (light). He knew that if he stayed on the right path, he would enter الْجَنَّةُ (Al-Jannah) (Paradise), a garden of eternal bliss. But if he turned away from Allah's guidance, he might face the النَّارُ (An-Nar) (fire).",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655440017", "550e8400-e29b-41d4-a716-446655440018", "550e8400-e29b-41d4-a716-446655440019", "550e8400-e29b-41d4-a716-446655440020"]
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655440107",
-          "index": 6,
-          "text": "From day to day, Ahmad grew closer to his religion, living a life of purpose and devotion. And in the end, his story became a light for others seeking the path to peace.",
-          "linkedWordIds": []
+          "text": "Sara understood: We take <b>مِن</b> (from) nature, but we must also give back.",
+          "linkedWordIds": [
+            "word_00005"
+          ]
         }
       ],
+      "words": [
+        {
+          "id": "1615cad1-1148-42e3-b234-fe1730042895",
+          "arabic": "فِى",
+          "english": "In",
+          "difficulty": 1
+        },
+        {
+          "id": "b2da2527-6d2c-410a-a12a-719b4e146b3b",
+          "arabic": "عَلَى",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "d68a698d-45de-42de-ac21-e4d4e4879980",
+          "arabic": "أَوْ",
+          "english": "Or",
+          "difficulty": 1
+        },
+        {
+          "id": "4288622a-e415-4741-889c-b2e252edb8da",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "ab14b184-c697-47f6-9187-152de0c24dff",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "41560c3f-8fb7-48d9-b8e4-ada151692a93",
+          "arabic": "بِهِۦ",
+          "english": "therewith",
+          "difficulty": 1
+        },
+        {
+          "id": "47f9b8d5-b522-4a78-823d-7925415d2f8e",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "9a7977a7-c1a5-4f2b-a73e-f34b3ae0ce30",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
       "isUserCreated": false,
-      "isDownloaded": true,
-      "readingProgress": 0,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
       "totalReadingTime": 0,
       "viewCount": 0,
       "completionCount": 0,
-      "createdAt": "2026-02-12T00:00:00Z",
-      "updatedAt": "2026-02-12T00:00:00Z"
+      "imagePrompt": "A little girl tending to colorful flowers in a blooming garden, butterflies and birds, green grass and trees, bright sunny day, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
     },
     {
-      "id": "550e8400-e29b-41d4-a716-446655441000",
-      "title": "The Merchant's Lesson",
-      "titleArabic": "درس التاجر",
-      "storyDescription": "A story about honesty in trade and business ethics, teaching important values through simple Arabic dialogue. Perfect for Level 1 learners.",
-      "storyDescriptionArabic": "قصة عن الصدق في التجارة وأخلاقيات العمل، تعلم قيمًا مهمة من خلال حوار عربي بسيط. مثالية للمتعلمين في المستوى الأول.",
+      "id": "87ecdbfb-74ab-4e7f-827d-f6df367dbca5",
+      "title": "The Two Friends",
+      "titleArabic": "الصديقان",
+      "storyDescription": "A story about true friendship",
+      "storyDescriptionArabic": null,
       "author": "Arabicly",
       "format": "mixed",
       "difficultyLevel": 1,
-      "category": "children",
-      "tags": ["beginner", "morals", "business", "honesty"],
-      "coverImageURL": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800",
-      "audioNarrationURL": null,
-      "words": [
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441001",
-          "arabic": "التَّاجِرُ",
-          "transliteration": "At-Tajir",
-          "english": "Merchant - A person who buys and sells goods",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441002",
-          "arabic": "الصِّدْقُ",
-          "transliteration": "As-Sidq",
-          "english": "Truthfulness - Being honest and true",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441003",
-          "arabic": "الْمَالُ",
-          "transliteration": "Al-Mal",
-          "english": "Wealth - Money, property, possessions",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441004",
-          "arabic": "الثَّمَنُ",
-          "transliteration": "Ath-Thaman",
-          "english": "Price - The amount of money expected",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441005",
-          "arabic": "الْوَزْنُ",
-          "transliteration": "Al-Wazn",
-          "english": "Weight - The measurement of heaviness",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441006",
-          "arabic": "الصَّبْرُ",
-          "transliteration": "As-Sabr",
-          "english": "Patience - Enduring difficulties calmly",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441007",
-          "arabic": "الشُّكْرُ",
-          "transliteration": "Ash-Shukr",
-          "english": "Gratitude - Being thankful",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        },
-        {
-          "id": "550e8400-e29b-41d4-a716-446655441008",
-          "arabic": "الْحِلْمُ",
-          "transliteration": "Al-Hilm",
-          "english": "Forbearance - Calmness, gentleness",
-          "partOfSpeech": "noun",
-          "difficulty": 1
-        }
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
       ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Two%20Friends.png?alt=media&token=1d179b02-6703-4bc0-bd07-b550a4ed1445",
+      "audioNarrationURL": null,
+      "segments": null,
       "mixedSegments": [
         {
-          "id": "550e8400-e29b-41d4-a716-446655441101",
+          "id": "3f7e6898-2d2d-47e3-9e70-8a56c245c8b3",
           "index": 0,
-          "text": "In a small village, there lived a kind التَّاجِرُ (At-Tajir) named Khalid. He was known for his الصِّدْقُ (As-Sidq) and fair dealing with all his customers.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441001", "550e8400-e29b-41d4-a716-446655441002"]
+          "text": "Omar and Khalid were friends. <b>إِنَّ</b> (Indeed), their friendship was strong.",
+          "linkedWordIds": [
+            "word_00008"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655441102",
+          "id": "4151e9e7-eece-46aa-b6ee-275c57ec3a99",
           "index": 1,
-          "text": "One day, a poor man came to buy dates. Khalid measured the dates with perfect الْوَزْنُ (Al-Wazn) and told him the true الثَّمَنُ (Ath-Thaman) without any extra charge.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441005", "550e8400-e29b-41d4-a716-446655441004"]
+          "text": "One day, Omar was sad. He had <b>لَا</b> (no) reason to smile.",
+          "linkedWordIds": [
+            "word_00007"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655441103",
+          "id": "33f625e5-ef35-4a89-bfc5-a4f9a7c4f970",
           "index": 2,
-          "text": "His son asked, 'Father, why don't we keep more الْمَالُ (Al-Mal) for ourselves?' Khalid smiled and said, 'True wealth comes from pleasing Allah through honesty.'",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441003"]
+          "text": "Khalid came to him. He sat <b>عَلَىٰ</b> (on) the chair beside Omar.",
+          "linkedWordIds": [
+            "word_00017"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655441104",
+          "id": "7a4cf41f-87fd-421d-a920-119be43dadab",
           "index": 3,
-          "text": "Khalid taught his son about الصَّبْرُ (As-Sabr) in difficult times and الشُّكْرُ (Ash-Shukr) in good times. He showed الْحِلْمُ (Al-Hilm) when customers were difficult.",
-          "linkedWordIds": ["550e8400-e29b-41d4-a716-446655441006", "550e8400-e29b-41d4-a716-446655441007", "550e8400-e29b-41d4-a716-446655441008"]
+          "text": "'What is <b>فِى</b> (in) your heart?' asked Khalid. 'Tell me everything.'",
+          "linkedWordIds": [
+            "word_00001"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655441105",
+          "id": "674477c9-618e-4476-bac8-f5a6ce144e0e",
           "index": 4,
-          "text": "Years passed, and Khalid's business grew. People from far and wide came to trade with him because they trusted his word. His son understood that honesty brings true success.",
-          "linkedWordIds": []
+          "text": "Omar shared his worries. He spoke <b>مِنَ</b> (from) his heart honestly.",
+          "linkedWordIds": [
+            "word_00014"
+          ]
+        },
+        {
+          "id": "33e68a6c-a1c9-4d92-afa3-010dcce18b79",
+          "index": 5,
+          "text": "Khalid listened. <b>وَلَا</b> (and not) once did he interrupt his friend.",
+          "linkedWordIds": [
+            "word_00009"
+          ]
+        },
+        {
+          "id": "02d0230b-665e-43f7-9a67-56360a34a03e",
+          "index": 6,
+          "text": "They learned that day: A true friend listens <b>إِلَى</b> (to) you.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
         }
       ],
+      "words": [
+        {
+          "id": "6acd20a6-68aa-452d-a8ea-67ca96cf94de",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "92c1c08a-f9f7-49a7-b64c-3f7ec5d904d2",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "41f259a0-ab59-4ff1-8000-096db9b7eb34",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "645bbc92-a971-47f6-94b7-d7c2a0124022",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "4524488c-7830-44a3-8394-665b7867592e",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "2f33b334-cfb7-4e2f-90be-84fb304c9bb7",
+          "arabic": "وَلَا",
+          "english": "and not",
+          "difficulty": 1
+        },
+        {
+          "id": "0dac17bb-f3ff-49b3-8c93-0e2632d42fd8",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
       "isUserCreated": false,
-      "isDownloaded": true,
-      "readingProgress": 0,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
       "totalReadingTime": 0,
       "viewCount": 0,
       "completionCount": 0,
-      "createdAt": "2026-02-12T00:00:00Z",
-      "updatedAt": "2026-02-12T00:00:00Z"
+      "imagePrompt": "Two boys having a heartfelt conversation on a park bench, friendship moment, trees and sunset in background, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm sunset colors"
     },
     {
-      "id": "550e8400-e29b-41d4-a716-446655442000",
-      "title": "The Wise Judge",
-      "titleArabic": "القاضي الحكيم",
-      "storyDescription": "A classic story of wisdom and justice, teaching learners about conflict resolution and fair judgment in Arabic.",
-      "storyDescriptionArabic": "قصة كلاسيكية عن الحكمة والعدالة، تعلم المتعلمين عن حل النزاعات والحكم العادل باللغة العربية.",
+      "id": "ee552bc4-6051-4447-9448-e73a473ad758",
+      "title": "The Rainy Day",
+      "titleArabic": "يوم ممطر",
+      "storyDescription": "A story about finding joy indoors",
+      "storyDescriptionArabic": null,
       "author": "Arabicly",
-      "format": "bilingual",
-      "difficultyLevel": 2,
-      "category": "folktale",
-      "tags": ["elementary", "wisdom", "justice", "tradition"],
-      "coverImageURL": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Rainy%20Day.png?alt=media&token=c196a161-3dd9-47d6-9685-6fae43e7bc39",
       "audioNarrationURL": null,
-      "segments": [
+      "segments": null,
+      "mixedSegments": [
         {
-          "id": "550e8400-e29b-41d4-a716-446655442101",
+          "id": "59b5d4c6-52e3-4054-a696-b7212771126c",
           "index": 0,
-          "arabicText": "كَانَ هُنَاكَ قَاضٍ حَكِيمٌ يُسَمَّى عَلِيٌّ. كَانَ النَّاسُ يَأْتُونَ إِلَيْهِ مِنْ كُلِّ مَكَانٍ لِلْحُصُولِ عَلَى الْعَدْلِ.",
-          "englishText": "There was a wise judge named Ali. People came to him from everywhere to seek justice.",
-          "transliteration": "Kana hunaka qadin hakimun yusamma Ali. Kana an-nasu ya'tuna ilayhi min kulli makanin lil-husuli ala al-adl.",
-          "culturalNote": "In Islamic tradition, judges (qadi) have historically been highly respected figures in society."
+          "text": "It was raining outside. The water fell <b>مِن</b> (from) the sky gently.",
+          "linkedWordIds": [
+            "word_00005"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655442102",
+          "id": "d991e662-0c85-4079-9bbd-532219bb01fd",
           "index": 1,
-          "arabicText": "فِي يَوْمٍ مِنَ الْأَيَّامِ، أَتَاهُ رَجُلَانِ يَتَشَاجَرَانِ عَلَى بَقَرَةٍ. كُلٌّ مِنْهُمَا قَالَ: 'هَذِهِ الْبَقَرَةُ لِي!'",
-          "englishText": "One day, two men came to him arguing over a cow. Each of them said: 'This cow is mine!'",
-          "transliteration": "Fi yawmin min al-ayyami, atahu rajulani yatashajirani ala baqarah. Kullun minhuma qala: 'Hadhi al-baqaratu li!'",
-          "grammarNote": "The verb قَالَ (said) is in the past tense, form I of the verb قَالَ."
+          "text": "The children stayed <b>فِى</b> (in) the house. There was <b>لَا</b> (no) place to play outside.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00007"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655442103",
+          "id": "1cc744ab-7345-4d2d-a191-decbb442870f",
           "index": 2,
-          "arabicText": "الْقَاضِي اسْتَمَعَ إِلَى كِلَيْهِمَا بِصَبْرٍ وَحِلْمٍ. ثُمَّ قَالَ: 'أَنَا سَأَحْكُمُ بَيْنَكُمَا بِالْعَدْلِ.'",
-          "englishText": "The judge listened to both of them with patience and forbearance. Then he said: 'I will judge between you with justice.'",
-          "transliteration": "Al-qadi istama'a ila kilayhima bi-sabrin wa-hilm. Thumma qala: 'Ana sa-ahkumu baynakuma bil-adl.'",
-          "culturalNote": "The phrase 'by justice' (بالعدل) is commonly used in Islamic legal contexts."
+          "text": "<b>إِنَّ</b> (Indeed), they were bored at first. But then they found a game.",
+          "linkedWordIds": [
+            "word_00008"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655442104",
+          "id": "6a24706b-68fc-4636-b2b0-866b7fe4a172",
           "index": 3,
-          "arabicText": "أَمَرَ الْقَاضِي أَنْ يُؤْتَى بِالْبَقَرَةِ. نَظَرَ إِلَيْهَا بِعِنَايَةٍ، ثُمَّ قَالَ: 'هَذِهِ الْبَقَرَةُ لَيْسَتْ لِأَحَدِكُمَا! هِيَ لِرَجُلٍ ثَالِثٍ.'",
-          "englishText": "The judge ordered the cow to be brought. He looked at it carefully, then said: 'This cow does not belong to either of you! It belongs to a third man.'",
-          "transliteration": "Amara al-qadi an yu'ta bil-baqarah. Nazara ilayha bi-inayah, thumma qala: 'Hadhi al-baqaratu laysat li-ahadikuma! Hiya li-rajulin thalith.'",
-          "grammarNote": "Notice the use of لَيْسَتْ (is not) - the negative form for feminine subjects."
+          "text": "They played together. Joy came <b>مِنْ</b> (from) their hearts, <b>لَا</b> (no) toys needed.",
+          "linkedWordIds": [
+            "word_00025",
+            "word_00007"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655442105",
+          "id": "a7488332-3e62-4f09-837f-2dc548da7c83",
           "index": 4,
-          "arabicText": "تَعَجَّبَ الرَّجُلَانِ وَسَأَلَا: 'وَكَيْفَ عَلِمْتَ يَا قَاضِيَنَا؟' فَأَجَابَ: 'الْبَقَرَةُ حَامِلٌ، وَكِلَاكُمَا قَالَ إِنَّهَا لَبُونٌ!'",
-          "englishText": "The two men were amazed and asked: 'And how did you know, O our judge?' He answered: 'The cow is pregnant, and both of you said she gives milk!'",
-          "transliteration": "Ta'ajjaba ar-rajulani wa-s'ala: 'Wa-kayfa alimta ya qadiyana?' Fa-ajaba: 'Al-baqaratu hamil, wa-kilakuma qala innaha labun!'",
-          "culturalNote": "This demonstrates the importance of observation and attention to detail in Islamic judicial tradition."
+          "text": "Sometimes, happiness is <b>فِيهَا</b> (therein)—hidden <b>فِى</b> (in) simple moments.",
+          "linkedWordIds": [
+            "word_00036",
+            "word_00001"
+          ]
         }
       ],
+      "words": [
+        {
+          "id": "662aebd9-b377-4fa5-9ce8-58f03431f616",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "ef4b6f23-96ba-4d5a-9a44-6c91177f23da",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "8be1dad3-0bac-41f8-8900-f505f00110bb",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "db18a509-5095-4134-a2d6-74a30417dcfd",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "9f00d9cc-e958-42c0-aab4-8c2cada29960",
+          "arabic": "مِنْ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "49f274bc-f1d1-4761-8e9b-0c5e06c56941",
+          "arabic": "فِيهَا",
+          "english": "therein",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
       "isUserCreated": false,
-      "isDownloaded": true,
-      "readingProgress": 0,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
       "totalReadingTime": 0,
       "viewCount": 0,
       "completionCount": 0,
-      "createdAt": "2026-02-12T00:00:00Z",
-      "updatedAt": "2026-02-12T00:00:00Z"
+      "imagePrompt": "Children playing with toys in a cozy warm living room during rain outside, family home interior, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
     },
     {
-      "id": "550e8400-e29b-41d4-a716-446655443000",
-      "title": "A Day in Cairo",
-      "titleArabic": "يوم في القاهرة",
-      "storyDescription": "Follow a day in the life of a student in Cairo, learning everyday vocabulary and modern Egyptian culture.",
-      "storyDescriptionArabic": "اتبع يومًا في حياة طالب في القاهرة، تعلم المفردات اليومية وثقافة مصر الحديثة.",
+      "id": "24d6b4bb-870e-4446-9c98-215097ac3fc6",
+      "title": "The Wise Teacher",
+      "titleArabic": "المعلم الحكيم",
+      "storyDescription": "A story about learning and wisdom",
+      "storyDescriptionArabic": null,
       "author": "Arabicly",
-      "format": "bilingual",
-      "difficultyLevel": 2,
-      "category": "modern",
-      "tags": ["elementary", "daily-life", "egypt", "travel"],
-      "coverImageURL": "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Wise%20Teacher.png?alt=media&token=0d6fe5c0-ef80-415f-9410-7b0c79f2fb81",
       "audioNarrationURL": null,
-      "segments": [
+      "segments": null,
+      "mixedSegments": [
         {
-          "id": "550e8400-e29b-41d4-a716-446655443101",
+          "id": "e44cd92d-3439-4315-b2cc-04784d1bbace",
           "index": 0,
-          "arabicText": "صَبَاحُ الْخَيْرِ! أَنَا طَالِبٌ فِي الْجَامِعَةِ. أَسْكُنُ فِي الْقَاهِرَةِ مِنْذُ سَنَتَيْنِ.",
-          "englishText": "Good morning! I am a university student. I have been living in Cairo for two years.",
-          "transliteration": "Sabah al-khayr! Ana talibun fi al-jami'ah. Askunu fi al-Qahirati mundhu sanatayni.",
-          "culturalNote": "صباح الخير (Sabah al-khayr) is the standard morning greeting across the Arab world."
+          "text": "The teacher stood <b>عَلَىٰ</b> (on) the platform. His students sat before him.",
+          "linkedWordIds": [
+            "word_00017"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655443102",
+          "id": "03608600-80a0-4de9-8665-5d7194e2e56a",
           "index": 1,
-          "arabicText": "أَسْتَيْقِظُ مُبَكِّرًا كُلَّ يَوْمٍ. أَشْرَبُ الْقَهْوَةَ وَآكُلُ الْفُطُورَ مَعَ أَصْدِقَائِي.",
-          "englishText": "I wake up early every day. I drink coffee and eat breakfast with my friends.",
-          "transliteration": "Astayqizu mubakkiran kulla yawmin. Ashrabu al-qahwata wa-akulu al-futura ma'a asdiqa'i.",
-          "grammarNote": "The verb form أَفْعَلُ (af'alu) indicates first person singular present tense."
+          "text": "He said, '<b>إِنَّ</b> (Indeed), knowledge comes <b>مِن</b> (from) asking questions.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00005"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655443103",
+          "id": "e8588e28-5331-419d-b34d-71ba814a4f47",
           "index": 2,
-          "arabicText": "أَذْهَبُ إِلَى الْجَامِعَةِ بِالْأُتُوبِيسِ. الطَّرِيقُ مُزْدَحِمٌ دَائِمًا فِي الصَّبَاحِ.",
-          "englishText": "I go to university by bus. The road is always crowded in the morning.",
-          "transliteration": "Adhabu ila al-jami'ati bil-utubis. At-tariqu muzdahimun dayman fi as-sabahi.",
-          "culturalNote": "Cairo is known for its busy traffic, especially during rush hours."
+          "text": "A young boy raised his hand. '<b>أَن</b> (To) learn, must we always ask?'",
+          "linkedWordIds": [
+            "word_00013"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655443104",
+          "id": "21eca3b7-27ff-47bb-b948-678bae042303",
           "index": 3,
-          "arabicText": "بَعْدَ الدِّرَاسَةِ، أَذْهَبُ إِلَى سُوقِ الْخَالِدِينِ. أُحِبُّ شِرَاءَ الْفَاكِهَةِ الطَّازَجَةِ هُنَاكَ.",
-          "englishText": "After studying, I go to Khan el-Khalili market. I love buying fresh fruit there.",
-          "transliteration": "Ba'da ad-dirasati, adhabu ila suq al-Khalidini. Uhibbu shira'a al-fakihati at-tazajati hunaka.",
-          "culturalNote": "Khan el-Khalili is a famous historic bazaar and souq in the historic center of Islamic Cairo."
+          "text": "The teacher smiled. 'Yes, <b>إِلَّا</b> (except) when you already know the answer.'",
+          "linkedWordIds": [
+            "word_00011"
+          ]
         },
         {
-          "id": "550e8400-e29b-41d4-a716-446655443105",
+          "id": "35d5ee50-9e0e-4327-a540-2ecfa5a024a3",
           "index": 4,
-          "arabicText": "فِي الْمَسَاءِ، أَجْلِسُ مَعَ عَائِلَتِي. نَتَنَاوَلُ الْعَشَاءَ وَنَتَحَدَّثُ عَنْ يَوْمِنَا.",
-          "englishText": "In the evening, I sit with my family. We have dinner and talk about our day.",
-          "transliteration": "Fi al-masa'i, ajlisu ma'a a'ilati. Natanawalu al-asha'a wa-natahaddathu an yawmina.",
-          "culturalNote": "Family dinners are an important tradition in Arab culture, often the main meal of the day."
+          "text": "Another student asked, 'Is there <b>لَا</b> (no) limit to what we can learn?'",
+          "linkedWordIds": [
+            "word_00007"
+          ]
+        },
+        {
+          "id": "b81e413d-f2a9-4248-b73a-caa5710eb047",
+          "index": 5,
+          "text": "'Knowledge is vast,' he replied. 'It is <b>فِى</b> (in) books, <b>أَوْ</b> (or) in experience.'",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00023"
+          ]
+        },
+        {
+          "id": "786cceef-d0c5-4b04-8903-2dd4f2de4d91",
+          "index": 6,
+          "text": "'We learn <b>مِنَ</b> (from) our mistakes, <b>وَلَا</b> (and not) just from success.'",
+          "linkedWordIds": [
+            "word_00014",
+            "word_00009"
+          ]
+        },
+        {
+          "id": "16ac26ad-514c-4345-9409-0379b39c14ec",
+          "index": 7,
+          "text": "The students listened well. They knew wisdom was <b>عَلَى</b> (to) those who seek it.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
         }
       ],
+      "words": [
+        {
+          "id": "bddda4fb-262a-4133-9048-ee38026fe0ae",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "da06e08c-9ada-4f3d-a47a-760950b6ac78",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "9830aa4e-3dca-4433-9fbb-877be6394bf4",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "a58a7ddf-ab10-46cd-9142-ef55875a684c",
+          "arabic": "أَن",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "853b85ee-ff6b-40fa-9ceb-ead80a4d3726",
+          "arabic": "إِلَّا",
+          "english": "except",
+          "difficulty": 1
+        },
+        {
+          "id": "7bca6b82-1785-48d4-a74d-73fd0b5c126c",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "b3859dfe-2b54-45e9-9430-ea4abf437cb1",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "995e3326-fd84-4f44-b383-0b9b4dc44b2c",
+          "arabic": "أَوْ",
+          "english": "Or",
+          "difficulty": 1
+        },
+        {
+          "id": "58199220-97ae-4514-9832-9e8f17a71663",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "cdf4e8d1-b82f-4996-bc6d-a67b10bbd4b1",
+          "arabic": "وَلَا",
+          "english": "and not",
+          "difficulty": 1
+        },
+        {
+          "id": "3ae3a669-6301-43c9-bebe-adee06f5190b",
+          "arabic": "عَلَى",
+          "english": "to",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
       "isUserCreated": false,
-      "isDownloaded": true,
-      "readingProgress": 0,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
       "totalReadingTime": 0,
       "viewCount": 0,
       "completionCount": 0,
-      "createdAt": "2026-02-12T00:00:00Z",
-      "updatedAt": "2026-02-12T00:00:00Z"
+      "imagePrompt": "A wise teacher in traditional clothes teaching students in a classroom, books and scrolls, respectful atmosphere, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "1e6fa2cb-468b-4789-91d4-5a281a829867",
+      "title": "The Golden Box",
+      "titleArabic": "الصندوق الذهبي",
+      "storyDescription": "A story about family heritage",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Golden%20Box.png?alt=media&token=1b378633-d5a1-43f6-b1a9-b4b0e6d50d24",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "c3517b95-dcba-438e-a1ed-4ec9b109112d",
+          "index": 0,
+          "text": "Ali found a box <b>فِى</b> (in) his grandmother's attic. It was old but beautiful.",
+          "linkedWordIds": [
+            "word_00001"
+          ]
+        },
+        {
+          "id": "df1ebfa6-eb66-47fc-ace5-8fb784667abe",
+          "index": 1,
+          "text": "<b>إِنَّ</b> (Indeed), he was curious. What was <b>فِيهَا</b> (therein)?",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00036"
+          ]
+        },
+        {
+          "id": "65ea0762-d202-4bb2-8849-0ce6c159aa40",
+          "index": 2,
+          "text": "He opened it carefully. Inside were letters <b>مِن</b> (from) many years ago.",
+          "linkedWordIds": [
+            "word_00005"
+          ]
+        },
+        {
+          "id": "7b441a77-99da-4e94-ae08-31cfba357054",
+          "index": 3,
+          "text": "The letters told stories <b>عَلَى</b> (to) him about his family's past.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "b25e898b-077d-4f5f-bd0a-d312eed46f6a",
+          "index": 4,
+          "text": "<b>وَمَا</b> (but not) one letter was sad. All spoke <b>مِنَ</b> (from) love and hope.",
+          "linkedWordIds": [
+            "word_00012",
+            "word_00014"
+          ]
+        },
+        {
+          "id": "878856a2-4542-44e8-a966-fe77b0a33be8",
+          "index": 5,
+          "text": "Ali learned: Our history lives <b>فِى</b> (in) stories passed <b>إِلَى</b> (to) us.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00028"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "d1181e17-1d2e-422e-a2ea-f8baa4716831",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "47eabd77-95d5-4a92-8657-eb4c86276561",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "0376f3f8-ea90-4087-8311-abc2897a95e1",
+          "arabic": "فِيهَا",
+          "english": "therein",
+          "difficulty": 1
+        },
+        {
+          "id": "3a34796a-4097-4a1e-8be0-1e924bf61f29",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "40cd3bcb-10d4-4083-9963-629c9a92afa2",
+          "arabic": "عَلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "ea924e87-6932-40e6-bf03-67c0920e9cbb",
+          "arabic": "وَمَا",
+          "english": "but not",
+          "difficulty": 1
+        },
+        {
+          "id": "9e8cacbb-c192-4e76-b1b7-e37760f8fe6e",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A child discovering a glowing golden treasure box in an attic, mysterious light emanating, old wooden beams, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "186dee7e-c3f3-418e-ab97-6ca70cf3708f",
+      "title": "The Kind Stranger",
+      "titleArabic": "الغريب الطيب",
+      "storyDescription": "A story about helping others",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Kind%20Stranger.png?alt=media&token=6b4bfb81-d454-47d5-8dba-5f69ffccd242",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "8bda4454-fb56-4c18-a14a-ad8c2160700f",
+          "index": 0,
+          "text": "Fatima was lost <b>فِى</b> (in) the big city. She felt scared and alone.",
+          "linkedWordIds": [
+            "word_00001"
+          ]
+        },
+        {
+          "id": "47576226-0fd3-435c-b483-23097eaa39ac",
+          "index": 1,
+          "text": "An old woman approached her. '<b>إِن</b> (if) you need help, I am here,' she said kindly.",
+          "linkedWordIds": [
+            "word_00027"
+          ]
+        },
+        {
+          "id": "7f717ead-4889-4c16-b7fb-fc32915a216b",
+          "index": 2,
+          "text": "Fatima asked, 'Can you show me the way <b>إِلَى</b> (to) the mosque?'",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "04884430-f05b-4d50-81a0-11ca0195277e",
+          "index": 3,
+          "text": "The woman smiled. 'Come with me. It is <b>لَا</b> (no) trouble at all.'",
+          "linkedWordIds": [
+            "word_00007"
+          ]
+        },
+        {
+          "id": "7203334c-5960-413d-adb3-2d747c6e1369",
+          "index": 4,
+          "text": "As they walked, she shared wisdom. 'Kindness comes <b>مِنْ</b> (from) the heart.'",
+          "linkedWordIds": [
+            "word_00025"
+          ]
+        },
+        {
+          "id": "195efc38-5540-4da5-9e4d-6608cefa1b49",
+          "index": 5,
+          "text": "'<b>إِنَّ</b> (Indeed), when we help others, Allah rewards <b>لَهُمْ</b> (to them).'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00033"
+          ]
+        },
+        {
+          "id": "54364a81-fc71-4362-b546-0c35cdf7c570",
+          "index": 6,
+          "text": "Fatima was grateful. She learned to be kind <b>إِلَى</b> (to) everyone she meets.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "5e7467ef-dc03-4e0b-a01f-d46f5654dc68",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "2470bfba-6b6b-47f2-b20e-673644501b28",
+          "arabic": "إِن",
+          "english": "if",
+          "difficulty": 1
+        },
+        {
+          "id": "db68a536-a773-4b18-8b29-72d1c9642931",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "98a94fa8-1847-4225-bdcd-2d947d7db27d",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "4a71e1ab-084c-4080-9725-58098a3518d0",
+          "arabic": "مِنْ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "6a65673f-189a-4750-950f-5e48061e86a5",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "09798626-7fcb-44ee-8cb4-fc4836014a86",
+          "arabic": "لَهُمْ",
+          "english": "to them",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "An elderly woman in traditional dress helping a young girl in a vibrant market street, kindness gesture, buildings and stalls, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "47d3e370-037e-461d-837e-837879bc54f0",
+      "title": "The New Student",
+      "titleArabic": "التلميذ الجديد",
+      "storyDescription": "A story about welcoming others",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20New%20Student.png?alt=media&token=7e902bce-5f68-48b6-8232-af5e2e4afb74",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "3009ce79-a3b9-4327-a122-74ab64be8d6c",
+          "index": 0,
+          "text": "Yusuf was new <b>فِى</b> (in) the school. He knew <b>لَا</b> (no) one there.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "a1786931-24f6-4e06-9e09-3cc112f65c3b",
+          "index": 1,
+          "text": "He sat alone <b>عَلَىٰ</b> (on) a bench, watching others play.",
+          "linkedWordIds": [
+            "word_00017"
+          ]
+        },
+        {
+          "id": "3d5b5618-a1e7-4f4f-bc50-a225e6e76227",
+          "index": 2,
+          "text": "A boy came <b>إِلَى</b> (to) him. 'I am Sami,' he said with a smile.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "0f7d30c1-a42e-4129-ad2a-1ff6cf305372",
+          "index": 3,
+          "text": "'<b>إِن</b> (if) you want, you can play with us,' Sami offered kindly.",
+          "linkedWordIds": [
+            "word_00027"
+          ]
+        },
+        {
+          "id": "6cacce5d-95d4-41df-be41-74f99d6d1346",
+          "index": 4,
+          "text": "Yusuf felt happy. <b>إِنَّ</b> (Indeed), a small kindness can change everything.",
+          "linkedWordIds": [
+            "word_00008"
+          ]
+        },
+        {
+          "id": "005ba820-f35a-4181-97fe-e8bd710b9cfd",
+          "index": 5,
+          "text": "They became friends. Yusuf was <b>لَا</b> (no) longer alone.",
+          "linkedWordIds": [
+            "word_00007"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "d6521fb6-99fb-487c-98b5-1a8f372db13d",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "129949db-8447-4fd7-878f-11e6c5bebd64",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "ed66e43a-d4f3-47f0-bfa3-430250d1f3d7",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "41865fdc-4b42-423a-a782-ca0517854e53",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "fef5d011-7ff1-4007-86e7-108d846832d5",
+          "arabic": "إِن",
+          "english": "if",
+          "difficulty": 1
+        },
+        {
+          "id": "e89d364a-cc81-4bf1-beb3-cc378aa4f110",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A new student being warmly welcomed by classmates at school, friendly children smiling, school setting, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "cf711099-56dc-4baa-8c7f-5c3645fd8bbc",
+      "title": "The Special Gift",
+      "titleArabic": "الهدية المميزة",
+      "storyDescription": "A story about giving",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Special%20Gift.png?alt=media&token=d8d44ada-dd99-453d-a3a6-d821d2d956f5",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "38dff6e3-d147-4086-b159-2799ae353ae1",
+          "index": 0,
+          "text": "It was Mother's Day. Hana wanted to give something special <b>إِلَى</b> (to) her mother.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "1e3d2bff-b5af-4590-8f4b-3ef1333459f0",
+          "index": 1,
+          "text": "She looked <b>فِى</b> (in) her room for ideas. She had <b>لَا</b> (no) money to buy a gift.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "064a2583-a5be-4ba8-b40b-1af3959e596c",
+          "index": 2,
+          "text": "Then she had an idea. She made a card <b>بِهِۦ</b> (therewith) all her love.",
+          "linkedWordIds": [
+            "word_00024"
+          ]
+        },
+        {
+          "id": "900e2034-fcfa-415d-9300-aaf420e19bcf",
+          "index": 3,
+          "text": "Her mother smiled when she saw it. <b>إِنَّ</b> (Indeed), it was the best gift.",
+          "linkedWordIds": [
+            "word_00008"
+          ]
+        },
+        {
+          "id": "75efc97f-522d-4942-8fd8-de11f67e429a",
+          "index": 4,
+          "text": "'Gifts <b>مِن</b> (from) the heart are better than anything money can buy,' she said.",
+          "linkedWordIds": [
+            "word_00005"
+          ]
+        },
+        {
+          "id": "f39bfb90-086a-4c47-b171-26bda5b71c58",
+          "index": 5,
+          "text": "Hana learned that day: Love needs <b>لَا</b> (no) expensive price <b>إِلَّا</b> (except) sincerity.",
+          "linkedWordIds": [
+            "word_00007",
+            "word_00011"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "a9909571-c995-49d6-8eeb-e039be2b8941",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "c8487602-6c77-4fa8-a76e-2b1b91e726c2",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "aec1d832-4adc-432d-b53d-2f3aa5fc451e",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "d3c30bab-8b2f-47f5-a4a9-97ed83ac976a",
+          "arabic": "بِهِۦ",
+          "english": "therewith",
+          "difficulty": 1
+        },
+        {
+          "id": "2f56becc-35f6-4c91-a752-0202192d5abf",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "dda1452e-e9e0-4883-8170-7e8cabd95499",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "e4319afd-c270-4877-a4fd-9f2bf08975ee",
+          "arabic": "إِلَّا",
+          "english": "except",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A child giving a wrapped gift to their mother in a warm home, loving family moment, living room interior, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "438e269f-e040-405c-9c69-60cb2938f94a",
+      "title": "The Brave Child",
+      "titleArabic": "الطفل الشجاع",
+      "storyDescription": "A story about courage",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 1,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level1"
+      ],
+      "coverImageURL": "https://firebasestorage.googleapis.com/v0/b/arabicstories-82611.firebasestorage.app/o/coverpages%2FThe%20Brave%20Child.png?alt=media&token=faaa74f9-73d1-4f09-9240-1312c355d9a0",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "a1d75996-6f6c-4e5b-b030-1ff726315baa",
+          "index": 0,
+          "text": "There was a dark room <b>فِى</b> (in) the house. The children were afraid <b>مِنْ</b> (from) it.",
+          "linkedWordIds": [
+            "word_00001",
+            "word_00025"
+          ]
+        },
+        {
+          "id": "caca2c78-1a88-4234-9406-f0a7dca91990",
+          "index": 1,
+          "text": "<b>إِنَّ</b> (Indeed), there was <b>لَا</b> (no) monster there. But fear made them think so.",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "2650aebd-18db-4c6d-86a4-512fbed22767",
+          "index": 2,
+          "text": "Little Noor decided to check. She walked <b>إِلَى</b> (to) the door slowly.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "cb68de16-6a23-494b-9377-cfd316256400",
+          "index": 3,
+          "text": "She turned <b>عَلَى</b> (on) the light. <b>إِن</b> (if) you face your fears, they disappear.",
+          "linkedWordIds": [
+            "word_00028",
+            "word_00027"
+          ]
+        },
+        {
+          "id": "25be9e17-05b8-4414-82e8-9fd1263b9e2f",
+          "index": 4,
+          "text": "The room was normal—<b>لَا</b> (no) monsters, <b>لَا</b> (no) ghosts, just a cozy space.",
+          "linkedWordIds": [
+            "word_00007"
+          ]
+        },
+        {
+          "id": "d16a7852-df08-46d9-8b96-919d8cd86850",
+          "index": 5,
+          "text": "Her brothers were amazed. Courage brings light <b>إِلَى</b> (to) darkness.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "1d6cf063-1128-4998-9d55-db4c48b48ee9",
+          "index": 6,
+          "text": "<b>إِنَّ</b> (Indeed), bravery is <b>فِى</b> (in) every heart. We just need to find it.",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00001"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "928f2118-021c-44be-a3a8-507093a0a0dc",
+          "arabic": "فِى",
+          "english": "in",
+          "difficulty": 1
+        },
+        {
+          "id": "bd84ce12-64dc-4cba-9ec0-6542df1d930c",
+          "arabic": "مِنْ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "6bafc135-8ca4-4612-a5e5-51d0ea1a5dac",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "50d79990-93a8-41ca-9e8a-20fb9bb772a7",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "4685f7f3-8775-416f-9dce-e4d7f83fe2e9",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "a3be3374-f373-47b9-8780-f71142ca31f8",
+          "arabic": "عَلَى",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "2e64f4c5-0682-4e9f-93c4-9d49cc09257a",
+          "arabic": "إِن",
+          "english": "if",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-25T03:52:33Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A young girl bravely walking into a room to turn on a lamp, courage scene, warm light illuminating, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "title": "The Wise Leader",
+      "titleArabic": "القائد الحكيم",
+      "storyDescription": "A story about leadership and community",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-201-01",
+          "index": 0,
+          "text": "There was a man who cared for <b>ٱلنَّاسِ</b> (the people). He was kind <b>إِلَى</b> (to) everyone.",
+          "linkedWordIds": [
+            "word_00089",
+            "word_00028"
+          ]
+        },
+        {
+          "id": "seg-201-02",
+          "index": 1,
+          "text": "One day, he stood before his <b>قَوْمِهِۦ</b> (his people). He said, 'O <b>يَٰقَوْمِ</b> (my people), listen to me!'",
+          "linkedWordIds": [
+            "word_00528",
+            "word_00261"
+          ]
+        },
+        {
+          "id": "seg-201-03",
+          "index": 2,
+          "text": "'<b>إِنَّ</b> (Indeed), we must help one another. There are <b>كَثِيرًا</b> (many) ways to do good.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-201-04",
+          "index": 3,
+          "text": "The <b>ٱلْقَوْمِ</b> (the people) listened carefully. They knew he spoke <b>مِنَ</b> (from) his heart.",
+          "linkedWordIds": [
+            "word_00313",
+            "word_00014"
+          ]
+        },
+        {
+          "id": "seg-201-05",
+          "index": 4,
+          "text": "'<b>تَعْقِلُونَ</b> (you use reason),' he said. 'Think about what is best for all.'",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        },
+        {
+          "id": "seg-201-06",
+          "index": 5,
+          "text": "The community became strong. They were <b>كَثِيرًا</b> (many) but united as one <b>أُمَّةٍ</b> (people).",
+          "linkedWordIds": [
+            "word_00212",
+            "word_00426"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w201-01",
+          "arabic": "ٱلنَّاسِ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-02",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w201-03",
+          "arabic": "قَوْمِهِۦ",
+          "english": "his people",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-04",
+          "arabic": "يَٰقَوْمِ",
+          "english": "O my people",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-05",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w201-06",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-07",
+          "arabic": "ٱلْقَوْمِ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-08",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "w201-09",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w201-10",
+          "arabic": "أُمَّةٍ",
+          "english": "people",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A wise elder standing before a gathering of people in a traditional village setting, speaking kindly, warm sunset lighting, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+      "title": "The Children of the Village",
+      "titleArabic": "أطفال القرية",
+      "storyDescription": "A story about family and community bonds",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-202-01",
+          "index": 0,
+          "text": "In a small village, there lived <b>ٱلنَّاسُ</b> (the people). They were one big family.",
+          "linkedWordIds": [
+            "word_00234"
+          ]
+        },
+        {
+          "id": "seg-202-02",
+          "index": 1,
+          "text": "The <b>بَنِىٓ</b> (children) played together every day. They were happy <b>فِيهَا</b> (therein).",
+          "linkedWordIds": [
+            "word_00312",
+            "word_00036"
+          ]
+        },
+        {
+          "id": "seg-202-03",
+          "index": 2,
+          "text": "An old woman told them stories. She spoke <b>عَلَىٰ</b> (on) sunny afternoons.",
+          "linkedWordIds": [
+            "word_00017"
+          ]
+        },
+        {
+          "id": "seg-202-04",
+          "index": 3,
+          "text": "'<b>إِنَّ</b> (Indeed), we learn <b>مِن</b> (from) our elders,' said a young girl. '<b>وَلَا</b> (and not) from books alone.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00005",
+            "word_00009"
+          ]
+        },
+        {
+          "id": "seg-202-05",
+          "index": 4,
+          "text": "The <b>أَهْلِ</b> (people) of the village cared for each other. They shared everything.",
+          "linkedWordIds": [
+            "word_00429"
+          ]
+        },
+        {
+          "id": "seg-202-06",
+          "index": 5,
+          "text": "They were <b>قَوْمٌ</b> (a people) who loved peace. There was <b>لَا</b> (no) fighting among them.",
+          "linkedWordIds": [
+            "word_00376",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "seg-202-07",
+          "index": 6,
+          "text": "The village became an example <b>لِلنَّاسِ</b> (to the people) of other towns.",
+          "linkedWordIds": [
+            "word_00259"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w202-01",
+          "arabic": "ٱلنَّاسُ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w202-02",
+          "arabic": "بَنِىٓ",
+          "english": "children",
+          "difficulty": 2
+        },
+        {
+          "id": "w202-03",
+          "arabic": "فِيهَا",
+          "english": "therein",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-04",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-05",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-06",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-07",
+          "arabic": "وَلَا",
+          "english": "and not",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-08",
+          "arabic": "أَهْلِ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w202-09",
+          "arabic": "قَوْمٌ",
+          "english": "a people",
+          "difficulty": 2
+        },
+        {
+          "id": "w202-10",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "w202-11",
+          "arabic": "لِلنَّاسِ",
+          "english": "to the people",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children playing together in a traditional village square, elders watching kindly, warm community atmosphere, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+      "title": "Lessons from the Past",
+      "titleArabic": "دروس من الماضي",
+      "storyDescription": "A story about learning from history",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-203-01",
+          "index": 0,
+          "text": "Grandfather sat with his grandchildren. He spoke <b>عَلَىٰ</b> (on) an old wooden chair.",
+          "linkedWordIds": [
+            "word_00017"
+          ]
+        },
+        {
+          "id": "seg-203-02",
+          "index": 1,
+          "text": "'<b>إِنَّ</b> (Indeed), we can learn <b>مِن</b> (from) <b>ٱلْأَوَّلِينَ</b> (the former people),' he said.",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00005",
+            "word_00315"
+          ]
+        },
+        {
+          "id": "seg-203-03",
+          "index": 2,
+          "text": "The children asked, 'Who were <b>ٱلْأَوَّلِينَ</b> (the former people)?'",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        },
+        {
+          "id": "seg-203-04",
+          "index": 3,
+          "text": "'They were our ancestors,' he replied. 'They were <b>قَوْمًا</b> (a people) of wisdom.'",
+          "linkedWordIds": [
+            "word_00292"
+          ]
+        },
+        {
+          "id": "seg-203-05",
+          "index": 4,
+          "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you listen to their stories,' Grandfather explained.",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        },
+        {
+          "id": "seg-203-06",
+          "index": 5,
+          "text": "The <b>ٱلْإِنسَٰنُ</b> (mankind) of today needs to remember the past. <b>وَمَا</b> (But not) all lessons are easy.",
+          "linkedWordIds": [
+            "word_00363",
+            "word_00012"
+          ]
+        },
+        {
+          "id": "seg-203-07",
+          "index": 6,
+          "text": "The children understood. They would tell these stories <b>إِلَى</b> (to) their own children one day.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w203-01",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "w203-02",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w203-03",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "w203-04",
+          "arabic": "ٱلْأَوَّلِينَ",
+          "english": "the former people",
+          "difficulty": 2
+        },
+        {
+          "id": "w203-05",
+          "arabic": "قَوْمًا",
+          "english": "a people",
+          "difficulty": 2
+        },
+        {
+          "id": "w203-06",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w203-07",
+          "arabic": "ٱلْإِنسَٰنُ",
+          "english": "mankind",
+          "difficulty": 2
+        },
+        {
+          "id": "w203-08",
+          "arabic": "وَمَا",
+          "english": "but not",
+          "difficulty": 1
+        },
+        {
+          "id": "w203-09",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "An elderly grandfather telling stories to attentive grandchildren in a traditional home setting, warm lamp light, scrolls and old books nearby, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "d4e5f6a7-b8c9-0123-defa-456789012345",
+      "title": "The New Family",
+      "titleArabic": "العائلة الجديدة",
+      "storyDescription": "A story about welcoming newcomers",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-204-01",
+          "index": 0,
+          "text": "A new family moved to the town. <b>ٱلنَّاسَ</b> (The people) watched them with curiosity.",
+          "linkedWordIds": [
+            "word_00203"
+          ]
+        },
+        {
+          "id": "seg-204-02",
+          "index": 1,
+          "text": "The father stood before the crowd. '<b>يَٰقَوْمِ</b> (O my people), we come in peace,' he said.",
+          "linkedWordIds": [
+            "word_00261"
+          ]
+        },
+        {
+          "id": "seg-204-03",
+          "index": 2,
+          "text": "'<b>إِنَّ</b> (Indeed), we are <b>كَثِيرًا</b> (many) miles from our home,' he explained.",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-204-04",
+          "index": 3,
+          "text": "The townspeople smiled. They were <b>قَوْمٌ</b> (a people) known for kindness.",
+          "linkedWordIds": [
+            "word_00376"
+          ]
+        },
+        {
+          "id": "seg-204-05",
+          "index": 4,
+          "text": "'You are <b>أَهْلِ</b> (people) like us,' said an old man. 'There is <b>لَا</b> (no) difference between us.'",
+          "linkedWordIds": [
+            "word_00429",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "seg-204-06",
+          "index": 5,
+          "text": "The new family became part of the <b>أُمَّةٍ</b> (people). They were happy <b>فِيهَا</b> (therein).",
+          "linkedWordIds": [
+            "word_00426",
+            "word_00036"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w204-01",
+          "arabic": "ٱلنَّاسَ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-02",
+          "arabic": "يَٰقَوْمِ",
+          "english": "O my people",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-03",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w204-04",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-05",
+          "arabic": "قَوْمٌ",
+          "english": "a people",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-06",
+          "arabic": "أَهْلِ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-07",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "w204-08",
+          "arabic": "أُمَّةٍ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w204-09",
+          "arabic": "فِيهَا",
+          "english": "therein",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A welcoming scene of townspeople greeting a new family moving into a neighborhood, warm smiles and helping hands, traditional houses, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "e5f6a7b8-c9d0-1234-efab-567890123456",
+      "title": "The Good Man",
+      "titleArabic": "الرجل الصالح",
+      "storyDescription": "A story about being kind to humanity",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-205-01",
+          "index": 0,
+          "text": "There was a man who loved <b>ٱلْإِنسَٰنَ</b> (mankind). He helped everyone he met.",
+          "linkedWordIds": [
+            "word_00362"
+          ]
+        },
+        {
+          "id": "seg-205-02",
+          "index": 1,
+          "text": "He would say, '<b>إِنَّ</b> (Indeed), every person deserves kindness.'",
+          "linkedWordIds": [
+            "word_00008"
+          ]
+        },
+        {
+          "id": "seg-205-03",
+          "index": 2,
+          "text": "One day, he saw a traveler who was tired. The man had walked <b>كَثِيرًا</b> (many) miles.",
+          "linkedWordIds": [
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-205-04",
+          "index": 3,
+          "text": "'Come rest <b>عَلَىٰ</b> (on) this mat,' he offered. 'There is <b>لَا</b> (no) need to be tired.'",
+          "linkedWordIds": [
+            "word_00017",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "seg-205-05",
+          "index": 4,
+          "text": "The traveler was grateful. '<b>تَعْقِلُونَ</b> (you use reason) when you help others,' he said.",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        },
+        {
+          "id": "seg-205-06",
+          "index": 5,
+          "text": "The good man smiled. He did this <b>لِلنَّاسِ</b> (to the people) every day.",
+          "linkedWordIds": [
+            "word_00259"
+          ]
+        },
+        {
+          "id": "seg-205-07",
+          "index": 6,
+          "text": "He taught his children: Be good <b>إِلَى</b> (to) all people, <b>أَوْ</b> (or) rich or poor.",
+          "linkedWordIds": [
+            "word_00028",
+            "word_00023"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w205-01",
+          "arabic": "ٱلْإِنسَٰنَ",
+          "english": "mankind",
+          "difficulty": 2
+        },
+        {
+          "id": "w205-02",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w205-03",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w205-04",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "w205-05",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "w205-06",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w205-07",
+          "arabic": "لِلنَّاسِ",
+          "english": "to the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w205-08",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w205-09",
+          "arabic": "أَوْ",
+          "english": "or",
+          "difficulty": 1
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A kind man helping a tired traveler rest in a traditional courtyard, water and dates being offered, warm hospitality scene, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "f6a7b8c9-d0e1-2345-fabc-678901234567",
+      "title": "The Community Gathering",
+      "titleArabic": "لقاء المجتمع",
+      "storyDescription": "A story about working together",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-206-01",
+          "index": 0,
+          "text": "The <b>ٱلْقَوْمَ</b> (the people) gathered in the square. They had important work to do.",
+          "linkedWordIds": [
+            "word_00375"
+          ]
+        },
+        {
+          "id": "seg-206-02",
+          "index": 1,
+          "text": "The leader spoke to them. '<b>يَٰقَوْمِ</b> (O my people), we must build a well,' he said.",
+          "linkedWordIds": [
+            "word_00261"
+          ]
+        },
+        {
+          "id": "seg-206-03",
+          "index": 2,
+          "text": "'<b>إِنَّ</b> (Indeed), water is life. We need it <b>كَثِيرًا</b> (many) times each day.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-206-04",
+          "index": 3,
+          "text": "The <b>ٱلنَّاسُ</b> (the people) worked together. They dug from morning <b>إِلَى</b> (to) evening.",
+          "linkedWordIds": [
+            "word_00234",
+            "word_00028"
+          ]
+        },
+        {
+          "id": "seg-206-05",
+          "index": 4,
+          "text": "They were <b>كَثِيرًا</b> (many) workers, but they worked as one <b>أُمَّةٍ</b> (people).",
+          "linkedWordIds": [
+            "word_00212",
+            "word_00426"
+          ]
+        },
+        {
+          "id": "seg-206-06",
+          "index": 5,
+          "text": "When the well was done, everyone celebrated. The water was there <b>لِلنَّاسِ</b> (to the people).",
+          "linkedWordIds": [
+            "word_00259"
+          ]
+        },
+        {
+          "id": "seg-206-07",
+          "index": 6,
+          "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you work together,' the leader told them.",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w206-01",
+          "arabic": "ٱلْقَوْمَ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-02",
+          "arabic": "يَٰقَوْمِ",
+          "english": "O my people",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-03",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w206-04",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-05",
+          "arabic": "ٱلنَّاسُ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-06",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w206-07",
+          "arabic": "أُمَّةٍ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-08",
+          "arabic": "لِلنَّاسِ",
+          "english": "to the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w206-09",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A community working together to build a well in a village square, people of all ages helping, buckets and tools, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "a7b8c9d0-e1f2-3456-abcd-789012345678",
+      "title": "The Teacher's Lesson",
+      "titleArabic": "درس المعلم",
+      "storyDescription": "A story about teaching with wisdom",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-207-01",
+          "index": 0,
+          "text": "The teacher looked at his students. They were <b>بَنِىٓ</b> (children) from many families.",
+          "linkedWordIds": [
+            "word_00312"
+          ]
+        },
+        {
+          "id": "seg-207-02",
+          "index": 1,
+          "text": "'<b>إِنَّ</b> (Indeed), knowledge is a gift,' he said. 'It comes <b>مِنَ</b> (from) Allah.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00014"
+          ]
+        },
+        {
+          "id": "seg-207-03",
+          "index": 2,
+          "text": "A young boy asked, 'Who are we, teacher? Are we just <b>ٱلنَّاسِ</b> (the people)?'",
+          "linkedWordIds": [
+            "word_00089"
+          ]
+        },
+        {
+          "id": "seg-207-04",
+          "index": 3,
+          "text": "The teacher smiled. 'You are <b>ٱلْإِنسَٰنُ</b> (mankind), created with purpose.'",
+          "linkedWordIds": [
+            "word_00363"
+          ]
+        },
+        {
+          "id": "seg-207-05",
+          "index": 4,
+          "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you learn. <b>وَلَا</b> (and not) just memorizing words.'",
+          "linkedWordIds": [
+            "word_00403",
+            "word_00009"
+          ]
+        },
+        {
+          "id": "seg-207-06",
+          "index": 5,
+          "text": "He taught them about the <b>ٱلْأَوَّلِينَ</b> (the former people). They had wisdom too.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        },
+        {
+          "id": "seg-207-07",
+          "index": 6,
+          "text": "The children grew wise. They became good <b>قَوْمٌ</b> (a people) in their community.",
+          "linkedWordIds": [
+            "word_00376"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w207-01",
+          "arabic": "بَنِىٓ",
+          "english": "children",
+          "difficulty": 2
+        },
+        {
+          "id": "w207-02",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w207-03",
+          "arabic": "مِنَ",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "w207-04",
+          "arabic": "ٱلنَّاسِ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w207-05",
+          "arabic": "ٱلْإِنسَٰنُ",
+          "english": "mankind",
+          "difficulty": 2
+        },
+        {
+          "id": "w207-06",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w207-07",
+          "arabic": "وَلَا",
+          "english": "and not",
+          "difficulty": 1
+        },
+        {
+          "id": "w207-08",
+          "arabic": "ٱلْأَوَّلِينَ",
+          "english": "the former people",
+          "difficulty": 2
+        },
+        {
+          "id": "w207-09",
+          "arabic": "قَوْمٌ",
+          "english": "a people",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A wise teacher instructing young students in an open courtyard, books and scrolls, attentive children, traditional learning environment, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "b8c9d0e1-f2a3-4567-bcde-890123456789",
+      "title": "The Helper's Heart",
+      "titleArabic": "قلب المساعد",
+      "storyDescription": "A story about helping others",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-208-01",
+          "index": 0,
+          "text": "Amina was known <b>لِلنَّاسِ</b> (to the people) as a helper. She loved to serve others.",
+          "linkedWordIds": [
+            "word_00259"
+          ]
+        },
+        {
+          "id": "seg-208-02",
+          "index": 1,
+          "text": "One day, she saw <b>ٱلنَّاسَ</b> (the people) struggling. They needed help <b>كَثِيرًا</b> (many) times.",
+          "linkedWordIds": [
+            "word_00203",
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-208-03",
+          "index": 2,
+          "text": "She went <b>إِلَى</b> (to) each person. '<b>إِنَّ</b> (Indeed), I will help you,' she promised.",
+          "linkedWordIds": [
+            "word_00028",
+            "word_00008"
+          ]
+        },
+        {
+          "id": "seg-208-04",
+          "index": 3,
+          "text": "Her mother said, 'You are <b>ٱلْإِنسَٰنَ</b> (mankind) at its best. <b>لَا</b> (no) one is kinder.'",
+          "linkedWordIds": [
+            "word_00362",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "seg-208-05",
+          "index": 4,
+          "text": "Amina smiled. 'I do this <b>لِّقَوْمٍ</b> (for a people) I love. My family and neighbors.'",
+          "linkedWordIds": [
+            "word_00278"
+          ]
+        },
+        {
+          "id": "seg-208-06",
+          "index": 5,
+          "text": "She taught the young <b>بَنِىٓ</b> (children) to help too. 'Be good <b>إِلَى</b> (to) everyone,' she said.",
+          "linkedWordIds": [
+            "word_00312",
+            "word_00028"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w208-01",
+          "arabic": "لِلنَّاسِ",
+          "english": "to the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w208-02",
+          "arabic": "ٱلنَّاسَ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w208-03",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w208-04",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w208-05",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w208-06",
+          "arabic": "ٱلْإِنسَٰنَ",
+          "english": "mankind",
+          "difficulty": 2
+        },
+        {
+          "id": "w208-07",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "w208-08",
+          "arabic": "لِّقَوْمٍ",
+          "english": "for a people",
+          "difficulty": 2
+        },
+        {
+          "id": "w208-09",
+          "arabic": "بَنِىٓ",
+          "english": "children",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A kind young woman helping elderly and children in a community, acts of service, warm caring atmosphere, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "c9d0e1f2-a3b4-5678-cdef-901234567890",
+      "title": "The People's Choice",
+      "titleArabic": "اختيار الناس",
+      "storyDescription": "A story about making good decisions",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-209-01",
+          "index": 0,
+          "text": "The <b>ٱلْقَوْمِ</b> (the people) needed a new leader. They gathered to choose one.",
+          "linkedWordIds": [
+            "word_00313"
+          ]
+        },
+        {
+          "id": "seg-209-02",
+          "index": 1,
+          "text": "An old man stood up. '<b>يَٰقَوْمِ</b> (O my people), we must choose wisely,' he said.",
+          "linkedWordIds": [
+            "word_00261"
+          ]
+        },
+        {
+          "id": "seg-209-03",
+          "index": 2,
+          "text": "'<b>إِنَّ</b> (Indeed), the leader serves <b>ٱلنَّاسَ</b> (the people). <b>لَا</b> (no) one is above others.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00203",
+            "word_00007"
+          ]
+        },
+        {
+          "id": "seg-209-04",
+          "index": 3,
+          "text": "They chose a man who was kind <b>إِلَى</b> (to) everyone. He was fair and just.",
+          "linkedWordIds": [
+            "word_00028"
+          ]
+        },
+        {
+          "id": "seg-209-05",
+          "index": 4,
+          "text": "He told them, '<b>تَعْقِلُونَ</b> (you use reason) when you think of the community first.'",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        },
+        {
+          "id": "seg-209-06",
+          "index": 5,
+          "text": "The <b>أَهْلِ</b> (people) of the town were happy. They had made a good choice.",
+          "linkedWordIds": [
+            "word_00429"
+          ]
+        },
+        {
+          "id": "seg-209-07",
+          "index": 6,
+          "text": "The leader served them well. He was one of the <b>ٱلْأَوَّلِينَ</b> (the former people) who did good.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w209-01",
+          "arabic": "ٱلْقَوْمِ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w209-02",
+          "arabic": "يَٰقَوْمِ",
+          "english": "O my people",
+          "difficulty": 2
+        },
+        {
+          "id": "w209-03",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w209-04",
+          "arabic": "ٱلنَّاسَ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w209-05",
+          "arabic": "لَا",
+          "english": "no",
+          "difficulty": 1
+        },
+        {
+          "id": "w209-06",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w209-07",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w209-08",
+          "arabic": "أَهْلِ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w209-09",
+          "arabic": "ٱلْأَوَّلِينَ",
+          "english": "the former people",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:25:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A community gathered in a town square choosing a wise leader, people raising hands in agreement, democratic scene, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "d0e1f2a3-b4c5-6789-defa-012345678901",
+      "title": "A Nation of Peace",
+      "titleArabic": "أمة سلام",
+      "storyDescription": "A story about unity and peace",
+      "storyDescriptionArabic": null,
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 2,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level2",
+        "family"
+      ],
+      "coverImageURL": "",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "seg-210-01",
+          "index": 0,
+          "text": "Long ago, there was a land of peace. The <b>ٱلنَّاسُ</b> (the people) lived in harmony.",
+          "linkedWordIds": [
+            "word_00234"
+          ]
+        },
+        {
+          "id": "seg-210-02",
+          "index": 1,
+          "text": "They were one <b>أُمَّةٍ</b> (people) with <b>كَثِيرًا</b> (many) different families.",
+          "linkedWordIds": [
+            "word_00426",
+            "word_00212"
+          ]
+        },
+        {
+          "id": "seg-210-03",
+          "index": 2,
+          "text": "A wise woman taught them. '<b>إِنَّ</b> (Indeed), peace comes <b>مِن</b> (from) understanding.'",
+          "linkedWordIds": [
+            "word_00008",
+            "word_00005"
+          ]
+        },
+        {
+          "id": "seg-210-04",
+          "index": 3,
+          "text": "She spoke <b>عَلَىٰ</b> (on) Fridays to the crowds. Her words touched <b>ٱلْإِنسَٰنَ</b> (mankind).",
+          "linkedWordIds": [
+            "word_00017",
+            "word_00362"
+          ]
+        },
+        {
+          "id": "seg-210-05",
+          "index": 4,
+          "text": "The <b>قَوْمٍ</b> (people) remembered her teachings. They passed them <b>إِلَى</b> (to) their children.",
+          "linkedWordIds": [
+            "word_00483",
+            "word_00028"
+          ]
+        },
+        {
+          "id": "seg-210-06",
+          "index": 5,
+          "text": "'<b>وَلَا</b> (and not) let differences divide you,' she had said. '<b>تَعْقِلُونَ</b> (you use reason) to find common ground.'",
+          "linkedWordIds": [
+            "word_00009",
+            "word_00403"
+          ]
+        },
+        {
+          "id": "seg-210-07",
+          "index": 6,
+          "text": "The land remained peaceful. It was an example <b>لِلنَّاسِ</b> (to the people) of other lands.",
+          "linkedWordIds": [
+            "word_00259"
+          ]
+        },
+        {
+          "id": "seg-210-08",
+          "index": 7,
+          "text": "The <b>ٱلْأَوَّلِينَ</b> (the former people) left a legacy of peace for all.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        }
+      ],
+      "words": [
+        {
+          "id": "w210-01",
+          "arabic": "ٱلنَّاسُ",
+          "english": "the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-02",
+          "arabic": "أُمَّةٍ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-03",
+          "arabic": "كَثِيرًا",
+          "english": "many",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-04",
+          "arabic": "إِنَّ",
+          "english": "Indeed",
+          "difficulty": 1
+        },
+        {
+          "id": "w210-05",
+          "arabic": "مِن",
+          "english": "from",
+          "difficulty": 1
+        },
+        {
+          "id": "w210-06",
+          "arabic": "عَلَىٰ",
+          "english": "on",
+          "difficulty": 1
+        },
+        {
+          "id": "w210-07",
+          "arabic": "ٱلْإِنسَٰنَ",
+          "english": "mankind",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-08",
+          "arabic": "قَوْمٍ",
+          "english": "people",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-09",
+          "arabic": "إِلَى",
+          "english": "to",
+          "difficulty": 1
+        },
+        {
+          "id": "w210-10",
+          "arabic": "وَلَا",
+          "english": "and not",
+          "difficulty": 1
+        },
+        {
+          "id": "w210-11",
+          "arabic": "تَعْقِلُونَ",
+          "english": "you use reason",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-12",
+          "arabic": "لِلنَّاسِ",
+          "english": "to the people",
+          "difficulty": 2
+        },
+        {
+          "id": "w210-13",
+          "arabic": "ٱلْأَوَّلِينَ",
+          "english": "the former people",
+          "difficulty": 2
+        }
+      ],
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-25T04:20:00Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "A peaceful land with diverse people living in harmony, children of different backgrounds playing together, beautiful landscape, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
     }
   ]
 }

@@ -1,0 +1,356 @@
+{
+  "total_levels": 50,
+  "total_unique_words": 4450,
+  "levels": [
+    {
+      "level": 1,
+      "theme": "Self & Pronouns",
+      "new_words": 20,
+      "review_words": 0,
+      "total_words": 20
+    },
+    {
+      "level": 2,
+      "theme": "Family Basics",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 3,
+      "theme": "House & Home",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 4,
+      "theme": "Food & Eating",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 5,
+      "theme": "Daily Actions",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 6,
+      "theme": "Time Basics",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 7,
+      "theme": "Nature Around",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 8,
+      "theme": "Body Parts",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 9,
+      "theme": "Colors & Qualities",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 10,
+      "theme": "Numbers & Counting",
+      "new_words": 20,
+      "review_words": 10,
+      "total_words": 30
+    },
+    {
+      "level": 11,
+      "theme": "Names of Allah A",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 12,
+      "theme": "Names of Allah B",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 13,
+      "theme": "Prayer & Worship",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 14,
+      "theme": "Faith & Belief",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 15,
+      "theme": "Prophets",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 16,
+      "theme": "Angels & Unseen",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 17,
+      "theme": "Afterlife",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 18,
+      "theme": "Quran & Revelation",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 19,
+      "theme": "Moral Qualities",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 20,
+      "theme": "Religious Practice",
+      "new_words": 35,
+      "review_words": 15,
+      "total_words": 50
+    },
+    {
+      "level": 21,
+      "theme": "Prepositions A",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 22,
+      "theme": "Prepositions B",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 23,
+      "theme": "Question Words",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 24,
+      "theme": "Connectors A",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 25,
+      "theme": "Connectors B",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 26,
+      "theme": "Common Verbs A",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 27,
+      "theme": "Common Verbs B",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 28,
+      "theme": "Adjectives",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 29,
+      "theme": "More Nature",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 30,
+      "theme": "Complex Concepts",
+      "new_words": 60,
+      "review_words": 40,
+      "total_words": 100
+    },
+    {
+      "level": 31,
+      "theme": "Advanced Verbs A",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 32,
+      "theme": "Advanced Verbs B",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 33,
+      "theme": "Emotions & States",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 34,
+      "theme": "Directions & Travel",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 35,
+      "theme": "Social Relations",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 36,
+      "theme": "Professions",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 37,
+      "theme": "Natural Phenomena",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 38,
+      "theme": "Agriculture & Plants",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 39,
+      "theme": "Trade & Economy",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 40,
+      "theme": "Abstract Concepts B",
+      "new_words": 120,
+      "review_words": 80,
+      "total_words": 200
+    },
+    {
+      "level": 41,
+      "theme": "Quran Terms A",
+      "new_words": 180,
+      "review_words": 120,
+      "total_words": 300
+    },
+    {
+      "level": 42,
+      "theme": "Quran Terms B",
+      "new_words": 180,
+      "review_words": 120,
+      "total_words": 300
+    },
+    {
+      "level": 43,
+      "theme": "Legal Terms",
+      "new_words": 180,
+      "review_words": 120,
+      "total_words": 300
+    },
+    {
+      "level": 44,
+      "theme": "Rhetorical Devices",
+      "new_words": 180,
+      "review_words": 120,
+      "total_words": 300
+    },
+    {
+      "level": 45,
+      "theme": "Idioms & Expressions",
+      "new_words": 180,
+      "review_words": 120,
+      "total_words": 300
+    },
+    {
+      "level": 46,
+      "theme": "Rare Religious Terms",
+      "new_words": 240,
+      "review_words": 160,
+      "total_words": 400
+    },
+    {
+      "level": 47,
+      "theme": "Specialized Domains",
+      "new_words": 240,
+      "review_words": 160,
+      "total_words": 400
+    },
+    {
+      "level": 48,
+      "theme": "Synonyms & Nuances",
+      "new_words": 240,
+      "review_words": 160,
+      "total_words": 400
+    },
+    {
+      "level": 49,
+      "theme": "Complex Grammar",
+      "new_words": 240,
+      "review_words": 160,
+      "total_words": 400
+    },
+    {
+      "level": 50,
+      "theme": "Master Level",
+      "new_words": 240,
+      "review_words": 160,
+      "total_words": 400
+    }
+  ]
+}

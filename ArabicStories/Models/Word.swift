@@ -299,3 +299,48 @@ struct ExampleSentence: Identifiable, Codable, Hashable {
         self.audioURL = audioURL
     }
 }
+
+// MARK: - Word to QuranWord Conversion
+
+extension Word {
+    /// Convert a story Word to QuranWord format for saving to learned vocabulary
+    func toQuranWord() -> QuranWord {
+        QuranWord(
+            id: id.uuidString,
+            rank: quranRank ?? 9999,
+            arabicText: arabicText,
+            arabicWithoutDiacritics: ArabicTextUtils.stripDiacritics(arabicText),
+            buckwalter: transliteration,
+            englishMeaning: englishMeaning,
+            root: rootLetters != nil ? QuranRoot(arabic: rootLetters, transliteration: nil, meaning: nil) : nil,
+            morphology: QuranMorphology(
+                partOfSpeech: partOfSpeech?.rawValue,
+                posDescription: nil,
+                lemma: nil,
+                form: nil,
+                tense: nil,
+                gender: nil,
+                number: nil,
+                grammaticalCase: nil,
+                passive: false,
+                breakdown: nil,
+                state: nil
+            ),
+            occurrenceCount: quranOccurrenceCount ?? 0,
+            exampleArabic: exampleSentences?.first?.arabic,
+            exampleEnglish: exampleSentences?.first?.english,
+            audioURL: audioPronunciationURL,
+            tags: nil,
+            notes: nil,
+            createdAt: nil,
+            updatedAt: nil,
+            mastery: nil,
+            isMastered: masteryLevel == .mastered || masteryLevel == .known,
+            reviewCount: reviewCount,
+            lastReviewDate: lastReviewDate,
+            nextReviewDate: nextReviewDate,
+            isBookmarked: isBookmarked,
+            difficulty: difficulty
+        )
+    }
+}

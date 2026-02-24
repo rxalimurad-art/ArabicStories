@@ -1195,12 +1195,6 @@ struct MyWordDetailView: View {
                     
                     // Morphology Section
                     morphologySection
-                    
-                    // Learning Progress Section
-                    progressSection
-                    
-                    // Example Sentences Section
-                    examplesSection
                 }
                 .padding()
             }
