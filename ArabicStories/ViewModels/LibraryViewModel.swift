@@ -263,9 +263,12 @@ class LibraryViewModel {
     }
     
     var inProgressStories: [Story] {
-        stories.filter { 
-            let progress = getReadingProgress($0.id)
-            return progress > 0 && progress < 1.0 
+        stories.filter { story in
+            let progress = storyProgress[story.id.uuidString]
+            let readingProgress = progress?.readingProgress ?? 0.0
+            let isCompleted = progress?.isCompleted ?? false
+            // Story is in progress if it has progress (> 0 and < 1) AND is not marked as completed
+            return readingProgress > 0 && readingProgress < 1.0 && !isCompleted
         }.sorted { 
             let date1 = storyProgress[$0.id.uuidString]?.lastReadDate ?? .distantPast
             let date2 = storyProgress[$1.id.uuidString]?.lastReadDate ?? .distantPast

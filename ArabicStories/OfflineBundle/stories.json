@@ -1345,7 +1345,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-201-01",
+          "id": "e6710574-fd79-4adc-9524-73b559bef0ba",
           "index": 0,
           "text": "There was a man who cared for <b>ٱلنَّاسِ</b> (the people). He was kind <b>إِلَى</b> (to) everyone.",
           "linkedWordIds": [
@@ -1354,7 +1354,7 @@
           ]
         },
         {
-          "id": "seg-201-02",
+          "id": "4f75a775-09ef-4f2e-8c94-159f32b088c0",
           "index": 1,
           "text": "One day, he stood before his <b>قَوْمِهِۦ</b> (his people). He said, 'O <b>يَٰقَوْمِ</b> (my people), listen to me!'",
           "linkedWordIds": [
@@ -1363,7 +1363,7 @@
           ]
         },
         {
-          "id": "seg-201-03",
+          "id": "b8e5ee8f-eaec-4e87-af64-09e04203b8fd",
           "index": 2,
           "text": "'<b>إِنَّ</b> (Indeed), we must help one another. There are <b>كَثِيرًا</b> (many) ways to do good.'",
           "linkedWordIds": [
@@ -1372,7 +1372,7 @@
           ]
         },
         {
-          "id": "seg-201-04",
+          "id": "e9333ad1-465f-4028-b272-395e41ad04e3",
           "index": 3,
           "text": "The <b>ٱلْقَوْمِ</b> (the people) listened carefully. They knew he spoke <b>مِنَ</b> (from) his heart.",
           "linkedWordIds": [
@@ -1381,7 +1381,7 @@
           ]
         },
         {
-          "id": "seg-201-05",
+          "id": "54943ced-eaa1-4ff7-9afa-0dea6366e8c3",
           "index": 4,
           "text": "'<b>تَعْقِلُونَ</b> (you use reason),' he said. 'Think about what is best for all.'",
           "linkedWordIds": [
@@ -1389,7 +1389,7 @@
           ]
         },
         {
-          "id": "seg-201-06",
+          "id": "9bdc16a3-ffb1-46fe-856f-fcc7394325d2",
           "index": 5,
           "text": "The community became strong. They were <b>كَثِيرًا</b> (many) but united as one <b>أُمَّةٍ</b> (people).",
           "linkedWordIds": [
@@ -1400,61 +1400,61 @@
       ],
       "words": [
         {
-          "id": "w201-01",
+          "id": "5a74267e-1c98-4d43-b11c-ec0f0cc395ed",
           "arabic": "ٱلنَّاسِ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w201-02",
+          "id": "fec53ccb-4419-41d1-8825-28bbbf53e0c2",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w201-03",
+          "id": "406f2092-445a-4f1b-9d2d-1949af6eaa16",
           "arabic": "قَوْمِهِۦ",
           "english": "his people",
           "difficulty": 2
         },
         {
-          "id": "w201-04",
+          "id": "ef956936-2dd2-4531-bfa4-1e63f2343403",
           "arabic": "يَٰقَوْمِ",
           "english": "O my people",
           "difficulty": 2
         },
         {
-          "id": "w201-05",
+          "id": "34fc37f4-c691-4995-b636-2d08e1e12572",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w201-06",
+          "id": "88fbf3e2-832e-4b28-838c-8ae13a11cae9",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w201-07",
+          "id": "10a167a2-1ae8-4662-a4b8-fbfd045e28c0",
           "arabic": "ٱلْقَوْمِ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w201-08",
+          "id": "48e235a4-fe7d-4e84-9abf-b2a152c971ae",
           "arabic": "مِنَ",
           "english": "from",
           "difficulty": 1
         },
         {
-          "id": "w201-09",
+          "id": "093b2dab-84dc-485a-80f2-cc8acc188a1f",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w201-10",
+          "id": "ed15acda-0af1-4525-bf48-5fb1f0672af1",
           "arabic": "أُمَّةٍ",
           "english": "people",
           "difficulty": 2
@@ -1495,7 +1495,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-202-01",
+          "id": "ed99655b-3869-494a-854c-d474e46f2e7a",
           "index": 0,
           "text": "In a small village, there lived <b>ٱلنَّاسُ</b> (the people). They were one big family.",
           "linkedWordIds": [
@@ -1503,7 +1503,7 @@
           ]
         },
         {
-          "id": "seg-202-02",
+          "id": "de67bd12-cb46-4ed7-b068-9189e107d521",
           "index": 1,
           "text": "The <b>بَنِىٓ</b> (children) played together every day. They were happy <b>فِيهَا</b> (therein).",
           "linkedWordIds": [
@@ -1512,7 +1512,7 @@
           ]
         },
         {
-          "id": "seg-202-03",
+          "id": "7664f9ca-5f36-47a8-be97-a56b99e0f0c6",
           "index": 2,
           "text": "An old woman told them stories. She spoke <b>عَلَىٰ</b> (on) sunny afternoons.",
           "linkedWordIds": [
@@ -1520,7 +1520,7 @@
           ]
         },
         {
-          "id": "seg-202-04",
+          "id": "0ae03234-4f73-4fcf-b404-91f499c45a66",
           "index": 3,
           "text": "'<b>إِنَّ</b> (Indeed), we learn <b>مِن</b> (from) our elders,' said a young girl. '<b>وَلَا</b> (and not) from books alone.'",
           "linkedWordIds": [
@@ -1530,7 +1530,7 @@
           ]
         },
         {
-          "id": "seg-202-05",
+          "id": "a137ba31-7a3b-4cc0-a209-8efeb7ea6add",
           "index": 4,
           "text": "The <b>أَهْلِ</b> (people) of the village cared for each other. They shared everything.",
           "linkedWordIds": [
@@ -1538,7 +1538,7 @@
           ]
         },
         {
-          "id": "seg-202-06",
+          "id": "9d71c2b3-8722-455d-841e-a52ac0e2d233",
           "index": 5,
           "text": "They were <b>قَوْمٌ</b> (a people) who loved peace. There was <b>لَا</b> (no) fighting among them.",
           "linkedWordIds": [
@@ -1547,7 +1547,7 @@
           ]
         },
         {
-          "id": "seg-202-07",
+          "id": "09611229-06d8-4718-a315-c4d819bfb3d2",
           "index": 6,
           "text": "The village became an example <b>لِلنَّاسِ</b> (to the people) of other towns.",
           "linkedWordIds": [
@@ -1557,67 +1557,67 @@
       ],
       "words": [
         {
-          "id": "w202-01",
+          "id": "13cb1b1b-0a61-4fa8-9652-dc7c74f6f24f",
           "arabic": "ٱلنَّاسُ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w202-02",
+          "id": "2f06ac99-16a0-4dcd-b00b-564ece1fbf57",
           "arabic": "بَنِىٓ",
           "english": "children",
           "difficulty": 2
         },
         {
-          "id": "w202-03",
+          "id": "55039cc1-1c0a-4130-80f9-45719670c679",
           "arabic": "فِيهَا",
           "english": "therein",
           "difficulty": 1
         },
         {
-          "id": "w202-04",
+          "id": "20609963-4e57-4296-acc0-fee8c416b60a",
           "arabic": "عَلَىٰ",
           "english": "on",
           "difficulty": 1
         },
         {
-          "id": "w202-05",
+          "id": "72a787f4-041a-458f-a991-3d2f363a9822",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w202-06",
+          "id": "684c87d7-a6d4-4b60-b10e-b21758217184",
           "arabic": "مِن",
           "english": "from",
           "difficulty": 1
         },
         {
-          "id": "w202-07",
+          "id": "2e62ac13-5286-4fd1-b60a-946833ea1c86",
           "arabic": "وَلَا",
           "english": "and not",
           "difficulty": 1
         },
         {
-          "id": "w202-08",
+          "id": "7fb963e7-bf54-48aa-90a3-08ba34869116",
           "arabic": "أَهْلِ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w202-09",
+          "id": "d4835e77-f6ab-4b22-82f4-dd5521ce077c",
           "arabic": "قَوْمٌ",
           "english": "a people",
           "difficulty": 2
         },
         {
-          "id": "w202-10",
+          "id": "22d94014-0b5e-4848-a6c6-a35869490045",
           "arabic": "لَا",
           "english": "no",
           "difficulty": 1
         },
         {
-          "id": "w202-11",
+          "id": "76324417-46d1-445b-9188-76fef68c6b7c",
           "arabic": "لِلنَّاسِ",
           "english": "to the people",
           "difficulty": 2
@@ -1658,7 +1658,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-203-01",
+          "id": "98481a4d-c2a7-4535-921a-f7f20539ae66",
           "index": 0,
           "text": "Grandfather sat with his grandchildren. He spoke <b>عَلَىٰ</b> (on) an old wooden chair.",
           "linkedWordIds": [
@@ -1666,7 +1666,7 @@
           ]
         },
         {
-          "id": "seg-203-02",
+          "id": "f9d18f57-648b-4f59-956a-f1c87c0945a3",
           "index": 1,
           "text": "'<b>إِنَّ</b> (Indeed), we can learn <b>مِن</b> (from) <b>ٱلْأَوَّلِينَ</b> (the former people),' he said.",
           "linkedWordIds": [
@@ -1676,7 +1676,7 @@
           ]
         },
         {
-          "id": "seg-203-03",
+          "id": "fd58f1d3-7bb4-4b62-be44-98e852ddd9e3",
           "index": 2,
           "text": "The children asked, 'Who were <b>ٱلْأَوَّلِينَ</b> (the former people)?'",
           "linkedWordIds": [
@@ -1684,7 +1684,7 @@
           ]
         },
         {
-          "id": "seg-203-04",
+          "id": "3a6954f7-6cba-4cc7-9e56-645da4b6cf49",
           "index": 3,
           "text": "'They were our ancestors,' he replied. 'They were <b>قَوْمًا</b> (a people) of wisdom.'",
           "linkedWordIds": [
@@ -1692,7 +1692,7 @@
           ]
         },
         {
-          "id": "seg-203-05",
+          "id": "0ec84055-06cf-41b6-9490-9692d1ad5443",
           "index": 4,
           "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you listen to their stories,' Grandfather explained.",
           "linkedWordIds": [
@@ -1700,7 +1700,7 @@
           ]
         },
         {
-          "id": "seg-203-06",
+          "id": "4efa1dfe-4437-41a3-8182-8f1cbf0e34d0",
           "index": 5,
           "text": "The <b>ٱلْإِنسَٰنُ</b> (mankind) of today needs to remember the past. <b>وَمَا</b> (But not) all lessons are easy.",
           "linkedWordIds": [
@@ -1709,7 +1709,7 @@
           ]
         },
         {
-          "id": "seg-203-07",
+          "id": "4a5a5fc5-2892-4974-b075-856f7e3e9dac",
           "index": 6,
           "text": "The children understood. They would tell these stories <b>إِلَى</b> (to) their own children one day.",
           "linkedWordIds": [
@@ -1719,55 +1719,55 @@
       ],
       "words": [
         {
-          "id": "w203-01",
+          "id": "ab9d71b7-6215-4874-9a2e-e928e5a59de8",
           "arabic": "عَلَىٰ",
           "english": "on",
           "difficulty": 1
         },
         {
-          "id": "w203-02",
+          "id": "f0164cb5-7f88-4597-8dd4-9b253dd9ccee",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w203-03",
+          "id": "1f656f81-7bd2-4748-bab5-7142a4c59141",
           "arabic": "مِن",
           "english": "from",
           "difficulty": 1
         },
         {
-          "id": "w203-04",
+          "id": "c31cb254-cf80-48ae-b6c6-b1676d9d16e2",
           "arabic": "ٱلْأَوَّلِينَ",
           "english": "the former people",
           "difficulty": 2
         },
         {
-          "id": "w203-05",
+          "id": "c80a61f8-defb-4279-af8e-96572e47f209",
           "arabic": "قَوْمًا",
           "english": "a people",
           "difficulty": 2
         },
         {
-          "id": "w203-06",
+          "id": "02bbbc27-e144-4d7e-89bd-bd3aaaec1941",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w203-07",
+          "id": "9f463451-8f37-4ba5-b263-d8f9904a48f5",
           "arabic": "ٱلْإِنسَٰنُ",
           "english": "mankind",
           "difficulty": 2
         },
         {
-          "id": "w203-08",
+          "id": "9ca97724-374a-41f8-9725-5a426b2cb84f",
           "arabic": "وَمَا",
           "english": "but not",
           "difficulty": 1
         },
         {
-          "id": "w203-09",
+          "id": "825acc18-3ff0-495e-ac4b-6f7bfb4bbc2d",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
@@ -1808,7 +1808,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-204-01",
+          "id": "793da0a7-ab8c-455d-9de2-fa1a91427723",
           "index": 0,
           "text": "A new family moved to the town. <b>ٱلنَّاسَ</b> (The people) watched them with curiosity.",
           "linkedWordIds": [
@@ -1816,7 +1816,7 @@
           ]
         },
         {
-          "id": "seg-204-02",
+          "id": "47cb8ad8-5174-4400-9e52-f4efcb4b7b96",
           "index": 1,
           "text": "The father stood before the crowd. '<b>يَٰقَوْمِ</b> (O my people), we come in peace,' he said.",
           "linkedWordIds": [
@@ -1824,7 +1824,7 @@
           ]
         },
         {
-          "id": "seg-204-03",
+          "id": "a1cace60-70da-41b7-a456-5379b7ffd81b",
           "index": 2,
           "text": "'<b>إِنَّ</b> (Indeed), we are <b>كَثِيرًا</b> (many) miles from our home,' he explained.",
           "linkedWordIds": [
@@ -1833,7 +1833,7 @@
           ]
         },
         {
-          "id": "seg-204-04",
+          "id": "68b8cf73-1b73-497f-9f63-6716070392eb",
           "index": 3,
           "text": "The townspeople smiled. They were <b>قَوْمٌ</b> (a people) known for kindness.",
           "linkedWordIds": [
@@ -1841,7 +1841,7 @@
           ]
         },
         {
-          "id": "seg-204-05",
+          "id": "abb93c02-cfa8-4c7b-9f1b-844d815fcc48",
           "index": 4,
           "text": "'You are <b>أَهْلِ</b> (people) like us,' said an old man. 'There is <b>لَا</b> (no) difference between us.'",
           "linkedWordIds": [
@@ -1850,7 +1850,7 @@
           ]
         },
         {
-          "id": "seg-204-06",
+          "id": "7784946b-fa4e-480f-848f-4061a90b33e1",
           "index": 5,
           "text": "The new family became part of the <b>أُمَّةٍ</b> (people). They were happy <b>فِيهَا</b> (therein).",
           "linkedWordIds": [
@@ -1861,55 +1861,55 @@
       ],
       "words": [
         {
-          "id": "w204-01",
+          "id": "b66fa035-7d5d-4bb2-ac6c-f028c240431d",
           "arabic": "ٱلنَّاسَ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w204-02",
+          "id": "5107c659-98ac-4607-8efa-b191294cf035",
           "arabic": "يَٰقَوْمِ",
           "english": "O my people",
           "difficulty": 2
         },
         {
-          "id": "w204-03",
+          "id": "e93b4251-dc56-48a7-b8b4-e9c1ff14bba3",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w204-04",
+          "id": "1168e4db-d97b-4e9d-81aa-ad8f612f3285",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w204-05",
+          "id": "cd2b123a-a2e4-47ee-914d-7c55a26d8428",
           "arabic": "قَوْمٌ",
           "english": "a people",
           "difficulty": 2
         },
         {
-          "id": "w204-06",
+          "id": "a409346a-3855-44de-bf3c-e13337983260",
           "arabic": "أَهْلِ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w204-07",
+          "id": "b086e2a6-9962-4c73-a1fa-2cbc2188a077",
           "arabic": "لَا",
           "english": "no",
           "difficulty": 1
         },
         {
-          "id": "w204-08",
+          "id": "8c7b2c12-9a5c-4e4d-9e68-05e3f471944a",
           "arabic": "أُمَّةٍ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w204-09",
+          "id": "efd76456-4693-4b76-971e-acf8ef1709e7",
           "arabic": "فِيهَا",
           "english": "therein",
           "difficulty": 1
@@ -1950,7 +1950,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-205-01",
+          "id": "9d15edb3-1c71-43d8-ba78-bb372e20c449",
           "index": 0,
           "text": "There was a man who loved <b>ٱلْإِنسَٰنَ</b> (mankind). He helped everyone he met.",
           "linkedWordIds": [
@@ -1958,7 +1958,7 @@
           ]
         },
         {
-          "id": "seg-205-02",
+          "id": "06020f01-4dde-4448-9e6d-21ee5eb01abc",
           "index": 1,
           "text": "He would say, '<b>إِنَّ</b> (Indeed), every person deserves kindness.'",
           "linkedWordIds": [
@@ -1966,7 +1966,7 @@
           ]
         },
         {
-          "id": "seg-205-03",
+          "id": "29809810-6674-466c-a5b4-97f2192e2ddd",
           "index": 2,
           "text": "One day, he saw a traveler who was tired. The man had walked <b>كَثِيرًا</b> (many) miles.",
           "linkedWordIds": [
@@ -1974,7 +1974,7 @@
           ]
         },
         {
-          "id": "seg-205-04",
+          "id": "2391d6fa-c564-4d07-a361-dec8d784ec7d",
           "index": 3,
           "text": "'Come rest <b>عَلَىٰ</b> (on) this mat,' he offered. 'There is <b>لَا</b> (no) need to be tired.'",
           "linkedWordIds": [
@@ -1983,7 +1983,7 @@
           ]
         },
         {
-          "id": "seg-205-05",
+          "id": "80f6915c-bc5a-45ee-8bf9-5ba6adf13301",
           "index": 4,
           "text": "The traveler was grateful. '<b>تَعْقِلُونَ</b> (you use reason) when you help others,' he said.",
           "linkedWordIds": [
@@ -1991,7 +1991,7 @@
           ]
         },
         {
-          "id": "seg-205-06",
+          "id": "00ee11b4-165f-428f-a320-fd19c4f1c621",
           "index": 5,
           "text": "The good man smiled. He did this <b>لِلنَّاسِ</b> (to the people) every day.",
           "linkedWordIds": [
@@ -1999,7 +1999,7 @@
           ]
         },
         {
-          "id": "seg-205-07",
+          "id": "d57f938e-f339-4f29-8a14-7bf5197d8187",
           "index": 6,
           "text": "He taught his children: Be good <b>إِلَى</b> (to) all people, <b>أَوْ</b> (or) rich or poor.",
           "linkedWordIds": [
@@ -2010,55 +2010,55 @@
       ],
       "words": [
         {
-          "id": "w205-01",
+          "id": "1a6ddb37-cc73-4d61-a227-e0008d38242c",
           "arabic": "ٱلْإِنسَٰنَ",
           "english": "mankind",
           "difficulty": 2
         },
         {
-          "id": "w205-02",
+          "id": "4b85e467-e1c4-4894-bd51-c0c88b95e679",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w205-03",
+          "id": "4aa411cd-b614-4fb4-a1fc-626327331a80",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w205-04",
+          "id": "78102d8b-7427-45ed-8a8f-fe41fb9f0245",
           "arabic": "عَلَىٰ",
           "english": "on",
           "difficulty": 1
         },
         {
-          "id": "w205-05",
+          "id": "b3897c25-3b65-46e9-8a14-e739fcaddc24",
           "arabic": "لَا",
           "english": "no",
           "difficulty": 1
         },
         {
-          "id": "w205-06",
+          "id": "272432ca-68f6-4aef-994b-235d5f580948",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w205-07",
+          "id": "917ab5c8-72de-4939-ad0b-0c13542166f4",
           "arabic": "لِلنَّاسِ",
           "english": "to the people",
           "difficulty": 2
         },
         {
-          "id": "w205-08",
+          "id": "b735957f-ee57-4054-9efc-bd762d39515d",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w205-09",
+          "id": "61068a9e-e560-4b8a-a9fd-f5fcaa57957e",
           "arabic": "أَوْ",
           "english": "or",
           "difficulty": 1
@@ -2099,7 +2099,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-206-01",
+          "id": "6552e2e7-b8cb-4dd3-b864-97d328ba17d5",
           "index": 0,
           "text": "The <b>ٱلْقَوْمَ</b> (the people) gathered in the square. They had important work to do.",
           "linkedWordIds": [
@@ -2107,7 +2107,7 @@
           ]
         },
         {
-          "id": "seg-206-02",
+          "id": "3f62bcfd-e204-4c47-a794-cc3cf84881a1",
           "index": 1,
           "text": "The leader spoke to them. '<b>يَٰقَوْمِ</b> (O my people), we must build a well,' he said.",
           "linkedWordIds": [
@@ -2115,7 +2115,7 @@
           ]
         },
         {
-          "id": "seg-206-03",
+          "id": "dd08ab9b-219d-45f8-ac05-afcf332ef4c9",
           "index": 2,
           "text": "'<b>إِنَّ</b> (Indeed), water is life. We need it <b>كَثِيرًا</b> (many) times each day.'",
           "linkedWordIds": [
@@ -2124,7 +2124,7 @@
           ]
         },
         {
-          "id": "seg-206-04",
+          "id": "5701067d-a3e4-45d2-8533-8a47e7d9e13c",
           "index": 3,
           "text": "The <b>ٱلنَّاسُ</b> (the people) worked together. They dug from morning <b>إِلَى</b> (to) evening.",
           "linkedWordIds": [
@@ -2133,7 +2133,7 @@
           ]
         },
         {
-          "id": "seg-206-05",
+          "id": "204875ae-17cb-455a-ba0c-5046fc5ded5f",
           "index": 4,
           "text": "They were <b>كَثِيرًا</b> (many) workers, but they worked as one <b>أُمَّةٍ</b> (people).",
           "linkedWordIds": [
@@ -2142,7 +2142,7 @@
           ]
         },
         {
-          "id": "seg-206-06",
+          "id": "c077bf49-5290-46fe-800c-079d518a6ba8",
           "index": 5,
           "text": "When the well was done, everyone celebrated. The water was there <b>لِلنَّاسِ</b> (to the people).",
           "linkedWordIds": [
@@ -2150,7 +2150,7 @@
           ]
         },
         {
-          "id": "seg-206-07",
+          "id": "e916e96d-9a99-48a1-a353-89409a465e7b",
           "index": 6,
           "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you work together,' the leader told them.",
           "linkedWordIds": [
@@ -2160,55 +2160,55 @@
       ],
       "words": [
         {
-          "id": "w206-01",
+          "id": "39181729-e73d-4f8a-a0de-537820420f73",
           "arabic": "ٱلْقَوْمَ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w206-02",
+          "id": "d6d29889-6de9-4fe4-b184-809fecb8041e",
           "arabic": "يَٰقَوْمِ",
           "english": "O my people",
           "difficulty": 2
         },
         {
-          "id": "w206-03",
+          "id": "3309ea0c-3ed0-41ff-85fa-75e03c5a6e41",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w206-04",
+          "id": "ab5c381c-307e-4a46-a89c-63b042c3efb0",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w206-05",
+          "id": "3128851b-6df4-4c18-8f26-7abf3c122013",
           "arabic": "ٱلنَّاسُ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w206-06",
+          "id": "6837387c-5fbf-4cd1-ad30-1742f76f02c0",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w206-07",
+          "id": "d9bd4429-b0fb-4b47-a6b0-c2a4a0474169",
           "arabic": "أُمَّةٍ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w206-08",
+          "id": "db9142cc-3a4b-49bb-ad72-db45e26f1b93",
           "arabic": "لِلنَّاسِ",
           "english": "to the people",
           "difficulty": 2
         },
         {
-          "id": "w206-09",
+          "id": "70238ddd-d8a0-42c5-a6ae-766bc8d256fa",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
@@ -2249,7 +2249,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-207-01",
+          "id": "a0d97e4c-a35d-4323-8877-0a2bbdbcac3d",
           "index": 0,
           "text": "The teacher looked at his students. They were <b>بَنِىٓ</b> (children) from many families.",
           "linkedWordIds": [
@@ -2257,7 +2257,7 @@
           ]
         },
         {
-          "id": "seg-207-02",
+          "id": "c72a4857-86a8-421c-8256-f275b45700f5",
           "index": 1,
           "text": "'<b>إِنَّ</b> (Indeed), knowledge is a gift,' he said. 'It comes <b>مِنَ</b> (from) Allah.'",
           "linkedWordIds": [
@@ -2266,7 +2266,7 @@
           ]
         },
         {
-          "id": "seg-207-03",
+          "id": "07311856-6c3b-4a05-bc9b-040dc42f1df9",
           "index": 2,
           "text": "A young boy asked, 'Who are we, teacher? Are we just <b>ٱلنَّاسِ</b> (the people)?'",
           "linkedWordIds": [
@@ -2274,7 +2274,7 @@
           ]
         },
         {
-          "id": "seg-207-04",
+          "id": "6faf0852-c466-4bf7-9e01-e2e99e8465a6",
           "index": 3,
           "text": "The teacher smiled. 'You are <b>ٱلْإِنسَٰنُ</b> (mankind), created with purpose.'",
           "linkedWordIds": [
@@ -2282,7 +2282,7 @@
           ]
         },
         {
-          "id": "seg-207-05",
+          "id": "4b8a3509-ba8a-4139-9e3b-70ae65ac9f54",
           "index": 4,
           "text": "'<b>تَعْقِلُونَ</b> (you use reason) when you learn. <b>وَلَا</b> (and not) just memorizing words.'",
           "linkedWordIds": [
@@ -2291,7 +2291,7 @@
           ]
         },
         {
-          "id": "seg-207-06",
+          "id": "e663f869-1083-4482-9662-56daccda4ea3",
           "index": 5,
           "text": "He taught them about the <b>ٱلْأَوَّلِينَ</b> (the former people). They had wisdom too.",
           "linkedWordIds": [
@@ -2299,7 +2299,7 @@
           ]
         },
         {
-          "id": "seg-207-07",
+          "id": "7ae216e4-fc3a-41f6-a4de-62daa2218fd5",
           "index": 6,
           "text": "The children grew wise. They became good <b>قَوْمٌ</b> (a people) in their community.",
           "linkedWordIds": [
@@ -2309,55 +2309,55 @@
       ],
       "words": [
         {
-          "id": "w207-01",
+          "id": "c0470bcc-1bf1-48d7-bb8a-27a7cb8d1407",
           "arabic": "بَنِىٓ",
           "english": "children",
           "difficulty": 2
         },
         {
-          "id": "w207-02",
+          "id": "d3d31c92-fc23-4251-9fa0-bb7fae7f373a",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w207-03",
+          "id": "8786fdab-58a8-4458-b8e3-a02f522e8370",
           "arabic": "مِنَ",
           "english": "from",
           "difficulty": 1
         },
         {
-          "id": "w207-04",
+          "id": "10d9468d-19aa-4757-aaef-86389179debb",
           "arabic": "ٱلنَّاسِ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w207-05",
+          "id": "cdfae3a9-1c78-4813-bbc9-e02dc2f8deb3",
           "arabic": "ٱلْإِنسَٰنُ",
           "english": "mankind",
           "difficulty": 2
         },
         {
-          "id": "w207-06",
+          "id": "aa67fa46-51cd-42a8-b6a8-a451ed29c2cf",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w207-07",
+          "id": "a4d9953f-f541-4e89-a067-ab9c40e0fc7a",
           "arabic": "وَلَا",
           "english": "and not",
           "difficulty": 1
         },
         {
-          "id": "w207-08",
+          "id": "035c12b3-cd72-4fef-b15f-86c4f930fa08",
           "arabic": "ٱلْأَوَّلِينَ",
           "english": "the former people",
           "difficulty": 2
         },
         {
-          "id": "w207-09",
+          "id": "774f5afe-2eab-4695-b65a-d8d21aa9cfbf",
           "arabic": "قَوْمٌ",
           "english": "a people",
           "difficulty": 2
@@ -2398,7 +2398,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-208-01",
+          "id": "2b0a69fd-ae5e-4282-8160-177392cdf8b8",
           "index": 0,
           "text": "Amina was known <b>لِلنَّاسِ</b> (to the people) as a helper. She loved to serve others.",
           "linkedWordIds": [
@@ -2406,7 +2406,7 @@
           ]
         },
         {
-          "id": "seg-208-02",
+          "id": "b736511f-23aa-47d8-ab42-235e7cbd8127",
           "index": 1,
           "text": "One day, she saw <b>ٱلنَّاسَ</b> (the people) struggling. They needed help <b>كَثِيرًا</b> (many) times.",
           "linkedWordIds": [
@@ -2415,7 +2415,7 @@
           ]
         },
         {
-          "id": "seg-208-03",
+          "id": "c922a4a1-b943-4f68-afda-5a99688c2aa4",
           "index": 2,
           "text": "She went <b>إِلَى</b> (to) each person. '<b>إِنَّ</b> (Indeed), I will help you,' she promised.",
           "linkedWordIds": [
@@ -2424,7 +2424,7 @@
           ]
         },
         {
-          "id": "seg-208-04",
+          "id": "55f7b104-0fee-4f0a-88e4-df7f68ad2d5f",
           "index": 3,
           "text": "Her mother said, 'You are <b>ٱلْإِنسَٰنَ</b> (mankind) at its best. <b>لَا</b> (no) one is kinder.'",
           "linkedWordIds": [
@@ -2433,7 +2433,7 @@
           ]
         },
         {
-          "id": "seg-208-05",
+          "id": "dd52280b-7585-4325-9aac-94ebed88ab1d",
           "index": 4,
           "text": "Amina smiled. 'I do this <b>لِّقَوْمٍ</b> (for a people) I love. My family and neighbors.'",
           "linkedWordIds": [
@@ -2441,7 +2441,7 @@
           ]
         },
         {
-          "id": "seg-208-06",
+          "id": "1386d72c-7cda-4cc7-8a6f-2450c4b961e1",
           "index": 5,
           "text": "She taught the young <b>بَنِىٓ</b> (children) to help too. 'Be good <b>إِلَى</b> (to) everyone,' she said.",
           "linkedWordIds": [
@@ -2452,55 +2452,55 @@
       ],
       "words": [
         {
-          "id": "w208-01",
+          "id": "4c0651be-f086-4428-8570-529b54b53979",
           "arabic": "لِلنَّاسِ",
           "english": "to the people",
           "difficulty": 2
         },
         {
-          "id": "w208-02",
+          "id": "791b8fcf-b344-4b99-8915-a30d6c454b8e",
           "arabic": "ٱلنَّاسَ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w208-03",
+          "id": "4dd92c89-52e3-41a5-939b-3f3d9c4aeabf",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w208-04",
+          "id": "1e7e7fb5-9b31-452e-bd66-9f8c482ec297",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w208-05",
+          "id": "05a7d5be-d950-45f3-b552-26a16d1bf631",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w208-06",
+          "id": "5522eb9a-26c6-4bc7-a22f-21e35a3246d1",
           "arabic": "ٱلْإِنسَٰنَ",
           "english": "mankind",
           "difficulty": 2
         },
         {
-          "id": "w208-07",
+          "id": "ee8913a1-a53d-49a1-bc64-a593695e5edd",
           "arabic": "لَا",
           "english": "no",
           "difficulty": 1
         },
         {
-          "id": "w208-08",
+          "id": "ec11bc22-285c-46a4-b972-ca206fa7c607",
           "arabic": "لِّقَوْمٍ",
           "english": "for a people",
           "difficulty": 2
         },
         {
-          "id": "w208-09",
+          "id": "d11cf8ee-7b03-47fc-9d4f-ee19e3ada10a",
           "arabic": "بَنِىٓ",
           "english": "children",
           "difficulty": 2
@@ -2541,7 +2541,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-209-01",
+          "id": "414049a0-7881-414e-9b59-5cdc0fa900e1",
           "index": 0,
           "text": "The <b>ٱلْقَوْمِ</b> (the people) needed a new leader. They gathered to choose one.",
           "linkedWordIds": [
@@ -2549,7 +2549,7 @@
           ]
         },
         {
-          "id": "seg-209-02",
+          "id": "ec24beac-6f2a-47ee-a907-792999676fa6",
           "index": 1,
           "text": "An old man stood up. '<b>يَٰقَوْمِ</b> (O my people), we must choose wisely,' he said.",
           "linkedWordIds": [
@@ -2557,7 +2557,7 @@
           ]
         },
         {
-          "id": "seg-209-03",
+          "id": "3350f32d-fdd4-4036-b656-ceb6dc467d69",
           "index": 2,
           "text": "'<b>إِنَّ</b> (Indeed), the leader serves <b>ٱلنَّاسَ</b> (the people). <b>لَا</b> (no) one is above others.'",
           "linkedWordIds": [
@@ -2567,7 +2567,7 @@
           ]
         },
         {
-          "id": "seg-209-04",
+          "id": "b90df3b3-bf8b-4833-a03a-1c7d197c7e0c",
           "index": 3,
           "text": "They chose a man who was kind <b>إِلَى</b> (to) everyone. He was fair and just.",
           "linkedWordIds": [
@@ -2575,7 +2575,7 @@
           ]
         },
         {
-          "id": "seg-209-05",
+          "id": "79927c09-67bc-42cc-be0e-1258e229a02d",
           "index": 4,
           "text": "He told them, '<b>تَعْقِلُونَ</b> (you use reason) when you think of the community first.'",
           "linkedWordIds": [
@@ -2583,7 +2583,7 @@
           ]
         },
         {
-          "id": "seg-209-06",
+          "id": "120740e4-883f-408d-a255-cedc92ab4185",
           "index": 5,
           "text": "The <b>أَهْلِ</b> (people) of the town were happy. They had made a good choice.",
           "linkedWordIds": [
@@ -2591,7 +2591,7 @@
           ]
         },
         {
-          "id": "seg-209-07",
+          "id": "bbacf4ec-e580-4b62-a7f4-d71f1e73178e",
           "index": 6,
           "text": "The leader served them well. He was one of the <b>ٱلْأَوَّلِينَ</b> (the former people) who did good.",
           "linkedWordIds": [
@@ -2601,55 +2601,55 @@
       ],
       "words": [
         {
-          "id": "w209-01",
+          "id": "81df6997-33f9-46b3-85e6-b5aac3c9acc7",
           "arabic": "ٱلْقَوْمِ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w209-02",
+          "id": "dbe6ed06-23ce-4ad7-8818-03c43630652a",
           "arabic": "يَٰقَوْمِ",
           "english": "O my people",
           "difficulty": 2
         },
         {
-          "id": "w209-03",
+          "id": "e2a18f04-628d-42b7-bd9e-40c640d4b3b8",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w209-04",
+          "id": "161b33cf-55fd-4b72-a403-0f801e73f134",
           "arabic": "ٱلنَّاسَ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w209-05",
+          "id": "b7f82ea7-c920-4e58-bfa6-87a04af5d4cb",
           "arabic": "لَا",
           "english": "no",
           "difficulty": 1
         },
         {
-          "id": "w209-06",
+          "id": "e3079dc4-5004-436c-8fbf-53308410007f",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w209-07",
+          "id": "d697400b-e887-4830-82af-d73457168f8e",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w209-08",
+          "id": "9f783925-11e0-440f-b32a-40a034d87f03",
           "arabic": "أَهْلِ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w209-09",
+          "id": "fe502eba-a5cf-4e21-a5cc-138123299f76",
           "arabic": "ٱلْأَوَّلِينَ",
           "english": "the former people",
           "difficulty": 2
@@ -2690,7 +2690,7 @@
       "segments": null,
       "mixedSegments": [
         {
-          "id": "seg-210-01",
+          "id": "3a9d8c7e-2aa4-4af2-a2e6-396ea8f7dbcc",
           "index": 0,
           "text": "Long ago, there was a land of peace. The <b>ٱلنَّاسُ</b> (the people) lived in harmony.",
           "linkedWordIds": [
@@ -2698,7 +2698,7 @@
           ]
         },
         {
-          "id": "seg-210-02",
+          "id": "bcedcd2e-bffa-4656-9ce2-901a843ee5d0",
           "index": 1,
           "text": "They were one <b>أُمَّةٍ</b> (people) with <b>كَثِيرًا</b> (many) different families.",
           "linkedWordIds": [
@@ -2707,7 +2707,7 @@
           ]
         },
         {
-          "id": "seg-210-03",
+          "id": "53cdc609-5bbb-489f-94cd-d902cf86645e",
           "index": 2,
           "text": "A wise woman taught them. '<b>إِنَّ</b> (Indeed), peace comes <b>مِن</b> (from) understanding.'",
           "linkedWordIds": [
@@ -2716,7 +2716,7 @@
           ]
         },
         {
-          "id": "seg-210-04",
+          "id": "201d096f-de7f-41be-8cbf-a0f587645fd5",
           "index": 3,
           "text": "She spoke <b>عَلَىٰ</b> (on) Fridays to the crowds. Her words touched <b>ٱلْإِنسَٰنَ</b> (mankind).",
           "linkedWordIds": [
@@ -2725,7 +2725,7 @@
           ]
         },
         {
-          "id": "seg-210-05",
+          "id": "cd92eec6-ffeb-4388-a5d4-a0297a70bead",
           "index": 4,
           "text": "The <b>قَوْمٍ</b> (people) remembered her teachings. They passed them <b>إِلَى</b> (to) their children.",
           "linkedWordIds": [
@@ -2734,7 +2734,7 @@
           ]
         },
         {
-          "id": "seg-210-06",
+          "id": "8bd84f30-49ba-44b4-8d0b-db10c84e856c",
           "index": 5,
           "text": "'<b>وَلَا</b> (and not) let differences divide you,' she had said. '<b>تَعْقِلُونَ</b> (you use reason) to find common ground.'",
           "linkedWordIds": [
@@ -2743,7 +2743,7 @@
           ]
         },
         {
-          "id": "seg-210-07",
+          "id": "c4be96b2-85d6-4ac4-896d-b633f0c50c72",
           "index": 6,
           "text": "The land remained peaceful. It was an example <b>لِلنَّاسِ</b> (to the people) of other lands.",
           "linkedWordIds": [
@@ -2751,7 +2751,7 @@
           ]
         },
         {
-          "id": "seg-210-08",
+          "id": "477b93d7-1b90-484a-9051-89c8aaeb7ddb",
           "index": 7,
           "text": "The <b>ٱلْأَوَّلِينَ</b> (the former people) left a legacy of peace for all.",
           "linkedWordIds": [
@@ -2761,79 +2761,79 @@
       ],
       "words": [
         {
-          "id": "w210-01",
+          "id": "f855254c-7489-41c3-b573-25179406319c",
           "arabic": "ٱلنَّاسُ",
           "english": "the people",
           "difficulty": 2
         },
         {
-          "id": "w210-02",
+          "id": "38109f8b-7776-4715-a807-20d7fb914ba1",
           "arabic": "أُمَّةٍ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w210-03",
+          "id": "6d764150-ed1c-4ec7-88f1-801474dac5e9",
           "arabic": "كَثِيرًا",
           "english": "many",
           "difficulty": 2
         },
         {
-          "id": "w210-04",
+          "id": "8916f75a-45c7-40dd-84dc-9fd7c83f63ba",
           "arabic": "إِنَّ",
           "english": "Indeed",
           "difficulty": 1
         },
         {
-          "id": "w210-05",
+          "id": "9cc5c7e0-196e-44f9-a88d-359b3be70714",
           "arabic": "مِن",
           "english": "from",
           "difficulty": 1
         },
         {
-          "id": "w210-06",
+          "id": "6a1520ba-0084-4537-a89c-eb7f050d325a",
           "arabic": "عَلَىٰ",
           "english": "on",
           "difficulty": 1
         },
         {
-          "id": "w210-07",
+          "id": "5a8b087e-c377-4dfa-8eee-815a3588c973",
           "arabic": "ٱلْإِنسَٰنَ",
           "english": "mankind",
           "difficulty": 2
         },
         {
-          "id": "w210-08",
+          "id": "022d99e5-463b-425e-900c-903b5aedd080",
           "arabic": "قَوْمٍ",
           "english": "people",
           "difficulty": 2
         },
         {
-          "id": "w210-09",
+          "id": "199877b3-cf67-487f-a3d0-e0028cacf7a2",
           "arabic": "إِلَى",
           "english": "to",
           "difficulty": 1
         },
         {
-          "id": "w210-10",
+          "id": "e5ab5edd-f184-4efb-b383-8012bdd3eb25",
           "arabic": "وَلَا",
           "english": "and not",
           "difficulty": 1
         },
         {
-          "id": "w210-11",
+          "id": "59cf37a0-1985-4263-85ac-8fd25dec0a4d",
           "arabic": "تَعْقِلُونَ",
           "english": "you use reason",
           "difficulty": 2
         },
         {
-          "id": "w210-12",
+          "id": "12037242-02d4-4eb3-b580-d263cf38bcf4",
           "arabic": "لِلنَّاسِ",
           "english": "to the people",
           "difficulty": 2
         },
         {
-          "id": "w210-13",
+          "id": "a6055fcc-7fcc-48ad-83ca-035a71e1a00c",
           "arabic": "ٱلْأَوَّلِينَ",
           "english": "the former people",
           "difficulty": 2

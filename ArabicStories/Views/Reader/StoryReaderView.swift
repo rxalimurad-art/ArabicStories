@@ -83,17 +83,17 @@ struct StoryReaderView: View {
                     onBackTap: { dismiss() },
                     onSettingsTap: { showingSettings = true }
                 )
-                
-                // Vocabulary Progress Bar (for mixed format)
-                if viewModel.isMixedFormat && viewModel.totalVocabularyCount > 0 {
-                    VocabularyProgressBar(
-                        learnedCount: viewModel.learnedVocabularyCount,
-                        totalCount: viewModel.totalVocabularyCount,
-                        isNightMode: viewModel.isNightMode
-                    )
-                    .id(wordsLoadedRefresh)  // Force refresh when words are learned
-                    .padding(.horizontal)
-                }
+//                
+//                // Vocabulary Progress Bar (for mixed format)
+//                if viewModel.isMixedFormat && viewModel.totalVocabularyCount > 0 {
+//                    VocabularyProgressBar(
+//                        learnedCount: viewModel.learnedVocabularyCount,
+//                        totalCount: viewModel.totalVocabularyCount,
+//                        isNightMode: viewModel.isNightMode
+//                    )
+//                    .id(wordsLoadedRefresh)  // Force refresh when words are learned
+//                    .padding(.horizontal)
+//                }
                 
                 // Content area
                 VStack(spacing: 0) {
@@ -277,18 +277,7 @@ struct VocabularyProgressBar: View {
     
     var body: some View {
         VStack(spacing: 4) {
-            HStack {
-                Text("Words Learned")
-                    .font(.caption)
-                    .foregroundStyle(isNightMode ? .gray : .secondary)
-                
-                Spacer()
-                
-                Text("\(learnedCount)/\(totalCount)")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(Color.hikayaTeal)
-            }
-            
+           
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 3)
@@ -347,6 +336,7 @@ struct ReaderNavigationBar: View {
                 }
             }
             .frame(height: 4)
+            
             
             // Real-time Timer
             HStack(spacing: 4) {

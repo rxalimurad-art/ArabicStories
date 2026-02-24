@@ -181,8 +181,16 @@ struct ContinueReadingCard: View {
     let story: Story
     let progress: StoryProgress?
     
+    private var isCompleted: Bool {
+        progress?.isCompleted ?? false
+    }
+    
     private var readingProgress: Double {
-        progress?.readingProgress ?? 0.0
+        // If completed, always show 100%, otherwise show actual progress
+        if isCompleted {
+            return 1.0
+        }
+        return progress?.readingProgress ?? 0.0
     }
     
     var body: some View {
@@ -625,9 +633,9 @@ struct StoryCard: View {
                 }
                 
                 // Progress
-                if readingProgress > 0 {
+                if readingProgress > 0 || isCompleted {
                     if isCompleted {
-                        // Show full progress bar for completed
+                        // Show full progress bar for completed (always 100%)
                         StoryProgressBar(progress: 1.0)
                             .padding(.top, 4)
                     } else {
