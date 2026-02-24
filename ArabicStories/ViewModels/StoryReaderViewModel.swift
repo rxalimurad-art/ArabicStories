@@ -457,33 +457,68 @@ class StoryReaderViewModel {
         }
     }
     
-    /// Show word details in popover
+    /// Show word details - looks up QuranWord for detailed view
     private func showWordDetails(word: Word, position: CGPoint) {
-        selectedWord = word
-        selectedMixedWord = nil
-        popoverPosition = position
-        showWordPopover = true
-        
-        // Mark word as learned locally (only if it's from story or known generic word)
-        // Words are NOT saved to Firebase until the story is completed
-        if word.englishMeaning != "Unknown word" {
+        // First, try to find the corresponding QuranWord for detailed information
+        if let quranWord = findQuranWord(for: word) {
+            // Show detailed QuranWord view
+            selectedQuranWord = quranWord
+            showQuranWordDetail = true
+            
+            // Mark word as learned locally
             var updatedStory = story
             updatedStory.markWordAsLearned(word.id.uuidString)
             story = updatedStory
             
             // Queue for saving on story completion
-            if let quranWord = quranWordsInStory.first(where: { $0.id == word.id.uuidString }) {
-                if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
-                    pendingLearnedWords.append(quranWord)
-                    print("📚 Queued tapped word for learning on story completion: '\(quranWord.arabicText)'")
-                }
+            if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
+                pendingLearnedWords.append(quranWord)
+                print("📚 Queued tapped word for learning on story completion: '\(quranWord.arabicText)'")
             }
             
             // Save story progress locally
             Task {
                 try? await dataService.saveStory(story)
             }
+        } else {
+            // Fallback to simple popover if no QuranWord found
+            selectedWord = word
+            selectedMixedWord = nil
+            popoverPosition = position
+            showWordPopover = true
+            
+            // Mark word as learned locally
+            if word.englishMeaning != "Unknown word" {
+                var updatedStory = story
+                updatedStory.markWordAsLearned(word.id.uuidString)
+                story = updatedStory
+                
+                // Save story progress locally
+                Task {
+                    try? await dataService.saveStory(story)
+                }
+            }
         }
+    }
+    
+    /// Find QuranWord corresponding to a Word
+    private func findQuranWord(for word: Word) -> QuranWord? {
+        // First check in cached quranWords
+        if let match = quranWords.first(where: {
+            ArabicTextUtils.wordsMatch($0.arabicText, word.arabicText)
+        }) {
+            return match
+        }
+        
+        // Then check in quranWordsInStory
+        if let match = quranWordsInStory.first(where: {
+            ArabicTextUtils.wordsMatch($0.arabicText, word.arabicText)
+        }) {
+            return match
+        }
+        
+        // Finally try offline data service
+        return OfflineDataService.shared.findQuranWordByArabic(word.arabicText)
     }
     
     /// Show Quran word details in full detail view
@@ -521,17 +556,24 @@ class StoryReaderViewModel {
             return
         }
         
-        let mixedInfo = MixedWordInfo(
-            wordId: wordId,
-            arabicText: word.arabicText,
-            transliteration: word.transliteration,
-            englishMeaning: word.englishMeaning
-        )
-        
-        selectedMixedWord = mixedInfo
-        selectedWord = word
-        popoverPosition = position
-        showWordPopover = true
+        // Try to find QuranWord for detailed view
+        if let quranWord = findQuranWord(for: word) {
+            selectedQuranWord = quranWord
+            showQuranWordDetail = true
+        } else {
+            // Fallback to simple popover
+            let mixedInfo = MixedWordInfo(
+                wordId: wordId,
+                arabicText: word.arabicText,
+                transliteration: word.transliteration,
+                englishMeaning: word.englishMeaning
+            )
+            
+            selectedMixedWord = mixedInfo
+            selectedWord = word
+            popoverPosition = position
+            showWordPopover = true
+        }
         
         // Mark as learned locally (but don't save to Firebase until story is completed)
         if !learnedWordIdsInSession.contains(wordId) {

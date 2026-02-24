@@ -1289,12 +1289,7 @@ struct ReaderSettingsView: View {
                                 .foregroundStyle(.secondary)
                         }
                         
-                        HStack {
-                            Text("Words Learned")
-                            Spacer()
-                            Text("\(viewModel.learnedVocabularyCount)")
-                                .foregroundStyle(Color.hikayaTeal)
-                        }
+                        
                     }
                 }
             }
