@@ -104,7 +104,6 @@ struct StoryReaderView: View {
                             if let segment = viewModel.currentMixedSegment {
                                 MixedContentView(
                                     segment: segment,
-                                    storyWords: story.words,
                                     viewModel: viewModel,
                                     refreshTrigger: wordsLoadedRefresh,
                                     onMarkAsDone: {
@@ -201,7 +200,7 @@ struct StoryReaderView: View {
                     WordPopoverView(
                         word: word,
                         position: viewModel.popoverPosition,
-                        isLearned: viewModel.isWordLearned(word.id.uuidString),
+                        isLearned: viewModel.isWordLearned(word.id),
                         fontName: viewModel.arabicFont.fontName,
                         onClose: { viewModel.closeWordPopover() },
                         onBookmark: { viewModel.toggleWordBookmark(word) },
@@ -370,7 +369,6 @@ struct ReaderNavigationBar: View {
 
 struct MixedContentView: View {
     let segment: MixedContentSegment
-    let storyWords: [Word]?
     var viewModel: StoryReaderViewModel
     var refreshTrigger: Bool = false
     var onMarkAsDone: () -> Void
@@ -388,7 +386,7 @@ struct MixedContentView: View {
                 MixedTextView(
                     text: segment.text,
                     linkedWordIds: segment.linkedWordIds ?? [],
-                    storyWords: storyWords,
+                    viewModel: viewModel,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
                     fontName: viewModel.arabicFont.fontName,
@@ -428,7 +426,7 @@ struct MixedContentView: View {
 struct MixedTextView: View {
     let text: String
     let linkedWordIds: [String]
-    let storyWords: [Word]?
+    var viewModel: StoryReaderViewModel
     let fontSize: CGFloat
     let isNightMode: Bool
     let fontName: String
@@ -436,11 +434,11 @@ struct MixedTextView: View {
     let onLinkedWordTap: (String, CGPoint) -> Void
     let onGenericWordTap: (String, CGPoint) -> Void
     
-    // Get linked words for this segment
-    private var linkedWords: [Word] {
-        guard let words = storyWords else { return [] }
-        return linkedWordIds.compactMap { wordId in
-            words.first { $0.id.uuidString == wordId }
+    // Get linked Quran words for this segment
+    private var linkedWords: [QuranWord] {
+        linkedWordIds.compactMap { wordId in
+            viewModel.quranWords.first { $0.id == wordId } ??
+            viewModel.quranWordsInStory.first { $0.id == wordId }
         }
     }
     
@@ -456,7 +454,7 @@ struct MixedTextView: View {
                 onWordTap: onGenericWordTap
             )
             
-            // Linked Arabic words section (if any) - from story vocabulary
+            // Linked Arabic words section (if any) - from Quran words
             if !linkedWords.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Tap words to learn:")
@@ -470,7 +468,7 @@ struct MixedTextView: View {
                                 isNightMode: isNightMode,
                                 fontName: fontName,
                                 onTap: { position in
-                                    onLinkedWordTap(word.id.uuidString, position)
+                                    onLinkedWordTap(word.id, position)
                                 }
                             )
                         }
@@ -739,7 +737,7 @@ struct MixedArabicWordView: View {
 // MARK: - Linked Word Button
 
 struct LinkedWordButton: View {
-    let word: Word
+    let word: QuranWord
     let isNightMode: Bool
     let fontName: String
     let onTap: (CGPoint) -> Void
@@ -753,9 +751,9 @@ struct LinkedWordButton: View {
                 .font(.custom(fontName, size: 18))
                 .fontWeight(.semibold)
             
-            // Transliteration (if available)
-            if let transliteration = word.transliteration {
-                Text(transliteration)
+            // Buckwalter transliteration (if available)
+            if let buckwalter = word.buckwalter {
+                Text(buckwalter)
                     .font(.caption2)
                     .italic()
                     .foregroundStyle(isNightMode ? .gray : .secondary)

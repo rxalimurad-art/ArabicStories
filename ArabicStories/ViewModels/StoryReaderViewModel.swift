@@ -31,7 +31,7 @@ class StoryReaderViewModel {
     var playbackSpeed: AudioSpeed = .normal
     
     // Word Popover State
-    var selectedWord: Word?
+    var selectedWord: QuranWord?
     var selectedQuranWord: QuranWord?      // For Quran words from quran_words collection
     var showWordPopover = false
     var showQuranWordDetail = false        // Show full QuranWordDetailView
@@ -46,8 +46,8 @@ class StoryReaderViewModel {
     var showTransliteration = true
     var autoScrollEnabled = true
     
-    // Quran words cache for highlighting
-    private var quranWords: [QuranWord] = []
+    // Quran words cache for highlighting - accessible to views
+    var quranWords: [QuranWord] = []
     var hasLoadedQuranWords = false
     
     // Quran words found in this story's text
@@ -394,33 +394,13 @@ class StoryReaderViewModel {
         selection.selectionChanged()
         print("👆 Word tapped: '\(wordText)'")
         
-        // Print all available words in the story
-        if let words = story.words, !words.isEmpty {
-            print("📚 Story has \(words.count) words:")
-            for word in words {
-                print("   - '\(word.arabicText)' -> '\(word.englishMeaning)'")
-            }
-        } else {
-            print("⚠️ Story has no words defined")
-        }
-        
-        // Find the word in the story's vocabulary first (with Arabic normalization)
+        // Search in Quran words directly - quran_words.json is the single source of truth
         let normalizedSearch = ArabicTextUtils.normalizeForMatching(wordText)
         print("🔍 Looking for match: '\(wordText)' (normalized: '\(normalizedSearch)')")
+        print("🔍 Searching in Quran words collection...")
         
-        if let word = story.words?.first(where: { 
-            ArabicTextUtils.wordsMatch($0.arabicText, wordText)
-        }) {
-            print("✅ Found word match in story: '\(word.arabicText)' = '\(word.englishMeaning)'")
-            showWordDetails(word: word, position: position)
-        } else {
-            print("❌ No word match found in story for '\(wordText)'")
-            print("🔍 Searching in generic words collection...")
-            
-            // Search in Quran words
-            Task {
-                await searchQuranWords(wordText, position: position)
-            }
+        Task {
+            await searchQuranWords(wordText, position: position)
         }
     }
     
@@ -446,79 +426,21 @@ class StoryReaderViewModel {
         } else {
             await MainActor.run {
                 print("❌ No word match found for '\(arabicText)'")
-                // Show original tapped text as unknown word (simple popover)
-                let unknownWord = Word(
+                // Create a simple QuranWord for unknown words
+                let unknownWord = QuranWord(
+                    id: "unknown-\(arabicText)",
+                    rank: 999999,
                     arabicText: arabicText,
+                    arabicWithoutDiacritics: ArabicTextUtils.stripDiacritics(arabicText),
+                    buckwalter: nil,
                     englishMeaning: "Unknown word",
-                    difficulty: 1
+                    root: nil,
+                    morphology: QuranMorphology(partOfSpeech: nil, passive: false),
+                    occurrenceCount: 0
                 )
-                showWordDetails(word: unknownWord, position: position)
+                showWordDetails(quranWord: unknownWord, position: position)
             }
         }
-    }
-    
-    /// Show word details - looks up QuranWord for detailed view
-    private func showWordDetails(word: Word, position: CGPoint) {
-        // First, try to find the corresponding QuranWord for detailed information
-        if let quranWord = findQuranWord(for: word) {
-            // Show detailed QuranWord view
-            selectedQuranWord = quranWord
-            showQuranWordDetail = true
-            
-            // Mark word as learned locally
-            var updatedStory = story
-            updatedStory.markWordAsLearned(word.id.uuidString)
-            story = updatedStory
-            
-            // Queue for saving on story completion
-            if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
-                pendingLearnedWords.append(quranWord)
-                print("📚 Queued tapped word for learning on story completion: '\(quranWord.arabicText)'")
-            }
-            
-            // Save story progress locally
-            Task {
-                try? await dataService.saveStory(story)
-            }
-        } else {
-            // Fallback to simple popover if no QuranWord found
-            selectedWord = word
-            selectedMixedWord = nil
-            popoverPosition = position
-            showWordPopover = true
-            
-            // Mark word as learned locally
-            if word.englishMeaning != "Unknown word" {
-                var updatedStory = story
-                updatedStory.markWordAsLearned(word.id.uuidString)
-                story = updatedStory
-                
-                // Save story progress locally
-                Task {
-                    try? await dataService.saveStory(story)
-                }
-            }
-        }
-    }
-    
-    /// Find QuranWord corresponding to a Word
-    private func findQuranWord(for word: Word) -> QuranWord? {
-        // First check in cached quranWords
-        if let match = quranWords.first(where: {
-            ArabicTextUtils.wordsMatch($0.arabicText, word.arabicText)
-        }) {
-            return match
-        }
-        
-        // Then check in quranWordsInStory
-        if let match = quranWordsInStory.first(where: {
-            ArabicTextUtils.wordsMatch($0.arabicText, word.arabicText)
-        }) {
-            return match
-        }
-        
-        // Finally try offline data service
-        return OfflineDataService.shared.findQuranWordByArabic(word.arabicText)
     }
     
     /// Show Quran word details in full detail view
@@ -550,30 +472,16 @@ class StoryReaderViewModel {
         selection.selectionChanged()
         print("👆 Mixed format word tapped (ID: \(wordId))")
         
-        // Find word details from story's vocabulary
-        guard let word = story.words?.first(where: { $0.id.uuidString == wordId }) else {
-            print("⚠️ Word not found in story vocabulary: \(wordId)")
+        // Find word details from Quran words - quran_words.json is single source of truth
+        guard let quranWord = quranWords.first(where: { $0.id == wordId }) ?? 
+                              quranWordsInStory.first(where: { $0.id == wordId }) else {
+            print("⚠️ Word not found in Quran words: \(wordId)")
             return
         }
         
-        // Try to find QuranWord for detailed view
-        if let quranWord = findQuranWord(for: word) {
-            selectedQuranWord = quranWord
-            showQuranWordDetail = true
-        } else {
-            // Fallback to simple popover
-            let mixedInfo = MixedWordInfo(
-                wordId: wordId,
-                arabicText: word.arabicText,
-                transliteration: word.transliteration,
-                englishMeaning: word.englishMeaning
-            )
-            
-            selectedMixedWord = mixedInfo
-            selectedWord = word
-            popoverPosition = position
-            showWordPopover = true
-        }
+        // Show Quran word detail view
+        selectedQuranWord = quranWord
+        showQuranWordDetail = true
         
         // Mark as learned locally (but don't save to Firebase until story is completed)
         if !learnedWordIdsInSession.contains(wordId) {
@@ -584,11 +492,9 @@ class StoryReaderViewModel {
             story = updatedStory
             
             // Queue for saving on story completion
-            if let quranWord = quranWordsInStory.first(where: { $0.id == wordId }) {
-                if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
-                    pendingLearnedWords.append(quranWord)
-                    print("📚 Queued mixed word for learning on story completion: '\(quranWord.arabicText)'")
-                }
+            if !pendingLearnedWords.contains(where: { $0.id == quranWord.id }) {
+                pendingLearnedWords.append(quranWord)
+                print("📚 Queued mixed word for learning on story completion: '\(quranWord.arabicText)'")
             }
             
             // Save story progress locally
@@ -606,12 +512,12 @@ class StoryReaderViewModel {
         story.isWordLearned(wordId) || autoLearnedWordIds.contains(wordId)
     }
     
-    func toggleWordBookmark(_ word: Word) {
+    func toggleWordBookmark(_ word: QuranWord) {
         // Implementation for bookmarking word - would need to be saved to user progress
         // For now, just a placeholder
     }
     
-    func playWordPronunciation(_ word: Word) {
+    func playWordPronunciation(_ word: QuranWord) {
         Task {
             await pronunciationService.playPronunciation(for: word)
         }
@@ -692,6 +598,7 @@ class StoryReaderViewModel {
     }
     
     /// Extract words from story and save to user's learned vocabulary (optimized batch version)
+    /// Words are looked up from quran_words.json - single source of truth
     private func extractAndSaveUnlockedWords() async {
         print("📖 Complete story: Saving unlocked words from completed story...")
         
@@ -707,21 +614,13 @@ class StoryReaderViewModel {
         }
         pendingLearnedWords.removeAll()
         
-        // 2. Collect story's own vocabulary words (for mixed format stories)
-        if let storyWords = story.words, !storyWords.isEmpty {
-            print("📖 Complete story: Processing \(storyWords.count) story vocabulary words")
-            for storyWord in storyWords {
-                let wordId = storyWord.id.uuidString
-                
-                // Skip if already in the list
-                if wordIds.contains(wordId) {
-                    continue
-                }
-                
-                // Convert story Word to QuranWord format
-                let quranWord = storyWord.toQuranWord()
+        // 2. Find Quran words in story text and add them
+        let storyQuranWords = story.findQuranWordsInStory(from: quranWords)
+        print("📖 Complete story: Found \(storyQuranWords.count) Quran words in story text")
+        for quranWord in storyQuranWords {
+            if !wordIds.contains(quranWord.id) {
                 allWordsToSave.append(quranWord)
-                wordIds.insert(wordId)
+                wordIds.insert(quranWord.id)
             }
         }
         
@@ -799,14 +698,14 @@ class StoryReaderViewModel {
     }
     
     /// Get the words that were unlocked/learned during this reading session
-    private func getWordsUnlockedInSession() -> [Word] {
-        guard let storyWords = story.words else { return [] }
-        
+    private func getWordsUnlockedInSession() -> [QuranWord] {
         // Get all learned word IDs (story + session + auto-learned)
         let allLearnedIds = allLearnedWordIds
         
-        return storyWords.filter { word in
-            allLearnedIds.contains(word.id.uuidString)
+        // Return QuranWord objects for all learned words
+        return allLearnedIds.compactMap { wordId in
+            quranWords.first { $0.id == wordId } ?? 
+            quranWordsInStory.first { $0.id == wordId }
         }
     }
     
@@ -860,9 +759,10 @@ class StoryReaderViewModel {
     // MARK: - Vocabulary Progress
     
     var vocabularyProgress: Double {
-        guard let words = story.words, !words.isEmpty else { return 0 }
+        let totalWords = story.vocabularyCount
+        guard totalWords > 0 else { return 0 }
         let learned = allLearnedWordIds.count
-        return Double(learned) / Double(words.count)
+        return Double(learned) / Double(totalWords)
     }
     
     var learnedVocabularyCount: Int {

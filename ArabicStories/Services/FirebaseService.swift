@@ -43,14 +43,16 @@ class FirebaseService {
     
     // MARK: - Words (Offline Mode)
     
-    /// Words are now loaded from offline bundle with their stories
-    func fetchWords(for storyId: String) async throws -> [Word] {
+    /// Words are now loaded from quran_words.json - single source of truth
+    func fetchWords(for storyId: String) async throws -> [QuranWord] {
         // Load from offline bundle
         guard let uuid = UUID(uuidString: storyId),
               let story = OfflineDataService.shared.getStory(id: uuid) else {
             return []
         }
-        return story.words ?? []
+        // Return Quran words found in story text - quran_words.json is single source of truth
+        let allQuranWords = OfflineDataService.shared.loadQuranWords()
+        return story.findQuranWordsInStory(from: allQuranWords)
     }
     
     func saveWord(_ word: Word, storyId: String) async throws {
@@ -195,22 +197,21 @@ class FirebaseService {
     
     // MARK: - Legacy Generic Words (Offline Mode)
     
-    func fetchGenericWords() async throws -> [Word] {
-        print("📚 Loading generic words from offline bundle...")
-        // Return all words from all stories
-        let stories = OfflineDataService.shared.loadStories()
-        let allWords = stories.compactMap { $0.words }.flatMap { $0 }
-        print("📚 Returning \(allWords.count) generic words")
+    func fetchGenericWords() async throws -> [QuranWord] {
+        print("📚 Loading generic words from quran_words.json...")
+        // Return all Quran words - quran_words.json is single source of truth
+        let allWords = OfflineDataService.shared.loadQuranWords()
+        print("📚 Returning \(allWords.count) Quran words")
         return allWords
     }
     
-    func searchGenericWords(arabicText: String) async throws -> [Word] {
-        print("🔍 Searching generic words for: '\(arabicText)'")
+    func searchGenericWords(arabicText: String) async throws -> [QuranWord] {
+        print("🔍 Searching Quran words for: '\(arabicText)'")
         let allWords = try await fetchGenericWords()
         let matches = allWords.filter { word in
             ArabicTextUtils.wordsMatch(word.arabicText, arabicText)
         }
-        print("✅ Found \(matches.count) matching generic words")
+        print("✅ Found \(matches.count) matching Quran words")
         return matches
     }
     
@@ -686,7 +687,6 @@ class FirebaseService {
             } else {
                 print("   Bilingual segments: \(story.segments?.count ?? 0)")
             }
-            print("   Words from Firestore: \(story.words?.count ?? 0)")
             print("   Arabic words in text: \(story.allArabicWordsInStory.count)")
             return story
         } catch {

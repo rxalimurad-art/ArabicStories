@@ -229,10 +229,12 @@ class DataService {
     }
 
     // MARK: - Word Operations
-
+    
+    /// Deprecated: Words are now looked up from quran_words.json
+    /// Use fetchAllQuranWords() instead
     func fetchAllWords() async -> [Word] {
-        let stories = await fetchAllStories()
-        return stories.compactMap { $0.words }.flatMap { $0 }
+        // Return empty array - words are now looked up from quran_words.json
+        return []
     }
     
     // MARK: - Quran Words Operations (Offline)
@@ -621,10 +623,6 @@ class DataService {
             // Queue for batch save
             pendingProgressUpdates[cacheKey] = storyProgress
             print("📋 Queued progress update for batch save: storyId=\(storyProgress.storyId), progress=\(storyProgress.readingProgress)")
-        }
-        } catch {
-            print("❌ Error saving story progress: \(error)")
-            errorPublisher.send(error)
         }
     }
 

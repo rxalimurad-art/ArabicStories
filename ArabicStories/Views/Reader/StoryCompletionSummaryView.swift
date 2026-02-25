@@ -12,7 +12,7 @@ struct StoryCompletionResult {
     let story: Story
     let unlockedAchievements: [Achievement]
     let totalWordsInStory: Int
-    let wordsUnlockedInSession: [Word]
+    let wordsUnlockedInSession: [QuranWord]
     let readingTime: TimeInterval
 }
 
@@ -407,7 +407,7 @@ struct AchievementUnlockedCard: View {
 // MARK: - Word Unlocked Card
 
 struct WordUnlockedCard: View {
-    let word: Word
+    let word: QuranWord
     
     var body: some View {
         VStack(spacing: 8) {
@@ -416,8 +416,8 @@ struct WordUnlockedCard: View {
                 .foregroundStyle(.primary)
                 .lineLimit(1)
             
-            if let transliteration = word.transliteration {
-                Text(transliteration)
+            if let buckwalter = word.buckwalter {
+                Text(buckwalter)
                     .font(.caption)
                     .italic()
                     .foregroundStyle(.secondary)
@@ -555,11 +555,7 @@ struct ConfettiParticle {
                 storyDescription: "A story about wisdom",
                 author: "Traditional",
                 format: .mixed,
-                difficultyLevel: 1,
-                words: [
-                    Word(arabicText: "تاجر", transliteration: "tājir", englishMeaning: "Merchant", difficulty: 1),
-                    Word(arabicText: "حكيم", transliteration: "ḥakīm", englishMeaning: "Wise", difficulty: 1)
-                ]
+                difficultyLevel: 1
             ),
             unlockedAchievements: [
                 Achievement(title: "Story Starter", achievementDescription: "Complete your first story", iconName: "book.open.fill", category: .stories, requirement: 1, rarity: .common),
@@ -567,9 +563,9 @@ struct ConfettiParticle {
             ],
             totalWordsInStory: 15,
             wordsUnlockedInSession: [
-                Word(arabicText: "تاجر", transliteration: "tājir", englishMeaning: "Merchant", difficulty: 1),
-                Word(arabicText: "حكيم", transliteration: "ḥakīm", englishMeaning: "Wise", difficulty: 1),
-                Word(arabicText: "بغداد", transliteration: "baghdād", englishMeaning: "Baghdad", difficulty: 1)
+                QuranWord(id: "word-1", rank: 1, arabicText: "تَاجِر", arabicWithoutDiacritics: "تاجر", buckwalter: "tAjir", englishMeaning: "Merchant", root: nil, morphology: QuranMorphology(partOfSpeech: "N", passive: false), occurrenceCount: 10),
+                QuranWord(id: "word-2", rank: 2, arabicText: "حَكِيم", arabicWithoutDiacritics: "حكيم", buckwalter: "HakIm", englishMeaning: "Wise", root: nil, morphology: QuranMorphology(partOfSpeech: "ADJ", passive: false), occurrenceCount: 15),
+                QuranWord(id: "word-3", rank: 3, arabicText: "بَغْدَاد", arabicWithoutDiacritics: "بغداد", buckwalter: "bagodAd", englishMeaning: "Baghdad", root: nil, morphology: QuranMorphology(partOfSpeech: "PN", passive: false), occurrenceCount: 5)
             ],
             readingTime: 180
         ),

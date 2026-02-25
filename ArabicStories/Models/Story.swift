@@ -34,7 +34,6 @@ struct Story: Identifiable, Codable, Hashable {
     // MARK: - Content (Format-specific)
     var segments: [StorySegment]?           // For bilingual format (Level 2+)
     var mixedSegments: [MixedContentSegment]? // For mixed format (Level 1)
-    var words: [Word]?
     var grammarNotes: [GrammarPoint]?
     
     // MARK: - Source Metadata
@@ -77,7 +76,6 @@ struct Story: Identifiable, Codable, Hashable {
         case audioNarrationURL
         case segments
         case mixedSegments
-        case words
         case grammarNotes
         case isUserCreated
         case isDownloaded
@@ -112,7 +110,6 @@ struct Story: Identifiable, Codable, Hashable {
         audioNarrationURL: String? = nil,
         segments: [StorySegment]? = nil,
         mixedSegments: [MixedContentSegment]? = nil,
-        words: [Word]? = nil,
         grammarNotes: [GrammarPoint]? = nil,
         isUserCreated: Bool = false,
         isDownloaded: Bool = false,
@@ -133,7 +130,6 @@ struct Story: Identifiable, Codable, Hashable {
         self.audioNarrationURL = audioNarrationURL
         self.segments = segments
         self.mixedSegments = mixedSegments
-        self.words = words
         self.grammarNotes = grammarNotes
         self.isUserCreated = isUserCreated
         self.isDownloaded = isDownloaded
@@ -186,7 +182,7 @@ struct Story: Identifiable, Codable, Hashable {
     }
     
     var wordCount: Int {
-        words?.count ?? 0
+        arabicWordCount
     }
     
     var segmentCount: Int {
@@ -209,9 +205,9 @@ struct Story: Identifiable, Codable, Hashable {
         }
     }
     
-    // Vocabulary count for mixed format stories
+    // Vocabulary count - words found in story text that match Quran words
     var vocabularyCount: Int {
-        words?.count ?? 0
+        arabicWordCount
     }
     
     /// Count of unique Arabic words found in the story text

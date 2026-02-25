@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct WordPopoverView: View {
-    let word: Word
+    let word: QuranWord
     let position: CGPoint
     let isLearned: Bool
     let fontName: String
@@ -18,7 +18,7 @@ struct WordPopoverView: View {
     @State private var showExampleSentences = false
     @State private var dragOffset: CGSize = .zero
     
-    init(word: Word, position: CGPoint, isLearned: Bool, fontName: String, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void) {
+    init(word: QuranWord, position: CGPoint, isLearned: Bool, fontName: String, onClose: @escaping () -> Void, onBookmark: @escaping () -> Void, onPlayAudio: @escaping () -> Void) {
         self.word = word
         self.position = position
         self.isLearned = isLearned
@@ -30,9 +30,9 @@ struct WordPopoverView: View {
         print("🎯 WordPopoverView showing word:")
         print("   Arabic: '\(word.arabicText)'")
         print("   English: '\(word.englishMeaning)'")
-        print("   Transliteration: '\(word.transliteration ?? "N/A")'")
-        print("   Part of Speech: '\(word.partOfSpeech?.displayName ?? "N/A")'")
-        print("   Root Letters: '\(word.rootLetters ?? "N/A")'")
+        print("   Buckwalter: '\(word.buckwalter ?? "N/A")'")
+        print("   Part of Speech: '\(word.morphology.partOfSpeech ?? "N/A")'")
+        print("   Root: '\(word.root?.arabic ?? "N/A")'")
     }
     
     var body: some View {
@@ -59,7 +59,7 @@ struct WordPopoverView: View {
                     ScrollView {
                         VStack(spacing: 16) {
                             // Arabic Word (Large)
-                            Text(word.displayText)
+                            Text(word.displayArabic)
                                 .font(.custom(fontName, size: 48))
                                 .fontWeight(.bold)
                                 .foregroundStyle(.primary)
@@ -75,15 +75,15 @@ struct WordPopoverView: View {
                                     .clipShape(Capsule())
                             }
                             
-                            // Transliteration
-                            Text(word.transliteration ?? "")
+                            // Transliteration (Buckwalter)
+                            Text(word.buckwalter ?? "")
                                 .font(.title3)
                                 .foregroundStyle(.secondary)
                             
                             // Part of Speech Badge
                             HStack(spacing: 8) {
-                                if let pos = word.partOfSpeech {
-                                    Label(pos.displayName, systemImage: pos.icon)
+                                if word.morphology.partOfSpeech != nil {
+                                    Label(word.posDisplayName, systemImage: word.posIcon)
                                         .font(.caption.weight(.medium))
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 5)
@@ -92,7 +92,7 @@ struct WordPopoverView: View {
                                         .clipShape(Capsule())
                                 }
                                 
-                                if let root = word.rootLetters {
+                                if let root = word.root?.arabic {
                                     Label("Root: \(root)", systemImage: "link")
                                         .font(.caption.weight(.medium))
                                         .padding(.horizontal, 10)
@@ -139,8 +139,8 @@ struct WordPopoverView: View {
                             }
                             .padding(.vertical, 8)
                             
-                            // Example Sentences
-                            if let examples = word.exampleSentences, !examples.isEmpty {
+                            // Example Sentences (from QuranWord example fields)
+                            if word.exampleArabic != nil || word.exampleEnglish != nil {
                                 VStack(alignment: .leading, spacing: 12) {
                                     Button {
                                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -148,7 +148,7 @@ struct WordPopoverView: View {
                                         }
                                     } label: {
                                         HStack {
-                                            Text("Example Sentences (\(examples.count))")
+                                            Text("Example")
                                                 .font(.subheadline.weight(.semibold))
                                             
                                             Spacer()
@@ -161,8 +161,16 @@ struct WordPopoverView: View {
                                     
                                     if showExampleSentences {
                                         VStack(spacing: 12) {
-                                            ForEach(examples) { sentence in
-                                                ExampleSentenceCard(sentence: sentence)
+                                            if let exampleArabic = word.exampleArabic {
+                                                Text(exampleArabic)
+                                                    .font(.system(size: 18, weight: .medium, design: .serif))
+                                                    .multilineTextAlignment(.trailing)
+                                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                            }
+                                            if let exampleEnglish = word.exampleEnglish {
+                                                Text(exampleEnglish)
+                                                    .font(.body)
+                                                    .foregroundStyle(.secondary)
                                             }
                                         }
                                         .transition(.move(edge: .top).combined(with: .opacity))
@@ -282,20 +290,18 @@ struct ExampleSentenceCard: View {
         Color.gray.opacity(0.3).ignoresSafeArea()
         
         WordPopoverView(
-            word: Word(
-                arabicText: "مدينة",
-                transliteration: "madīna",
+            word: QuranWord(
+                id: "preview-word",
+                rank: 1,
+                arabicText: "مَدِينَة",
+                arabicWithoutDiacritics: "مدينة",
+                buckwalter: "madiynap",
                 englishMeaning: "city",
-                partOfSpeech: .noun,
-                rootLetters: "م د ن",
-                exampleSentences: [
-                    ExampleSentence(
-                        arabic: "القاهرة مدينة كبيرة.",
-                        transliteration: "Al-qāhira madīna kabīra.",
-                        english: "Cairo is a big city."
-                    )
-                ],
-                difficulty: 1,
+                root: QuranRoot(arabic: "م د ن", transliteration: "m-d-n", meaning: "to dwell"),
+                morphology: QuranMorphology(partOfSpeech: "N", passive: false),
+                occurrenceCount: 17,
+                exampleArabic: "القَاهِرَةُ مَدِينَةٌ كَبِيرَةٌ.",
+                exampleEnglish: "Cairo is a big city.",
                 isBookmarked: true
             ),
             position: .zero,

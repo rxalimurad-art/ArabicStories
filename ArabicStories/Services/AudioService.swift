@@ -496,3 +496,62 @@ class PronunciationService {
         try? FileManager.default.copyItem(at: url, to: destinationURL)
     }
 }
+
+// MARK: - QuranWord Audio Support
+
+extension PronunciationService {
+    /// Play pronunciation for a QuranWord
+    func playPronunciation(for word: QuranWord) async {
+        // Try to load from local cache first
+        if let localURL = getLocalPronunciationURL(for: word) {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: localURL)
+                audioPlayer?.play()
+                return
+            } catch {
+                print("Error playing local pronunciation: \(error)")
+            }
+        }
+        
+        // Check if audio URL is available
+        if let audioURL = word.audioURL {
+            if let url = URL(string: audioURL) {
+                // Try to download from remote
+                do {
+                    let (localURL, _) = try await URLSession.shared.download(from: url)
+                    cachePronunciation(word: word, from: localURL)
+                    
+                    audioPlayer = try AVAudioPlayer(contentsOf: localURL)
+                    audioPlayer?.play()
+                } catch {
+                    print("Error downloading pronunciation: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func getLocalPronunciationURL(for word: QuranWord) -> URL? {
+        let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let pronunciationDir = cacheDir.appendingPathComponent("pronunciations", isDirectory: true)
+        
+        // Check for any supported audio format
+        let extensions = ["m4a", "mp3", "wav", "caf", "aiff"]
+        for ext in extensions {
+            let fileURL = pronunciationDir.appendingPathComponent("\(word.id).\(ext)")
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                return fileURL
+            }
+        }
+        return nil
+    }
+    
+    private func cachePronunciation(word: QuranWord, from url: URL) {
+        let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let pronunciationDir = cacheDir.appendingPathComponent("pronunciations", isDirectory: true)
+        
+        try? FileManager.default.createDirectory(at: pronunciationDir, withIntermediateDirectories: true)
+        
+        let destinationURL = pronunciationDir.appendingPathComponent("\(word.id).mp3")
+        try? FileManager.default.copyItem(at: url, to: destinationURL)
+    }
+}

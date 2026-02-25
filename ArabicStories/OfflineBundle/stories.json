@@ -63,50 +63,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "c9ff2244-7693-492b-bff4-4d86a5e213f2",
-          "arabic": "فِى",
-          "english": "In",
-          "difficulty": 1
-        },
-        {
-          "id": "b1c31d88-0cf2-4282-b343-70282b3faf53",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "fb2389f6-d396-4659-b1f7-7d727f0e16fe",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "7bedd62a-c640-48ca-9884-e4033eb4932d",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "1d356918-825b-44f0-b0c1-2f960bd403d7",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "8426fb8c-f904-4a05-8802-fe1644deb989",
-          "arabic": "إِن",
-          "english": "if",
-          "difficulty": 1
-        },
-        {
-          "id": "3b560736-b540-4861-8bc0-d3de749c95ec",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -189,56 +145,6 @@
           "linkedWordIds": [
             "word_00005"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "1615cad1-1148-42e3-b234-fe1730042895",
-          "arabic": "فِى",
-          "english": "In",
-          "difficulty": 1
-        },
-        {
-          "id": "b2da2527-6d2c-410a-a12a-719b4e146b3b",
-          "arabic": "عَلَى",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "d68a698d-45de-42de-ac21-e4d4e4879980",
-          "arabic": "أَوْ",
-          "english": "Or",
-          "difficulty": 1
-        },
-        {
-          "id": "4288622a-e415-4741-889c-b2e252edb8da",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "ab14b184-c697-47f6-9187-152de0c24dff",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "41560c3f-8fb7-48d9-b8e4-ada151692a93",
-          "arabic": "بِهِۦ",
-          "english": "therewith",
-          "difficulty": 1
-        },
-        {
-          "id": "47f9b8d5-b522-4a78-823d-7925415d2f8e",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "9a7977a7-c1a5-4f2b-a73e-f34b3ae0ce30",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -331,50 +237,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "6acd20a6-68aa-452d-a8ea-67ca96cf94de",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "92c1c08a-f9f7-49a7-b64c-3f7ec5d904d2",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "41f259a0-ab59-4ff1-8000-096db9b7eb34",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "645bbc92-a971-47f6-94b7-d7c2a0124022",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "4524488c-7830-44a3-8394-665b7867592e",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "2f33b334-cfb7-4e2f-90be-84fb304c9bb7",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        },
-        {
-          "id": "0dac17bb-f3ff-49b3-8c93-0e2632d42fd8",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -450,44 +312,6 @@
             "word_00036",
             "word_00001"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "662aebd9-b377-4fa5-9ce8-58f03431f616",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "ef4b6f23-96ba-4d5a-9a44-6c91177f23da",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "8be1dad3-0bac-41f8-8900-f505f00110bb",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "db18a509-5095-4134-a2d6-74a30417dcfd",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "9f00d9cc-e958-42c0-aab4-8c2cada29960",
-          "arabic": "مِنْ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "49f274bc-f1d1-4761-8e9b-0c5e06c56941",
-          "arabic": "فِيهَا",
-          "english": "therein",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -591,74 +415,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "bddda4fb-262a-4133-9048-ee38026fe0ae",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "da06e08c-9ada-4f3d-a47a-760950b6ac78",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "9830aa4e-3dca-4433-9fbb-877be6394bf4",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "a58a7ddf-ab10-46cd-9142-ef55875a684c",
-          "arabic": "أَن",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "853b85ee-ff6b-40fa-9ceb-ead80a4d3726",
-          "arabic": "إِلَّا",
-          "english": "except",
-          "difficulty": 1
-        },
-        {
-          "id": "7bca6b82-1785-48d4-a74d-73fd0b5c126c",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "b3859dfe-2b54-45e9-9430-ea4abf437cb1",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "995e3326-fd84-4f44-b383-0b9b4dc44b2c",
-          "arabic": "أَوْ",
-          "english": "Or",
-          "difficulty": 1
-        },
-        {
-          "id": "58199220-97ae-4514-9832-9e8f17a71663",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "cdf4e8d1-b82f-4996-bc6d-a67b10bbd4b1",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        },
-        {
-          "id": "3ae3a669-6301-43c9-bebe-adee06f5190b",
-          "arabic": "عَلَى",
-          "english": "to",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -742,50 +498,6 @@
             "word_00001",
             "word_00028"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "d1181e17-1d2e-422e-a2ea-f8baa4716831",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "47eabd77-95d5-4a92-8657-eb4c86276561",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "0376f3f8-ea90-4087-8311-abc2897a95e1",
-          "arabic": "فِيهَا",
-          "english": "therein",
-          "difficulty": 1
-        },
-        {
-          "id": "3a34796a-4097-4a1e-8be0-1e924bf61f29",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "40cd3bcb-10d4-4083-9963-629c9a92afa2",
-          "arabic": "عَلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "ea924e87-6932-40e6-bf03-67c0920e9cbb",
-          "arabic": "وَمَا",
-          "english": "but not",
-          "difficulty": 1
-        },
-        {
-          "id": "9e8cacbb-c192-4e76-b1b7-e37760f8fe6e",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -879,50 +591,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "5e7467ef-dc03-4e0b-a01f-d46f5654dc68",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "2470bfba-6b6b-47f2-b20e-673644501b28",
-          "arabic": "إِن",
-          "english": "if",
-          "difficulty": 1
-        },
-        {
-          "id": "db68a536-a773-4b18-8b29-72d1c9642931",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "98a94fa8-1847-4225-bdcd-2d947d7db27d",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "4a71e1ab-084c-4080-9725-58098a3518d0",
-          "arabic": "مِنْ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "6a65673f-189a-4750-950f-5e48061e86a5",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "09798626-7fcb-44ee-8cb4-fc4836014a86",
-          "arabic": "لَهُمْ",
-          "english": "to them",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -1004,44 +672,6 @@
           "linkedWordIds": [
             "word_00007"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "d6521fb6-99fb-487c-98b5-1a8f372db13d",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "129949db-8447-4fd7-878f-11e6c5bebd64",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "ed66e43a-d4f3-47f0-bfa3-430250d1f3d7",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "41865fdc-4b42-423a-a782-ca0517854e53",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "fef5d011-7ff1-4007-86e7-108d846832d5",
-          "arabic": "إِن",
-          "english": "if",
-          "difficulty": 1
-        },
-        {
-          "id": "e89d364a-cc81-4bf1-beb3-cc378aa4f110",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -1126,50 +756,6 @@
             "word_00007",
             "word_00011"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "a9909571-c995-49d6-8eeb-e039be2b8941",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "c8487602-6c77-4fa8-a76e-2b1b91e726c2",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "aec1d832-4adc-432d-b53d-2f3aa5fc451e",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "d3c30bab-8b2f-47f5-a4a9-97ed83ac976a",
-          "arabic": "بِهِۦ",
-          "english": "therewith",
-          "difficulty": 1
-        },
-        {
-          "id": "2f56becc-35f6-4c91-a752-0202192d5abf",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "dda1452e-e9e0-4883-8170-7e8cabd95499",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "e4319afd-c270-4877-a4fd-9f2bf08975ee",
-          "arabic": "إِلَّا",
-          "english": "except",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -1266,50 +852,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "928f2118-021c-44be-a3a8-507093a0a0dc",
-          "arabic": "فِى",
-          "english": "in",
-          "difficulty": 1
-        },
-        {
-          "id": "bd84ce12-64dc-4cba-9ec0-6542df1d930c",
-          "arabic": "مِنْ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "6bafc135-8ca4-4612-a5e5-51d0ea1a5dac",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "50d79990-93a8-41ca-9e8a-20fb9bb772a7",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "4685f7f3-8775-416f-9dce-e4d7f83fe2e9",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "a3be3374-f373-47b9-8780-f71142ca31f8",
-          "arabic": "عَلَى",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "2e64f4c5-0682-4e9f-93c4-9d49cc09257a",
-          "arabic": "إِن",
-          "english": "if",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -1396,68 +938,6 @@
             "word_00212",
             "word_00426"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "5a74267e-1c98-4d43-b11c-ec0f0cc395ed",
-          "arabic": "ٱلنَّاسِ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "fec53ccb-4419-41d1-8825-28bbbf53e0c2",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "406f2092-445a-4f1b-9d2d-1949af6eaa16",
-          "arabic": "قَوْمِهِۦ",
-          "english": "his people",
-          "difficulty": 2
-        },
-        {
-          "id": "ef956936-2dd2-4531-bfa4-1e63f2343403",
-          "arabic": "يَٰقَوْمِ",
-          "english": "O my people",
-          "difficulty": 2
-        },
-        {
-          "id": "34fc37f4-c691-4995-b636-2d08e1e12572",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "88fbf3e2-832e-4b28-838c-8ae13a11cae9",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "10a167a2-1ae8-4662-a4b8-fbfd045e28c0",
-          "arabic": "ٱلْقَوْمِ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "48e235a4-fe7d-4e84-9abf-b2a152c971ae",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "093b2dab-84dc-485a-80f2-cc8acc188a1f",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "ed15acda-0af1-4525-bf48-5fb1f0672af1",
-          "arabic": "أُمَّةٍ",
-          "english": "people",
-          "difficulty": 2
         }
       ],
       "grammarNotes": null,
@@ -1555,74 +1035,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "13cb1b1b-0a61-4fa8-9652-dc7c74f6f24f",
-          "arabic": "ٱلنَّاسُ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "2f06ac99-16a0-4dcd-b00b-564ece1fbf57",
-          "arabic": "بَنِىٓ",
-          "english": "children",
-          "difficulty": 2
-        },
-        {
-          "id": "55039cc1-1c0a-4130-80f9-45719670c679",
-          "arabic": "فِيهَا",
-          "english": "therein",
-          "difficulty": 1
-        },
-        {
-          "id": "20609963-4e57-4296-acc0-fee8c416b60a",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "72a787f4-041a-458f-a991-3d2f363a9822",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "684c87d7-a6d4-4b60-b10e-b21758217184",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "2e62ac13-5286-4fd1-b60a-946833ea1c86",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        },
-        {
-          "id": "7fb963e7-bf54-48aa-90a3-08ba34869116",
-          "arabic": "أَهْلِ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "d4835e77-f6ab-4b22-82f4-dd5521ce077c",
-          "arabic": "قَوْمٌ",
-          "english": "a people",
-          "difficulty": 2
-        },
-        {
-          "id": "22d94014-0b5e-4848-a6c6-a35869490045",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "76324417-46d1-445b-9188-76fef68c6b7c",
-          "arabic": "لِلنَّاسِ",
-          "english": "to the people",
-          "difficulty": 2
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -1717,62 +1129,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "ab9d71b7-6215-4874-9a2e-e928e5a59de8",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "f0164cb5-7f88-4597-8dd4-9b253dd9ccee",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "1f656f81-7bd2-4748-bab5-7142a4c59141",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "c31cb254-cf80-48ae-b6c6-b1676d9d16e2",
-          "arabic": "ٱلْأَوَّلِينَ",
-          "english": "the former people",
-          "difficulty": 2
-        },
-        {
-          "id": "c80a61f8-defb-4279-af8e-96572e47f209",
-          "arabic": "قَوْمًا",
-          "english": "a people",
-          "difficulty": 2
-        },
-        {
-          "id": "02bbbc27-e144-4d7e-89bd-bd3aaaec1941",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "9f463451-8f37-4ba5-b263-d8f9904a48f5",
-          "arabic": "ٱلْإِنسَٰنُ",
-          "english": "mankind",
-          "difficulty": 2
-        },
-        {
-          "id": "9ca97724-374a-41f8-9725-5a426b2cb84f",
-          "arabic": "وَمَا",
-          "english": "but not",
-          "difficulty": 1
-        },
-        {
-          "id": "825acc18-3ff0-495e-ac4b-6f7bfb4bbc2d",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -1857,62 +1213,6 @@
             "word_00426",
             "word_00036"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "b66fa035-7d5d-4bb2-ac6c-f028c240431d",
-          "arabic": "ٱلنَّاسَ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "5107c659-98ac-4607-8efa-b191294cf035",
-          "arabic": "يَٰقَوْمِ",
-          "english": "O my people",
-          "difficulty": 2
-        },
-        {
-          "id": "e93b4251-dc56-48a7-b8b4-e9c1ff14bba3",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "1168e4db-d97b-4e9d-81aa-ad8f612f3285",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "cd2b123a-a2e4-47ee-914d-7c55a26d8428",
-          "arabic": "قَوْمٌ",
-          "english": "a people",
-          "difficulty": 2
-        },
-        {
-          "id": "a409346a-3855-44de-bf3c-e13337983260",
-          "arabic": "أَهْلِ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "b086e2a6-9962-4c73-a1fa-2cbc2188a077",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "8c7b2c12-9a5c-4e4d-9e68-05e3f471944a",
-          "arabic": "أُمَّةٍ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "efd76456-4693-4b76-971e-acf8ef1709e7",
-          "arabic": "فِيهَا",
-          "english": "therein",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -2006,62 +1306,6 @@
             "word_00028",
             "word_00023"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "1a6ddb37-cc73-4d61-a227-e0008d38242c",
-          "arabic": "ٱلْإِنسَٰنَ",
-          "english": "mankind",
-          "difficulty": 2
-        },
-        {
-          "id": "4b85e467-e1c4-4894-bd51-c0c88b95e679",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "4aa411cd-b614-4fb4-a1fc-626327331a80",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "78102d8b-7427-45ed-8a8f-fe41fb9f0245",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "b3897c25-3b65-46e9-8a14-e739fcaddc24",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "272432ca-68f6-4aef-994b-235d5f580948",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "917ab5c8-72de-4939-ad0b-0c13542166f4",
-          "arabic": "لِلنَّاسِ",
-          "english": "to the people",
-          "difficulty": 2
-        },
-        {
-          "id": "b735957f-ee57-4054-9efc-bd762d39515d",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "61068a9e-e560-4b8a-a9fd-f5fcaa57957e",
-          "arabic": "أَوْ",
-          "english": "or",
-          "difficulty": 1
         }
       ],
       "grammarNotes": null,
@@ -2158,62 +1402,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "39181729-e73d-4f8a-a0de-537820420f73",
-          "arabic": "ٱلْقَوْمَ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "d6d29889-6de9-4fe4-b184-809fecb8041e",
-          "arabic": "يَٰقَوْمِ",
-          "english": "O my people",
-          "difficulty": 2
-        },
-        {
-          "id": "3309ea0c-3ed0-41ff-85fa-75e03c5a6e41",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "ab5c381c-307e-4a46-a89c-63b042c3efb0",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "3128851b-6df4-4c18-8f26-7abf3c122013",
-          "arabic": "ٱلنَّاسُ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "6837387c-5fbf-4cd1-ad30-1742f76f02c0",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "d9bd4429-b0fb-4b47-a6b0-c2a4a0474169",
-          "arabic": "أُمَّةٍ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "db9142cc-3a4b-49bb-ad72-db45e26f1b93",
-          "arabic": "لِلنَّاسِ",
-          "english": "to the people",
-          "difficulty": 2
-        },
-        {
-          "id": "70238ddd-d8a0-42c5-a6ae-766bc8d256fa",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -2307,62 +1495,6 @@
           ]
         }
       ],
-      "words": [
-        {
-          "id": "c0470bcc-1bf1-48d7-bb8a-27a7cb8d1407",
-          "arabic": "بَنِىٓ",
-          "english": "children",
-          "difficulty": 2
-        },
-        {
-          "id": "d3d31c92-fc23-4251-9fa0-bb7fae7f373a",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "8786fdab-58a8-4458-b8e3-a02f522e8370",
-          "arabic": "مِنَ",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "10d9468d-19aa-4757-aaef-86389179debb",
-          "arabic": "ٱلنَّاسِ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "cdfae3a9-1c78-4813-bbc9-e02dc2f8deb3",
-          "arabic": "ٱلْإِنسَٰنُ",
-          "english": "mankind",
-          "difficulty": 2
-        },
-        {
-          "id": "aa67fa46-51cd-42a8-b6a8-a451ed29c2cf",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "a4d9953f-f541-4e89-a067-ab9c40e0fc7a",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        },
-        {
-          "id": "035c12b3-cd72-4fef-b15f-86c4f930fa08",
-          "arabic": "ٱلْأَوَّلِينَ",
-          "english": "the former people",
-          "difficulty": 2
-        },
-        {
-          "id": "774f5afe-2eab-4695-b65a-d8d21aa9cfbf",
-          "arabic": "قَوْمٌ",
-          "english": "a people",
-          "difficulty": 2
-        }
-      ],
       "grammarNotes": null,
       "isUserCreated": false,
       "isDownloaded": false,
@@ -2448,62 +1580,6 @@
             "word_00312",
             "word_00028"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "4c0651be-f086-4428-8570-529b54b53979",
-          "arabic": "لِلنَّاسِ",
-          "english": "to the people",
-          "difficulty": 2
-        },
-        {
-          "id": "791b8fcf-b344-4b99-8915-a30d6c454b8e",
-          "arabic": "ٱلنَّاسَ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "4dd92c89-52e3-41a5-939b-3f3d9c4aeabf",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "1e7e7fb5-9b31-452e-bd66-9f8c482ec297",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "05a7d5be-d950-45f3-b552-26a16d1bf631",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "5522eb9a-26c6-4bc7-a22f-21e35a3246d1",
-          "arabic": "ٱلْإِنسَٰنَ",
-          "english": "mankind",
-          "difficulty": 2
-        },
-        {
-          "id": "ee8913a1-a53d-49a1-bc64-a593695e5edd",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "ec11bc22-285c-46a4-b972-ca206fa7c607",
-          "arabic": "لِّقَوْمٍ",
-          "english": "for a people",
-          "difficulty": 2
-        },
-        {
-          "id": "d11cf8ee-7b03-47fc-9d4f-ee19e3ada10a",
-          "arabic": "بَنِىٓ",
-          "english": "children",
-          "difficulty": 2
         }
       ],
       "grammarNotes": null,
@@ -2597,62 +1673,6 @@
           "linkedWordIds": [
             "word_00315"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "81df6997-33f9-46b3-85e6-b5aac3c9acc7",
-          "arabic": "ٱلْقَوْمِ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "dbe6ed06-23ce-4ad7-8818-03c43630652a",
-          "arabic": "يَٰقَوْمِ",
-          "english": "O my people",
-          "difficulty": 2
-        },
-        {
-          "id": "e2a18f04-628d-42b7-bd9e-40c640d4b3b8",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "161b33cf-55fd-4b72-a403-0f801e73f134",
-          "arabic": "ٱلنَّاسَ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "b7f82ea7-c920-4e58-bfa6-87a04af5d4cb",
-          "arabic": "لَا",
-          "english": "no",
-          "difficulty": 1
-        },
-        {
-          "id": "e3079dc4-5004-436c-8fbf-53308410007f",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "d697400b-e887-4830-82af-d73457168f8e",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "9f783925-11e0-440f-b32a-40a034d87f03",
-          "arabic": "أَهْلِ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "fe502eba-a5cf-4e21-a5cc-138123299f76",
-          "arabic": "ٱلْأَوَّلِينَ",
-          "english": "the former people",
-          "difficulty": 2
         }
       ],
       "grammarNotes": null,
@@ -2757,86 +1777,6 @@
           "linkedWordIds": [
             "word_00315"
           ]
-        }
-      ],
-      "words": [
-        {
-          "id": "f855254c-7489-41c3-b573-25179406319c",
-          "arabic": "ٱلنَّاسُ",
-          "english": "the people",
-          "difficulty": 2
-        },
-        {
-          "id": "38109f8b-7776-4715-a807-20d7fb914ba1",
-          "arabic": "أُمَّةٍ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "6d764150-ed1c-4ec7-88f1-801474dac5e9",
-          "arabic": "كَثِيرًا",
-          "english": "many",
-          "difficulty": 2
-        },
-        {
-          "id": "8916f75a-45c7-40dd-84dc-9fd7c83f63ba",
-          "arabic": "إِنَّ",
-          "english": "Indeed",
-          "difficulty": 1
-        },
-        {
-          "id": "9cc5c7e0-196e-44f9-a88d-359b3be70714",
-          "arabic": "مِن",
-          "english": "from",
-          "difficulty": 1
-        },
-        {
-          "id": "6a1520ba-0084-4537-a89c-eb7f050d325a",
-          "arabic": "عَلَىٰ",
-          "english": "on",
-          "difficulty": 1
-        },
-        {
-          "id": "5a8b087e-c377-4dfa-8eee-815a3588c973",
-          "arabic": "ٱلْإِنسَٰنَ",
-          "english": "mankind",
-          "difficulty": 2
-        },
-        {
-          "id": "022d99e5-463b-425e-900c-903b5aedd080",
-          "arabic": "قَوْمٍ",
-          "english": "people",
-          "difficulty": 2
-        },
-        {
-          "id": "199877b3-cf67-487f-a3d0-e0028cacf7a2",
-          "arabic": "إِلَى",
-          "english": "to",
-          "difficulty": 1
-        },
-        {
-          "id": "e5ab5edd-f184-4efb-b383-8012bdd3eb25",
-          "arabic": "وَلَا",
-          "english": "and not",
-          "difficulty": 1
-        },
-        {
-          "id": "59cf37a0-1985-4263-85ac-8fd25dec0a4d",
-          "arabic": "تَعْقِلُونَ",
-          "english": "you use reason",
-          "difficulty": 2
-        },
-        {
-          "id": "12037242-02d4-4eb3-b580-d263cf38bcf4",
-          "arabic": "لِلنَّاسِ",
-          "english": "to the people",
-          "difficulty": 2
-        },
-        {
-          "id": "a6055fcc-7fcc-48ad-83ca-035a71e1a00c",
-          "arabic": "ٱلْأَوَّلِينَ",
-          "english": "the former people",
-          "difficulty": 2
         }
       ],
       "grammarNotes": null,

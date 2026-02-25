@@ -872,26 +872,15 @@ struct EmptyLibraryView: View {
     }
     
     private func createSampleLevel1Story() -> Story {
-        // Create vocabulary words
-        let words = [
-            Word(arabicText: "اللَّهُ", transliteration: "Allah", englishMeaning: "God", difficulty: 1),
-            Word(arabicText: "رَبِّ", transliteration: "Rabb", englishMeaning: "Lord", difficulty: 1),
-            Word(arabicText: "الْكِتَابُ", transliteration: "Al-Kitab", englishMeaning: "The Book", difficulty: 1),
-            Word(arabicText: "السَّلَامُ", transliteration: "As-Salaam", englishMeaning: "Peace", difficulty: 1),
-            Word(arabicText: "الصَّلَاةُ", transliteration: "As-Salah", englishMeaning: "Prayer", difficulty: 1)
-        ]
-        
-        // Create mixed content segments - simplified format: just text with linkedWordIds
+        // Create mixed content segments - words will be looked up from quran_words.json
         let segments = [
             MixedContentSegment(
                 index: 0,
-                text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance.",
-                linkedWordIds: [words[0].id.uuidString, words[1].id.uuidString]
+                text: "Once upon a time, there was a young man named Ahmad who wanted to find true peace in his life. He began his journey by turning to اللَّهُ (Allah), the Most Merciful, and calling upon his رَبِّ (Rabb) for guidance."
             ),
             MixedContentSegment(
                 index: 1,
-                text: "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God.",
-                linkedWordIds: [words[2].id.uuidString, words[3].id.uuidString]
+                text: "Every day, Ahmad would open the الْكِتَابُ (Al-Kitab) — the holy book sent by Allah — and read its beautiful verses. He learned that السَّلَامُ (As-Salaam) (peace) comes only through submission to the One God."
             )
         ]
         
@@ -906,8 +895,7 @@ struct EmptyLibraryView: View {
             category: .religious,
             tags: ["beginner", "vocabulary", "spiritual"],
             coverImageURL: "https://images.unsplash.com/photo-1519817914152-22d216bb9170?w=800",
-            mixedSegments: segments,
-            words: words
+            mixedSegments: segments
         )
     }
 }
