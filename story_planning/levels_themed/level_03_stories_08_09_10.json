@@ -1,0 +1,128 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "title": "Stories from Our Ancestors",
+    "titleArabic": "قصص من أسلافنا",
+    "storyDescription": "A child learns about the homes and lives of their ancestors through family stories",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "Little Aisha sat with her grandmother. 'Tell me about <b>ٱلْأَوَّلِينَ</b> (the former people),' she asked.",
+        "linkedWordIds": ["word_00315"]
+      },
+      {
+        "index": 1,
+        "text": "Grandmother smiled. 'Our <b>بَنِىٓ</b> (Children) of old lived simply, yet their <b>بُيُوتِ</b> (houses) were full of love.'",
+        "linkedWordIds": ["word_00312", "word_01287"]
+      },
+      {
+        "index": 2,
+        "text": "'Their <b>ٱلْبَيْتِ</b> (the House) was not just walls,' she continued. 'It was a <b>مَـَٔابٍ</b> (place of return) for the whole family.'",
+        "linkedWordIds": ["word_01273", "word_02035"]
+      },
+      {
+        "index": 3,
+        "text": "Aisha imagined those old homes. '<b>ٱلسَّمَآءُ</b> (the heavens) was their roof, and the earth was their floor.'",
+        "linkedWordIds": ["word_00633"]
+      },
+      {
+        "index": 4,
+        "text": "'Yes,' grandmother nodded. 'They built <b>صِرَٰطٍ</b> (a path) between their homes so neighbors could visit easily.'",
+        "linkedWordIds": ["word_00507"]
+      },
+      {
+        "index": 5,
+        "text": "Aisha hugged her grandmother. She was grateful for the stories of those ancient <b>بُيُوتِ</b> (houses) that came before.",
+        "linkedWordIds": ["word_01287"]
+      }
+    ]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "title": "The Wisdom of Building",
+    "titleArabic": "حكمة البناء",
+    "storyDescription": "A story about using wisdom and reason when building a home",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "The wise builder addressed the villagers. 'When you build <b>بُيُوتِكُمْ</b> (your houses), you must <b>تَعْقِلُونَ</b> (use reason).''",
+        "linkedWordIds": ["word_01886", "word_00403"]
+      },
+      {
+        "index": 1,
+        "text": "A young man asked, 'What makes a strong <b>ٱلْبَيْتِ</b> (the House)?' The builder pointed to the ground.",
+        "linkedWordIds": ["word_01273"]
+      },
+      {
+        "index": 2,
+        "text": "'First, choose a good <b>مَكَانًا</b> (a place). Build on solid <b>ٱلْبَرِّ</b> (the land), not on shifting sand.'",
+        "linkedWordIds": ["word_01929", "word_00835"]
+      },
+      {
+        "index": 3,
+        "text": "'Look up at <b>وَٱلسَّمَآءِ</b> (By the heaven) for guidance,' he said. 'Let light enter your <b>بُيُوتِكُمْ</b> (your houses).'",
+        "linkedWordIds": ["word_01950", "word_01886"]
+      },
+      {
+        "index": 4,
+        "text": "'Make your home a <b>ٱلْمِهَادُ</b> ([the] resting-place) of peace,' he continued. 'Let it be a <b>مَـَٔابٍ</b> (place of return) for your heart.'",
+        "linkedWordIds": ["word_01910", "word_02035"]
+      },
+      {
+        "index": 5,
+        "text": "The villagers nodded wisely. They understood that building with reason creates homes that last forever.",
+        "linkedWordIds": []
+      }
+    ]
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440010",
+    "title": "Many Homes, One Community",
+    "titleArabic": "بيوت كثيرة، مجتمع واحد",
+    "storyDescription": "A story about a community with many people and their diverse houses",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "In the <b>ٱلْمَدِينَةِ</b> (the city), there lived <b>كَثِيرًا</b> (many) <b>ٱلنَّاسُ</b> (the people). Each had their own home.",
+        "linkedWordIds": ["word_00727", "word_00212", "word_00234"]
+      },
+      {
+        "index": 1,
+        "text": "One <b>قَوْمٌ</b> (a people) built small <b>بُيُوتِ</b> (houses) close together. They loved being neighbors.",
+        "linkedWordIds": ["word_00376", "word_01287"]
+      },
+      {
+        "index": 2,
+        "text": "Another <b>قَوْمٍ</b> (a people) lived in larger homes with <b>جَنَّٰتٍ</b> (Gardens) around them.",
+        "linkedWordIds": ["word_00483", "word_00273"]
+      },
+      {
+        "index": 3,
+        "text": "The prophet of <b>قَوْمِهِۦ</b> (his people) walked among the <b>ٱلنَّاسَ</b> ([the] people). He taught them about unity.",
+        "linkedWordIds": ["word_00528", "word_00203"]
+      },
+      {
+        "index": 4,
+        "text": "'All these <b>بُيُوتِ</b> (houses) are gifts,' he said. 'Build them <b>لِلنَّاسِ</b> (to [the] people) with kindness in your hearts.'",
+        "linkedWordIds": ["word_01287", "word_00259"]
+      },
+      {
+        "index": 5,
+        "text": "The people understood. Whether homes were small or grand, what mattered most was the love shared <b>فِيهَا</b> (therein).",
+        "linkedWordIds": []
+      }
+    ]
+  }
+]

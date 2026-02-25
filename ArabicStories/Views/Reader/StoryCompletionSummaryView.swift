@@ -14,6 +14,8 @@ struct StoryCompletionResult {
     let totalWordsInStory: Int
     let wordsUnlockedInSession: [QuranWord]
     let readingTime: TimeInterval
+    let levelCompleted: Bool
+    let nextLevel: Int?
 }
 
 // MARK: - Story Completion Summary View
@@ -60,6 +62,13 @@ struct StoryCompletionSummaryView: View {
                         wordsUnlockedSection
                             .opacity(animateWords ? 1 : 0)
                             .offset(y: animateWords ? 0 : 20)
+                    }
+                    
+                    // Level Unlocked Section
+                    if result.levelCompleted, let nextLevel = result.nextLevel {
+                        levelUnlockedSection(nextLevel: nextLevel)
+                            .opacity(animateStats ? 1 : 0)
+                            .offset(y: animateStats ? 0 : 20)
                     }
                     
                     // Stats Summary
@@ -284,13 +293,93 @@ struct StoryCompletionSummaryView: View {
         }
     }
     
+    // MARK: - Level Unlocked Section
+    
+    private func levelUnlockedSection(nextLevel: Int) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "lock.open.fill")
+                    .font(.title3)
+                    .foregroundStyle(Color.hikayaOrange)
+                
+                Text("Level Unlocked!")
+                    .font(.headline.weight(.semibold))
+                
+                Spacer()
+            }
+            
+            VStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color.hikayaOrange.opacity(0.2))
+                        .frame(width: 80, height: 80)
+                    
+                    Text("\(nextLevel)")
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundStyle(Color.hikayaOrange)
+                }
+                
+                VStack(spacing: 4) {
+                    Text("Level \(nextLevel) Unlocked!")
+                        .font(.title3.weight(.bold))
+                        .foregroundStyle(.primary)
+                    
+                    Text("You've completed all stories in Level \(result.story.difficultyLevel). Ready for more challenging stories?")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                
+                Button(action: onDismiss) {
+                    HStack(spacing: 8) {
+                        Text("Start Level \(nextLevel)")
+                            .font(.headline.weight(.semibold))
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title3)
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        LinearGradient(
+                            colors: [Color.hikayaOrange, Color.hikayaOrange.opacity(0.8)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.hikayaOrange.opacity(0.08))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.hikayaOrange.opacity(0.3), lineWidth: 2)
+                    )
+            )
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
+        )
+    }
+    
     // MARK: - Continue Button
     
     private var continueButton: some View {
         Button(action: onDismiss) {
             HStack(spacing: 8) {
-                Text("Continue")
-                    .font(.headline.weight(.semibold))
+                if result.levelCompleted, let nextLevel = result.nextLevel {
+                    Text("Explore Level \(nextLevel)")
+                        .font(.headline.weight(.semibold))
+                } else {
+                    Text("Continue")
+                        .font(.headline.weight(.semibold))
+                }
                 Image(systemName: "arrow.right.circle.fill")
                     .font(.title3)
             }
@@ -561,7 +650,9 @@ struct ConfettiParticle {
                 QuranWord(id: "word-2", rank: 2, arabicText: "حَكِيم", arabicWithoutDiacritics: "حكيم", buckwalter: "HakIm", englishMeaning: "Wise", root: nil, morphology: QuranMorphology(partOfSpeech: "ADJ", passive: false), occurrenceCount: 15),
                 QuranWord(id: "word-3", rank: 3, arabicText: "بَغْدَاد", arabicWithoutDiacritics: "بغداد", buckwalter: "bagodAd", englishMeaning: "Baghdad", root: nil, morphology: QuranMorphology(partOfSpeech: "PN", passive: false), occurrenceCount: 5)
             ],
-            readingTime: 180
+            readingTime: 180,
+            levelCompleted: true,
+            nextLevel: 2
         ),
         onDismiss: {}
     )

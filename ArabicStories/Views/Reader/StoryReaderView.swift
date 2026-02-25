@@ -17,12 +17,17 @@ struct StoryReaderView: View {
     @State private var contentId = UUID()  // For content transition
     @Environment(\.dismiss) private var dismiss
     
+    // Callback when level is completed
+    var onLevelCompleted: ((Int) -> Void)?
+    
     // Timer for real-time updates
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    init(story: Story) {
+    init(story: Story, onLevelCompleted: ((Int) -> Void)? = nil) {
         self.story = story
+        self.onLevelCompleted = onLevelCompleted
         viewModel = StoryReaderViewModel(story: story, wasReset: false)
+        viewModel.onLevelCompleted = onLevelCompleted
     }
     
     // MARK: - Navigation with Haptics & Animation
@@ -385,7 +390,6 @@ struct MixedContentView: View {
                 // Mixed Content - English text with interactive Arabic words
                 MixedTextView(
                     text: segment.text,
-                    linkedWordIds: segment.linkedWordIds ?? [],
                     viewModel: viewModel,
                     fontSize: viewModel.fontSize,
                     isNightMode: viewModel.isNightMode,
@@ -425,7 +429,6 @@ struct MixedContentView: View {
 
 struct MixedTextView: View {
     let text: String
-    let linkedWordIds: [String]
     var viewModel: StoryReaderViewModel
     let fontSize: CGFloat
     let isNightMode: Bool
@@ -434,12 +437,56 @@ struct MixedTextView: View {
     let onLinkedWordTap: (String, CGPoint) -> Void
     let onGenericWordTap: (String, CGPoint) -> Void
     
-    // Get linked Quran words for this segment
+    // Find Quran words that appear in this segment's text
     private var linkedWords: [QuranWord] {
-        linkedWordIds.compactMap { wordId in
-            viewModel.quranWords.first { $0.id == wordId } ??
-            viewModel.quranWordsInStory.first { $0.id == wordId }
+        let arabicWords = extractArabicWords(from: text)
+        var matchedWords: [QuranWord] = []
+        var seenIds = Set<String>()
+        
+        for word in arabicWords {
+            if let quranWord = viewModel.quranWords.first(where: { 
+                ArabicTextUtils.wordsMatch($0.arabicText, word)
+            }) {
+                if !seenIds.contains(quranWord.id) {
+                    matchedWords.append(quranWord)
+                    seenIds.insert(quranWord.id)
+                }
+            }
         }
+        
+        // Sort by rank for consistent display
+        return matchedWords.sorted { $0.rank < $1.rank }
+    }
+    
+    // Extract Arabic words from text
+    private func extractArabicWords(from text: String) -> [String] {
+        var words: [String] = []
+        var currentIndex = text.startIndex
+        
+        while currentIndex < text.endIndex {
+            let char = text[currentIndex]
+            
+            if ArabicTextUtils.isArabicCharacter(char) {
+                var arabicWord = ""
+                var endIndex = currentIndex
+                
+                while endIndex < text.endIndex &&
+                      (ArabicTextUtils.isArabicCharacter(text[endIndex]) ||
+                       ArabicTextUtils.isDiacritic(text[endIndex])) {
+                    arabicWord.append(text[endIndex])
+                    endIndex = text.index(after: endIndex)
+                }
+                
+                if !arabicWord.isEmpty && !words.contains(arabicWord) {
+                    words.append(arabicWord)
+                }
+                currentIndex = endIndex
+            } else {
+                currentIndex = text.index(after: currentIndex)
+            }
+        }
+        
+        return words
     }
     
     var body: some View {

@@ -32,7 +32,7 @@ struct SettingsView: View {
     @State private var showingAccountLinking = false
     @State private var morningReminder = NotificationSettings.shared.morningReminder
     @State private var afternoonReminder = NotificationSettings.shared.afternoonReminder
-    @State private var showingNotificationAlert = true
+    @State private var showingNotificationAlert = false
     @State private var dailyGoalMinutes = 5
     @State private var dataService = DataService.shared
     

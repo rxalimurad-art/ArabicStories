@@ -118,6 +118,24 @@ class DataService {
         let maxLevel = await getMaxUnlockedLevel()
         return level <= maxLevel
     }
+    
+    func unlockLevel(_ level: Int) async {
+        let progress = await fetchUserProgress()
+        let currentMax = progress?.maxUnlockedLevel ?? 1
+        if level > currentMax {
+            // Update max unlocked level
+            var updatedProgress = progress ?? UserProgress()
+            updatedProgress.maxUnlockedLevel = level
+            do {
+                try await firebaseService.saveUserProgress(updatedProgress, userId: getCurrentUserId())
+                // Notify listeners
+                levelUnlockedPublisher.send(level)
+                print("📊 DataService: Unlocked Level \(level)")
+            } catch {
+                print("❌ Error unlocking level: \(error)")
+            }
+        }
+    }
 
     func vocabularyProgressToLevel2() async -> Double {
         let progress = await fetchUserProgress()

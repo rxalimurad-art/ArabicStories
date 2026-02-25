@@ -77,6 +77,7 @@ class StoryReaderViewModel {
     // Story Completion Summary
     var showCompletionSummary = false
     var completionResult: StoryCompletionResult?
+    var onLevelCompleted: ((Int) -> Void)?  // Callback when level is completed (passes next level number)
     
     struct MixedWordInfo {
         let wordId: String
@@ -158,8 +159,8 @@ class StoryReaderViewModel {
         let wordsToLearn: [String]
         
         if story.format == .mixed, let segment = currentMixedSegment {
-            // For mixed format: learn linked words in the segment
-            wordsToLearn = segment.linkedWordIds ?? []
+            // For mixed format: extract Arabic words from segment text
+            wordsToLearn = extractLearnableWords(from: segment.text)
         } else if story.format == .bilingual, let segment = currentSegment {
             // For bilingual format: learn Arabic words that have meanings
             wordsToLearn = extractLearnableWords(from: segment.arabicText)
@@ -579,10 +580,14 @@ class StoryReaderViewModel {
         await extractAndSaveUnlockedWords()
         print("📖 Complete story: Words saved successfully")
         
-        // Track story completion via Firebase function
+        // Track story completion via Firebase function (skip in debug)
+        #if DEBUG
+        print("📖 Complete story: Skipping API tracking in DEBUG mode")
+        #else
         print("📖 Complete story: Tracking completion via API...")
         await trackStoryCompletion()
         print("📖 Complete story: API tracking completed")
+        #endif
         
         // Check for achievements and prepare completion summary
         print("📖 Complete story: Preparing completion summary...")
@@ -677,24 +682,56 @@ class StoryReaderViewModel {
 
         print("📖 Complete story: Found \(newlyUnlockedAchievements.count) newly unlocked achievements")
 
-        // Get words unlocked in this session
-        let wordsUnlocked = getWordsUnlockedInSession()
-        print("📖 Complete story: Found \(wordsUnlocked.count) words unlocked in session")
+        // Get all Quran words found in this story (for display on completion screen)
+        let allStoryWords = story.findQuranWordsInStory(from: quranWords)
+        print("📖 Complete story: Found \(allStoryWords.count) Quran words in story")
 
-        // Get total words in story (use same logic as library view cells)
-        let totalWords = story.arabicWordCount
+        // Get total words in story (use accurate count from Quran words match)
+        let totalWords = allStoryWords.count
+        
+        // Check if all stories in current level are completed
+        let (levelCompleted, nextLevel) = await checkLevelCompletion()
+        print("📖 Complete story: Level \(story.difficultyLevel) completed: \(levelCompleted), next level: \(nextLevel ?? -1)")
 
         // Create completion result
         let result = StoryCompletionResult(
             story: story,
             unlockedAchievements: newlyUnlockedAchievements,
             totalWordsInStory: totalWords,
-            wordsUnlockedInSession: wordsUnlocked,
-            readingTime: currentSessionDuration
+            wordsUnlockedInSession: allStoryWords,
+            readingTime: currentSessionDuration,
+            levelCompleted: levelCompleted,
+            nextLevel: nextLevel
         )
         
         print("📖 Complete story: prepareCompletionSummary() finished")
         return result
+    }
+    
+    /// Check if all stories in the current level are completed
+    /// Returns (isLevelCompleted, nextLevelNumber)
+    private func checkLevelCompletion() async -> (Bool, Int?) {
+        let currentLevel = story.difficultyLevel
+        
+        // Fetch all stories for the current level
+        let allStories = await dataService.fetchAllStories()
+        let levelStories = allStories.filter { $0.difficultyLevel == currentLevel }
+        
+        // Get all completed story IDs
+        let allProgress = await dataService.getAllStoryProgress()
+        let completedStoryIds = Set(allProgress.filter { $0.isCompleted }.map { $0.storyId })
+        
+        // Check if all level stories are completed
+        let allCompleted = levelStories.allSatisfy { completedStoryIds.contains($0.id.uuidString) }
+        
+        if allCompleted {
+            let nextLevel = currentLevel + 1
+            // Unlock the next level
+            await dataService.unlockLevel(nextLevel)
+            return (true, nextLevel)
+        }
+        
+        return (false, nil)
     }
     
     /// Get the words that were unlocked/learned during this reading session
@@ -711,6 +748,10 @@ class StoryReaderViewModel {
     
     /// Dismiss the completion summary and reset state
     func dismissCompletionSummary() {
+        // Check if level was completed and trigger callback
+        if let result = completionResult, result.levelCompleted, let nextLevel = result.nextLevel {
+            onLevelCompleted?(nextLevel)
+        }
         showCompletionSummary = false
         completionResult = nil
     }

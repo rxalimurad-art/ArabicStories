@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "lastUpdated": "2026-02-25T04:25:00Z",
+  "version": "1.3",
+  "lastUpdated": "2026-02-26T01:30:46Z",
   "stories": [
     {
       "id": "cb516772-9d26-4555-98d2-01e4f90b9738",
@@ -69,7 +69,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T03:52:33Z",
-      "updatedAt": "2026-02-25T03:52:33Z",
+      "updatedAt": "2026-02-26T01:37:43.236079Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -882,7 +882,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_010_The_Wise_Leader.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -946,7 +946,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:38:28.989687Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -970,7 +970,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_011_The_Children_of_the_Village.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1041,7 +1041,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:39:34.423735Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1065,7 +1065,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_012_Lessons_from_the_Past.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1135,7 +1135,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:39:54.806467Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1159,7 +1159,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_013_The_New_Family.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1221,7 +1221,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:40:22.655304Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1245,7 +1245,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_014_The_Good_Man.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1314,7 +1314,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:40:45.695289Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1338,7 +1338,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_015_The_Community_Gathering.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1408,7 +1408,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:41:08.949385Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1432,7 +1432,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_016_The_Teachers_Lesson.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1501,7 +1501,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:41:34.540500Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1525,7 +1525,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_017_The_Helpers_Heart.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1588,7 +1588,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:42:03.007950Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1612,7 +1612,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_018_The_Peoples_Choice.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1681,7 +1681,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:25:00Z",
+      "updatedAt": "2026-02-26T01:42:24.232214Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1705,7 +1705,7 @@
         "level2",
         "family"
       ],
-      "coverImageURL": "",
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_019_A_Nation_of_Peace.png",
       "audioNarrationURL": null,
       "segments": null,
       "mixedSegments": [
@@ -1785,7 +1785,7 @@
       "downloadDate": null,
       "sourceURL": null,
       "createdAt": "2026-02-25T04:20:00Z",
-      "updatedAt": "2026-02-25T04:20:00Z",
+      "updatedAt": "2026-02-26T01:42:46.022205Z",
       "readingProgress": 0.0,
       "currentSegmentIndex": 0,
       "isBookmarked": false,
@@ -1793,6 +1793,2492 @@
       "viewCount": 0,
       "completionCount": 0,
       "imagePrompt": "A peaceful land with diverse people living in harmony, children of different backgrounds playing together, beautiful landscape, detailed children's book illustration, vertical portrait orientation, 3:4 aspect ratio, children's picture book cover format, NO TEXT, no words, no letters, no white borders, full scene edge to edge"
+    },
+    {
+      "id": "456b7412-9a79-4fe1-a114-b0f737277ce6",
+      "title": "Building a Home",
+      "titleArabic": "بناء بيت",
+      "storyDescription": "A family works together to build a beautiful home, learning about the importance of a safe and blessed place to live.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_020_Building_a_Home.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "a17df493-985e-4b2b-ac39-cb50bee63ef6",
+          "index": 0,
+          "text": "Long ago, a righteous family wanted to build <b>ٱلْبَيْتِ</b> (the House) where they could live in peace and worship Allah.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "7738ccd5-ca80-472f-a339-4cc9542aa481",
+          "index": 1,
+          "text": "The father said, 'Let us find a good <b>مَكَانًا</b> (a place) where our <b>بُيُوتِكُمْ</b> (your houses) will be blessed by Allah.'",
+          "linkedWordIds": [
+            "word_01929",
+            "word_01886"
+          ]
+        },
+        {
+          "id": "c60917e1-62da-4413-a9dd-ba58203747d5",
+          "index": 2,
+          "text": "They searched through <b>ٱلْمَدِينَةِ</b> (the city) and <b>ٱلْبِلَٰدِ</b> (the land) to find the perfect spot for their home.",
+          "linkedWordIds": [
+            "word_00727",
+            "word_02018"
+          ]
+        },
+        {
+          "id": "3f1fd2d4-3a25-4ff0-8744-26c9dc1430f5",
+          "index": 3,
+          "text": "The mother reminded them, 'Allah commands us to make our <b>بُيُوتِ</b> (houses) places of prayer and remembrance.'",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "37d63057-f62f-40ed-9947-61ae43eea644",
+          "index": 4,
+          "text": "They built their home with love, and it became a <b>مَـَٔابٍ</b> (place of return) for all good people in the community.",
+          "linkedWordIds": [
+            "word_02035"
+          ]
+        },
+        {
+          "id": "2071b8cf-ff06-43d0-adae-bffa8e027031",
+          "index": 5,
+          "text": "Every day, they thanked Allah for their beautiful home and shared their blessings with <b>ٱلنَّاسُ</b> (the people).",
+          "linkedWordIds": [
+            "word_00234"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:43:09.978573Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'Building a Home', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "37140cd4-e958-4beb-98fc-be20d26b0803",
+      "title": "The Path to a Good Home",
+      "titleArabic": "الصراط إلى بيت طيب",
+      "storyDescription": "A traveler learns that the straight path leads to a blessed home and eternal gardens.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_021_The_Path_to_a_Good_Home.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "a92d8b6d-f23a-425e-b3bb-238b6bda078b",
+          "index": 0,
+          "text": "A wise traveler asked, 'Which <b>صِرَٰطٍ</b> (a path) should I take to find a blessed home?'",
+          "linkedWordIds": [
+            "word_00507"
+          ]
+        },
+        {
+          "id": "f1403ec7-bb97-43d8-9480-987d8644accd",
+          "index": 1,
+          "text": "The guide answered, '<b>صِرَٰطٌ</b> (the path) that is straight leads to the best destination. Follow <b>صِرَٰطِ</b> (the Path) of those who have earned Allah's pleasure.'",
+          "linkedWordIds": [
+            "word_01617",
+            "word_01948"
+          ]
+        },
+        {
+          "id": "a848e0ae-a23c-46ba-a11b-f8b3afee312a",
+          "index": 2,
+          "text": "The traveler walked on <b>ٱلْبَرِّ</b> (the land) through valleys and hills, always keeping his heart pure.",
+          "linkedWordIds": [
+            "word_00835"
+          ]
+        },
+        {
+          "id": "f2a55cfd-1020-4a4c-845e-24a234bdbd80",
+          "index": 3,
+          "text": "At night, he looked up at <b>ٱلسَّمَآءُ</b> (the heavens) and prayed for guidance on his journey.",
+          "linkedWordIds": [
+            "word_00633"
+          ]
+        },
+        {
+          "id": "f8c2acf1-e7a2-4236-9f18-c9aeabfa093b",
+          "index": 4,
+          "text": "He finally reached his destination, where the earth was like a soft <b>ٱلْمِهَادُ</b> (resting-place) for the righteous.",
+          "linkedWordIds": [
+            "word_01910"
+          ]
+        },
+        {
+          "id": "a3a939bb-bec5-4fed-8bfb-4da707720324",
+          "index": 5,
+          "text": "The traveler learned that <b>قَوْمٌ</b> (a people) who follow the straight path will find eternal peace.",
+          "linkedWordIds": [
+            "word_00376"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:43:44.488422Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The Path to a Good Home', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "45608072-faa7-4865-8284-71dd28b145fc",
+      "title": "The Heavens Above",
+      "titleArabic": "السماوات العلى",
+      "storyDescription": "A child looks up at the sky and learns about Allah's magnificent creation of the heavens.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_022_The_Heavens_Above.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "344ac822-954c-4337-a70e-efb2d8f8bb2e",
+          "index": 0,
+          "text": "Little Amina sat outside her home and gazed up at <b>ٱلسَّمَٰوَٰتِ</b> (the heavens) in wonder.",
+          "linkedWordIds": [
+            "word_00042"
+          ]
+        },
+        {
+          "id": "e40fc618-b0b1-41cc-8cd2-de92a6350d42",
+          "index": 1,
+          "text": "She asked her grandfather, 'Who created <b>ٱلسَّمَآءُ</b> (the heavens) so beautifully?'",
+          "linkedWordIds": [
+            "word_00633"
+          ]
+        },
+        {
+          "id": "f656a3c7-69a3-4caf-8e4f-0e7e806f1825",
+          "index": 2,
+          "text": "Her grandfather smiled and recited, '<b>وَٱلسَّمَآءِ</b> (By the heaven) and all that it contains, Allah is the Creator of everything.'",
+          "linkedWordIds": [
+            "word_01950"
+          ]
+        },
+        {
+          "id": "0496cd04-7124-4656-9287-aab4a7f9b51b",
+          "index": 3,
+          "text": "He explained, 'Allah created <b>ٱلسَّمَٰوَٰتُ</b> (the heavens) in seven layers, each with its own purpose and beauty.'",
+          "linkedWordIds": [
+            "word_01387"
+          ]
+        },
+        {
+          "id": "89dfe672-001c-42f7-abd1-103babecd841",
+          "index": 4,
+          "text": "Amina felt small but special, knowing that Allah who created the vast sky also created her heart.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "cdb48173-eb77-4158-afdf-9d6528771b57",
+          "index": 5,
+          "text": "From that day, every time she looked up, she remembered Allah's greatness and said Alhamdulillah.",
+          "linkedWordIds": []
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:44:03.880309Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The Heavens Above', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "71bbabee-819e-4550-be96-8eae1dc41c10",
+      "title": "The Beautiful Gardens",
+      "titleArabic": "الجنات الجميلة",
+      "storyDescription": "A family visits beautiful gardens and learns about the gardens of Paradise promised to the believers.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_023_The_Beautiful_Gardens.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "63d37032-0ade-4ecc-9be9-0c308ede16dd",
+          "index": 0,
+          "text": "The family walked through <b>جَنَّٰتٍ</b> (Gardens) filled with colorful flowers and tall trees.",
+          "linkedWordIds": [
+            "word_00273"
+          ]
+        },
+        {
+          "id": "7f6c6819-475d-4cd6-ba03-1ab40c0351bb",
+          "index": 1,
+          "text": "The father said, 'These gardens are beautiful, but Allah has promised believers <b>جَنَّٰتُ</b> (Gardens) even more wonderful in Paradise.'",
+          "linkedWordIds": [
+            "word_01096"
+          ]
+        },
+        {
+          "id": "c523f445-e035-4ecf-9c1a-142851543353",
+          "index": 2,
+          "text": "They sat near a river flowing through <b>جَنَّٰتِ</b> (Gardens) and enjoyed the peaceful sounds of nature.",
+          "linkedWordIds": [
+            "word_00895"
+          ]
+        },
+        {
+          "id": "618fd998-4c12-4d5a-9901-cbc3ec621a20",
+          "index": 3,
+          "text": "The mother told them, 'In Paradise, there will be <b>جَنَّٰتٌ</b> (Gardens) beneath which rivers flow, and no one will ever feel tired there.'",
+          "linkedWordIds": [
+            "word_02026"
+          ]
+        },
+        {
+          "id": "7e762e64-67c5-4c90-8095-200fef46ecec",
+          "index": 4,
+          "text": "The <b>بَنِىٓ</b> (Children) picked flowers and imagined what the eternal gardens would be like.",
+          "linkedWordIds": [
+            "word_00312"
+          ]
+        },
+        {
+          "id": "b7bc563d-42d8-42f7-8ea4-1519e3cf03e3",
+          "index": 5,
+          "text": "They went home grateful, hoping to be among <b>ٱلْأَوَّلِينَ</b> (the former people) who enter Paradise.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:44:28.335956Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The Beautiful Gardens', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "98905ffe-c1e0-48f5-97d5-af489f761449",
+      "title": "The City and the Land",
+      "titleArabic": "ٱلْمَدِينَةِ وَٱلْبِلَٰدِ",
+      "storyDescription": "A story about a traveler exploring the city and the surrounding lands.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_024_The_City_and_the_Land.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "c6709fcf-ecb6-46f3-9c1d-0c50eeb73e8f",
+          "index": 0,
+          "text": "Ahmad traveled to <b>ٱلْمَدِينَةِ</b> (the city) to visit his family. He had never seen such a beautiful place before.",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "8456ecb8-d939-4ded-bf30-2d16e1f1a993",
+          "index": 1,
+          "text": "From the top of the hill, he could see <b>ٱلْبِلَٰدِ</b> (the land) stretching far into the distance.",
+          "linkedWordIds": [
+            "word_02018"
+          ]
+        },
+        {
+          "id": "dec1b5c3-6d67-4e4c-be08-da0fb2de5b02",
+          "index": 2,
+          "text": "He walked beyond the city walls to explore <b>ٱلْبَرِّ</b> (the land) outside. The fresh air made him feel peaceful.",
+          "linkedWordIds": [
+            "word_00835"
+          ]
+        },
+        {
+          "id": "0ad56551-e384-473e-9ff0-3e5837649a51",
+          "index": 3,
+          "text": "Ahmad remembered that Allah created <b>ٱلسَّمَٰوَٰتِ</b> (the heavens) and the earth with purpose.",
+          "linkedWordIds": [
+            "word_00042"
+          ]
+        },
+        {
+          "id": "9fb1965e-5848-4bf5-a4a4-1c6ff8d0a85b",
+          "index": 4,
+          "text": "In the evening, he found <b>صِرَٰطٍ</b> (a path) leading back. He followed <b>صِرَٰطِ</b> (the Path) through <b>جَنَّٰتٍ</b> (Gardens).",
+          "linkedWordIds": [
+            "word_00507",
+            "word_01948",
+            "word_00273"
+          ]
+        },
+        {
+          "id": "b82247db-f463-4350-b8a6-65eb3499c0d5",
+          "index": 5,
+          "text": "He decided to make this <b>مَكَانًا</b> (a place) his new home, where he could raise his family in peace.",
+          "linkedWordIds": [
+            "word_01929"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:44:53.918154Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The City and the Land', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "f5b4076a-5281-4480-8c34-15b1ec5c559b",
+      "title": "The Resting Place",
+      "titleArabic": "ٱلْمِهَادُ",
+      "storyDescription": "A story about finding comfort and returning home after a long journey.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_025_The_Resting_Place.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "8ed0fa1a-998f-4869-8c07-a591aeb4a406",
+          "index": 0,
+          "text": "After traveling for many days, Khalid finally saw <b>ٱلْبَيْتِ</b> (the House) where he grew up.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "57e52738-e0a2-408a-9c93-2e68f025e2f5",
+          "index": 1,
+          "text": "He had been to <b>جَنَّٰتٍ</b> (Gardens) during his journey, but nothing felt like <b>مَـَٔابٍ</b> (place of return).",
+          "linkedWordIds": [
+            "word_00273",
+            "word_02035"
+          ]
+        },
+        {
+          "id": "1dd55556-0378-4d4a-a348-49c0fd7690fb",
+          "index": 2,
+          "text": "His mother welcomed him. Khalid lay down on <b>ٱلْمِهَادُ</b> (resting-place) and felt his tiredness disappear.",
+          "linkedWordIds": [
+            "word_01910"
+          ]
+        },
+        {
+          "id": "612cbfa2-1b0d-4598-a774-eefc8ff72e13",
+          "index": 3,
+          "text": "Looking at <b>وَٱلسَّمَآءِ</b> (By the heaven) above, he remembered every journey has <b>مَكَانًا</b> (a place) of rest.",
+          "linkedWordIds": [
+            "word_01950",
+            "word_01929"
+          ]
+        },
+        {
+          "id": "9d857cb3-2fd7-4b0a-9f86-f9de4ad389b9",
+          "index": 4,
+          "text": "He felt blessed to have <b>بُيُوتِكُمْ</b> (your houses) as peaceful refuge and <b>جَنَّٰتِ</b> (Gardens) to enjoy.",
+          "linkedWordIds": [
+            "word_01886",
+            "word_00895"
+          ]
+        },
+        {
+          "id": "e66c82f2-3721-4c20-8ac1-50fd6b44fce2",
+          "index": 5,
+          "text": "He thanked Allah for <b>ٱلسَّمَٰوَٰتُ</b> (the heavens) above and the earth below, and for his home.",
+          "linkedWordIds": [
+            "word_01387"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:45:17.397725Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The Resting Place', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "b27e95a8-46ee-4ec2-b942-c4f047dcb991",
+      "title": "Our Community Houses",
+      "titleArabic": "بُيُوتِكُمْ وَٱلنَّاسُ",
+      "storyDescription": "A story about the houses in a community and the people who live there.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_026_Our_Community_Houses.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "bf980157-7374-43fd-9206-c1f05153796f",
+          "index": 0,
+          "text": "The <b>قَوْمٌ</b> (a people) of the village lived together in harmony. Their <b>بُيُوتِ</b> (houses) lined the peaceful streets.",
+          "linkedWordIds": [
+            "word_00376",
+            "word_01287"
+          ]
+        },
+        {
+          "id": "f8309aa7-0a76-4b65-a092-c85cbd6180e5",
+          "index": 1,
+          "text": "The elder gathered <b>ٱلنَّاسُ</b> (the people) and said, 'Keep <b>بُيُوتِكُمْ</b> (your houses) clean and welcome guests.'",
+          "linkedWordIds": [
+            "word_00234",
+            "word_01886"
+          ]
+        },
+        {
+          "id": "43c91aee-96a2-4114-8f5a-4c6680f63e56",
+          "index": 2,
+          "text": "The <b>ٱلنَّاسُ</b> (the people) listened carefully. They swept their <b>بُيُوتِ</b> (houses) and planted flowers.",
+          "linkedWordIds": [
+            "word_00234",
+            "word_01287"
+          ]
+        },
+        {
+          "id": "163c0399-4c65-47cf-9552-5a00bd766678",
+          "index": 3,
+          "text": "A traveler came from <b>ٱلْمَدِينَةِ</b> (the city) and was amazed. 'Your <b>بُيُوتِكُمْ</b> (your houses) are filled with love,' he said.",
+          "linkedWordIds": [
+            "word_00727",
+            "word_01886"
+          ]
+        },
+        {
+          "id": "4be6c9b3-d8f8-47f7-865c-f6ab092dc34f",
+          "index": 4,
+          "text": "<b>ٱلنَّاسُ</b> (the people) invited him to stay. True wealth is having <b>مَكَانًا</b> (a place) where <b>قَوْمٌ</b> (people) care for one another.",
+          "linkedWordIds": [
+            "word_00234",
+            "word_01929",
+            "word_00376"
+          ]
+        },
+        {
+          "id": "45e6a1d9-9460-40c8-a674-26c8fa16f464",
+          "index": 5,
+          "text": "The traveler decided to stay. <b>ٱلنَّاسُ</b> (the people) welcomed him as part of their community forever.",
+          "linkedWordIds": [
+            "word_00234"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:45:40.815180Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'Our Community Houses', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "title": "Stories from Our Ancestors",
+      "titleArabic": "قصص من أسلافنا",
+      "storyDescription": "A child learns about the homes and lives of their ancestors through family stories",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_027_Stories_from_Our_Ancestors.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "55b443bd-747e-4fd2-b340-aa08cf63a5e2",
+          "index": 0,
+          "text": "Little Aisha sat with her grandmother. 'Tell me about <b>ٱلْأَوَّلِينَ</b> (the former people),' she asked.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        },
+        {
+          "id": "7a2c4e84-280f-4850-b616-98590e777907",
+          "index": 1,
+          "text": "Grandmother smiled. 'Our <b>بَنِىٓ</b> (Children) of old lived simply, yet their <b>بُيُوتِ</b> (houses) were full of love.'",
+          "linkedWordIds": [
+            "word_00312",
+            "word_01287"
+          ]
+        },
+        {
+          "id": "06a21c37-5b5d-4462-9be7-a46e9b712117",
+          "index": 2,
+          "text": "'Their <b>ٱلْبَيْتِ</b> (the House) was not just walls,' she continued. 'It was a <b>مَـَٔابٍ</b> (place of return) for the whole family.'",
+          "linkedWordIds": [
+            "word_01273",
+            "word_02035"
+          ]
+        },
+        {
+          "id": "283e3573-d48e-4ae2-8166-2dccb031237b",
+          "index": 3,
+          "text": "Aisha imagined those old homes. '<b>ٱلسَّمَآءُ</b> (the heavens) was their roof, and the earth was their floor.'",
+          "linkedWordIds": [
+            "word_00633"
+          ]
+        },
+        {
+          "id": "46de6e0c-7f7d-4d2a-841b-3f263f9500c8",
+          "index": 4,
+          "text": "'Yes,' grandmother nodded. 'They built <b>صِرَٰطٍ</b> (a path) between their homes so neighbors could visit easily.'",
+          "linkedWordIds": [
+            "word_00507"
+          ]
+        },
+        {
+          "id": "b20ad7a5-8063-40bf-a76a-1fa5655d5596",
+          "index": 5,
+          "text": "Aisha hugged her grandmother. She was grateful for the stories of those ancient <b>بُيُوتِ</b> (houses).",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:46:06.312189Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'Stories from Our Ancestors', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440009",
+      "title": "The Wisdom of Building",
+      "titleArabic": "حكمة البناء",
+      "storyDescription": "A story about using wisdom and reason when building a home",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_028_The_Wisdom_of_Building.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "1f7743ca-cc1f-435e-8533-3bc93d074922",
+          "index": 0,
+          "text": "The wise builder addressed the villagers. 'When you build <b>بُيُوتِكُمْ</b> (your houses), you must <b>تَعْقِلُونَ</b> (use reason).'",
+          "linkedWordIds": [
+            "word_01886",
+            "word_00403"
+          ]
+        },
+        {
+          "id": "f45602d5-5709-4a79-b3ee-f86ae15f02a5",
+          "index": 1,
+          "text": "A young man asked, 'What makes a strong <b>ٱلْبَيْتِ</b> (the House)?' The builder pointed to the ground.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "6a12d26f-4b43-4027-a0de-00f0c06b11a6",
+          "index": 2,
+          "text": "'First, choose a good <b>مَكَانًا</b> (a place). Build on solid <b>ٱلْبَرِّ</b> (the land), not on shifting sand.'",
+          "linkedWordIds": [
+            "word_01929",
+            "word_00835"
+          ]
+        },
+        {
+          "id": "b0d96d97-cfc4-44b0-a30c-d7faf9184cf0",
+          "index": 3,
+          "text": "'Look up at <b>وَٱلسَّمَآءِ</b> (By the heaven) for guidance,' he said. 'Let light enter your <b>بُيُوتِكُمْ</b> (your houses).'",
+          "linkedWordIds": [
+            "word_01950",
+            "word_01886"
+          ]
+        },
+        {
+          "id": "f9b71443-ab72-4d89-9412-3c40aa1c019e",
+          "index": 4,
+          "text": "'Make your home a <b>ٱلْمِهَادُ</b> (resting-place) of peace,' he continued. 'Let it be <b>مَـَٔابٍ</b> (place of return) for your heart.'",
+          "linkedWordIds": [
+            "word_01910",
+            "word_02035"
+          ]
+        },
+        {
+          "id": "525dfb7b-b964-4051-ad77-d93ed7f1d06c",
+          "index": 5,
+          "text": "The villagers nodded wisely. They understood that <b>تَعْقِلُونَ</b> (you use reason) creates homes that last.",
+          "linkedWordIds": [
+            "word_00403"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:46:27.110133Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'The Wisdom of Building', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440010",
+      "title": "Many Homes, One Community",
+      "titleArabic": "بيوت كثيرة، مجتمع واحد",
+      "storyDescription": "A story about a community with many people and their diverse houses",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 3,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level3",
+        "house"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_029_Many_Homes_One_Community.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "4c7c881e-07a8-4a89-8d21-fc2fffb72f13",
+          "index": 0,
+          "text": "In <b>ٱلْمَدِينَةِ</b> (the city), there lived <b>كَثِيرًا</b> (many) <b>ٱلنَّاسُ</b> (the people). Each had their own home.",
+          "linkedWordIds": [
+            "word_00727",
+            "word_00212",
+            "word_00234"
+          ]
+        },
+        {
+          "id": "97be5190-5d72-4387-b740-96b0d0792c62",
+          "index": 1,
+          "text": "One <b>قَوْمٌ</b> (a people) built small <b>بُيُوتِ</b> (houses) close together. They loved being neighbors.",
+          "linkedWordIds": [
+            "word_00376",
+            "word_01287"
+          ]
+        },
+        {
+          "id": "ef3d57b6-9d28-4347-b75b-ba4ce4dc66c8",
+          "index": 2,
+          "text": "Another <b>قَوْمٍ</b> (a people) lived in larger homes with <b>جَنَّٰتٍ</b> (Gardens) around them.",
+          "linkedWordIds": [
+            "word_00483",
+            "word_00273"
+          ]
+        },
+        {
+          "id": "a558ed0e-694d-459e-97e6-bbe665560246",
+          "index": 3,
+          "text": "The leader of <b>قَوْمِهِۦ</b> (his people) walked among <b>ٱلنَّاسَ</b> ([the] people). He taught them about unity.",
+          "linkedWordIds": [
+            "word_00528",
+            "word_00203"
+          ]
+        },
+        {
+          "id": "998e27cd-5b0e-4f82-8af3-600ece73a7a1",
+          "index": 4,
+          "text": "'All these <b>بُيُوتِ</b> (houses) are gifts,' he said. 'Build them <b>لِلنَّاسِ</b> (to [the] people) with kindness.'",
+          "linkedWordIds": [
+            "word_01287",
+            "word_00259"
+          ]
+        },
+        {
+          "id": "d85cdafa-82f1-4430-8ab2-f32bc544ad87",
+          "index": 5,
+          "text": "The people understood. Whether homes were small or grand, what mattered was <b>ٱلْأَوَّلِينَ</b> (the former people)'s wisdom of unity.",
+          "linkedWordIds": [
+            "word_00315"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:25:02Z",
+      "updatedAt": "2026-02-26T01:46:55.902589Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for story 'Many Homes, One Community', House and Home theme, vertical portrait orientation, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm colors"
+    },
+    {
+      "id": "e8a1b2c3-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+      "title": "The Family Meal",
+      "titleArabic": "الوجبة العائلية",
+      "storyDescription": "A family gathers for dinner and shares wisdom about gratitude for food.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_030_The_Family_Meal.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "fc9a9a17-ae57-4fb8-b30c-cb1b35d08ce3",
+          "index": 0,
+          "text": "The family sat together in <b>ٱلْبَيْتِ</b> (the House) for their evening meal. The father looked at his children with love.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "2f9a93c9-a691-46ec-bd5a-a1465c6c507a",
+          "index": 1,
+          "text": "'<b>قُلْ</b> (Say) Alhamdulillah before you eat,' he reminded them. 'Always remember who provides for us.'",
+          "linkedWordIds": [
+            "word_00032"
+          ]
+        },
+        {
+          "id": "ed0f151c-7fd0-480e-ba9e-6feb3e09f0e4",
+          "index": 2,
+          "text": "The children smiled and <b>قَالُوا۟</b> (they say) in one voice, 'Alhamdulillah for this blessing!'",
+          "linkedWordIds": [
+            "word_00043"
+          ]
+        },
+        {
+          "id": "5403e130-4dbf-483b-b151-b9491410c588",
+          "index": 3,
+          "text": "The mother added, 'Those who <b>ءَامَنُوا۟</b> (believe[d]) know that every meal is a gift from Allah.'",
+          "linkedWordIds": [
+            "word_00035"
+          ]
+        },
+        {
+          "id": "733d0c5e-394c-43d2-96a0-f1649f6b0c95",
+          "index": 4,
+          "text": "They ate together, grateful for the food and the time they shared in their home.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "70954b85-9094-4159-9a2b-4e8d18c24fc1",
+          "index": 5,
+          "text": "As they finished, the father said, '<b>يَعْلَمُ</b> (knows) Allah what is in our hearts when we thank Him.'",
+          "linkedWordIds": [
+            "word_00142"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:47:21.328303Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Family Meal', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "f9b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+      "title": "Cooking Together",
+      "titleArabic": "الطهي معاً",
+      "storyDescription": "Children learn to cook and understand the importance of doing good deeds.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_031_Cooking_Together.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "d551926c-e34a-4576-81a6-e2b56cb011bd",
+          "index": 0,
+          "text": "The children wanted to help prepare dinner. 'What should we <b>تَعْمَلُونَ</b> (you do)?' they asked their mother.",
+          "linkedWordIds": [
+            "word_00099"
+          ]
+        },
+        {
+          "id": "cc17f05d-2598-4e83-aa98-93853d394952",
+          "index": 1,
+          "text": "'Watch and learn,' she replied. 'Good cooking is like good deeds—both require patience and care.'",
+          "linkedWordIds": []
+        },
+        {
+          "id": "2140db83-e9f0-41c6-8df9-60da5346c2bb",
+          "index": 2,
+          "text": "As they worked, she explained, 'Allah <b>خَلَقَ</b> (created) all the ingredients we use. We must not waste them.'",
+          "linkedWordIds": [
+            "word_00151"
+          ]
+        },
+        {
+          "id": "592d38d4-8215-4b13-bad5-e04e284e9b37",
+          "index": 3,
+          "text": "The children listened carefully. They <b>يَعْلَمُونَ</b> (they know) now that cooking is a form of worship.",
+          "linkedWordIds": [
+            "word_00106"
+          ]
+        },
+        {
+          "id": "e9bd3f8c-9435-495a-9612-7b15c2f801b4",
+          "index": 4,
+          "text": "When the meal was ready, they shared it with their neighbors in <b>ٱلْمَدِينَةِ</b> (the city).",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "2c883a5d-5d90-4640-9117-48f667ad4d1d",
+          "index": 5,
+          "text": "The neighbors <b>قَالُوٓا۟</b> (they say), 'May Allah bless you for your kindness and generosity.'",
+          "linkedWordIds": [
+            "word_00117"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:47:41.839208Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Cooking Together', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "a1c3d4e5-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+      "title": "The Morning Breakfast",
+      "titleArabic": "فطور الصباح",
+      "storyDescription": "A child learns about gratitude while eating breakfast with family.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_032_The_Morning_Breakfast.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "14cbf2f9-7626-4f27-bc79-2357fcb8f112",
+          "index": 0,
+          "text": "Every morning, the family ate together in their <b>بُيُوتِ</b> (houses). It was a peaceful time.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "215d24a7-bf70-4e18-81c4-e18d1328d78d",
+          "index": 1,
+          "text": "The grandfather would <b>قُل</b> (Say), 'Remember Allah and He will provide for you always.'",
+          "linkedWordIds": [
+            "word_00216"
+          ]
+        },
+        {
+          "id": "00ddaa1e-63ef-4c80-a668-0d29e6df4856",
+          "index": 2,
+          "text": "Little Omar asked, 'Why do some people not have food?' His father replied gently.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "47a2ec7a-f359-4a2a-8920-0dfe2b571733",
+          "index": 3,
+          "text": "'<b>يَقُولُونَ</b> (they say) that sharing is caring,' he explained. 'We should help those in need.'",
+          "linkedWordIds": [
+            "word_00182"
+          ]
+        },
+        {
+          "id": "a3e75179-2c02-489e-ad2a-cf7def272c88",
+          "index": 4,
+          "text": "Omar decided to share his breakfast with the poor. He felt happy knowing he <b>أَعْلَمُ</b> ([I] know) Allah sees his good deed.",
+          "linkedWordIds": [
+            "word_00166"
+          ]
+        },
+        {
+          "id": "ce2841d2-0bfa-4b57-a4df-20f0312e4914",
+          "index": 5,
+          "text": "From that day, he always shared his meals, hoping for reward from <b>ٱلسَّمَٰوَٰتُ</b> (the heavens) above.",
+          "linkedWordIds": [
+            "word_01387"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:48:00.588141Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Morning Breakfast', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "b2d4e5f6-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+      "title": "Sharing Food",
+      "titleArabic": "مشاركة الطعام",
+      "storyDescription": "A traveler learns about generosity when people share their food with him.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_033_Sharing_Food.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "302e1b70-38dd-46a5-b59f-6190703e96d5",
+          "index": 0,
+          "text": "A hungry traveler arrived in the <b>ٱلْبِلَٰدِ</b> (the land). He had no food and was very tired.",
+          "linkedWordIds": [
+            "word_02018"
+          ]
+        },
+        {
+          "id": "a2b73f8e-9a59-42b8-862a-9b99152948ed",
+          "index": 1,
+          "text": "The local people <b>وَقَالُوا۟</b> (And they say), 'Come, eat with us. Our food is your food.'",
+          "linkedWordIds": [
+            "word_00194"
+          ]
+        },
+        {
+          "id": "bc171eb2-06b6-45a0-a5df-72eb19cd634c",
+          "index": 2,
+          "text": "The traveler was amazed by their kindness. He <b>يُؤْمِنُونَ</b> (believe) in their good hearts.",
+          "linkedWordIds": [
+            "word_00092"
+          ]
+        },
+        {
+          "id": "34395683-eb8d-4f46-8840-36ead90ace4f",
+          "index": 3,
+          "text": "'Do you <b>تَعْلَمُونَ</b> ([you] know) that Allah loves those who share?' the traveler asked.",
+          "linkedWordIds": [
+            "word_00167"
+          ]
+        },
+        {
+          "id": "09558460-faef-4c2a-a221-27171128f8cd",
+          "index": 4,
+          "text": "The villagers nodded. 'We <b>وَعَمِلُوا۟</b> (and do) good because Allah commands us to be generous,' they replied.",
+          "linkedWordIds": [
+            "word_00174"
+          ]
+        },
+        {
+          "id": "0ed210c5-d5ef-4ee3-84a7-2cfbb350847c",
+          "index": 5,
+          "text": "The traveler stayed and became part of their community, a <b>مَـَٔابٍ</b> (place of return) for him forever.",
+          "linkedWordIds": [
+            "word_02035"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:48:18.908954Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Sharing Food', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "c3e5f6a7-b8c9-d0e1-f2a3-b4c5d6e7f8a9",
+      "title": "The Market Visit",
+      "titleArabic": "زيارة السوق",
+      "storyDescription": "A mother teaches her children about honesty while shopping for food.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_034_The_Market_Visit.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "be25688f-af5f-43fc-8fa8-a62d7eb9ac87",
+          "index": 0,
+          "text": "The mother took her children to the market in <b>ٱلْمَدِينَةِ</b> (the city) to buy fresh food.",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "b4a53270-3ccf-4b11-95f7-f4693b9b62c8",
+          "index": 1,
+          "text": "'Look at the fresh fruits,' she said. 'Allah <b>خَلَقَ</b> (created) everything for us to enjoy.'",
+          "linkedWordIds": [
+            "word_00151"
+          ]
+        },
+        {
+          "id": "3b34f44d-be1b-4a87-8615-2c65f5d6d545",
+          "index": 2,
+          "text": "A seller tried to cheat them, but the mother said firmly, '<b>قُلْ</b> (Say) the truth about your prices.'",
+          "linkedWordIds": [
+            "word_00032"
+          ]
+        },
+        {
+          "id": "af82d721-a468-438f-9800-6db7e115f5c8",
+          "index": 3,
+          "text": "The seller felt ashamed. Those who <b>ءَامَنُوا۟</b> (believe[d]) should always be honest, he remembered.",
+          "linkedWordIds": [
+            "word_00035"
+          ]
+        },
+        {
+          "id": "36154fec-d9a2-4a60-aad0-f74431f87494",
+          "index": 4,
+          "text": "He gave them the fair price. The children learned that honesty is important in all <b>بُيُوتِ</b> (houses) and markets.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "303b1522-b32c-4af1-a39a-cca247754693",
+          "index": 5,
+          "text": "They returned home happy, knowing that <b>يَعْلَمُ</b> (knows) Allah the difference between right and wrong.",
+          "linkedWordIds": [
+            "word_00142"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:48:40.756733Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Market Visit', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "d4f6a7b8-c9d0-e1f2-a3b4-c5d6e7f8a9b0",
+      "title": "Preparing Dinner",
+      "titleArabic": "تحضير العشاء",
+      "storyDescription": "A father teaches his children about mindful eating while preparing a meal.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_035_Preparing_Dinner.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "d673c525-cef6-40c4-aa5b-fdaa2e2b5289",
+          "index": 0,
+          "text": "The father called his children to help prepare dinner. 'What should we <b>يَعْمَلُونَ</b> (they do) first?' they asked.",
+          "linkedWordIds": [
+            "word_00160"
+          ]
+        },
+        {
+          "id": "6d29ee54-9916-4971-adaf-ff718a1486dc",
+          "index": 1,
+          "text": "'We wash our hands and say Bismillah,' he replied. 'Everything we do should begin with Allah's name.'",
+          "linkedWordIds": []
+        },
+        {
+          "id": "2fbaceb4-0a13-4d4e-a68f-2409e20cb60b",
+          "index": 2,
+          "text": "As they cooked, he told them, 'The Quran <b>أُنزِلَ</b> ((is) sent down) to guide us in every aspect of life, even eating.'",
+          "linkedWordIds": [
+            "word_00208"
+          ]
+        },
+        {
+          "id": "c9e39382-9c4a-4b9e-a768-1fc96d8868ca",
+          "index": 3,
+          "text": "The children listened. They <b>يَعْلَمُونَ</b> (they know) now that even simple acts can be worship.",
+          "linkedWordIds": [
+            "word_00106"
+          ]
+        },
+        {
+          "id": "8089507e-146b-46a5-b62d-4bfb95eccc7c",
+          "index": 4,
+          "text": "When guests arrived, the family shared their meal generously, hoping for reward in <b>جَنَّٰتٍ</b> (Gardens) of Paradise.",
+          "linkedWordIds": [
+            "word_00273"
+          ]
+        },
+        {
+          "id": "edd4a0e5-9e55-49c5-981d-61a01b4c028a",
+          "index": 5,
+          "text": "The guests <b>قَالُوا۟</b> (they (will) say), 'May Allah bless this home with abundance and peace.'",
+          "linkedWordIds": [
+            "word_00043"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:56:47.993596Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Preparing Dinner', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "e5f7b8c9-d0e1-f2a3-b4c5-d6e7f8a9b0c1",
+      "title": "The Sweet Dates",
+      "titleArabic": "التمر الحلو",
+      "storyDescription": "A child learns about the blessed fruit of dates and the Prophet's favorite food.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_036_The_Sweet_Dates.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "8f16f4e0-5ef7-4f84-92ee-f3beb6abaaad",
+          "index": 0,
+          "text": "Grandfather brought a basket of fresh dates from <b>ٱلْبِلَٰدِ</b> (the land). The children's eyes lit up with joy.",
+          "linkedWordIds": [
+            "word_02018"
+          ]
+        },
+        {
+          "id": "7ddd17bd-6b5a-4a63-b643-cb0346ccf9c8",
+          "index": 1,
+          "text": "'These are blessed fruits,' he said. 'The Prophet Muhammad loved dates, and so should we.'",
+          "linkedWordIds": []
+        },
+        {
+          "id": "e4e49e39-fbce-4998-86e3-a9f3e7ab8bfc",
+          "index": 2,
+          "text": "Little Fatima asked, 'Why are they special?' Grandfather smiled and began to explain.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "e2967e92-6e60-467e-8811-0226406cd66b",
+          "index": 3,
+          "text": "'<b>يَهْدِى</b> (He guides) us to good things,' he said. 'Allah provides what is best for His believers.'",
+          "linkedWordIds": [
+            "word_00256"
+          ]
+        },
+        {
+          "id": "ae99e3c0-8c2a-48d7-a2ea-b9b780921bbe",
+          "index": 4,
+          "text": "The children ate the sweet dates, grateful for the blessings. They <b>ءَامَنُوٓا۟</b> (believe[d]) in Allah's mercy.",
+          "linkedWordIds": [
+            "word_00237"
+          ]
+        },
+        {
+          "id": "8798d7b9-11a4-4cb6-88d2-8077c5ae3ad6",
+          "index": 5,
+          "text": "They saved some to share with neighbors, hoping to enter <b>جَنَّٰتٌ</b> (Gardens) through good deeds.",
+          "linkedWordIds": [
+            "word_02026"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:56:48.498759Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Sweet Dates', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "f6a8c9d0-e1f2-a3b4-c5d6-e7f8a9b0c1d2",
+      "title": "Eating Together",
+      "titleArabic": "الأكل معاً",
+      "storyDescription": "A community meal brings people together and teaches about unity.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_037_Eating_Together.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "fca0a39b-3c8f-43c6-a663-9f8ceb73aed5",
+          "index": 0,
+          "text": "The community gathered in the main hall of <b>ٱلْبَيْتِ</b> (the House) for a shared meal. Everyone brought something.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "87adda5f-4349-4983-a175-e7ae6e3ce3eb",
+          "index": 1,
+          "text": "The elder stood up and <b>قَالُوٓا۟</b> (they say), 'Eating together strengthens our bonds as believers.'",
+          "linkedWordIds": [
+            "word_00117"
+          ]
+        },
+        {
+          "id": "133f9f7d-50fe-4999-a62f-1b4f6eae45f6",
+          "index": 2,
+          "text": "People from all <b>بُيُوتِ</b> (houses) came—rich and poor, young and old. Everyone was welcome.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "2f1e000d-1920-44aa-a4bf-d2d74ba0895a",
+          "index": 3,
+          "text": "'We <b>يُؤْمِنُونَ</b> (believe) that sharing food brings barakah,' said one of the organizers.",
+          "linkedWordIds": [
+            "word_00092"
+          ]
+        },
+        {
+          "id": "85ee83e8-b6a9-458d-9594-c7daac70bb49",
+          "index": 4,
+          "text": "A poor man who had not eaten in days was treated like a king. The people showed him true Islamic hospitality.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "4eb1ca9b-7037-4510-92b4-2c92afc01f59",
+          "index": 5,
+          "text": "He thanked them, and <b>يَقُولُونَ</b> (they say), 'This is what our religion teaches us—to love one another.'",
+          "linkedWordIds": [
+            "word_00182"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:56:49.003996Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Eating Together', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "a7b9d0e1-f2a3-b4c5-d6e7-f8a9b0c1d2e3",
+      "title": "The Bread Maker",
+      "titleArabic": "صانع الخبز",
+      "storyDescription": "A baker teaches children about honest work and providing for others.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_038_The_Bread_Maker.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "41545993-5ee4-40cf-bccc-d2f7093ba939",
+          "index": 0,
+          "text": "Every morning, the baker made fresh bread for <b>ٱلْمَدِينَةِ</b> (the city). His work was honest and pure.",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "4e58cc9e-f7e6-4226-bd0b-1e117c4cecfc",
+          "index": 1,
+          "text": "Children watched him work. 'What <b>تَعْمَلُونَ</b> (you do) is important,' one child said. 'You feed so many people.'",
+          "linkedWordIds": [
+            "word_00099"
+          ]
+        },
+        {
+          "id": "ac27abbc-b0c1-4f18-a9dc-2a43c265eeb1",
+          "index": 2,
+          "text": "The baker smiled. 'Allah <b>خَلَقَ</b> (created) the wheat, the water, and the fire. I am just His instrument.'",
+          "linkedWordIds": [
+            "word_00151"
+          ]
+        },
+        {
+          "id": "1611da5a-5e5d-4a6b-8aa2-899a0f61d11e",
+          "index": 3,
+          "text": "He gave free bread to the poor. 'We should <b>وَعَمِلُوا۟</b> (and do) good always,' he told the children.",
+          "linkedWordIds": [
+            "word_00174"
+          ]
+        },
+        {
+          "id": "e2ede4e4-7ef7-416b-b83b-6505fe86a11c",
+          "index": 4,
+          "text": "The children learned a valuable lesson. Honest work that helps others is a form of worship.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "1a0360aa-ebd1-4dce-904d-bcfa35a67ead",
+          "index": 5,
+          "text": "They left with bread in their hands and gratitude in their hearts, knowing <b>يَعْلَمُ</b> (knows) Allah their intentions.",
+          "linkedWordIds": [
+            "word_00142"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:56:49.510033Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Bread Maker', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "b8c0e1f2-a3b4-c5d6-e7f8-a9b0c1d2e3f4",
+      "title": "A Healthy Meal",
+      "titleArabic": "وجبة صحية",
+      "storyDescription": "A doctor teaches a family about eating healthy food and taking care of the body.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 4,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level4",
+        "food"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_039_A_Healthy_Meal.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "c647aec0-8f9b-452f-b0d7-c85cdd13bfdb",
+          "index": 0,
+          "text": "A doctor visited <b>بُيُوتِ</b> (houses) in the neighborhood to teach about healthy eating habits.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "8c7bf61a-6566-4987-bfb6-96201894350c",
+          "index": 1,
+          "text": "'<b>قُل</b> (Say) no to too much sugar,' he advised. 'Your body is a trust from Allah that you must protect.'",
+          "linkedWordIds": [
+            "word_00216"
+          ]
+        },
+        {
+          "id": "c07c815c-3be2-47c1-9ddf-a54ba1b9a4f2",
+          "index": 2,
+          "text": "The family asked questions. '<b>تَعْلَمُونَ</b> ([you] know) that what we eat affects how we worship?' he asked.",
+          "linkedWordIds": [
+            "word_00167"
+          ]
+        },
+        {
+          "id": "31ce6b71-3116-4d7a-804f-cada41d835e5",
+          "index": 3,
+          "text": "They nodded. A healthy body can pray better, think clearer, and serve others more effectively.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "570dc54e-7123-4ab1-9fee-5941e83b9ed1",
+          "index": 4,
+          "text": "'Allah <b>خَلَقَ</b> (created) natural foods for our benefit—fruits, vegetables, grains. Eat from what is pure.'",
+          "linkedWordIds": [
+            "word_00151"
+          ]
+        },
+        {
+          "id": "1ffaec8b-4c93-4e0e-afa4-9afcc1d6dbd9",
+          "index": 5,
+          "text": "The family promised to eat healthier, grateful for the guidance that came from <b>ٱلسَّمَٰوَٰتُ</b> (the heavens) above.",
+          "linkedWordIds": [
+            "word_01387"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:28:10Z",
+      "updatedAt": "2026-02-26T01:56:50.011488Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'A Healthy Meal', Food & Eating theme, warm family atmosphere, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, warm appetizing colors"
+    },
+    {
+      "id": "c5d6e7f8-a9b0-c1d2-e3f4-a5b6c7d8e9f0",
+      "title": "The Morning Routine",
+      "titleArabic": "روتين الصباح",
+      "storyDescription": "A family starts their day with prayer, gratitude, and good deeds.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_040_The_Morning_Routine.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "e236f84b-2183-4ade-9e6f-2991e1d19a4b",
+          "index": 0,
+          "text": "Every morning, the father would <b>يَقُولُ</b> (say) to his children, 'Begin your day with gratitude to Allah.'",
+          "linkedWordIds": [
+            "word_00289"
+          ]
+        },
+        {
+          "id": "ef07be3a-34d0-42e9-a46e-c7872697382e",
+          "index": 1,
+          "text": "The children woke up and washed their faces. They remembered that Allah <b>خَلَقْنَا</b> (We created) them perfectly.",
+          "linkedWordIds": [
+            "word_00556"
+          ]
+        },
+        {
+          "id": "583aaf6c-9d03-412e-bce5-0f5d2712d3c8",
+          "index": 2,
+          "text": "'<b>ءَامَنَّا</b> (We believed) in Allah,' they whispered as they prayed. 'Guide us on <b>صِرَٰطِ</b> (the Path) straight.'",
+          "linkedWordIds": [
+            "word_00316",
+            "word_01948"
+          ]
+        },
+        {
+          "id": "cda53de1-68bd-4140-b309-653d2d6c920b",
+          "index": 3,
+          "text": "After prayer, they ate breakfast together. '<b>كُلُوا۟</b> (Eat) what is good and pure,' their mother reminded them.",
+          "linkedWordIds": [
+            "word_00624"
+          ]
+        },
+        {
+          "id": "7fb09188-10f6-41dd-af76-0516d8cdd650",
+          "index": 4,
+          "text": "They left <b>ٱلْبَيْتِ</b> (the House) ready for the day. Each member had good deeds planned.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "06e5c536-80bd-4529-a13a-b95b323fd909",
+          "index": 5,
+          "text": "The father smiled, knowing they <b>أَحْسَنَ</b> (did good) by starting their day right.",
+          "linkedWordIds": [
+            "word_00653"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:02.086058Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'The Morning Routine', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "d6e7f8a9-b0c1-d2e3-f4a5-b6c7d8e9f0a1",
+      "title": "Helping Others",
+      "titleArabic": "مساعدة الآخرين",
+      "storyDescription": "Children learn that helping neighbors is a form of worship.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_041_Helping_Others.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "f074ab13-50fd-45de-a4d6-a146b1fda5db",
+          "index": 0,
+          "text": "Omar saw his elderly neighbor struggling to carry groceries. He ran to help immediately.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "046177e3-8dd7-4614-9fba-1aeb4d3c6b63",
+          "index": 1,
+          "text": "'<b>قُلِ</b> (Say) Jazakallah Khair,' the old man said gratefully. 'May Allah reward you.'",
+          "linkedWordIds": [
+            "word_00331"
+          ]
+        },
+        {
+          "id": "2961b99b-8c46-4764-b3e2-2f0ce107f9fd",
+          "index": 2,
+          "text": "Omar smiled. 'We <b>ءَامَنَّا</b> (We believed) that serving others is serving Allah,' he replied.",
+          "linkedWordIds": [
+            "word_00316"
+          ]
+        },
+        {
+          "id": "e2465162-2f90-4cff-9aa6-e2b7995e7aa5",
+          "index": 3,
+          "text": "His friends watched and learned. They decided to <b>يَفْعَلُونَ</b> ((to) doing (it)) the same for others.",
+          "linkedWordIds": [
+            "word_00754"
+          ]
+        },
+        {
+          "id": "7177c5a7-d61f-455b-9536-62f4a4720578",
+          "index": 4,
+          "text": "Soon, the whole <b>ٱلْمَدِينَةِ</b> (the city) was helping one another. Kindness spread everywhere.",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "253c127a-a896-4526-bb93-2e1de91dc7ab",
+          "index": 5,
+          "text": "The people <b>وَيَقُولُونَ</b> (And they say), 'This is the true teaching of our faith—love for all.'",
+          "linkedWordIds": [
+            "word_00342"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:06.140599Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Helping Others', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "e7f8a9b0-c1d2-e3f4-a5b6-c7d8e9f0a1b2",
+      "title": "Working Hard",
+      "titleArabic": "العمل الجاد",
+      "storyDescription": "A young man learns the value of honest work and righteousness.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_042_Working_Hard.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "62ef8041-e979-4d4e-93fb-f330ed0a2151",
+          "index": 0,
+          "text": "Khalid wanted to earn money to help his family. He searched for honest work in <b>ٱلْمَدِينَةِ</b> (the city).",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "2b4abc97-192b-47d6-9406-d3ec69fa4a4d",
+          "index": 1,
+          "text": "A shopkeeper agreed to hire him. 'Work hard and be honest,' he advised. 'Allah <b>أُوتِىَ</b> (was given) you strength.'",
+          "linkedWordIds": [
+            "word_00713"
+          ]
+        },
+        {
+          "id": "d7a51eaa-94f2-47a4-9e2d-4dff71ca09a4",
+          "index": 2,
+          "text": "Khalid <b>ءَامَنَ</b> (believed) in the value of hard work. He arrived early and stayed late every day.",
+          "linkedWordIds": [
+            "word_00379"
+          ]
+        },
+        {
+          "id": "b7d0a7ef-6555-4805-9656-cd00b8c56095",
+          "index": 3,
+          "text": "His boss noticed his dedication. '<b>تَتَّقُونَ</b> (become righteous) through honest labor,' he told Khalid.",
+          "linkedWordIds": [
+            "word_00521"
+          ]
+        },
+        {
+          "id": "6fe3d914-e166-4c45-9bff-497643e393fb",
+          "index": 4,
+          "text": "Soon, Khalid <b>أُوتُوا۟</b> (were given) a promotion. His hard work paid off, and his family was proud.",
+          "linkedWordIds": [
+            "word_00324"
+          ]
+        },
+        {
+          "id": "163d8450-d81a-48d7-9407-cdee3a6ecf6d",
+          "index": 5,
+          "text": "He continued to <b>يَتَّقُونَ</b> ((become) righteous) through his work, inspiring others in the community.",
+          "linkedWordIds": [
+            "word_00552"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:10.380100Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Working Hard', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "f8a9b0c1-d2e3-f4a5-b6c7-d8e9f0a1b2c3",
+      "title": "A Day of Learning",
+      "titleArabic": "يوم من التعلم",
+      "storyDescription": "Students learn that seeking knowledge is a lifelong journey.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_043_A_Day_of_Learning.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "6c08782c-58b8-4afa-85ab-21742768844e",
+          "index": 0,
+          "text": "The students gathered in <b>ٱلْبَيْتِ</b> (the House) of knowledge, eager to learn from their teacher.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "bc972a2d-9682-4932-ab79-8e5df49b154b",
+          "index": 1,
+          "text": "'<b>وَٱعْلَمُوٓا۟</b> (and know) that knowledge is light,' the teacher said. 'It guides us in darkness.'",
+          "linkedWordIds": [
+            "word_00532"
+          ]
+        },
+        {
+          "id": "31f7ae47-bd7a-4b34-858e-ed800825ccd0",
+          "index": 2,
+          "text": "A student raised his hand. 'How do we <b>تَعْلَمُونَ</b> ([you] know) what is true?' he asked sincerely.",
+          "linkedWordIds": [
+            "word_00167"
+          ]
+        },
+        {
+          "id": "b610eb02-898a-4b7d-9b75-d9aab2d44a8b",
+          "index": 3,
+          "text": "The teacher smiled. 'Through reflection and sincerity. Allah <b>أَدْرَىٰكَ</b> (will make you know) what is right.'",
+          "linkedWordIds": [
+            "word_00741"
+          ]
+        },
+        {
+          "id": "ee725492-6ca7-4fe9-a27e-9cf9a1c86d37",
+          "index": 4,
+          "text": "The students listened carefully. They <b>يُؤْمِنُ</b> (believes) that learning brings them closer to Allah.",
+          "linkedWordIds": [
+            "word_00529"
+          ]
+        },
+        {
+          "id": "c94d302b-c57f-46c7-b3a8-b9fbaf8e3987",
+          "index": 5,
+          "text": "They left with full hearts, ready to practice what they learned and share it with <b>قَوْمِهِۦ</b> (his people).",
+          "linkedWordIds": [
+            "word_00528"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:14.578318Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'A Day of Learning', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4",
+      "title": "Walking Together",
+      "titleArabic": "المشي معاً",
+      "storyDescription": "Friends walking to the mosque learn about companionship and righteousness.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_044_Walking_Together.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "ed4dcee1-df71-4a6e-996c-af272bede91d",
+          "index": 0,
+          "text": "Every evening, the friends walked together to <b>ٱلْبَيْتِ</b> (the House) of Allah. Their steps were full of purpose.",
+          "linkedWordIds": [
+            "word_01273"
+          ]
+        },
+        {
+          "id": "1f4d1c3e-1cbe-43f6-8623-8e4cb7146875",
+          "index": 1,
+          "text": "One friend <b>يَقُولُ</b> (say), 'The Prophet taught us that walking to prayer brings great rewards.'",
+          "linkedWordIds": [
+            "word_00289"
+          ]
+        },
+        {
+          "id": "6795d84a-e297-4065-a238-3cd23bb1b4bb",
+          "index": 2,
+          "text": "They passed through <b>ٱلْمَدِينَةِ</b> (the city) streets, greeting everyone they met with smiles and peace.",
+          "linkedWordIds": [
+            "word_00727"
+          ]
+        },
+        {
+          "id": "5f90a6e1-155f-4671-ba05-488b6320bd18",
+          "index": 3,
+          "text": "'<b>ءَامَنَّا</b> (We believed) in the power of good company,' another friend added. 'We strengthen each other.'",
+          "linkedWordIds": [
+            "word_00316"
+          ]
+        },
+        {
+          "id": "28a92f5e-5b83-4ce7-aee5-9ee365d3d91f",
+          "index": 4,
+          "text": "They reminded each other to <b>تَتَّقُونَ</b> (become righteous) and avoid the <b>صِرَٰطٌ</b> ((is) the path) of evil.",
+          "linkedWordIds": [
+            "word_00521",
+            "word_01617"
+          ]
+        },
+        {
+          "id": "2524bae8-8f6c-49fe-a297-dcab178a8567",
+          "index": 5,
+          "text": "Together they entered the mosque, grateful for friendship that brings them closer to Allah.",
+          "linkedWordIds": []
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:18.743945Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Walking Together', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "b0c1d2e3-f4a5-b6c7-d8e9-f0a1b2c3d4e5",
+      "title": "Speaking Kindly",
+      "titleArabic": "التكلم بلطف",
+      "storyDescription": "A child learns the power of kind words and good speech.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_045_Speaking_Kindly.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "e3149645-5836-430a-8828-35509ad148c5",
+          "index": 0,
+          "text": "Little Aisha learned that words can heal or hurt. Her grandmother taught her to speak with care.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "9c2468ba-54be-4787-b98b-a960d0fd7b43",
+          "index": 1,
+          "text": "'<b>قُلِ</b> (Say) good words or remain silent,' grandmother advised. 'The tongue is powerful.'",
+          "linkedWordIds": [
+            "word_00331"
+          ]
+        },
+        {
+          "id": "bb0809aa-bcf5-40f3-8948-4f876aff1afb",
+          "index": 2,
+          "text": "Aisha practiced every day. When her brother was sad, she <b>تَقُولُوا۟</b> (say) words of comfort to him.",
+          "linkedWordIds": [
+            "word_00753"
+          ]
+        },
+        {
+          "id": "6275dc83-11a0-4532-b3a8-917eaa1a15e0",
+          "index": 3,
+          "text": "Her friends noticed her kindness. '<b>وَيَقُولُونَ</b> (And they say), 'How did you become so gentle?' they asked.",
+          "linkedWordIds": [
+            "word_00342"
+          ]
+        },
+        {
+          "id": "db11f22b-96dd-4786-a229-fbf4770854be",
+          "index": 4,
+          "text": "'I <b>ءَامَنَ</b> (believed) that Allah loves kind speech,' she explained. 'So I try to please Him.'",
+          "linkedWordIds": [
+            "word_00379"
+          ]
+        },
+        {
+          "id": "8c817a80-64a0-4cbc-85ed-395ab639ed06",
+          "index": 5,
+          "text": "Soon, the whole family spoke more kindly to one another, creating a peaceful home like <b>ٱلْمِهَادُ</b> ([the] resting-place).",
+          "linkedWordIds": [
+            "word_01910"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:30.705062Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Speaking Kindly', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "c1d2e3f4-a5b6-c7d8-e9f0-a1b2c3d4e5f6",
+      "title": "Reading Time",
+      "titleArabic": "وقت القراءة",
+      "storyDescription": "A family establishes the habit of reading Quran together every evening.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_046_Reading_Time.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "319247e5-40b1-44d8-98d6-e21923772f6d",
+          "index": 0,
+          "text": "After dinner, the family gathered in their <b>بُيُوتِ</b> (houses) to read the Book of Allah together.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "05a6534e-77d2-492b-bc3c-007869cbe3d6",
+          "index": 1,
+          "text": "The father would <b>يَقُولُ</b> (say), 'Let us understand what Allah is teaching us tonight.'",
+          "linkedWordIds": [
+            "word_00289"
+          ]
+        },
+        {
+          "id": "d7e520c3-7ff8-40ad-81fa-09f5f47c1f64",
+          "index": 2,
+          "text": "The children <b>ءَامَنَّا</b> (We believed) in the power of the Quran. They listened with open hearts.",
+          "linkedWordIds": [
+            "word_00316"
+          ]
+        },
+        {
+          "id": "45013074-4a9c-4f88-8e34-ccca7a8e9fed",
+          "index": 3,
+          "text": "'<b>وَٱعْلَمُوٓا۟</b> (and know) that each verse is a mercy,' the mother explained gently.",
+          "linkedWordIds": [
+            "word_00532"
+          ]
+        },
+        {
+          "id": "01660608-296a-4334-97b9-0ad1a5e81e23",
+          "index": 4,
+          "text": "They discussed the meanings and how to apply them. They <b>أَحْسَنَ</b> (did good) by learning together.",
+          "linkedWordIds": [
+            "word_00653"
+          ]
+        },
+        {
+          "id": "82df8aaf-2b77-4bb4-bda2-88dcdcbed423",
+          "index": 5,
+          "text": "The Quran became their guide on <b>صِرَٰطِ</b> (the Path), leading them to righteousness and peace.",
+          "linkedWordIds": [
+            "word_01948"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:35.263948Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Reading Time', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "d2e3f4a5-b6c7-d8e9-f0a1-b2c3d4e5f6a7",
+      "title": "Writing Letters",
+      "titleArabic": "كتابة الرسائل",
+      "storyDescription": "A child learns to write by sending letters to family members with good wishes.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_047_Writing_Letters.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "e3955da5-0613-4858-bd6e-135903c71016",
+          "index": 0,
+          "text": "Yusuf wanted to practice writing. His mother suggested he write letters to his grandparents.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "4199335f-73b3-4f8e-8733-ae01d1d6b0ff",
+          "index": 1,
+          "text": "'<b>قُل</b> (Say) Bismillah before you begin,' she reminded him. 'Every good deed starts with Allah's name.'",
+          "linkedWordIds": [
+            "word_00216"
+          ]
+        },
+        {
+          "id": "15e81dc6-b872-4007-ac95-6d11f815acca",
+          "index": 2,
+          "text": "Yusuf wrote carefully. He <b>تَقُولُوا۟</b> (say) kind words and asked about their health and happiness.",
+          "linkedWordIds": [
+            "word_00753"
+          ]
+        },
+        {
+          "id": "1c20bf6f-5e4b-44dc-a46b-66d22e9bdd53",
+          "index": 3,
+          "text": "When his grandparents received the letter, they <b>وَيَقُولُونَ</b> (And they say), 'What a thoughtful grandson we have!'",
+          "linkedWordIds": [
+            "word_00342"
+          ]
+        },
+        {
+          "id": "73067e69-a7a0-4c8b-921b-98d3d00c90f0",
+          "index": 4,
+          "text": "Yusuf <b>أُوتِىَ</b> (was given) praise and love. He learned that written words can bring joy across distances.",
+          "linkedWordIds": [
+            "word_00713"
+          ]
+        },
+        {
+          "id": "c8c91e50-7b32-410c-8766-236cb7018fd2",
+          "index": 5,
+          "text": "He continued writing regularly, keeping family bonds strong, knowing <b>لَا</b> (no) effort in goodness is wasted.",
+          "linkedWordIds": [
+            "word_00007"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:57:59.225627Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Writing Letters', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8",
+      "title": "Playing Fair",
+      "titleArabic": "اللعب النظيف",
+      "storyDescription": "Children learn about honesty and fairness while playing games together.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_048_Playing_Fair.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "cebac798-7bc6-43f1-8e92-80d1df380731",
+          "index": 0,
+          "text": "The children played in the park near their <b>بُيُوتِ</b> (houses). They competed in a friendly race.",
+          "linkedWordIds": [
+            "word_01287"
+          ]
+        },
+        {
+          "id": "15716017-6281-4bfd-9869-447968ae504a",
+          "index": 1,
+          "text": "One boy wanted to cheat to win. But his friend <b>يَقُولُ</b> (say), 'Remember, Allah sees all we do.'",
+          "linkedWordIds": [
+            "word_00289"
+          ]
+        },
+        {
+          "id": "90b17095-b9d7-44f1-8e49-d05a146776bf",
+          "index": 2,
+          "text": "The boy stopped himself. He <b>ءَامَنَ</b> (believed) that honesty was more important than winning.",
+          "linkedWordIds": [
+            "word_00379"
+          ]
+        },
+        {
+          "id": "702d3021-e2cb-49e4-81bc-89ac7151e659",
+          "index": 3,
+          "text": "The other children noticed his fairness. They <b>وَيَقُولُونَ</b> (And they say), 'You are a true friend.'",
+          "linkedWordIds": [
+            "word_00342"
+          ]
+        },
+        {
+          "id": "f5d76144-456b-4aa1-a2ee-863bdf514383",
+          "index": 4,
+          "text": "They all decided to <b>يَفْعَلُونَ</b> ((to) doing (it)) right by playing fairly and supporting each other.",
+          "linkedWordIds": [
+            "word_00754"
+          ]
+        },
+        {
+          "id": "f8f1bef6-11e9-4a08-82b5-17d6cf604195",
+          "index": 5,
+          "text": "Their games became more enjoyable. They <b>أَحْسَنَ</b> (did good) by choosing honesty over victory.",
+          "linkedWordIds": [
+            "word_00653"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:58:21.341671Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Playing Fair', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
+    },
+    {
+      "id": "f4a5b6c7-d8e9-f0a1-b2c3-d4e5f6a7b8c9",
+      "title": "Daily Prayers",
+      "titleArabic": "الصلوات اليومية",
+      "storyDescription": "A young person learns to establish regular prayers as a daily habit.",
+      "author": "Arabicly",
+      "format": "mixed",
+      "difficultyLevel": 5,
+      "category": "general",
+      "tags": [
+        "beginner",
+        "level5",
+        "daily_actions"
+      ],
+      "coverImageURL": "https://storage.googleapis.com/arabicstories-82611.firebasestorage.app/story_covers/story_049_Daily_Prayers.png",
+      "audioNarrationURL": null,
+      "segments": null,
+      "mixedSegments": [
+        {
+          "id": "93b38869-9b75-4bd6-b934-8e6dc3c32270",
+          "index": 0,
+          "text": "Ali wanted to be consistent with his five daily prayers. He asked his father for advice.",
+          "linkedWordIds": []
+        },
+        {
+          "id": "f52f1346-61d9-43ca-9f00-f5d05febc8a5",
+          "index": 1,
+          "text": "'<b>قُلِ</b> (Say) the adhan when it is time,' his father advised. 'Make prayer your priority, not an afterthought.'",
+          "linkedWordIds": [
+            "word_00331"
+          ]
+        },
+        {
+          "id": "a89267c9-2a5e-4351-a0cb-afbf87f6e79f",
+          "index": 2,
+          "text": "Ali <b>ءَامَنَ</b> (believed) that prayer was his connection to Allah. He set reminders for himself.",
+          "linkedWordIds": [
+            "word_00379"
+          ]
+        },
+        {
+          "id": "2bdd557c-114b-4f19-b751-722dab15fedf",
+          "index": 3,
+          "text": "He would <b>يَقُولُ</b> (say) to himself, 'This is my appointment with my Lord. Nothing is more important.'",
+          "linkedWordIds": [
+            "word_00289"
+          ]
+        },
+        {
+          "id": "978f311a-20e3-499e-b60b-7a1978c38e67",
+          "index": 4,
+          "text": "His family was proud. '<b>ءَامَنَّا</b> (We believed) that you will grow into a righteous person,' they told him.",
+          "linkedWordIds": [
+            "word_00316"
+          ]
+        },
+        {
+          "id": "9cc55796-c80d-4415-a497-9c76727d8c6d",
+          "index": 5,
+          "text": "Prayer became his anchor, keeping him on <b>صِرَٰطٌ</b> ((is) the path) straight and true, day after day.",
+          "linkedWordIds": [
+            "word_01617"
+          ]
+        }
+      ],
+      "storyDescriptionArabic": null,
+      "grammarNotes": null,
+      "isUserCreated": false,
+      "isDownloaded": false,
+      "downloadDate": null,
+      "sourceURL": null,
+      "createdAt": "2026-02-26T01:30:46Z",
+      "updatedAt": "2026-02-26T01:58:49.858287Z",
+      "readingProgress": 0.0,
+      "currentSegmentIndex": 0,
+      "isBookmarked": false,
+      "totalReadingTime": 0,
+      "viewCount": 0,
+      "completionCount": 0,
+      "imagePrompt": "Children's book illustration scene for 'Daily Prayers', Daily Actions theme, people engaged in daily activities, vertical portrait, 3:4 aspect ratio, NO TEXT, no words, no letters, no white borders, full scene edge to edge, bright day colors"
     }
   ]
 }

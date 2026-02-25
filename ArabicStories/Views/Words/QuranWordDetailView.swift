@@ -6,10 +6,12 @@
 
 import SwiftUI
 import AVFoundation
+import Combine
 
 struct QuranWordDetailView: View {
     let word: QuranWord
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var ttsManager = TTSManager()
     
     var body: some View {
         NavigationStack {
@@ -54,10 +56,26 @@ struct QuranWordDetailView: View {
     // MARK: - Header Card
     private var headerCard: some View {
         VStack(spacing: 12) {
-            // Arabic Text
-            Text(word.arabicText)
-                .font(.system(size: 48, weight: .bold, design: .serif))
-                .multilineTextAlignment(.center)
+            // Arabic Text with TTS Button
+            HStack(spacing: 16) {
+                // TTS Button
+                Button(action: {
+                    ttsManager.speak(word.arabicText)
+                }) {
+                    Image(systemName: ttsManager.isSpeaking ? "waveform" : "speaker.wave.2.fill")
+                        .font(.title2)
+                        .foregroundColor(.accentColor)
+                        .frame(width: 44, height: 44)
+                        .background(Color.accentColor.opacity(0.1))
+                        .clipShape(Circle())
+                }
+                .disabled(ttsManager.isSpeaking)
+                
+                // Arabic Text
+                Text(word.arabicText)
+                    .font(.system(size: 48, weight: .bold, design: .serif))
+                    .multilineTextAlignment(.center)
+            }
             
             // English Meaning
             Text(word.englishMeaning)
@@ -392,6 +410,47 @@ struct AudioPlayerView: View {
                 player = nil
             }
         }
+    }
+}
+
+// MARK: - TTS Manager
+class TTSManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
+    private let synthesizer = AVSpeechSynthesizer()
+    @Published var isSpeaking = false
+    
+    override init() {
+        super.init()
+        synthesizer.delegate = self
+    }
+    
+    func speak(_ text: String) {
+        // Stop any current speech
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
+        
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ar-SA") // Saudi Arabic voice
+        utterance.rate = 0.4 // Slower rate for better clarity
+        utterance.pitchMultiplier = 1.0
+        utterance.volume = 1.0
+        
+        isSpeaking = true
+        synthesizer.speak(utterance)
+    }
+    
+    func stop() {
+        synthesizer.stopSpeaking(at: .immediate)
+        isSpeaking = false
+    }
+    
+    // MARK: - AVSpeechSynthesizerDelegate
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        isSpeaking = false
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        isSpeaking = false
     }
 }
 

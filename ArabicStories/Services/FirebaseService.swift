@@ -549,7 +549,7 @@ class FirebaseService {
             jsonDict["format"] = "bilingual"
         }
         
-        // Convert mixed segments (Level 1 format) - simplified: just text and linkedWordIds
+        // Convert mixed segments (Level 1 format) - text only, words found dynamically
         if let mixedSegments = data["mixedSegments"] as? [[String: Any]] {
             jsonDict["mixedSegments"] = mixedSegments.enumerated().map { index, segment -> [String: Any] in
                 var seg = segment
@@ -569,10 +569,7 @@ class FirebaseService {
                     seg["text"] = seg["content"] as? String ?? ""
                 }
                 
-                // Handle linkedWordIds (Arabic words linked by admin)
-                if seg["linkedWordIds"] == nil {
-                    seg["linkedWordIds"] = []
-                }
+                // Note: linkedWordIds removed - words are found dynamically from text
                 
                 return seg
             }

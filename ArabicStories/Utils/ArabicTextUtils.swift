@@ -113,20 +113,33 @@ enum ArabicTextUtils {
     
     // MARK: - Word Matching
     
-    /// Check if two Arabic words match (with normalization)
+    /// Check if two Arabic words match
+    /// First tries exact match (with diacritics), then light normalization, then full normalization
+    /// NOTE: No partial/containment matching to avoid false matches like "وَلَا" matching "لَا"
     static func wordsMatch(_ word1: String, _ word2: String) -> Bool {
+        // 1. Try exact match first (preserves all diacritics)
+        if word1 == word2 {
+            return true
+        }
+        
+        // 2. Try light normalization (strip diacritics only, keep letter forms)
+        let light1 = lightNormalize(word1)
+        let light2 = lightNormalize(word2)
+        if light1 == light2 {
+            return true
+        }
+        
+        // 3. Try full normalization (strip diacritics + normalize letters)
         let normalized1 = normalizeForMatching(word1)
         let normalized2 = normalizeForMatching(word2)
         
-        // Exact match
         if normalized1 == normalized2 {
             return true
         }
         
-        // One contains the other (for partial matches)
-        if normalized1.contains(normalized2) || normalized2.contains(normalized1) {
-            return true
-        }
+        // NOTE: Removed partial/containment matching to prevent issues like:
+        // "وَلَا" (wala) matching "لَا" (la)
+        // "إِنَّ" (inna) matching "إِن" (in)
         
         return false
     }

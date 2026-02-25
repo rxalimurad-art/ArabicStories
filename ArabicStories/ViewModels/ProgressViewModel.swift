@@ -125,13 +125,13 @@ class ProgressViewModel {
                 let isToday = calendar.isDate(date, inSameDayAs: today)
                 
                 // Get minutes for this day from weeklyStudyMinutes
+                // weeklyStudyMinutes stores: [oldest (6 days ago), ..., today (index 6)]
+                // For a given date, calculate days from today (positive = future, negative = past)
                 var minutes = 0
-                let daysDiff = calendar.dateComponents([.day], from: date, to: today).day ?? 0
-                if daysDiff >= 0 && daysDiff < progress.weeklyStudyMinutes.count {
-                    let index = progress.weeklyStudyMinutes.count - 1 - daysDiff
-                    if index >= 0 && index < progress.weeklyStudyMinutes.count {
-                        minutes = progress.weeklyStudyMinutes[index]
-                    }
+                let daysFromToday = calendar.dateComponents([.day], from: today, to: date).day ?? 0
+                let index = progress.weeklyStudyMinutes.count - 1 + daysFromToday
+                if index >= 0 && index < progress.weeklyStudyMinutes.count {
+                    minutes = progress.weeklyStudyMinutes[index]
                 }
                 
                 data.append(StudyDayData(day: dayName, minutes: minutes, isToday: isToday))

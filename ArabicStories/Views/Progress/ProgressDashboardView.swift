@@ -168,6 +168,12 @@ struct QuickStatCard: View {
 struct QuranCoverageCard: View {
     var viewModel: ProgressViewModel
     
+    // Calculate occurrence coverage percentage (how much of Quran text is understood)
+    private var occurrenceCoveragePercentage: Double {
+        guard let stats = viewModel.quranStats, stats.totalTokens > 0 else { return 0 }
+        return Double(viewModel.totalOccurrencesLearned) / Double(stats.totalTokens) * 100
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
@@ -188,8 +194,8 @@ struct QuranCoverageCard: View {
                 
                 Spacer()
                 
-                // Percentage Badge
-                Text(String(format: "%.1f%%", viewModel.quranCompletionPercentage))
+                // Percentage Badge (shows occurrence coverage)
+                Text(String(format: "%.1f%%", occurrenceCoveragePercentage))
                     .font(.title3.weight(.bold))
                     .foregroundStyle(Color.hikayaTeal)
                     .padding(.horizontal, 12)
@@ -198,13 +204,15 @@ struct QuranCoverageCard: View {
                     .clipShape(Capsule())
             }
             
-            // Progress Bar
+            // Progress Bar with Occurrence Coverage Percentage
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
+                    // Background
                     RoundedRectangle(cornerRadius: 6)
                         .fill(Color(.systemGray5))
-                        .frame(height: 12)
+                        .frame(height: 20)
                     
+                    // Progress fill based on occurrence coverage
                     RoundedRectangle(cornerRadius: 6)
                         .fill(
                             LinearGradient(
@@ -213,10 +221,16 @@ struct QuranCoverageCard: View {
                                 endPoint: .trailing
                             )
                         )
-                        .frame(width: geometry.size.width * min(viewModel.quranCompletionPercentage / 100.0, 1.0), height: 12)
+                        .frame(width: geometry.size.width * min(occurrenceCoveragePercentage / 100.0, 1.0), height: 20)
+                    
+                    // Percentage text centered on the bar
+                    Text("\(String(format: "%.1f%%", occurrenceCoveragePercentage))")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(occurrenceCoveragePercentage > 5 ? .white : .primary)
+                        .frame(width: geometry.size.width, alignment: .center)
                 }
             }
-            .frame(height: 12)
+            .frame(height: 20)
             
             // Statistics Grid
             HStack(spacing: 16) {
@@ -257,15 +271,12 @@ struct QuranCoverageCard: View {
             
             // Info Text
             if viewModel.totalOccurrencesLearned > 0, let stats = viewModel.quranStats {
-                let totalOccurrences = stats.totalTokens
-                let coveragePercentage = Double(viewModel.totalOccurrencesLearned) / Double(totalOccurrences) * 100
-                
                 HStack(spacing: 4) {
                     Image(systemName: "info.circle.fill")
                         .font(.caption)
                         .foregroundStyle(Color.hikayaTeal.opacity(0.7))
                     
-                    Text("You can understand ~\(String(format: "%.1f%%", coveragePercentage)) of Quran text")
+                    Text("You can understand ~\(String(format: "%.1f%%", occurrenceCoveragePercentage)) of Quran text")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

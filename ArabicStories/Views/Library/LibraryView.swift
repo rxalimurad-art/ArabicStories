@@ -392,7 +392,7 @@ struct DifficultyFilterBar: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 ForEach(levels, id: \.self) { level in
-                    let isLocked = level > maxUnlockedLevel
+                    let isLocked = false//level > maxUnlockedLevel
                     FilterChip(
                         title: "L\(level)",
                         isSelected: selectedLevel == level,
@@ -553,7 +553,15 @@ struct StoryGridView: View {
             .padding()
         }
         .navigationDestination(for: Story.self) { story in
-            StoryReaderView(story: story)
+            StoryReaderView(story: story) { nextLevel in
+                // Level completed - switch to next level
+                print("📚 LibraryView: Level completed! Switching to Level \(nextLevel)")
+                viewModel.maxUnlockedLevel = max(viewModel.maxUnlockedLevel, nextLevel)
+                viewModel.selectedDifficulty = nextLevel
+                Task {
+                    await viewModel.loadStories()
+                }
+            }
         }
     }
 }

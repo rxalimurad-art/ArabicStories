@@ -211,6 +211,7 @@ struct Story: Identifiable, Codable, Hashable {
     }
     
     /// Count of unique Arabic words found in the story text
+    /// Count Arabic words by extracting from text (approximate count)
     var arabicWordCount: Int {
         let allText: String
         switch format {
@@ -220,6 +221,12 @@ struct Story: Identifiable, Codable, Hashable {
             allText = segments?.map { $0.arabicText }.joined(separator: " ") ?? ""
         }
         return extractArabicWords(from: allText).count
+    }
+    
+    /// Get accurate word count by matching against Quran words
+    /// This counts unique Quran words that match the story text
+    func getAccurateWordCount(from quranWords: [QuranWord]) -> Int {
+        return findQuranWordsInStory(from: quranWords).count
     }
     
     /// Extract unique Arabic words from text
@@ -464,16 +471,12 @@ struct MixedContentSegment: Identifiable, Codable, Hashable {
     // Optional cultural note
     var culturalNote: String?
     
-    // Arabic word references added by admin (optional, can be empty initially)
-    var linkedWordIds: [String]?
-    
     enum CodingKeys: String, CodingKey {
         case id
         case index
         case text
         case imageURL
         case culturalNote
-        case linkedWordIds
     }
     
     init(
@@ -481,15 +484,13 @@ struct MixedContentSegment: Identifiable, Codable, Hashable {
         index: Int,
         text: String,
         imageURL: String? = nil,
-        culturalNote: String? = nil,
-        linkedWordIds: [String]? = nil
+        culturalNote: String? = nil
     ) {
         self.id = id
         self.index = index
         self.text = text
         self.imageURL = imageURL
         self.culturalNote = culturalNote
-        self.linkedWordIds = linkedWordIds
     }
     
     // Computed property to get word count for reading time estimation
@@ -499,10 +500,7 @@ struct MixedContentSegment: Identifiable, Codable, Hashable {
             .count
     }
     
-    // Get all linked Arabic word IDs in this segment
-    var arabicWordIds: [String] {
-        linkedWordIds ?? []
-    }
+
 }
 
 // MARK: - Word Timing for Audio Sync

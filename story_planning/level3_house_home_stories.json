@@ -1,0 +1,170 @@
+[
+  {
+    "id": "456b7412-9a79-4fe1-a114-b0f737277ce6",
+    "title": "Building a Home",
+    "titleArabic": "بناء بيت",
+    "storyDescription": "A family works together to build a beautiful home, learning about the importance of a safe and blessed place to live.",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "Long ago, a righteous family wanted to build <b>ٱلْبَيْتِ</b> (the House) where they could live in peace and worship Allah.",
+        "linkedWordIds": ["word_01273"]
+      },
+      {
+        "index": 1,
+        "text": "The father said, 'Let us find a good <b>مَكَانًا</b> (a place) where our <b>بُيُوتِكُمْ</b> (your houses) will be blessed by Allah.'",
+        "linkedWordIds": ["word_01929", "word_01886"]
+      },
+      {
+        "index": 2,
+        "text": "They searched through <b>ٱلْمَدِينَةِ</b> (the city) and <b>ٱلْبِلَٰدِ</b> (the land) to find the perfect spot for their home.",
+        "linkedWordIds": ["word_00727", "word_02018"]
+      },
+      {
+        "index": 3,
+        "text": "The mother reminded them, 'Allah commands us to make our <b>بُيُوتِ</b> (houses) places of prayer and remembrance.'",
+        "linkedWordIds": ["word_01287"]
+      },
+      {
+        "index": 4,
+        "text": "They built their home with love, and it became a <b>مَـَٔابٍ</b> (place of return) for all good people in the community.",
+        "linkedWordIds": ["word_02035"]
+      },
+      {
+        "index": 5,
+        "text": "Every day, they thanked Allah for their beautiful home and shared their blessings with their neighbors.",
+        "linkedWordIds": ["word_00234", "word_00483", "word_00203"]
+      }
+    ]
+  },
+  {
+    "id": "37140cd4-e958-4beb-98fc-be20d26b0803",
+    "title": "The Path to a Good Home",
+    "titleArabic": "الصراط إلى بيت طيب",
+    "storyDescription": "A traveler learns that the straight path leads to a blessed home and eternal gardens.",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "A wise traveler asked, 'Which <b>صِرَٰطٍ</b> (a path) should I take to find a blessed home?'",
+        "linkedWordIds": ["word_00507"]
+      },
+      {
+        "index": 1,
+        "text": "The guide answered, '<b>صِرَٰطٌ</b> (the path) that is straight leads to the best destination. Follow <b>صِرَٰطِ</b> (the Path) of those who have earned Allah's pleasure.'",
+        "linkedWordIds": ["word_01617", "word_01948"]
+      },
+      {
+        "index": 2,
+        "text": "The traveler walked on <b>ٱلْبَرِّ</b> (the land) through valleys and hills, always keeping his heart pure.",
+        "linkedWordIds": ["word_00835"]
+      },
+      {
+        "index": 3,
+        "text": "At night, he looked up at <b>ٱلسَّمَآءُ</b> (the heavens) and prayed for guidance on his journey.",
+        "linkedWordIds": ["word_00633"]
+      },
+      {
+        "index": 4,
+        "text": "He finally reached his destination, where the earth was like a soft <b>ٱلْمِهَادُ</b> (resting-place) for the righteous.",
+        "linkedWordIds": ["word_01910"]
+      },
+      {
+        "index": 5,
+        "text": "The traveler learned that those who follow the straight path will find eternal peace in their final home.",
+        "linkedWordIds": ["word_00528", "word_00259", "word_00315"]
+      }
+    ]
+  },
+  {
+    "id": "45608072-faa7-4865-8284-71dd28b145fc",
+    "title": "The Heavens Above",
+    "titleArabic": "السماوات العلى",
+    "storyDescription": "A child looks up at the sky and learns about Allah's magnificent creation of the heavens.",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "Little Amina sat outside her home and gazed up at <b>ٱلسَّمَٰوَٰتِ</b> (the heavens) in wonder.",
+        "linkedWordIds": ["word_00042"]
+      },
+      {
+        "index": 1,
+        "text": "She asked her grandfather, 'Who created <b>ٱلسَّمَآءُ</b> (the heavens) so beautifully?'",
+        "linkedWordIds": ["word_00633"]
+      },
+      {
+        "index": 2,
+        "text": "Her grandfather smiled and recited, '<b>وَٱلسَّمَآءِ</b> (By the heaven) and all that it contains, Allah is the Creator of everything.'",
+        "linkedWordIds": ["word_01950"]
+      },
+      {
+        "index": 3,
+        "text": "He explained, 'Allah created <b>ٱلسَّمَٰوَٰتُ</b> (the heavens) in seven layers, each with its own purpose and beauty.'",
+        "linkedWordIds": ["word_01387"]
+      },
+      {
+        "index": 4,
+        "text": "Amina felt small but special, knowing that Allah who created the vast sky also created her heart.",
+        "linkedWordIds": ["word_00376", "word_00212", "word_00403"]
+      },
+      {
+        "index": 5,
+        "text": "From that day, every time she looked up, she remembered Allah's greatness and said Alhamdulillah.",
+        "linkedWordIds": ["word_00312"]
+      }
+    ]
+  },
+  {
+    "id": "71bbabee-819e-4550-be96-8eae1dc41c10",
+    "title": "The Beautiful Gardens",
+    "titleArabic": "الجنات الجميلة",
+    "storyDescription": "A family visits beautiful gardens and learns about the gardens of Paradise promised to the believers.",
+    "difficultyLevel": 3,
+    "category": "general",
+    "tags": ["beginner", "level3", "house"],
+    "format": "mixed",
+    "mixedSegments": [
+      {
+        "index": 0,
+        "text": "The family walked through <b>جَنَّٰتٍ</b> (Gardens) filled with colorful flowers and tall trees.",
+        "linkedWordIds": ["word_00273"]
+      },
+      {
+        "index": 1,
+        "text": "The father said, 'These gardens are beautiful, but Allah has promised believers <b>جَنَّٰتُ</b> (Gardens) even more wonderful in Paradise.'",
+        "linkedWordIds": ["word_01096"]
+      },
+      {
+        "index": 2,
+        "text": "They sat near a river flowing through <b>جَنَّٰتِ</b> (Gardens) and enjoyed the peaceful sounds of nature.",
+        "linkedWordIds": ["word_00895"]
+      },
+      {
+        "index": 3,
+        "text": "The mother told them, 'In Paradise, there will be <b>جَنَّٰتٌ</b> (Gardens) beneath which rivers flow, and no one will ever feel tired or sad there.'",
+        "linkedWordIds": ["word_02026"]
+      },
+      {
+        "index": 4,
+        "text": "The children picked flowers and imagined what the eternal gardens would be like for those who do good deeds.",
+        "linkedWordIds": ["word_00234", "word_00483", "word_00203"]
+      },
+      {
+        "index": 5,
+        "text": "They went home grateful, hoping to be among those who will enter the gardens of Paradise.",
+        "linkedWordIds": ["word_00528", "word_00259", "word_00315"]
+      }
+    ]
+  }
+]
