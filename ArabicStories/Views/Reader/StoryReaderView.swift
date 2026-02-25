@@ -500,11 +500,6 @@ struct MixedContentText: View {
         parseTextWithBoldTags(text)
     }
     
-    // Extract Arabic words that have meanings
-    private var arabicWordsWithMeanings: [String] {
-        extractArabicWords(from: text).filter { hasMeaningAvailable($0) }
-    }
-    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Text with inline bold support
@@ -514,29 +509,6 @@ struct MixedContentText: View {
                 isNightMode: isNightMode
             )
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            // Show Arabic word chips below (if any have meanings)
-            if !arabicWordsWithMeanings.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Tap to learn:")
-                        .font(.caption)
-                        .foregroundStyle(isNightMode ? .gray : .secondary)
-                    
-                    FlowLayout(spacing: 8) {
-                        ForEach(arabicWordsWithMeanings, id: \.self) { word in
-                            MixedArabicWordChip(
-                                word: word,
-                                fontSize: fontSize,
-                                isNightMode: isNightMode,
-                                fontName: fontName,
-                                onTap: { position in
-                                    onWordTap(word, position)
-                                }
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -582,40 +554,6 @@ struct MixedContentText: View {
         }
         
         return components
-    }
-    
-    private func extractArabicWords(from text: String) -> [String] {
-        // Remove HTML-like tags for Arabic word extraction
-        let cleanText = text.replacingOccurrences(of: "<b>", with: "")
-                            .replacingOccurrences(of: "</b>", with: "")
-        
-        var words: [String] = []
-        var currentIndex = cleanText.startIndex
-        
-        while currentIndex < cleanText.endIndex {
-            let char = cleanText[currentIndex]
-            
-            if ArabicTextUtils.isArabicCharacter(char) {
-                var arabicWord = ""
-                var endIndex = currentIndex
-                
-                while endIndex < cleanText.endIndex && 
-                      (ArabicTextUtils.isArabicCharacter(cleanText[endIndex]) || 
-                       ArabicTextUtils.isDiacritic(cleanText[endIndex])) {
-                    arabicWord.append(cleanText[endIndex])
-                    endIndex = cleanText.index(after: endIndex)
-                }
-                
-                if !arabicWord.isEmpty && !words.contains(arabicWord) {
-                    words.append(arabicWord)
-                }
-                currentIndex = endIndex
-            } else {
-                currentIndex = cleanText.index(after: currentIndex)
-            }
-        }
-        
-        return words
     }
 }
 

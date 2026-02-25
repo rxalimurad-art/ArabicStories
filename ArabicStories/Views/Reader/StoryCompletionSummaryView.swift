@@ -264,12 +264,6 @@ struct StoryCompletionSummaryView: View {
                     color: .purple
                 )
 
-                CompletionStatCard(
-                    icon: "flame.fill",
-                    value: "\(result.wordsUnlockedInSession.count)",
-                    label: "Words Learned",
-                    color: .orange
-                )
             }
         }
         .padding()
