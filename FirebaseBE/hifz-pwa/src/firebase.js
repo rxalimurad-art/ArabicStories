@@ -2,12 +2,13 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDummy-ReplaceWithYourOwn",
+  apiKey: "AIzaSyADxkMGSOdqALGGFRbOttRwPM-oovCriN8",
   authDomain: "arabicstories-82611.firebaseapp.com",
   projectId: "arabicstories-82611",
-  storageBucket: "arabicstories-82611.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
+  storageBucket: "arabicstories-82611.firebasestorage.app",
+  messagingSenderId: "304828677382",
+  appId: "1:304828677382:web:9803f76cbb936d08e37287",
+  measurementId: "G-5HG1B04C50"
 }
 
 const app = initializeApp(firebaseConfig)

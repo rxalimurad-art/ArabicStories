@@ -46,4 +46,10 @@ jobs:
         working-directory: ./FirebaseBE
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project prd
+          # Set GOOGLE_APPLICATION_CREDENTIALS for TTS API
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        run: |
+          # Create service account key file
+          echo "$GOOGLE_APPLICATION_CREDENTIALS" > /tmp/service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/service-account.json
+          firebase deploy --only hosting,functions --token "$FIREBASE_TOKEN" --project prd

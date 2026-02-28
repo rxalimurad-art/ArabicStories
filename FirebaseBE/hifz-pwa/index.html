@@ -9,9 +9,10 @@
     <meta name="apple-mobile-web-app-title" content="Hifz" />
     <meta name="mobile-web-app-capable" content="yes" />
     
+    <!-- Load all Arabic fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Lateef:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
     
     <title>Hifz - Memorizer</title>
     
@@ -27,8 +28,13 @@
         -webkit-overflow-scrolling: touch;
       }
       
+      :root {
+        --arabic-font: 'Scheherazade New', 'Amiri', serif;
+      }
+      
       .font-arabic {
-        font-family: 'Amiri', 'Scheherazade New', serif;
+        font-family: var(--arabic-font);
+        line-height: 1.8;
       }
       
       /* Smooth transitions */

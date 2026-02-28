@@ -1,7 +1,7 @@
 {
-  "name": "arabic-stories-api",
+  "name": "hifz-api",
   "version": "1.0.0",
-  "description": "Firebase Functions for Arabic Stories - Completions API",
+  "description": "Firebase Functions for Hifz TTS",
   "main": "index.js",
   "engines": {
     "node": "20"
@@ -18,7 +18,7 @@
     "firebase-functions": "^5.0.0",
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "nodemailer": "^6.9.7"
+    "@google-cloud/text-to-speech": "^5.0.0"
   },
   "devDependencies": {
     "firebase-tools": "^13.0.0"

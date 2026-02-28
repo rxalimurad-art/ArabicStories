@@ -342,3 +342,289 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 [debug] [2026-02-28T21:49:31.416Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
 [debug] [2026-02-28T21:49:31.416Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
 [debug] [2026-02-28T21:49:31.416Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T22:50:16.163Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers"}}
+[debug] [2026-02-28T22:50:17.199Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T22:50:18.400Z] > [functions] package.json contents: {
+  "name": "arabic-stories-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Arabic Stories - Completions API",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T22:50:18.401Z] Building nodejs source
+[debug] [2026-02-28T22:50:18.403Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T22:50:18.413Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T22:50:18.421Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8146
+
+[error] Error: Cannot find module '@google-cloud/text-to-speech'
+Require stack:
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1448:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1234:25)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1548:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js:4:32)
+    at Module._compile (node:internal/modules/cjs/loader:1804:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js',
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2026-02-28T22:50:18.847Z] Got response code 400; body Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/text-to-speech'
+Require stack:
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2026-02-28T22:50:33.984Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/package.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/package.json changed, reloading triggers"}}
+[debug] [2026-02-28T22:50:34.987Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T22:50:35.492Z] > [functions] package.json contents: {
+  "name": "hifz-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Hifz TTS",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "@google-cloud/text-to-speech": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T22:50:35.492Z] Building nodejs source
+[debug] [2026-02-28T22:50:35.492Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T22:50:35.493Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T22:50:35.494Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8307
+
+[error] Error: Cannot find module '@google-cloud/text-to-speech'
+Require stack:
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1448:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1234:25)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1548:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js:4:32)
+    at Module._compile (node:internal/modules/cjs/loader:1804:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js',
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2026-02-28T22:50:35.743Z] Got response code 400; body Failed to generate manifest from function source: Error: Cannot find module '@google-cloud/text-to-speech'
+Require stack:
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2026-02-28T22:51:46.400Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/package-lock.json changed, reloading triggers"}}
+[debug] [2026-02-28T22:51:47.403Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T22:51:47.779Z] > [functions] package.json contents: {
+  "name": "hifz-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Hifz TTS",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "@google-cloud/text-to-speech": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T22:51:47.779Z] Building nodejs source
+[debug] [2026-02-28T22:51:47.779Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T22:51:47.780Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T22:51:47.781Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8923
+
+[error] (node:90325) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[debug] [2026-02-28T22:51:48.229Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2026-02-28T22:51:52.246Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2026-02-28T22:51:52.246Z] [worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: FINISHING"}}
+[debug] [2026-02-28T22:51:52.250Z] [worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: exited"}}
+[debug] [2026-02-28T22:51:52.250Z] [worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-57d687ac-e575-4ac9-b672-6cb54717a96f]: FINISHED"}}
+[debug] [2026-02-28T22:55:56.481Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T22:56:10.707Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T22:56:16.224Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T22:57:24.049Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T22:57:26.619Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers"}}
+[debug] [2026-02-28T22:57:27.623Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T22:57:28.428Z] > [functions] package.json contents: {
+  "name": "hifz-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Hifz TTS",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "@google-cloud/text-to-speech": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T22:57:28.428Z] Building nodejs source
+[debug] [2026-02-28T22:57:28.428Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T22:57:28.428Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T22:57:28.429Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8755
+
+[error] (node:90426) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[debug] [2026-02-28T22:57:28.877Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2026-02-28T22:57:35.221Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:00:10.220Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:00:16.060Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:00:20.939Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:00:24.194Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:00:40.277Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:01:55.239Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:03:10.109Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers"}}
+[debug] [2026-02-28T23:03:11.119Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T23:03:11.831Z] > [functions] package.json contents: {
+  "name": "hifz-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Hifz TTS",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "@google-cloud/text-to-speech": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T23:03:11.831Z] Building nodejs source
+[debug] [2026-02-28T23:03:11.831Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T23:03:11.835Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T23:03:11.836Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8685
+
+[error] (node:90574) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[debug] [2026-02-28T23:03:13.302Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2026-02-28T23:03:21.155Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:05:07.128Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:05:14.626Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:05:18.475Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:07:58.733Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:08:12.413Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:08:15.260Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:08:20.090Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts

@@ -14,6 +14,9 @@ import { db } from '../firebase'
 
 const COLLECTION_NAME = 'hifz_groups'
 
+// Predefined main tags
+export const MAIN_TAGS = ['nahw', 'sarf', 'quran', 'dua']
+
 export function useStore() {
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(true)
@@ -29,8 +32,8 @@ export function useStore() {
         const groupsData = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-          // Ensure lines is always an array
-          lines: doc.data().lines || []
+          lines: doc.data().lines || [],
+          tags: doc.data().tags || []
         }))
         setGroups(groupsData)
         setLoading(false)
@@ -46,10 +49,11 @@ export function useStore() {
   }, [])
   
   // Group operations
-  const addGroup = useCallback(async (name) => {
+  const addGroup = useCallback(async (name, tags = []) => {
     try {
       const docRef = await addDoc(collection(db, COLLECTION_NAME), {
         name,
+        tags,
         lines: [],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
@@ -57,6 +61,19 @@ export function useStore() {
       return docRef.id
     } catch (err) {
       console.error('Error adding group:', err)
+      throw err
+    }
+  }, [])
+  
+  const updateGroupTags = useCallback(async (groupId, tags) => {
+    try {
+      const groupRef = doc(db, COLLECTION_NAME, groupId)
+      await updateDoc(groupRef, {
+        tags,
+        updatedAt: serverTimestamp()
+      })
+    } catch (err) {
+      console.error('Error updating tags:', err)
       throw err
     }
   }, [])
@@ -147,15 +164,24 @@ export function useStore() {
     return Math.round(((memorized * 1 + learning * 0.5) / group.lines.length) * 100)
   }, [groups])
   
+  // Filter groups by tag
+  const getGroupsByTag = useCallback((tag) => {
+    if (!tag || tag === 'all') return groups
+    return groups.filter(g => g.tags?.includes(tag))
+  }, [groups])
+  
   return {
     groups,
     loading,
     error,
     addGroup,
+    updateGroupTags,
     deleteGroup,
     addLine,
     updateLineStatus,
     deleteLine,
-    getGroupProgress
+    getGroupProgress,
+    getGroupsByTag,
+    MAIN_TAGS
   }
 }

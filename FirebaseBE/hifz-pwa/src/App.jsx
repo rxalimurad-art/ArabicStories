@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Groups from './pages/Groups'
 import Memorize from './pages/Memorize'
+import Settings from './pages/Settings'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="groups" element={<Groups />} />
           <Route path="memorize/:groupId" element={<Memorize />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </div>
