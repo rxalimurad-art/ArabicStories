@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const FONT_STORAGE_KEY = 'hifz_font_config'
+const FONT_SIZE_KEY = 'hifz_font_size'
 
 // Available fonts with Indo-Pak Arabic support
 export const FONTS = {
@@ -44,10 +45,23 @@ export const FONTS = {
 
 export const DEFAULT_FONT = 'scheherazade'
 
+// Font size options (px)
+export const FONT_SIZE_MIN = 14
+export const FONT_SIZE_MAX = 48
+export const FONT_SIZE_DEFAULT = 20
+
 export function useFont() {
   const [fontKey, setFontKey] = useState(() => {
     const stored = localStorage.getItem(FONT_STORAGE_KEY)
     return stored || DEFAULT_FONT
+  })
+  
+  const [fontSize, setFontSizeState] = useState(() => {
+    const stored = localStorage.getItem(FONT_SIZE_KEY)
+    const size = parseInt(stored, 10)
+    return !isNaN(size) && size >= FONT_SIZE_MIN && size <= FONT_SIZE_MAX 
+      ? size 
+      : FONT_SIZE_DEFAULT
   })
   
   const [loaded, setLoaded] = useState(false)
@@ -82,11 +96,22 @@ export function useFont() {
     }
   }, [])
   
+  // Update font size
+  const setFontSize = useCallback((size) => {
+    const newSize = Math.max(FONT_SIZE_MIN, Math.min(FONT_SIZE_MAX, parseInt(size, 10) || FONT_SIZE_DEFAULT))
+    localStorage.setItem(FONT_SIZE_KEY, newSize.toString())
+    setFontSizeState(newSize)
+  }, [])
+  
   return {
     font,
     fontKey,
     setFont,
+    fontSize,
+    setFontSize,
     loaded,
-    fonts: FONTS
+    fonts: FONTS,
+    fontSizeMin: FONT_SIZE_MIN,
+    fontSizeMax: FONT_SIZE_MAX
   }
 }

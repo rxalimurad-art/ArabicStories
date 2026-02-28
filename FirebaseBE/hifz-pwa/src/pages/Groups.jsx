@@ -21,7 +21,7 @@ const TAG_LABELS = {
 
 function Groups() {
   const { groups, loading, error, addGroup, addLine, deleteGroup, deleteLine, updateGroupTags, MAIN_TAGS } = useStore()
-  const { font } = useFont()
+  const { font, fontSize } = useFont()
   const [view, setView] = useState('list')
   const [editingGroup, setEditingGroup] = useState(null)
   const [newGroupName, setNewGroupName] = useState('')
@@ -248,7 +248,8 @@ function Groups() {
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
                 placeholder="e.g., Al-Baqarah, Daily Duas, etc."
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-lg"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              style={{ fontSize: `${fontSize}px` }}
                 autoFocus
               />
             </div>
@@ -380,7 +381,11 @@ function Groups() {
                 <div key={line.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
-                      <p className="text-right text-lg leading-relaxed" dir="rtl" style={{ fontFamily: font.family }}>
+                      <p 
+                        className="text-right leading-relaxed"
+                        dir="rtl" 
+                        style={{ fontSize: `${fontSize}px`, fontFamily: font.family }}
+                      >
                         {line.arabic}
                       </p>
                       {line.translation && (

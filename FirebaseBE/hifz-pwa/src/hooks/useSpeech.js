@@ -8,12 +8,15 @@ const getConfig = () => {
   return stored ? JSON.parse(stored) : { provider: 'web', voice: 'chirp-female' }
 }
 
-// Get API base URL
-const getApiUrl = () => {
+// Get API base URL - returns array of URLs to try
+const getApiUrls = () => {
   if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    return '/api'
+    return [
+      '/api',
+      'https://us-central1-arabicstories-82611.cloudfunctions.net/api'
+    ]
   }
-  return 'http://127.0.0.1:5002/arabicstories-82611/us-central1/api'
+  return ['http://127.0.0.1:5002/arabicstories-82611/us-central1/api']
 }
 
 export function useSpeech() {
@@ -73,58 +76,64 @@ export function useSpeech() {
     setSpeaking(true)
     setError(null)
     
-    try {
-      const voiceToUse = config.voice || 'chirp-female'
-      const apiUrl = getApiUrl()
-      
-      console.log('Calling TTS API:', apiUrl, 'with voice:', voiceToUse)
-      
-      const response = await fetch(`${apiUrl}/tts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, voiceType: voiceToUse })
-      })
-      
-      // Check if API is available
-      if (response.status === 404) {
-        throw new Error('TTS API not found. Functions may not be deployed.')
+    const voiceToUse = config.voice || 'chirp-female'
+    const apiUrls = getApiUrls()
+    let lastError = null
+    
+    for (const apiUrl of apiUrls) {
+      try {
+        console.log('Trying TTS API:', apiUrl, 'with voice:', voiceToUse)
+        
+        const response = await fetch(`${apiUrl}/tts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, voiceType: voiceToUse }),
+          cache: 'no-store'
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          console.log('TTS Response from', apiUrl, ':', data)
+          
+          if (audioRef.current) {
+            audioRef.current.pause()
+            audioRef.current.src = ''
+          }
+          
+          const newAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`)
+          audioRef.current = newAudio
+          
+          newAudio.onended = () => {
+            setSpeaking(false)
+            setLastVoiceUsed(data.voice || voiceToUse)
+          }
+          newAudio.onerror = () => {
+            setSpeaking(false)
+            setError('Audio playback failed')
+          }
+          
+          await newAudio.play()
+          setLastVoiceUsed(data.voice || voiceToUse)
+          return // Success - exit function
+        }
+        
+        // Not OK response, try next URL
+        lastError = `HTTP ${response.status}`
+        
+      } catch (err) {
+        console.log(`TTS API failed for ${apiUrl}:`, err.message)
+        lastError = err.message
+        // Continue to next URL
       }
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
-        throw new Error(errorData.error || `HTTP ${response.status}`)
-      }
-      
-      const data = await response.json()
-      console.log('TTS Response:', data)
-      
-      if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current.src = ''
-      }
-      
-      const newAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`)
-      audioRef.current = newAudio
-      
-      newAudio.onended = () => {
-        setSpeaking(false)
-        setLastVoiceUsed(data.voice || voiceToUse)
-      }
-      newAudio.onerror = () => {
-        setSpeaking(false)
-        setError('Audio playback failed')
-      }
-      
-      await newAudio.play()
-      setLastVoiceUsed(data.voice || voiceToUse)
-      
-    } catch (err) {
-      console.error('Google TTS error:', err)
-      setError(`${err.message}. Falling back to browser TTS.`)
-      setSpeaking(false)
-      // Fallback to Web Speech
-      speakWeb(text)
     }
+    
+    // All URLs failed
+    console.error('All TTS APIs failed. Last error:', lastError)
+    setError(`${lastError}. Falling back to browser TTS.`)
+    setSpeaking(false)
+    // Fallback to Web Speech
+    speakWeb(text)
+    
   }, [config.voice, speakWeb])
   
   const speak = useCallback((text, rate = 0.8) => {

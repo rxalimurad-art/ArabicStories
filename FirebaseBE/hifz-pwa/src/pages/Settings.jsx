@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSpeech } from '../hooks/useSpeech'
-import { useFont, FONTS } from '../hooks/useFont'
-import { useFontSize, FONT_SIZES } from '../hooks/useFontSize'
+import { useFont } from '../hooks/useFont'
 
 function Settings() {
   const { speak, speaking, config, updateConfig, error, lastVoiceUsed, clearError } = useSpeech()
-  const { font, fontKey, setFont, fonts } = useFont()
-  const { fontSize, sizeKey, setFontSize, fontSizes } = useFontSize()
+  const { font, fontKey, setFont, fontSize, setFontSize, fonts, fontSizeMin, fontSizeMax } = useFont()
   
   const [provider, setProvider] = useState(config.provider || 'web')
   const [voice, setVoice] = useState(config.voice || 'chirp-female')
   const [tempFont, setTempFont] = useState(fontKey)
-  const [tempSize, setTempSize] = useState(sizeKey)
+  const [tempSize, setTempSize] = useState(fontSize)
   const [saved, setSaved] = useState(false)
   const [apiStatus, setApiStatus] = useState('checking')
   const [showDebug, setShowDebug] = useState(false)
@@ -20,20 +18,32 @@ function Settings() {
   // Check if API is available
   useEffect(() => {
     const checkApi = async () => {
-      try {
-        const apiUrl = window.location.hostname !== 'localhost' 
-          ? '/api' 
-          : 'http://127.0.0.1:5002/arabicstories-82611/us-central1/api'
-        
-        const response = await fetch(`${apiUrl}/`, { method: 'GET' })
-        if (response.ok) {
-          setApiStatus('online')
-        } else {
-          setApiStatus('error')
+      const tryUrls = [
+        // Try hosting rewrite first (bypass cache)
+        `/api/?_cb=${Date.now()}`,
+        // Fallback to direct Cloud Functions URL
+        `https://us-central1-arabicstories-82611.cloudfunctions.net/api/?_cb=${Date.now()}`
+      ]
+      
+      for (const url of tryUrls) {
+        try {
+          const response = await fetch(url, { 
+            method: 'GET',
+            // Prevent service worker from caching
+            cache: 'no-store'
+          })
+          if (response.ok) {
+            setApiStatus('online')
+            return
+          }
+        } catch (err) {
+          console.log(`API check failed for ${url}:`, err.message)
+          // Continue to next URL
         }
-      } catch (err) {
-        setApiStatus('offline')
       }
+      
+      // All URLs failed
+      setApiStatus('offline')
     }
     checkApi()
   }, [])
@@ -43,12 +53,27 @@ function Settings() {
     setVoice(config.voice || 'chirp-female')
   }, [config])
   
+  useEffect(() => {
+    setTempSize(fontSize)
+  }, [fontSize])
+  
   const handleSave = () => {
     updateConfig({ provider, voice })
     setFont(tempFont)
     setFontSize(tempSize)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+  
+  const handleSizeChange = (e) => {
+    const value = parseInt(e.target.value, 10)
+    if (!isNaN(value)) {
+      setTempSize(Math.max(fontSizeMin, Math.min(fontSizeMax, value)))
+    }
+  }
+  
+  const adjustSize = (delta) => {
+    setTempSize(prev => Math.max(fontSizeMin, Math.min(fontSizeMax, prev + delta)))
   }
   
   const testTTS = () => {
@@ -60,7 +85,7 @@ function Settings() {
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3">
-        <Link to="/groups" className="p-2 -ml-2 rounded-lg hover:bg-gray-100 touch-btn">
+        <Link to="/" className="p-2 -ml-2 rounded-lg hover:bg-gray-100 touch-btn">
           <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -106,21 +131,34 @@ function Settings() {
           
           {/* Font Size */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Font Size</label>
-            <div className="grid grid-cols-4 gap-2">
-              {Object.entries(fontSizes).map(([key, size]) => (
-                <button
-                  key={key}
-                  onClick={() => setTempSize(key)}
-                  className={`py-2 px-1 rounded-lg text-sm font-medium touch-btn transition-colors ${
-                    tempSize === key
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  {size.label}
-                </button>
-              ))}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Font Size: <span className="text-emerald-600 font-bold">{tempSize}px</span>
+            </label>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => adjustSize(-1)}
+                className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-bold touch-btn"
+              >
+                −
+              </button>
+              <input
+                type="range"
+                min={fontSizeMin}
+                max={fontSizeMax}
+                value={tempSize}
+                onChange={handleSizeChange}
+                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <button
+                onClick={() => adjustSize(1)}
+                className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 font-bold touch-btn"
+              >
+                +
+              </button>
+            </div>
+            <div className="flex justify-between text-xs text-gray-400 mt-1">
+              <span>{fontSizeMin}px</span>
+              <span>{fontSizeMax}px</span>
             </div>
           </div>
           
@@ -129,7 +167,11 @@ function Settings() {
             className="bg-gray-50 rounded-lg p-4 text-center border border-gray-100"
             style={{ fontFamily: fonts[tempFont]?.family || font.family }}
           >
-            <p className={`leading-relaxed ${fontSizes[tempSize]?.class || fontSize.class}`} dir="rtl">
+            <p 
+              className="leading-relaxed" 
+              dir="rtl" 
+              style={{ fontSize: `${tempSize}px` }}
+            >
               بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
             </p>
             <p className="text-xs text-gray-500 mt-2 font-sans">
@@ -198,11 +240,11 @@ function Settings() {
                   <option value="chirp-female">Chirp HD - Female</option>
                   <option value="chirp-male">Chirp HD - Male</option>
                 </optgroup>
-                <optgroup label="WaveNet (Good)">
+                <optgroup label="WaveNet">
                   <option value="wavenet-female">WaveNet - Female</option>
                   <option value="wavenet-male">WaveNet - Male</option>
                 </optgroup>
-                <optgroup label="Standard (Basic)">
+                <optgroup label="Standard">
                   <option value="standard-female">Standard - Female</option>
                   <option value="standard-male">Standard - Male</option>
                 </optgroup>
@@ -250,7 +292,7 @@ function Settings() {
             <p>API Status: {apiStatus}</p>
             <p>Last Voice: {lastVoiceUsed || 'None'}</p>
             <p>Font: {fontKey}</p>
-            <p>Font Size: {sizeKey}</p>
+            <p>Font Size: {fontSize}px</p>
           </div>
         )}
       </div>

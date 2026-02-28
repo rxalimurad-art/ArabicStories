@@ -45,9 +45,6 @@ function Home() {
 
   return (
     <div className="p-4 space-y-4">
-      {/* Header */}
-      <h2 className="text-lg font-semibold text-gray-900">My Groups</h2>
-      
       {/* Tag Filter */}
       <div className="flex flex-wrap gap-2">
         <button
@@ -82,7 +79,7 @@ function Home() {
           <p className="text-gray-500 mt-4">
             {selectedTag === 'all' ? 'No groups yet' : `No ${TAG_LABELS[selectedTag]} groups`}
           </p>
-          <p className="text-sm text-gray-400 mt-2">Go to Manage tab to add</p>
+          <p className="text-sm text-gray-400 mt-2">Tap + to add groups</p>
         </div>
       ) : (
         <div className="space-y-3">

@@ -3,15 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useStore } from '../hooks/useStore'
 import { useSpeech } from '../hooks/useSpeech'
 import { useFont } from '../hooks/useFont'
-import { useFontSize } from '../hooks/useFontSize'
 
 function Memorize() {
   const { groupId } = useParams()
   const navigate = useNavigate()
   const { groups, updateLineStatus, getGroupProgress } = useStore()
   const { speak, stop, speaking } = useSpeech()
-  const { font } = useFont()
-  const { fontSize } = useFontSize()
+  const { font, fontSize } = useFont()
   
   const group = groups.find(g => g.id === groupId)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -121,8 +119,8 @@ function Memorize() {
         >
           {/* Arabic Text - Compact */}
           <p 
-            className="text-xl leading-normal text-gray-900 text-center"
-              style={{ fontFamily: font.family }}
+            className="leading-normal text-gray-900 text-center"
+            style={{ fontSize: `${fontSize}px`, fontFamily: font.family }}
             dir="rtl"
           >
             {currentLine.arabic}
