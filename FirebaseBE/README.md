@@ -1,147 +1,103 @@
-# Arabic Stories - Firebase + PWA
+# Hifz - Arabic Memorizer
 
-A complete solution with:
-- 🔥 **Firebase Functions API** - Story completion tracking with email notifications
-- 📱 **React PWA** - Mobile-first web app that feels native
+A complete Firebase solution:
+- 🔥 **Firebase Functions API** - Story completion tracking (optional)
+- 📱 **React PWA** - Personal Arabic verse memorizer with Firestore
 
 ## Project Structure
 
 ```
 FirebaseBE/
-├── functions/          # Firebase Functions API
-│   ├── index.js       # /api/completions/story endpoint only
-│   └── package.json
-├── pwa/               # React PWA
-│   ├── src/           # React components & pages
-│   ├── index.html
-│   ├── vite.config.js # PWA configuration
-│   └── package.json
-├── firebase.json      # Combined deployment config
-└── firestore.rules
+├── functions/          # API (optional - completions endpoint)
+├── hifz-pwa/          # Main memorizer app (Firestore-based)
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Groups.jsx
+│   │   │   ├── Memorize.jsx    # Card slider with TTS
+│   │   │   └── Admin.jsx       # Add groups/lines
+│   │   ├── hooks/
+│   │   │   ├── useStore.js     # Firestore operations
+│   │   │   └── useSpeech.js    # TTS
+│   │   └── firebase.js         # Firebase config
+│   └── dist/           # Built app
+└── firebase.json       # Deployment config
 ```
 
-## Quick Start
+## Quick Start - Hifz PWA
 
-### 1. Install Dependencies
+### 1. Get Firebase Config
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create/select project
+3. Project settings → Your apps → Web → Register app
+4. Copy the config
+
+### 2. Update Config
+
+Edit `hifz-pwa/src/firebase.js` with your actual config.
+
+### 3. Install & Run
 
 ```bash
-# API dependencies
-cd functions
+cd hifz-pwa
 npm install
-
-# PWA dependencies
-cd ../pwa
-npm install
-```
-
-### 2. Configure Firebase
-
-Update `.firebaserc`:
-```json
-{
-  "projects": {
-    "default": "YOUR_PROJECT_ID"
-  }
-}
-```
-
-### 3. Run Locally
-
-```bash
-# Terminal 1 - PWA dev server
-cd pwa
 npm run dev
-
-# Terminal 2 - Firebase emulators
-cd ..
-firebase emulators:start
 ```
-
-- PWA: http://localhost:5173
-- API: http://localhost:5001/YOUR_PROJECT/us-central1/api
-- Firebase Console: http://localhost:4000
 
 ### 4. Deploy
 
 ```bash
-# Deploy everything (API + PWA)
-firebase deploy
-
-# Or deploy separately
-firebase deploy --only functions
+npm run build
 firebase deploy --only hosting
 ```
 
-## API Endpoint
+## Firestore Rules
 
-### POST `/api/completions/story`
-
-Track story completion and send email notification.
-
-```json
-{
-  "userId": "user123",
-  "userName": "John Doe",
-  "userEmail": "john@example.com",
-  "storyId": "story456",
-  "storyTitle": "The Friendly Cat",
-  "difficultyLevel": 1
-}
 ```
-
-## PWA Features
-
-- 📱 **Native App Feel** - Bottom navigation, smooth transitions
-- 📴 **Offline Support** - Works without internet
-- ⬇️ **Installable** - Add to home screen
-- 🔔 **Push Ready** - Service worker configured
-- 🎨 **Mobile-Optimized** - Safe areas, touch feedback
-
-## Routes
-
-- `/` - Home (dashboard)
-- `/stories` - Story list
-- `/stories/:id` - Story reader
-- `/profile` - User profile
-
-## Customization
-
-### Change Theme
-
-Edit `pwa/tailwind.config.js`:
-```javascript
-colors: {
-  primary: {
-    500: '#your-color',
-    600: '#your-color-dark',
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /hifz_groups/{group} {
+      allow read, write: if true;  // For personal use
+    }
   }
 }
 ```
 
-### Add Firebase Integration
+## Features
 
-Edit `pwa/src/pages/Home.jsx` and replace mock data:
-```javascript
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
+| Feature | Description |
+|---------|-------------|
+| **Groups** | Organize by Surah/Chapter |
+| **Lines** | Individual verses |
+| **TTS** | Text-to-speech (tap 🔊) |
+| **Translation** | Tap card to reveal |
+| **Progress** | Not started / Learning / Memorized |
+| **Offline** | Works without internet |
+| **Cloud Sync** | Data in Firestore |
 
-// Fetch real stories
-const snapshot = await getDocs(collection(db, 'stories'))
+## Data Flow
+
+```
+[Your Phone] ←→ [Firestore] ←→ [Other Devices]
+     ↓              ↓
+ [Offline] ←→ [Cache]
 ```
 
-## Icons
+## Usage
 
-Open `pwa/public/icon-generator.html` in browser and click "Generate All Icons" to download PWA icons.
+1. **Admin** (⚙️) → Add Group → "Al-Fatiha"
+2. **Admin** → Add Lines (Arabic + optional translation)
+3. **Home** → See progress dashboard
+4. **Groups** → Tap group to start
+5. **Memorize** → Listen with TTS, mark status
 
-## Environment Variables (Optional)
+## PWA Install
 
-For production email configuration:
-```bash
-firebase functions:config:set gmail.user="your-email@gmail.com" gmail.pass="app-password"
-```
+- **iOS Safari**: Share → Add to Home Screen
+- **Android Chrome**: Menu → Add to Home Screen
 
-Then update `functions/index.js` to use `functions.config()` instead of hardcoded values.
+## API (Optional)
 
-## License
-
-MIT
+The Functions API at `/api/completions/story` can track completions separately.
