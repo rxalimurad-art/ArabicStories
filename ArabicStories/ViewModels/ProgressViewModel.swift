@@ -150,27 +150,15 @@ class ProgressViewModel {
     }
     
     func loadWordStats() async {
-        // Load from MyWordsViewModel's word mastery data
-        // This tracks words from completed stories
-        let myWordsVM = MyWordsViewModel()
-        await myWordsVM.loadUnlockedWords()
-        
-        totalWordsUnlocked = myWordsVM.unlockedWords.count
-        totalWordsMastered = myWordsVM.masteredWords.count
-        
-        // Calculate Quran coverage
+        let learnedWords = await dataService.fetchLearnedQuranWords()
+        totalWordsUnlocked = learnedWords.count
+        totalWordsMastered = learnedWords.filter { $0.isWordMastered }.count
+
         if let stats = quranStats, stats.totalUniqueWords > 0 {
             quranWordsLearnedCount = totalWordsUnlocked
             quranWordsMasteredCount = totalWordsMastered
-            
-            // Calculate percentage based on unique words learned (not mastered)
             quranCompletionPercentage = Double(totalWordsUnlocked) / Double(stats.totalUniqueWords) * 100
-            
-            // Calculate total occurrences of learned words using actual Quran occurrence data
-            totalOccurrencesLearned = myWordsVM.unlockedWords.reduce(0) { sum, word in
-                // Use actual Quran occurrence count
-                return sum + word.occurrenceCount
-            }
+            totalOccurrencesLearned = learnedWords.reduce(0) { $0 + $1.occurrenceCount }
         }
     }
     

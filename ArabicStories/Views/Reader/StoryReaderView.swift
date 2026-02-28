@@ -5,23 +5,18 @@
 //
 
 import SwiftUI
-import Combine
 
 struct StoryReaderView: View {
     var story: Story
     @Bindable var viewModel: StoryReaderViewModel
     @State private var showingSettings = false
     @State private var wordsLoadedRefresh = false  // Trigger refresh when generic words load
-    @State private var timerUpdate = false  // Triggers UI refresh every second for timer
     @State private var transitionDirection: Edge = .trailing
     @State private var contentId = UUID()  // For content transition
     @Environment(\.dismiss) private var dismiss
-    
+
     // Callback when level is completed
     var onLevelCompleted: ((Int) -> Void)?
-    
-    // Timer for real-time updates
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     init(story: Story, onLevelCompleted: ((Int) -> Void)? = nil) {
         self.story = story
@@ -84,7 +79,6 @@ struct StoryReaderView: View {
                     progress: viewModel.readingProgress,
                     isNightMode: viewModel.isNightMode,
                     elapsedTime: viewModel.formattedCurrentSessionTime,
-                    timerUpdate: timerUpdate,  // Force refresh every second
                     onBackTap: { dismiss() },
                     onSettingsTap: { showingSettings = true }
                 )
@@ -260,10 +254,6 @@ struct StoryReaderView: View {
                 wordsLoadedRefresh.toggle()
             }
         }
-        .onReceive(timer) { _ in
-            // Trigger UI refresh every second for real-time timer display
-            timerUpdate.toggle()
-        }
     }
 }
 
@@ -316,7 +306,6 @@ struct ReaderNavigationBar: View {
     let progress: Double
     let isNightMode: Bool
     let elapsedTime: String
-    let timerUpdate: Bool  // Triggers refresh every second
     let onBackTap: () -> Void
     let onSettingsTap: () -> Void
     
@@ -350,7 +339,6 @@ struct ReaderNavigationBar: View {
                     .font(.caption.weight(.medium))
                     .monospacedDigit()
             }
-            .id(timerUpdate)  // Force refresh every second
             .foregroundStyle(Color.hikayaTeal)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)

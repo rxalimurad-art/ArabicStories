@@ -52,6 +52,7 @@ struct UserProgress: Identifiable, Codable {
     var dailyGoalMinutes: Int
     var todayStudyMinutes: Int
     var weeklyStudyMinutes: [Int]
+    var lastResetDate: Date?  // Guards against double-reset on the same day
     
     // MARK: - Weak Words (for targeted practice)
     var weakWordIds: [String]
@@ -84,6 +85,7 @@ struct UserProgress: Identifiable, Codable {
         self.dailyGoalMinutes = 5  // Default 5 minutes daily goal
         self.todayStudyMinutes = 0
         self.weeklyStudyMinutes = Array(repeating: 0, count: 7)
+        self.lastResetDate = nil
         self.weakWordIds = []
         self.unlockedAchievementTitles = []
         self.createdAt = Date()
@@ -319,50 +321,52 @@ struct UserProgress: Identifiable, Codable {
         streakFreezeDate = nil
     }
     
-    /// Checks if a new day has started and resets daily stats if needed
-    /// Returns true if reset was performed
+    /// Checks if a new day has started and resets daily stats if needed.
+    /// Returns true if reset was performed.
     mutating func checkAndResetDailyStatsIfNeeded() -> Bool {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
-        guard let lastDate = lastStudyDate else {
+        // Guard: only reset once per calendar day, regardless of how many times this is called
+        if let lastReset = lastResetDate, calendar.isDate(lastReset, inSameDayAs: today) {
             return false
         }
+
+        guard let lastDate = lastStudyDate else { return false }
 
         let lastStudyDay = calendar.startOfDay(for: lastDate)
         let daysSinceLastStudy = calendar.dateComponents([.day], from: lastStudyDay, to: today).day ?? 0
 
-        if daysSinceLastStudy > 0 {
-            // Determine if streak freeze should be used BEFORE resetting daily stats
-            var shouldUseFreeze = false
-            if daysSinceLastStudy > 1 {
-                if !streakFreezeUsed && daysSinceLastStudy == 2 {
-                    shouldUseFreeze = true
-                }
-            }
+        guard daysSinceLastStudy > 0 else { return false }
 
-            // Reset daily stats (this resets streakFreezeUsed to false)
-            resetDailyStats()
+        // Evaluate streak freeze eligibility BEFORE resetting streakFreezeUsed
+        let shouldUseFreeze = daysSinceLastStudy == 2 && !streakFreezeUsed
 
-            // Apply streak logic AFTER reset
-            if daysSinceLastStudy == 1 {
-                // Consecutive day — streak continues (will increment in recordStudySession)
-            } else if daysSinceLastStudy > 1 {
-                if shouldUseFreeze {
-                    // Use streak freeze — preserve current streak
-                    streakFreezeUsed = true
-                    streakFreezeDate = lastDate
-                } else {
-                    // Streak is broken
-                    currentStreak = 0
-                }
-            }
-
-            updatedAt = Date()
-            return true
+        // Rotate the sliding window by the actual number of days missed (capped at 7)
+        // Previously only rotated once — caused historical data to appear at wrong indices
+        let daysToRotate = min(daysSinceLastStudy, 7)
+        for _ in 0..<daysToRotate {
+            weeklyStudyMinutes.append(0)
+            if weeklyStudyMinutes.count > 7 { weeklyStudyMinutes.removeFirst() }
         }
 
-        return false
+        todayStudyMinutes = 0
+        streakFreezeUsed = false
+        streakFreezeDate = nil
+        lastResetDate = today   // Prevents a second reset if fetchUserProgress() is called again today
+
+        if daysSinceLastStudy > 1 {
+            if shouldUseFreeze {
+                streakFreezeUsed = true
+                streakFreezeDate = lastDate
+            } else {
+                currentStreak = 0
+            }
+        }
+        // daysSinceLastStudy == 1: streak continues; increment happens in recordStudySession
+
+        updatedAt = Date()
+        return true
     }
 }
 

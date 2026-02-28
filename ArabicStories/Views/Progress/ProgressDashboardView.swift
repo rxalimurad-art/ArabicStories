@@ -51,9 +51,8 @@ struct ProgressDashboardView: View {
                 await viewModel.refresh()
             }
             .onAppear {
-                // Refresh data when view appears to show latest reading time
                 Task {
-                    await viewModel.loadUserProgress()
+                    await viewModel.refresh()
                 }
             }
         }

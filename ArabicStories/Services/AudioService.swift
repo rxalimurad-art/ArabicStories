@@ -224,13 +224,30 @@ class AudioService: NSObject {
     }
     
     private func updateCurrentWord() {
-        let newIndex = wordTimings.firstIndex { timing in
-            currentTime >= timing.startTime && currentTime <= timing.endTime
+        guard !wordTimings.isEmpty else { return }
+
+        // Check current and adjacent indices first (common case: audio progresses forward)
+        let searchStart = max(0, currentWordIndex - 1)
+        let searchEnd   = min(wordTimings.count - 1, currentWordIndex + 3)
+
+        for i in searchStart...searchEnd {
+            let timing = wordTimings[i]
+            if currentTime >= timing.startTime && currentTime <= timing.endTime {
+                if i != currentWordIndex {
+                    currentWordIndex = i
+                    onWordHighlighted?(i, timing)
+                }
+                return
+            }
+        }
+
+        // Fallback: full scan (seek/jump scenario)
+        let newIndex = wordTimings.firstIndex {
+            currentTime >= $0.startTime && currentTime <= $0.endTime
         } ?? -1
-        
-        if newIndex != currentWordIndex && newIndex >= 0 {
+        if newIndex != currentWordIndex {
             currentWordIndex = newIndex
-            onWordHighlighted?(newIndex, wordTimings[newIndex])
+            if newIndex >= 0 { onWordHighlighted?(newIndex, wordTimings[newIndex]) }
         }
     }
     

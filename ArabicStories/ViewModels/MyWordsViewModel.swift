@@ -16,13 +16,13 @@ class MyWordsViewModel {
     private let networkMonitor = NetworkMonitor.shared
     
     // MARK: - State
-    var unlockedWords: [QuranWord] = []
+    var unlockedWords: [QuranWord] = [] { didSet { updateCachedSortedWords() } }
     var isLoading = false
     var error: Error?
     var errorMessage: String?
     var showErrorAlert = false
-    var sortOption: WordSortOption = .score
-    var filterOption: WordFilterOption = .all
+    var sortOption: WordSortOption = .score { didSet { updateCachedSortedWords() } }
+    var filterOption: WordFilterOption = .all { didSet { updateCachedSortedWords() } }
     
     // Quiz State
     var isQuizActive = false
@@ -42,9 +42,11 @@ class MyWordsViewModel {
     // Word Mastery Tracking
     var wordMastery: [String: WordMastery] = [:]
     
-    // MARK: - Computed Properties
+    // MARK: - Cached Sorted Words
 
-    var sortedAndFilteredWords: [QuranWord] {
+    private(set) var cachedSortedWords: [QuranWord] = []
+
+    private func updateCachedSortedWords() {
         let filtered: [QuranWord]
         switch filterOption {
         case .all:
@@ -57,7 +59,7 @@ class MyWordsViewModel {
             filtered = unlockedWords.filter { !$0.isWordMastered }
         }
 
-        return filtered.sorted { a, b in
+        cachedSortedWords = filtered.sorted { a, b in
             switch sortOption {
             case .score:
                 let scoreA = wordMastery[a.id]?.totalScore ?? 0
@@ -172,10 +174,12 @@ class MyWordsViewModel {
             print("📚 MyWords: Loaded \(savedMastery.count) saved mastery entries")
             
             await MainActor.run {
-                self.unlockedWords = learnedWords
+                // Set wordMastery first so didSet on unlockedWords sees correct scores
                 self.wordMastery = savedMastery
-                // Initialize mastery for new words
+                self.unlockedWords = learnedWords  // triggers updateCachedSortedWords via didSet
+                // Initialize mastery for new words then refresh cache
                 self.initializeMissingMasteryData()
+                self.updateCachedSortedWords()
                 self.isLoading = false
                 print("📚 MyWords: Done! Loaded \(learnedWords.count) words")
             }

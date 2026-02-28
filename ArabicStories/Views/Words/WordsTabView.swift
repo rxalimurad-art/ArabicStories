@@ -87,7 +87,7 @@ struct MyWordsView: View {
                 }
 
                 // Words List
-                let words = viewModel.sortedAndFilteredWords
+                let words = viewModel.cachedSortedWords
                 if words.isEmpty {
                     Text("No words match the current filter")
                         .font(.subheadline)

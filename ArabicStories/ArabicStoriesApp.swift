@@ -50,10 +50,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        
-        // Do NOT auto-login user - show login screen instead
-        // User must explicitly choose to continue as guest or sign in
-        
+
+        // Register default values — reminders on by default
+        UserDefaults.standard.register(defaults: [
+            "morningReminder": true,
+            "afternoonReminder": true
+        ])
+
         // Request notification permission at app launch
         requestNotificationPermission()
         
@@ -66,7 +69,39 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                 print("Notification permission error: \(error.localizedDescription)")
             } else {
                 print("Notification permission granted: \(granted)")
+                if granted {
+                    self.scheduleDefaultNotifications()
+                }
             }
+        }
+    }
+
+    private func scheduleDefaultNotifications() {
+        let center = UNUserNotificationCenter.current()
+        let defaults = UserDefaults.standard
+
+        if defaults.bool(forKey: "morningReminder") {
+            let content = UNMutableNotificationContent()
+            content.title = "Time to Learn Arabic! 🌅"
+            content.body = "Start your day with a quick Arabic story. Keep your streak going!"
+            content.sound = .default
+            var components = DateComponents()
+            components.hour = 9
+            components.minute = 0
+            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+            center.add(UNNotificationRequest(identifier: "morning-reminder", content: content, trigger: trigger))
+        }
+
+        if defaults.bool(forKey: "afternoonReminder") {
+            let content = UNMutableNotificationContent()
+            content.title = "Continue Your Arabic Journey! ☀️"
+            content.body = "Take a break and practice your Arabic vocabulary."
+            content.sound = .default
+            var components = DateComponents()
+            components.hour = 15
+            components.minute = 0
+            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+            center.add(UNNotificationRequest(identifier: "afternoon-reminder", content: content, trigger: trigger))
         }
     }
     

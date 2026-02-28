@@ -20,6 +20,11 @@ class LibraryViewModel {
     var isLoading = false
     var errorMessage: String?
     var showErrorAlert = false
+
+    // Cached derived collections (updated by updateDerivedCollections)
+    private(set) var inProgressStories: [Story] = []
+    private(set) var completedStories: [Story] = []
+    private(set) var bookmarkedStories: [Story] = []
     
     // Level Management
     var maxUnlockedLevel: Int = 1
@@ -126,18 +131,33 @@ class LibraryViewModel {
         
         stories = fetchedStories
         filteredStories = stories
-        
+        updateDerivedCollections()
+
         // Fetch user-specific progress for all stories
         await loadStoryProgress()
     }
     
     func loadStoryProgress() async {
-        // Fetch story progress for all displayed stories
-        for story in stories {
-            if let progress = await dataService.fetchStoryProgress(storyId: story.id) {
-                storyProgress[story.id.uuidString] = progress
-            }
+        let allProgress = await dataService.getAllStoryProgress()
+        for progress in allProgress {
+            storyProgress[progress.storyId] = progress
         }
+        updateDerivedCollections()
+    }
+
+    private func updateDerivedCollections() {
+        inProgressStories = stories.filter { story in
+            let progress = storyProgress[story.id.uuidString]
+            let readingProgress = progress?.readingProgress ?? 0.0
+            let isCompleted = progress?.isCompleted ?? false
+            return readingProgress > 0 && readingProgress < 1.0 && !isCompleted
+        }.sorted {
+            let date1 = storyProgress[$0.id.uuidString]?.lastReadDate ?? .distantPast
+            let date2 = storyProgress[$1.id.uuidString]?.lastReadDate ?? .distantPast
+            return date1 > date2
+        }
+        completedStories = stories.filter { isStoryCompleted($0.id) }
+        bookmarkedStories = stories.filter { isStoryBookmarked($0.id) }
     }
     
     func loadLevelProgress() async {
@@ -198,9 +218,19 @@ class LibraryViewModel {
     
     func setSortOption(_ option: SortOption) {
         selectedSortOption = option
-        Task {
-            await loadStories()
+        applySortLocally()
+    }
+
+    private func applySortLocally() {
+        switch selectedSortOption {
+        case .newest:       stories.sort { $0.createdAt > $1.createdAt }
+        case .easiest:      stories.sort { $0.difficultyLevel < $1.difficultyLevel }
+        case .mostPopular:  stories.sort { $0.viewCount > $1.viewCount }
+        case .alphabetical: stories.sort { $0.title < $1.title }
+        case .recentlyRead: stories.sort { ($0.lastReadDate ?? .distantPast) > ($1.lastReadDate ?? .distantPast) }
         }
+        filteredStories = stories
+        updateDerivedCollections()
     }
     
     func clearFilters() {
@@ -227,6 +257,7 @@ class LibraryViewModel {
                 storyProgress[story.id.uuidString] = newProgress
             }
         }
+        updateDerivedCollections()
     }
     
     func deleteStory(_ story: Story) async {
@@ -258,30 +289,8 @@ class LibraryViewModel {
         Dictionary(grouping: stories) { $0.difficultyLevel }
     }
     
-    var bookmarkedStories: [Story] {
-        stories.filter { isStoryBookmarked($0.id) }
-    }
-    
-    var inProgressStories: [Story] {
-        stories.filter { story in
-            let progress = storyProgress[story.id.uuidString]
-            let readingProgress = progress?.readingProgress ?? 0.0
-            let isCompleted = progress?.isCompleted ?? false
-            // Story is in progress if it has progress (> 0 and < 1) AND is not marked as completed
-            return readingProgress > 0 && readingProgress < 1.0 && !isCompleted
-        }.sorted { 
-            let date1 = storyProgress[$0.id.uuidString]?.lastReadDate ?? .distantPast
-            let date2 = storyProgress[$1.id.uuidString]?.lastReadDate ?? .distantPast
-            return date1 > date2
-        }
-    }
-    
     var continueReadingStory: Story? {
         inProgressStories.first
-    }
-    
-    var completedStories: [Story] {
-        stories.filter { isStoryCompleted($0.id) }
     }
     
     var difficultyCounts: [Int: Int] {

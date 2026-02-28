@@ -15,6 +15,8 @@ class OfflineDataService {
     
     private var cachedStories: [Story]?
     private var cachedQuranWords: [QuranWord]?
+    private var quranWordIdIndex: [String: QuranWord]?
+    private var quranWordArabicIndex: [String: QuranWord]?
     
     private init() {}
     
@@ -151,6 +153,9 @@ class OfflineDataService {
             
             let bundle = try decoder.decode(QuranWordsBundle.self, from: data)
             cachedQuranWords = bundle.words
+            // Build O(1) lookup indexes (keep first occurrence on duplicate keys)
+            quranWordIdIndex = Dictionary(bundle.words.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+            quranWordArabicIndex = Dictionary(bundle.words.map { ($0.arabicWithoutDiacritics, $0) }, uniquingKeysWith: { first, _ in first })
             print("✅ OfflineDataService: Loaded \(bundle.words.count) Quran words from bundle (version: \(bundle.version))")
             return bundle.words
         } catch {
@@ -161,6 +166,9 @@ class OfflineDataService {
     
     /// Get a specific Quran word by ID
     func getQuranWord(id: String) -> QuranWord? {
+        if let index = quranWordIdIndex {
+            return index[id]
+        }
         let words = loadQuranWords()
         return words.first { $0.id == id }
     }
@@ -215,19 +223,29 @@ class OfflineDataService {
     /// Clear Quran words cache
     func clearQuranWordsCache() {
         cachedQuranWords = nil
+        quranWordIdIndex = nil
+        quranWordArabicIndex = nil
         print("📱 OfflineDataService: Cleared Quran words cache")
     }
     
     /// Check if a word exists in the Quran words collection (for highlighting)
     func isWordInQuranWords(_ arabicText: String) -> Bool {
+        if let index = quranWordArabicIndex {
+            let normalized = ArabicTextUtils.stripDiacritics(arabicText)
+            return index[normalized] != nil
+        }
         let words = loadQuranWords()
         return words.contains { word in
             ArabicTextUtils.wordsMatch(word.arabicWithoutDiacritics, arabicText)
         }
     }
-    
+
     /// Find a Quran word by its Arabic text
     func findQuranWordByArabic(_ arabicText: String) -> QuranWord? {
+        if let index = quranWordArabicIndex {
+            let normalized = ArabicTextUtils.stripDiacritics(arabicText)
+            return index[normalized]
+        }
         let words = loadQuranWords()
         return words.first { word in
             ArabicTextUtils.wordsMatch(word.arabicWithoutDiacritics, arabicText)
