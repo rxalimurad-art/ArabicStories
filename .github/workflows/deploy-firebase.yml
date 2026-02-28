@@ -28,7 +28,17 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Install dependencies
+      # Build Hifz PWA
+      - name: Install PWA dependencies
+        working-directory: ./FirebaseBE/hifz-pwa
+        run: npm install
+
+      - name: Build PWA
+        working-directory: ./FirebaseBE/hifz-pwa
+        run: npm run build
+
+      # Install Functions dependencies
+      - name: Install Functions dependencies
         working-directory: ./FirebaseBE/functions
         run: npm install
 
@@ -36,4 +46,4 @@ jobs:
         working-directory: ./FirebaseBE
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: firebase deploy --only functions,hosting --token "$FIREBASE_TOKEN" --project prd
+        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN" --project prd
