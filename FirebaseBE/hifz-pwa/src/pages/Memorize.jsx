@@ -84,22 +84,22 @@ function Memorize() {
     <div className="h-full flex flex-col bg-gradient-to-b from-emerald-50 to-white">
       {/* Header */}
       <div className="bg-white px-4 py-3 border-b border-gray-100">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
           <button 
-            onClick={() => navigate('/groups')}
-            className="p-2 -ml-2 touch-btn"
+            onClick={() => navigate('/')}
+            className="p-2 -ml-2 rounded-lg hover:bg-gray-100 touch-btn"
           >
             <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <div className="text-center">
+          <div className="flex-1 text-center">
             <h1 className="font-semibold text-gray-900">{group.name}</h1>
             <p className="text-xs text-gray-500">
               {currentIndex + 1} / {group.lines.length}
             </p>
           </div>
-          <div className="w-10" /> {/* Spacer */}
+          <div className="w-10" /> {/* Spacer for alignment */}
         </div>
         
         {/* Progress bar */}

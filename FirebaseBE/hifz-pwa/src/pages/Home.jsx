@@ -4,12 +4,14 @@ import { useStore } from '../hooks/useStore'
 function Home() {
   const { groups, loading, getGroupProgress } = useStore()
   
-  // Get groups to review (not fully memorized)
-  const groupsToReview = groups
+  const groupsWithProgress = groups
     .map(g => ({ ...g, progress: getGroupProgress(g.id) }))
-    .filter(g => g.progress < 100)
-    .sort((a, b) => b.progress - a.progress)
-    .slice(0, 3)
+    .sort((a, b) => {
+      // Not finished (incomplete) first, then by progress descending
+      if (a.progress === 100 && b.progress !== 100) return 1
+      if (a.progress !== 100 && b.progress === 100) return -1
+      return b.progress - a.progress
+    })
 
   if (loading) {
     return (
@@ -24,78 +26,57 @@ function Home() {
 
   return (
     <div className="p-4 space-y-4">
-      {/* Top Actions */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">My Groups</h2>
-        <Link
-          to="/admin"
-          className="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium touch-btn flex items-center gap-1"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Add
-        </Link>
-      </div>
+      {/* Header */}
+      <h2 className="text-lg font-semibold text-gray-900">My Groups</h2>
       
-      {/* Continue Learning */}
-      {groupsToReview.length > 0 && (
-        <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Continue Learning</h3>
-          <div className="space-y-3">
-            {groupsToReview.map(group => (
-              <Link
-                key={group.id}
-                to={`/memorize/${group.id}`}
-                className="block bg-white rounded-xl p-4 shadow-sm border border-gray-100 touch-btn"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
+      {/* All Groups List */}
+      {groupsWithProgress.length === 0 ? (
+        <div className="text-center py-12">
+          <span className="text-4xl">📖</span>
+          <p className="text-gray-500 mt-4">No groups yet</p>
+          <p className="text-sm text-gray-400 mt-2">Go to Manage tab to add</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {groupsWithProgress.map(group => (
+            <Link
+              key={group.id}
+              to={`/memorize/${group.id}`}
+              className="block bg-white rounded-xl p-4 shadow-sm border border-gray-100 touch-btn"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
                     <h4 className="font-medium text-gray-900">{group.name}</h4>
-                    <p className="text-sm text-gray-500 mt-0.5">
-                      {group.lines?.length || 0} lines • {group.progress}% complete
-                    </p>
+                    {group.progress === 100 && (
+                      <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
+                        Done
+                      </span>
+                    )}
                   </div>
-                  <div className="w-12 h-12 relative">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#e5e7eb"
-                        strokeWidth="4"
-                      />
-                      <circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#10b981"
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                        strokeDasharray={`${group.progress * 1.26} 126`}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-emerald-600">
-                      {group.progress}%
-                    </span>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {group.lines?.length || 0} lines • {group.progress}% complete
+                  </p>
+                  
+                  {/* Progress bar */}
+                  <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ${
+                        group.progress === 100 ? 'bg-emerald-500' : 'bg-emerald-400'
+                      }`}
+                      style={{ width: `${group.progress}%` }}
+                    />
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+                
+                <div className="ml-4 text-2xl">
+                  {group.progress === 100 ? '✅' : group.progress > 0 ? '📖' : '🆕'}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
-      
-      {/* View All Groups */}
-      <Link
-        to="/groups"
-        className="block bg-white rounded-xl p-4 border border-gray-200 text-center touch-btn"
-      >
-        <span className="text-2xl">📚</span>
-        <p className="text-sm font-medium text-gray-700 mt-1">View All Groups</p>
-      </Link>
     </div>
   )
 }
