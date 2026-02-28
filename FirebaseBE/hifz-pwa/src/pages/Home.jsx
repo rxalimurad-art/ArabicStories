@@ -6,14 +6,16 @@ const TAG_COLORS = {
   nahw: 'bg-blue-100 text-blue-700 border-blue-200',
   sarf: 'bg-purple-100 text-purple-700 border-purple-200',
   quran: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  dua: 'bg-amber-100 text-amber-700 border-amber-200'
+  dua: 'bg-amber-100 text-amber-700 border-amber-200',
+  hadith: 'bg-rose-100 text-rose-700 border-rose-200'
 }
 
 const TAG_LABELS = {
   nahw: 'Nahw',
   sarf: 'Sarf',
   quran: 'Quran',
-  dua: 'Dua'
+  dua: 'Dua',
+  hadith: 'Hadith'
 }
 
 function Home() {

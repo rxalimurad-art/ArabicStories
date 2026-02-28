@@ -15,7 +15,7 @@ import { db } from '../firebase'
 const COLLECTION_NAME = 'hifz_groups'
 
 // Predefined main tags
-export const MAIN_TAGS = ['nahw', 'sarf', 'quran', 'dua']
+export const MAIN_TAGS = ['nahw', 'sarf', 'quran', 'dua', 'hadith']
 
 export function useStore() {
   const [groups, setGroups] = useState([])

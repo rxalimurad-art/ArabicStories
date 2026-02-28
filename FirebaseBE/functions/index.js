@@ -7,15 +7,48 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-// Initialize TTS client (uses service account from environment)
-const ttsClient = new TextToSpeechClient();
+// Initialize TTS client
+let ttsClient;
+try {
+  ttsClient = new TextToSpeechClient();
+  console.log('TTS Client initialized successfully');
+} catch (err) {
+  console.error('Failed to initialize TTS client:', err.message);
+}
 
 // Health check
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', service: 'Hifz TTS API' });
+  res.json({ 
+    status: 'ok', 
+    service: 'Hifz TTS API',
+    ttsConfigured: !!ttsClient
+  });
 });
 
-// Text-to-Speech endpoint with Chirp voices
+// List available voices (for debugging)
+app.get('/voices', async (req, res) => {
+  try {
+    if (!ttsClient) {
+      return res.status(500).json({ error: 'TTS client not initialized' });
+    }
+    
+    const [result] = await ttsClient.listVoices({ languageCode: 'ar-XA' });
+    const voices = result.voices || [];
+    
+    res.json({
+      voices: voices.map(v => ({
+        name: v.name,
+        gender: v.ssmlGender,
+        languageCodes: v.languageCodes
+      }))
+    });
+  } catch (error) {
+    console.error('List voices error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Text-to-Speech endpoint
 app.post('/tts', async (req, res) => {
   try {
     const { text, voiceType = 'chirp-female' } = req.body;
@@ -24,67 +57,66 @@ app.post('/tts', async (req, res) => {
       return res.status(400).json({ error: 'Text is required' });
     }
     
-    // Voice configuration - FIXED mapping
-    let voiceConfig = {
-      languageCode: 'ar-XA',
-      name: 'ar-XA-Chirp3-HD-A', // Female voice
-    };
-    
-    // Alternative voice options with correct voice names
-    if (voiceType === 'chirp-male') {
-      voiceConfig = {
-        languageCode: 'ar-XA',
-        name: 'ar-XA-Chirp3-HD-D', // Male voice
-      };
-    } else if (voiceType === 'wavenet-female') {
-      voiceConfig = {
-        languageCode: 'ar-XA',
-        name: 'ar-XA-Wavenet-A', // Female
-      };
-    } else if (voiceType === 'wavenet-male') {
-      voiceConfig = {
-        languageCode: 'ar-XA',
-        name: 'ar-XA-Wavenet-B', // Male
-      };
-    } else if (voiceType === 'chirp-female') {
-      // Use ar-XA-Chirp3-HD-A (Female)
-      voiceConfig = {
-        languageCode: 'ar-XA',
-        name: 'ar-XA-Chirp3-HD-A',
-      };
+    if (!ttsClient) {
+      return res.status(500).json({ error: 'TTS client not initialized' });
     }
     
-    // Log which voice is being used
-    console.log('Using voice:', voiceConfig.name, 'for type:', voiceType);
+    // Voice mapping - using verified voice names
+    const voiceMap = {
+      'chirp-female': { name: 'ar-XA-Chirp-HD-D', gender: 'FEMALE' },
+      'chirp-male': { name: 'ar-XA-Chirp-HD-O', gender: 'MALE' },
+      'wavenet-female': { name: 'ar-XA-Wavenet-A', gender: 'FEMALE' },
+      'wavenet-male': { name: 'ar-XA-Wavenet-B', gender: 'MALE' },
+      'standard-female': { name: 'ar-XA-Standard-A', gender: 'FEMALE' },
+      'standard-male': { name: 'ar-XA-Standard-B', gender: 'MALE' }
+    };
+    
+    const voiceConfig = voiceMap[voiceType] || voiceMap['chirp-female'];
+    
+    console.log('TTS Request:', {
+      voiceType,
+      voiceName: voiceConfig.name,
+      textLength: text.length
+    });
     
     const request = {
       input: { text },
-      voice: voiceConfig,
+      voice: {
+        languageCode: 'ar-XA',
+        name: voiceConfig.name,
+        ssmlGender: voiceConfig.gender
+      },
       audioConfig: {
         audioEncoding: 'MP3',
-        speakingRate: 0.85, // Slightly slower for memorization
+        speakingRate: 0.85,
         pitch: 0,
-        effectsProfileId: ['headphone-class-device'] // Optimized for headphones/mobile
+        effectsProfileId: ['headphone-class-device']
       }
     };
     
     const [response] = await ttsClient.synthesizeSpeech(request);
     
-    // Return base64 audio
     const audioContent = response.audioContent.toString('base64');
+    
+    console.log('TTS Success:', {
+      voiceUsed: voiceConfig.name,
+      audioLength: audioContent.length
+    });
     
     res.json({
       success: true,
       audioContent,
       encoding: 'MP3',
-      voice: voiceConfig.name
+      voice: voiceConfig.name,
+      voiceType: voiceType
     });
     
   } catch (error) {
     console.error('TTS Error:', error);
     res.status(500).json({ 
       error: 'TTS failed', 
-      details: error.message 
+      details: error.message,
+      code: error.code
     });
   }
 });

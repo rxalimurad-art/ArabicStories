@@ -628,3 +628,69 @@ Require stack:
 [debug] [2026-02-28T23:08:12.413Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
 [debug] [2026-02-28T23:08:15.260Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
 [debug] [2026-02-28T23:08:20.090Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:11:49.573Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:15:08.492Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:15:43.863Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:15:47.198Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:15:55.279Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:16:13.067Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:16:16.178Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:16:20.880Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:16:23.531Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:17:08.678Z] File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/index.js changed, reloading triggers"}}
+[debug] [2026-02-28T23:17:09.683Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T23:17:10.247Z] > [functions] package.json contents: {
+  "name": "hifz-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Hifz TTS",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "@google-cloud/text-to-speech": "^5.0.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T23:17:10.247Z] Building nodejs source
+[debug] [2026-02-28T23:17:10.248Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T23:17:10.249Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T23:17:10.251Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8722
+
+[info] TTS Client initialized successfully
+
+[error] (node:91050) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[debug] [2026-02-28T23:17:10.692Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2026-02-28T23:17:18.431Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:17:26.129Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:23:40.598Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:23:57.773Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:23:57.774Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:25:00.874Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:25:00.878Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:25:26.770Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/tts
+[debug] [2026-02-28T23:25:55.861Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:25:55.865Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:26:29.378Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/
+[debug] [2026-02-28T23:26:29.379Z] Functions emulator received unknown request at path /arabicstories-82611/us-central1/api/

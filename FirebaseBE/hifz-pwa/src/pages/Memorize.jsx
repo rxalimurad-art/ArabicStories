@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useStore } from '../hooks/useStore'
 import { useSpeech } from '../hooks/useSpeech'
 import { useFont } from '../hooks/useFont'
+import { useFontSize } from '../hooks/useFontSize'
 
 function Memorize() {
   const { groupId } = useParams()
@@ -10,6 +11,7 @@ function Memorize() {
   const { groups, updateLineStatus, getGroupProgress } = useStore()
   const { speak, stop, speaking } = useSpeech()
   const { font } = useFont()
+  const { fontSize } = useFontSize()
   
   const group = groups.find(g => g.id === groupId)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -119,30 +121,12 @@ function Memorize() {
         >
           {/* Arabic Text - Compact */}
           <p 
-            className="text-2xl leading-normal text-gray-900 text-center"
+            className="text-xl leading-normal text-gray-900 text-center"
               style={{ fontFamily: font.family }}
             dir="rtl"
           >
             {currentLine.arabic}
           </p>
-          
-          {/* Play Button - Smaller */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              handlePlay()
-            }}
-            disabled={speaking}
-            className="mt-3 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto touch-btn disabled:opacity-50 shadow-md"
-          >
-            {speaking ? (
-              <span className="text-lg">🔊</span>
-            ) : (
-              <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            )}
-          </button>
           
           {/* Translation - Compact */}
           <div className="mt-3 text-center">
@@ -154,6 +138,24 @@ function Memorize() {
               <p className="text-gray-400 text-xs">Tap to show translation</p>
             ) : null}
           </div>
+          
+          {/* Play Button - At the end of card */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handlePlay()
+            }}
+            disabled={speaking}
+            className="mt-auto mb-2 w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center mx-auto touch-btn disabled:opacity-50 shadow-lg"
+          >
+            {speaking ? (
+              <span className="text-xl">🔊</span>
+            ) : (
+              <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </button>
         </div>
         
         {/* Navigation Dots - Compact */}

@@ -7,14 +7,16 @@ const TAG_COLORS = {
   nahw: 'bg-blue-100 text-blue-700',
   sarf: 'bg-purple-100 text-purple-700',
   quran: 'bg-emerald-100 text-emerald-700',
-  dua: 'bg-amber-100 text-amber-700'
+  dua: 'bg-amber-100 text-amber-700',
+  hadith: 'bg-rose-100 text-rose-700'
 }
 
 const TAG_LABELS = {
   nahw: 'Nahw',
   sarf: 'Sarf',
   quran: 'Quran',
-  dua: 'Dua'
+  dua: 'Dua',
+  hadith: 'Hadith'
 }
 
 function Groups() {

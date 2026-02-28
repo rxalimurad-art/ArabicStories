@@ -10,32 +10,31 @@ const getConfig = () => {
 
 // Get API base URL
 const getApiUrl = () => {
-  // In production, use Firebase hosting URL
   if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
     return '/api'
   }
-  // In development, use emulator
   return 'http://127.0.0.1:5002/arabicstories-82611/us-central1/api'
 }
 
 export function useSpeech() {
   const [speaking, setSpeaking] = useState(false)
   const [config, setConfig] = useState(getConfig())
+  const [error, setError] = useState(null)
+  const [lastVoiceUsed, setLastVoiceUsed] = useState(null)
   const audioRef = useRef(null)
   
-  // Web Speech API support check
   const webSupported = 'speechSynthesis' in window
   
-  // Load config on mount
   useEffect(() => {
-    const handleStorage = () => {
-      setConfig(getConfig())
+    const handleStorage = (e) => {
+      if (e.key === STORAGE_KEY) {
+        setConfig(getConfig())
+      }
     }
     window.addEventListener('storage', handleStorage)
     return () => window.removeEventListener('storage', handleStorage)
   }, [])
   
-  // Cleanup audio on unmount
   useEffect(() => {
     return () => {
       if (audioRef.current) {
@@ -45,7 +44,6 @@ export function useSpeech() {
     }
   }, [])
   
-  // Web Speech API
   const speakWeb = useCallback((text, rate = 0.8) => {
     if (!webSupported) return
     
@@ -60,66 +58,78 @@ export function useSpeech() {
     const arabicVoice = voices.find(v => v.lang.includes('ar'))
     if (arabicVoice) utterance.voice = arabicVoice
     
-    utterance.onstart = () => setSpeaking(true)
+    utterance.onstart = () => {
+      setSpeaking(true)
+      setError(null)
+      setLastVoiceUsed('Browser TTS')
+    }
     utterance.onend = () => setSpeaking(false)
     utterance.onerror = () => setSpeaking(false)
     
     window.speechSynthesis.speak(utterance)
   }, [webSupported])
   
-  // Google Cloud TTS via Firebase Function
   const speakGoogle = useCallback(async (text) => {
     setSpeaking(true)
+    setError(null)
     
     try {
       const voiceToUse = config.voice || 'chirp-female'
-      console.log('Requesting voice:', voiceToUse)
+      const apiUrl = getApiUrl()
       
-      const response = await fetch(`${getApiUrl()}/tts`, {
+      console.log('Calling TTS API:', apiUrl, 'with voice:', voiceToUse)
+      
+      const response = await fetch(`${apiUrl}/tts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          text,
-          voiceType: voiceToUse
-        })
+        body: JSON.stringify({ text, voiceType: voiceToUse })
       })
       
+      // Check if API is available
+      if (response.status === 404) {
+        throw new Error('TTS API not found. Functions may not be deployed.')
+      }
+      
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'TTS request failed')
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || `HTTP ${response.status}`)
       }
       
       const data = await response.json()
-      console.log('Voice used:', data.voice)
+      console.log('TTS Response:', data)
       
-      // Stop previous audio
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.src = ''
       }
       
-      // Play new audio
       const newAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`)
       audioRef.current = newAudio
       
-      newAudio.onended = () => setSpeaking(false)
+      newAudio.onended = () => {
+        setSpeaking(false)
+        setLastVoiceUsed(data.voice || voiceToUse)
+      }
       newAudio.onerror = () => {
         setSpeaking(false)
-        console.error('Audio playback error')
+        setError('Audio playback failed')
       }
       
       await newAudio.play()
+      setLastVoiceUsed(data.voice || voiceToUse)
       
     } catch (err) {
       console.error('Google TTS error:', err)
+      setError(`${err.message}. Falling back to browser TTS.`)
       setSpeaking(false)
       // Fallback to Web Speech
       speakWeb(text)
     }
   }, [config.voice, speakWeb])
   
-  // Main speak function
   const speak = useCallback((text, rate = 0.8) => {
+    setError(null)
+    
     if (config.provider === 'google') {
       speakGoogle(text)
     } else {
@@ -127,7 +137,6 @@ export function useSpeech() {
     }
   }, [config.provider, speakWeb, speakGoogle])
   
-  // Stop speaking
   const stop = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause()
@@ -139,11 +148,11 @@ export function useSpeech() {
     setSpeaking(false)
   }, [webSupported])
   
-  // Update config
   const updateConfig = useCallback((newConfig) => {
     const updated = { ...config, ...newConfig }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
     setConfig(updated)
+    console.log('Config updated:', updated)
   }, [config])
   
   return { 
@@ -152,6 +161,9 @@ export function useSpeech() {
     speaking, 
     config,
     updateConfig,
-    webSupported 
+    webSupported,
+    error,
+    lastVoiceUsed,
+    clearError: () => setError(null)
   }
 }
