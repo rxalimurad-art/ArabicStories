@@ -1,16 +1,16 @@
 {
-  "name": "arabic-stories-admin",
+  "name": "arabic-stories-api",
   "version": "1.0.0",
-  "description": "Firebase Functions for Arabic Stories Admin",
+  "description": "Firebase Functions for Arabic Stories - Completions API",
   "main": "index.js",
   "engines": {
     "node": "20"
   },
   "scripts": {
-    "serve": "firebase emulators:start --only functions,hosting",
+    "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions,hosting",
+    "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "dependencies": {
@@ -18,9 +18,7 @@
     "firebase-functions": "^5.0.0",
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "nodemailer": "^6.9.7",
-    "multer": "^1.4.5-lts.1",
-    "busboy": "^1.6.0"
+    "nodemailer": "^6.9.7"
   },
   "devDependencies": {
     "firebase-tools": "^13.0.0"

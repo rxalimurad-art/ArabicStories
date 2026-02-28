@@ -1,183 +1,147 @@
-# Arabic Stories - Firebase Admin
+# Arabic Stories - Firebase + PWA
 
-A Firebase Functions-based admin panel for managing Arabic stories in Firestore.
-
-## Features
-
-- 📝 Create, edit, delete stories with bilingual content (English/Arabic)
-- 📚 Manage story segments with Arabic text, English translation, and transliteration
-- 📖 Vocabulary management with root letters and example sentences
-- 🎨 Modern, responsive web interface
-- 📤 Import/Export stories as JSON
-- ✅ Real-time validation
+A complete solution with:
+- 🔥 **Firebase Functions API** - Story completion tracking with email notifications
+- 📱 **React PWA** - Mobile-first web app that feels native
 
 ## Project Structure
 
 ```
 FirebaseBE/
-├── functions/
-│   ├── index.js          # Firebase Functions (API endpoints)
-│   └── package.json      # Node.js dependencies
-├── public/
-│   ├── index.html        # Admin UI
-│   ├── admin.css         # Styles
-│   └── admin.js          # Frontend JavaScript
-├── firebase.json         # Firebase configuration
-├── firestore.rules       # Security rules
-└── README.md
+├── functions/          # Firebase Functions API
+│   ├── index.js       # /api/completions/story endpoint only
+│   └── package.json
+├── pwa/               # React PWA
+│   ├── src/           # React components & pages
+│   ├── index.html
+│   ├── vite.config.js # PWA configuration
+│   └── package.json
+├── firebase.json      # Combined deployment config
+└── firestore.rules
 ```
 
-## Setup Instructions
+## Quick Start
 
-### 1. Install Firebase CLI
+### 1. Install Dependencies
 
 ```bash
-npm install -g firebase-tools
+# API dependencies
+cd functions
+npm install
+
+# PWA dependencies
+cd ../pwa
+npm install
 ```
 
-### 2. Login to Firebase
+### 2. Configure Firebase
+
+Update `.firebaserc`:
+```json
+{
+  "projects": {
+    "default": "YOUR_PROJECT_ID"
+  }
+}
+```
+
+### 3. Run Locally
 
 ```bash
-firebase login
+# Terminal 1 - PWA dev server
+cd pwa
+npm run dev
+
+# Terminal 2 - Firebase emulators
+cd ..
+firebase emulators:start
 ```
 
-### 3. Initialize Firebase Project
-
-```bash
-cd FirebaseBE
-firebase init
-```
-
-Select:
-- Functions
-- Hosting
-- Firestore
-- Emulators (optional, for local development)
+- PWA: http://localhost:5173
+- API: http://localhost:5001/YOUR_PROJECT/us-central1/api
+- Firebase Console: http://localhost:4000
 
 ### 4. Deploy
 
 ```bash
+# Deploy everything (API + PWA)
 firebase deploy
-```
 
-Or deploy specific services:
-```bash
+# Or deploy separately
 firebase deploy --only functions
 firebase deploy --only hosting
 ```
 
-## Local Development
+## API Endpoint
 
-### Using Emulators
+### POST `/api/completions/story`
 
-```bash
-firebase emulators:start
-```
-
-This will start:
-- Functions emulator on port 5001
-- Firestore emulator on port 8080
-- Hosting emulator on port 5000
-- UI on port 4000
-
-Access the admin panel at: `http://localhost:5000`
-
-### API URL Configuration
-
-If running locally with emulators, click the ⚙️ (settings) button in the header to set the API base URL, e.g.:
-```
-http://localhost:5001/your-project/us-central1
-```
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/stories` | List all stories |
-| GET | `/api/stories/:id` | Get a single story |
-| POST | `/api/stories` | Create new story |
-| PUT | `/api/stories/:id` | Update story |
-| DELETE | `/api/stories/:id` | Delete story |
-| POST | `/api/stories/validate` | Validate story data |
-| GET | `/api/categories` | Get story categories |
-| POST | `/api/seed` | Seed sample stories |
-
-## Story Data Structure
+Track story completion and send email notification.
 
 ```json
 {
-  "id": "uuid",
-  "title": "Story Title",
-  "titleArabic": "عنوان القصة",
-  "storyDescription": "Description",
-  "storyDescriptionArabic": "الوصف",
-  "author": "Author Name",
-  "difficultyLevel": 1,
-  "category": "children",
-  "tags": ["animals", "friendship"],
-  "coverImageURL": "https://...",
-  "audioNarrationURL": "https://...",
-  "segments": [
-    {
-      "index": 0,
-      "arabicText": "النص العربي",
-      "englishText": "English text",
-      "transliteration": "Transliteration"
-    }
-  ],
-  "words": [
-    {
-      "arabic": "كلمة",
-      "english": "word",
-      "transliteration": "kalima",
-      "partOfSpeech": "noun"
-    }
-  ]
+  "userId": "user123",
+  "userName": "John Doe",
+  "userEmail": "john@example.com",
+  "storyId": "story456",
+  "storyTitle": "The Friendly Cat",
+  "difficultyLevel": 1
 }
 ```
 
-## Firestore Collections
+## PWA Features
 
-- `stories` - Stores all story content
-- `admin_logs` - Admin action logs
+- 📱 **Native App Feel** - Bottom navigation, smooth transitions
+- 📴 **Offline Support** - Works without internet
+- ⬇️ **Installable** - Add to home screen
+- 🔔 **Push Ready** - Service worker configured
+- 🎨 **Mobile-Optimized** - Safe areas, touch feedback
 
-## Categories
+## Routes
 
-- general
-- folktale
-- history
-- science
-- culture
-- adventure
-- mystery
-- romance
-- children
-- religious
-- poetry
-- modern
+- `/` - Home (dashboard)
+- `/stories` - Story list
+- `/stories/:id` - Story reader
+- `/profile` - User profile
 
-## Troubleshooting
+## Customization
 
-### CORS Errors
-Make sure CORS is properly configured in the functions. The code uses the `cors` middleware.
+### Change Theme
 
-### Permission Denied
-Check your Firestore security rules and ensure they allow the operations you need.
-
-### Functions Not Deploying
-Run with debug output:
-```bash
-firebase deploy --only functions --debug
+Edit `pwa/tailwind.config.js`:
+```javascript
+colors: {
+  primary: {
+    500: '#your-color',
+    600: '#your-color-dark',
+  }
+}
 ```
 
-## Security Notes
+### Add Firebase Integration
 
-⚠️ **Important**: This admin panel has no authentication. For production:
+Edit `pwa/src/pages/Home.jsx` and replace mock data:
+```javascript
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
 
-1. Add Firebase Authentication
-2. Implement proper user roles
-3. Use HTTPS only
-4. Validate all inputs server-side
-5. Implement rate limiting
-6. Add audit logging
-7. Consider IP whitelisting or VPN access
+// Fetch real stories
+const snapshot = await getDocs(collection(db, 'stories'))
+```
+
+## Icons
+
+Open `pwa/public/icon-generator.html` in browser and click "Generate All Icons" to download PWA icons.
+
+## Environment Variables (Optional)
+
+For production email configuration:
+```bash
+firebase functions:config:set gmail.user="your-email@gmail.com" gmail.pass="app-password"
+```
+
+Then update `functions/index.js` to use `functions.config()` instead of hardcoded values.
+
+## License
+
+MIT

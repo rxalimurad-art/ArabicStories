@@ -1,0 +1,125 @@
+[debug] [2026-02-28T21:45:29.598Z] ----------------------------------------------------------------------
+[debug] [2026-02-28T21:45:29.599Z] Command:       /usr/local/bin/node /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/node_modules/.bin/firebase emulators:start --only functions,hosting --project demo-arabic-stories
+[debug] [2026-02-28T21:45:29.600Z] CLI Version:   15.8.0
+[debug] [2026-02-28T21:45:29.600Z] Platform:      darwin
+[debug] [2026-02-28T21:45:29.600Z] Node Version:  v24.13.1
+[debug] [2026-02-28T21:45:29.600Z] Time:          Sun Mar 01 2026 02:45:29 GMT+0500 (Pakistan Standard Time)
+[debug] [2026-02-28T21:45:29.600Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  emulators: Starting emulators: functions, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, hosting"}}
+[info] i  emulators: Detected demo project ID "demo-arabic-stories", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail. {"metadata":{"emulator":{"name":"hub"},"message":"Detected demo project ID \"demo-arabic-stories\", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail."}}
+[debug] [2026-02-28T21:45:30.362Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T21:45:30.363Z] [hosting] Hosting Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T21:45:30.363Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4001},{"address":"::1","family":"IPv6","port":4001}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5051}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-02-28T21:45:30.364Z] Write emulator hub locator at /var/folders/0x/bzy0jkxs69vbqrs2yyg7hynr0000gn/T/hub-demo-arabic-stories.json
+[debug] [2026-02-28T21:45:30.468Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T21:45:30.468Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T21:45:30.468Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-02-28T21:45:30.468Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4001},{"address":"::1","family":"IPv6","port":4001}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5051}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5002}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[debug] [2026-02-28T21:45:30.479Z] No OAuth tokens found
+[debug] [2026-02-28T21:45:30.479Z] No OAuth tokens found
+[debug] [2026-02-28T21:45:30.479Z] Unable to refresh auth: not yet authenticated.
+[info] i  hosting[demo-arabic-stories]: Serving hosting files from: pwa/dist {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: pwa/dist"}}
+[info] ✔  hosting[demo-arabic-stories]: Local server: http://127.0.0.1:5051 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: http://127.0.0.1:5051"}}
+[info] i  functions: Watching "/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions\" for Cloud Functions..."}}
+[debug] [2026-02-28T21:45:30.504Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] ⚠  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-02-28T21:45:30.819Z] > [functions] package.json contents: {
+  "name": "arabic-stories-api",
+  "version": "1.0.0",
+  "description": "Firebase Functions for Arabic Stories - Completions API",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "private": true
+}
+[debug] [2026-02-28T21:45:30.820Z] Building nodejs source
+[debug] [2026-02-28T21:45:30.820Z] Failed to find version of module node: reached end of search path /Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "20" doesn't match your global version "24". Using node@24 from host. 
+[debug] [2026-02-28T21:45:30.821Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-02-28T21:45:30.824Z] Found firebase-functions binary at '/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8773
+
+[debug] [2026-02-28T21:45:31.095Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[info] ✔  functions[us-central1-api]: http function initialized (http://127.0.0.1:5002/demo-arabic-stories/us-central1/api). {"metadata":{"emulator":{"name":"functions"},"message":"http function initialized (http://127.0.0.1:5002/demo-arabic-stories/us-central1/api)."}}
+[debug] [2026-02-28T21:45:35.122Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4001/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5002 │ http://127.0.0.1:4001/functions │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Hosting   │ 127.0.0.1:5051 │ n/a                             │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2026-02-28T21:45:40.940Z] [work-queue] {"queuedWork":["/demo-arabic-stories/us-central1/api/-2026-02-28T21:45:40.940Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T21:45:40.941Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/demo-arabic-stories/us-central1/api/-2026-02-28T21:45:40.940Z"],"workRunningCount":1}
+[debug] [2026-02-28T21:45:40.941Z] Accepted request GET /demo-arabic-stories/us-central1/api/ --> us-central1-api
+[debug] [2026-02-28T21:45:40.941Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-02-28T21:45:40.941Z] [functions] Got req.url=/demo-arabic-stories/us-central1/api/, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/demo-arabic-stories/us-central1/api/, mapping to path=/"}}
+[debug] [2026-02-28T21:45:40.944Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2026-02-28T21:45:40.944Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[info] >  (node:86229) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead. {"user":"(node:86229) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":">  (node:86229) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead."}}
+[info] >  (Use `node --trace-deprecation ...` to show where the warning was created) {"user":"(Use `node --trace-deprecation ...` to show where the warning was created)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":">  (Use `node --trace-deprecation ...` to show where the warning was created)"}}
+[debug] [2026-02-28T21:45:41.430Z] [runtime-status] [86229] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2026-02-28T21:45:41.431Z] [runtime-status] [86229] Resolved module firebase-functions {"declared":true,"installed":true,"version":"5.1.1","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"5.1.1\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2026-02-28T21:45:41.431Z] [runtime-status] [86229] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2026-02-28T21:45:41.431Z] [runtime-status] [86229] Resolved module firebase-functions {"declared":true,"installed":true,"version":"5.1.1","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"5.1.1\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2026-02-28T21:45:41.503Z] [runtime-status] [86229] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2026-02-28T21:45:41.504Z] [runtime-status] [86229] Resolved module firebase-functions {"declared":true,"installed":true,"version":"5.1.1","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"5.1.1\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-functions/lib/v1/index.js\"}"}}
+[debug] [2026-02-28T21:45:41.567Z] [runtime-status] [86229] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"12.7.0","resolution":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2026-02-28T21:45:41.627Z] [runtime-status] [86229] Functions runtime initialized. {"cwd":"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions","node_version":"24.13.1"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Functions runtime initialized. {\"cwd\":\"/Users/murad/Documents/GitHub/ArabicStories/FirebaseBE/functions\",\"node_version\":\"24.13.1\"}"}}
+[debug] [2026-02-28T21:45:41.627Z] [runtime-status] [86229] Listening to port: /var/folders/0x/bzy0jkxs69vbqrs2yyg7hynr0000gn/T/fire_emu_fb6a0c08463965aa.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [86229] Listening to port: /var/folders/0x/bzy0jkxs69vbqrs2yyg7hynr0000gn/T/fire_emu_fb6a0c08463965aa.sock"}}
+[debug] [2026-02-28T21:45:41.656Z] [worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE"}}
+[debug] [2026-02-28T21:45:41.656Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2026-02-28T21:45:41.656Z] [worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: BUSY"}}
+[debug] [2026-02-28T21:45:41.659Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.771875ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.771875ms"}}
+[debug] [2026-02-28T21:45:41.659Z] [worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE"}}
+[debug] [2026-02-28T21:45:41.659Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-02-28T21:45:41.659Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-02-28T21:45:41.659Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T21:45:41.668Z] [work-queue] {"queuedWork":["/demo-arabic-stories/us-central1/api/completions/story-2026-02-28T21:45:41.668Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-02-28T21:45:41.668Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/demo-arabic-stories/us-central1/api/completions/story-2026-02-28T21:45:41.668Z"],"workRunningCount":1}
+[debug] [2026-02-28T21:45:41.668Z] Accepted request POST /demo-arabic-stories/us-central1/api/completions/story --> us-central1-api
+[debug] [2026-02-28T21:45:41.668Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-02-28T21:45:41.668Z] [functions] Got req.url=/demo-arabic-stories/us-central1/api/completions/story, mapping to path=/completions/story {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/demo-arabic-stories/us-central1/api/completions/story, mapping to path=/completions/story"}}
+[debug] [2026-02-28T21:45:41.668Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2026-02-28T21:45:41.668Z] [worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: BUSY"}}
+[debug] [2026-02-28T21:45:44.618Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2950.88925ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2950.88925ms"}}
+[debug] [2026-02-28T21:45:44.620Z] [worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-e6c28740-1a56-4908-9cb9-bb5e5b70a328]: IDLE"}}
+[debug] [2026-02-28T21:45:44.620Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-02-28T21:45:44.620Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-02-28T21:45:44.620Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
