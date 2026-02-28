@@ -129,10 +129,8 @@ export function useSpeech() {
     
     // All URLs failed
     console.error('All TTS APIs failed. Last error:', lastError)
-    setError(`${lastError}. Falling back to browser TTS.`)
+    setError(`${lastError}. Check Debug Info for details.`)
     setSpeaking(false)
-    // Fallback to Web Speech
-    speakWeb(text)
     
   }, [config.voice, speakWeb])
   

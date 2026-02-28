@@ -50,8 +50,11 @@ app.get('/voices', async (req, res) => {
 
 // Text-to-Speech endpoint
 app.post('/tts', async (req, res) => {
+  let voiceType, voiceConfig;
+  
   try {
-    const { text, voiceType = 'chirp-female' } = req.body;
+    const { text, voiceType: requestedVoice = 'chirp-female' } = req.body;
+    voiceType = requestedVoice;
     
     if (!text || text.trim() === '') {
       return res.status(400).json({ error: 'Text is required' });
@@ -61,17 +64,18 @@ app.post('/tts', async (req, res) => {
       return res.status(500).json({ error: 'TTS client not initialized' });
     }
     
-    // Voice mapping - using verified voice names
+    // Voice mapping - using correct Google Cloud TTS voice names
+    // Note: Chirp voices may not be available in all projects/regions
     const voiceMap = {
-      'chirp-female': { name: 'ar-XA-Chirp-HD-D', gender: 'FEMALE' },
-      'chirp-male': { name: 'ar-XA-Chirp-HD-O', gender: 'MALE' },
+      'chirp-female': { name: 'ar-XA-Chirp3-HD-D', gender: 'FEMALE' },
+      'chirp-male': { name: 'ar-XA-Chirp3-HD-O', gender: 'MALE' },
       'wavenet-female': { name: 'ar-XA-Wavenet-A', gender: 'FEMALE' },
       'wavenet-male': { name: 'ar-XA-Wavenet-B', gender: 'MALE' },
       'standard-female': { name: 'ar-XA-Standard-A', gender: 'FEMALE' },
       'standard-male': { name: 'ar-XA-Standard-B', gender: 'MALE' }
     };
     
-    const voiceConfig = voiceMap[voiceType] || voiceMap['chirp-female'];
+    voiceConfig = voiceMap[voiceType] || voiceMap['chirp-female'];
     
     console.log('TTS Request:', {
       voiceType,
@@ -116,7 +120,10 @@ app.post('/tts', async (req, res) => {
     res.status(500).json({ 
       error: 'TTS failed', 
       details: error.message,
-      code: error.code
+      code: error.code,
+      voiceType: voiceType,
+      voiceName: voiceConfig?.name,
+      hint: 'Chirp voices require allowlist. Try WaveNet or Standard voices.'
     });
   }
 });

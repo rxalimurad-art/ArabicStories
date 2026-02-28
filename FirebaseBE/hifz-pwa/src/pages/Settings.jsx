@@ -286,11 +286,12 @@ function Settings() {
         </button>
         
         {showDebug && (
-          <div className="bg-gray-100 rounded-lg p-3 text-xs font-mono space-y-1">
+          <div className="bg-gray-100 rounded-lg p-3 text-xs font-mono space-y-1 break-all">
             <p>Provider: {config.provider}</p>
             <p>Voice: {config.voice}</p>
             <p>API Status: {apiStatus}</p>
             <p>Last Voice: {lastVoiceUsed || 'None'}</p>
+            {error && <p className="text-red-600">Error: {error}</p>}
             <p>Font: {fontKey}</p>
             <p>Font Size: {fontSize}px</p>
           </div>

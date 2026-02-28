@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useStore } from '../hooks/useStore'
 import { useFont } from '../hooks/useFont'
+import { useHaptic } from '../hooks/useHaptic'
 
 const TAG_COLORS = {
   nahw: 'bg-blue-100 text-blue-700',
@@ -22,6 +23,7 @@ const TAG_LABELS = {
 function Groups() {
   const { groups, loading, error, addGroup, addLine, deleteGroup, deleteLine, updateGroupTags, MAIN_TAGS } = useStore()
   const { font, fontSize } = useFont()
+  const { light, medium, success } = useHaptic()
   const [view, setView] = useState('list')
   const [editingGroup, setEditingGroup] = useState(null)
   const [newGroupName, setNewGroupName] = useState('')
@@ -32,11 +34,13 @@ function Groups() {
   
   const handleCreateGroup = async (e) => {
     e.preventDefault()
+    medium()
     if (newGroupName.trim() && !saving) {
       setSaving(true)
       setSaveError(null)
       try {
         const groupId = await addGroup(newGroupName.trim(), selectedTags)
+        success()
         setNewGroupName('')
         setSelectedTags([])
         const newGroup = groups.find(g => g.id === groupId) || { id: groupId, name: newGroupName, lines: [], tags: selectedTags }
@@ -67,6 +71,7 @@ function Groups() {
   }
   
   const handleToggleTag = (tag) => {
+    light()
     setSelectedTags(prev => 
       prev.includes(tag) 
         ? prev.filter(t => t !== tag)
@@ -109,6 +114,7 @@ function Groups() {
   }
   
   const openEditGroup = (group) => {
+    light()
     setEditingGroup(group)
     setSelectedTags(group.tags || [])
     setNewLine({ arabic: '', translation: '' })
@@ -117,6 +123,7 @@ function Groups() {
   }
   
   const openCreateGroup = () => {
+    light()
     setNewGroupName('')
     setSelectedTags([])
     setNewLine({ arabic: '', translation: '' })
@@ -125,6 +132,7 @@ function Groups() {
   }
   
   const goBack = () => {
+    light()
     setView('list')
     setEditingGroup(null)
     setSaveError(null)

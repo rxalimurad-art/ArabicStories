@@ -1,7 +1,19 @@
 import { Outlet, useNavigate } from 'react-router-dom'
+import { useHaptic } from '../hooks/useHaptic'
 
 function Layout() {
   const navigate = useNavigate()
+  const { light } = useHaptic()
+  
+  const goToSettings = () => {
+    light()
+    navigate('/settings')
+  }
+  
+  const goToGroups = () => {
+    light()
+    navigate('/groups')
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -10,7 +22,7 @@ function Layout() {
         <div className="px-4 py-3 flex items-center justify-between">
           {/* Settings Button */}
           <button 
-            onClick={() => navigate('/settings')}
+            onClick={goToSettings}
             className="p-2 -ml-2 rounded-lg hover:bg-emerald-700 touch-btn"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,11 +32,11 @@ function Layout() {
           </button>
 
           {/* Title */}
-          <h1 className="text-xl font-bold">Hifz</h1>
+          <h1 className="text-xl font-bold">Memorizer</h1>
 
           {/* Add Button */}
           <button 
-            onClick={() => navigate('/groups')}
+            onClick={goToGroups}
             className="p-2 -mr-2 rounded-lg hover:bg-emerald-700 touch-btn"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

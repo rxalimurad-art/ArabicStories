@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico'],
       manifest: {
-        name: 'Hifz - Memorizer',
-        short_name: 'Hifz',
+        name: 'Memorizer',
+        short_name: 'Memorizer',
         description: 'Personal Arabic verse memorization',
         theme_color: '#059669',
         background_color: '#ffffff',

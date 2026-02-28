@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useStore } from '../hooks/useStore'
 import { useSpeech } from '../hooks/useSpeech'
 import { useFont } from '../hooks/useFont'
+import { useHaptic } from '../hooks/useHaptic'
+import { useSwipe } from '../hooks/useSwipe'
+import WordHighlighter from '../components/WordHighlighter'
 
 function Memorize() {
   const { groupId } = useParams()
@@ -10,14 +13,110 @@ function Memorize() {
   const { groups, updateLineStatus, getGroupProgress } = useStore()
   const { speak, stop, speaking } = useSpeech()
   const { font, fontSize } = useFont()
+  const { light, medium, success, error: hapticError } = useHaptic()
   
   const group = groups.find(g => g.id === groupId)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showTranslation, setShowTranslation] = useState(false)
+  const [audioDuration, setAudioDuration] = useState(0)
+  const cardRef = useRef(null)
   
+  // Stop audio on unmount
   useEffect(() => {
     return () => stop()
   }, [stop])
+  
+  // Estimate audio duration for word highlighting (TTS ~120 WPM)
+  const estimateDuration = useCallback((text) => {
+    const wordCount = text.trim().split(/\s+/).length
+    return (wordCount / 2) + 0.5 // ~2 words per second + padding
+  }, [])
+  
+  const handlePlay = useCallback(() => {
+    light()
+    const duration = estimateDuration(group?.lines[currentIndex]?.arabic || '')
+    setAudioDuration(duration)
+    speak(group.lines[currentIndex].arabic)
+  }, [group, currentIndex, speak, light, estimateDuration])
+  
+  const handleStatus = useCallback((status) => {
+    // Haptic feedback based on status
+    if (status === 'memorized') success()
+    else if (status === 'not_started') hapticError()
+    else medium()
+    
+    updateLineStatus(groupId, group.lines[currentIndex].id, status)
+    
+    if (currentIndex < group.lines.length - 1) {
+      setCurrentIndex(prev => prev + 1)
+      setShowTranslation(false)
+      setAudioDuration(0)
+      stop()
+    } else {
+      stop()
+      success()
+      // Simple completion message without alert
+      setTimeout(() => {
+        if (confirm('Great job! You\'ve reviewed all lines. Start over?')) {
+          setCurrentIndex(0)
+          setShowTranslation(false)
+          setAudioDuration(0)
+        }
+      }, 100)
+    }
+  }, [group, currentIndex, groupId, updateLineStatus, stop, success, hapticError, medium])
+  
+  const handleNext = useCallback(() => {
+    if (currentIndex < group.lines.length - 1) {
+      light()
+      setCurrentIndex(prev => prev + 1)
+      setShowTranslation(false)
+      setAudioDuration(0)
+      stop()
+    }
+  }, [currentIndex, group, stop, light])
+  
+  const handlePrev = useCallback(() => {
+    if (currentIndex > 0) {
+      light()
+      setCurrentIndex(prev => prev - 1)
+      setShowTranslation(false)
+      setAudioDuration(0)
+      stop()
+    }
+  }, [currentIndex, stop, light])
+  
+  // Swipe handlers
+  const swipeHandlers = useSwipe({
+    onSwipeLeft: () => {
+      medium()
+      handleNext()
+    },
+    onSwipeRight: () => {
+      medium()
+      handlePrev()
+    },
+    threshold: 60,
+    timeout: 400
+  })
+  
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') handlePrev()
+      if (e.key === 'ArrowRight') handleNext()
+      if (e.key === ' ') {
+        e.preventDefault()
+        handlePlay()
+      }
+      if (e.key === '1') handleStatus('not_started')
+      if (e.key === '2') handleStatus('learning')
+      if (e.key === '3') handleStatus('memorized')
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleNext, handlePrev, handlePlay, handleStatus])
   
   if (!group) {
     return (
@@ -44,40 +143,6 @@ function Memorize() {
   
   const currentLine = group.lines[currentIndex]
   const progress = ((currentIndex + 1) / group.lines.length) * 100
-  
-  const handlePlay = () => {
-    speak(currentLine.arabic)
-  }
-  
-  const handleStatus = (status) => {
-    updateLineStatus(groupId, currentLine.id, status)
-    
-    if (currentIndex < group.lines.length - 1) {
-      setCurrentIndex(prev => prev + 1)
-      setShowTranslation(false)
-      stop()
-    } else {
-      stop()
-      alert('Great job! You\'ve reviewed all lines. 🎉')
-      setCurrentIndex(0)
-    }
-  }
-  
-  const handleNext = () => {
-    if (currentIndex < group.lines.length - 1) {
-      setCurrentIndex(prev => prev + 1)
-      setShowTranslation(false)
-      stop()
-    }
-  }
-  
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1)
-      setShowTranslation(false)
-      stop()
-    }
-  }
   
   return (
     <div className="h-full flex flex-col bg-white">
@@ -111,20 +176,34 @@ function Memorize() {
         />
       </div>
       
-      {/* Card - Compact */}
+      {/* Card - With Swipe Support */}
       <div className="flex-1 flex flex-col p-3">
         <div 
-          className="flex-1 bg-gray-50 rounded-2xl p-4 flex flex-col justify-center"
+          ref={cardRef}
+          className="flex-1 bg-gray-50 rounded-2xl p-4 flex flex-col justify-center select-none"
           onClick={() => setShowTranslation(!showTranslation)}
+          {...swipeHandlers}
         >
-          {/* Arabic Text - Compact */}
-          <p 
-            className="leading-normal text-gray-900 text-center"
-            style={{ fontSize: `${fontSize}px`, fontFamily: font.family }}
-            dir="rtl"
-          >
-            {currentLine.arabic}
-          </p>
+          {/* Arabic Text - With Word Highlighting */}
+          <div className="leading-normal text-center">
+            {speaking ? (
+              <WordHighlighter
+                text={currentLine.arabic}
+                isPlaying={speaking}
+                duration={audioDuration}
+                fontFamily={font.family}
+                fontSize={fontSize}
+              />
+            ) : (
+              <span 
+                dir="rtl"
+                style={{ fontFamily: font.family, fontSize: `${fontSize}px` }}
+                className="text-gray-900"
+              >
+                {currentLine.arabic}
+              </span>
+            )}
+          </div>
           
           {/* Translation - Compact */}
           <div className="mt-3 text-center">
@@ -136,6 +215,11 @@ function Memorize() {
               <p className="text-gray-400 text-xs">Tap to show translation</p>
             ) : null}
           </div>
+          
+          {/* Swipe Hint */}
+          <p className="text-center text-xs text-gray-400 mt-4">
+            ← Swipe left/right →
+          </p>
           
           {/* Play Button - At the end of card */}
           <button
@@ -162,8 +246,10 @@ function Memorize() {
             <button
               key={idx}
               onClick={() => {
+                light()
                 setCurrentIndex(idx)
                 setShowTranslation(false)
+                setAudioDuration(0)
                 stop()
               }}
               className={`h-1.5 rounded-full transition-all ${
@@ -180,19 +266,19 @@ function Memorize() {
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => handleStatus('not_started')}
-            className="py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium text-sm touch-btn"
+            className="py-2.5 rounded-lg bg-gray-100 text-gray-700 font-medium text-sm touch-btn active:scale-95 transition-transform"
           >
             😅 Forgot
           </button>
           <button
             onClick={() => handleStatus('learning')}
-            className="py-2.5 rounded-lg bg-yellow-100 text-yellow-700 font-medium text-sm touch-btn"
+            className="py-2.5 rounded-lg bg-yellow-100 text-yellow-700 font-medium text-sm touch-btn active:scale-95 transition-transform"
           >
             🤔 Partial
           </button>
           <button
             onClick={() => handleStatus('memorized')}
-            className="py-2.5 rounded-lg bg-emerald-100 text-emerald-700 font-medium text-sm touch-btn"
+            className="py-2.5 rounded-lg bg-emerald-100 text-emerald-700 font-medium text-sm touch-btn active:scale-95 transition-transform"
           >
             ✅ Got it
           </button>
@@ -203,14 +289,14 @@ function Memorize() {
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="flex-1 py-2 rounded-lg border border-gray-200 text-gray-600 text-sm touch-btn disabled:opacity-40"
+            className="flex-1 py-2 rounded-lg border border-gray-200 text-gray-600 text-sm touch-btn disabled:opacity-40 active:scale-95 transition-transform"
           >
             ← Prev
           </button>
           <button
             onClick={handleNext}
             disabled={currentIndex === group.lines.length - 1}
-            className="flex-1 py-2 rounded-lg border border-gray-200 text-gray-600 text-sm touch-btn disabled:opacity-40"
+            className="flex-1 py-2 rounded-lg border border-gray-200 text-gray-600 text-sm touch-btn disabled:opacity-40 active:scale-95 transition-transform"
           >
             Next →
           </button>

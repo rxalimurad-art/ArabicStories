@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useStore } from '../hooks/useStore'
+import { useHaptic } from '../hooks/useHaptic'
 
 const TAG_COLORS = {
   nahw: 'bg-blue-100 text-blue-700 border-blue-200',
@@ -20,7 +21,13 @@ const TAG_LABELS = {
 
 function Home() {
   const { groups, loading, getGroupProgress, MAIN_TAGS } = useStore()
+  const { light } = useHaptic()
   const [selectedTag, setSelectedTag] = useState('all')
+  
+  const handleTagSelect = (tag) => {
+    light()
+    setSelectedTag(tag)
+  }
   
   // Filter groups by selected tag
   const filteredGroups = groups
@@ -48,7 +55,7 @@ function Home() {
       {/* Tag Filter */}
       <div className="flex flex-wrap gap-2">
         <button
-          onClick={() => setSelectedTag('all')}
+          onClick={() => handleTagSelect('all')}
           className={`px-3 py-1.5 rounded-full text-sm font-medium touch-btn transition-colors ${
             selectedTag === 'all'
               ? 'bg-gray-800 text-white'
@@ -60,7 +67,7 @@ function Home() {
         {MAIN_TAGS.map(tag => (
           <button
             key={tag}
-            onClick={() => setSelectedTag(tag)}
+            onClick={() => handleTagSelect(tag)}
             className={`px-3 py-1.5 rounded-full text-sm font-medium touch-btn transition-colors border ${
               selectedTag === tag
                 ? TAG_COLORS[tag]
