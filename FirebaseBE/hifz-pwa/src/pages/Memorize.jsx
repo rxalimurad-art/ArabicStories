@@ -11,14 +11,13 @@ function Memorize() {
   const { groupId } = useParams()
   const navigate = useNavigate()
   const { groups, updateLineStatus, getGroupProgress } = useStore()
-  const { speak, stop, speaking } = useSpeech()
+  const { speak, stop, speaking, currentWordIndex } = useSpeech()
   const { font, fontSize } = useFont()
   const { light, medium, success, error: hapticError } = useHaptic()
   
   const group = groups.find(g => g.id === groupId)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showTranslation, setShowTranslation] = useState(false)
-  const [audioDuration, setAudioDuration] = useState(0)
   const cardRef = useRef(null)
   
   // Stop audio on unmount
@@ -26,18 +25,10 @@ function Memorize() {
     return () => stop()
   }, [stop])
   
-  // Estimate audio duration for word highlighting (TTS ~120 WPM)
-  const estimateDuration = useCallback((text) => {
-    const wordCount = text.trim().split(/\s+/).length
-    return (wordCount / 2) + 0.5 // ~2 words per second + padding
-  }, [])
-  
   const handlePlay = useCallback(() => {
     light()
-    const duration = estimateDuration(group?.lines[currentIndex]?.arabic || '')
-    setAudioDuration(duration)
     speak(group.lines[currentIndex].arabic)
-  }, [group, currentIndex, speak, light, estimateDuration])
+  }, [group, currentIndex, speak, light])
   
   const handleStatus = useCallback((status) => {
     // Haptic feedback based on status
@@ -50,7 +41,6 @@ function Memorize() {
     if (currentIndex < group.lines.length - 1) {
       setCurrentIndex(prev => prev + 1)
       setShowTranslation(false)
-      setAudioDuration(0)
       stop()
     } else {
       stop()
@@ -60,7 +50,6 @@ function Memorize() {
         if (confirm('Great job! You\'ve reviewed all lines. Start over?')) {
           setCurrentIndex(0)
           setShowTranslation(false)
-          setAudioDuration(0)
         }
       }, 100)
     }
@@ -71,7 +60,6 @@ function Memorize() {
       light()
       setCurrentIndex(prev => prev + 1)
       setShowTranslation(false)
-      setAudioDuration(0)
       stop()
     }
   }, [currentIndex, group, stop, light])
@@ -81,7 +69,6 @@ function Memorize() {
       light()
       setCurrentIndex(prev => prev - 1)
       setShowTranslation(false)
-      setAudioDuration(0)
       stop()
     }
   }, [currentIndex, stop, light])
@@ -189,8 +176,7 @@ function Memorize() {
             {speaking ? (
               <WordHighlighter
                 text={currentLine.arabic}
-                isPlaying={speaking}
-                duration={audioDuration}
+                currentWordIndex={currentWordIndex}
                 fontFamily={font.family}
                 fontSize={fontSize}
               />

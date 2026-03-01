@@ -24,7 +24,10 @@ export function useSpeech() {
   const [config, setConfig] = useState(getConfig())
   const [error, setError] = useState(null)
   const [lastVoiceUsed, setLastVoiceUsed] = useState(null)
+  const [audioDuration, setAudioDuration] = useState(0)
+  const [currentWordIndex, setCurrentWordIndex] = useState(-1)
   const audioRef = useRef(null)
+  const utteranceRef = useRef(null)
   
   const webSupported = 'speechSynthesis' in window
   
@@ -61,13 +64,35 @@ export function useSpeech() {
     const arabicVoice = voices.find(v => v.lang.includes('ar'))
     if (arabicVoice) utterance.voice = arabicVoice
     
+    utteranceRef.current = utterance
+    
+    // Estimate duration based on word count and rate
+    const words = text.trim().split(/\s+/).length
+    const estimatedDuration = (words / 2.5) * (1 / rate) // ~2.5 words/sec at normal rate
+    setAudioDuration(estimatedDuration)
+    
     utterance.onstart = () => {
       setSpeaking(true)
+      setCurrentWordIndex(0)
       setError(null)
       setLastVoiceUsed('Browser TTS')
     }
-    utterance.onend = () => setSpeaking(false)
-    utterance.onerror = () => setSpeaking(false)
+    utterance.onboundary = (event) => {
+      // Update word index based on character position
+      if (event.name === 'word') {
+        const textBefore = text.substring(0, event.charIndex)
+        const wordIndex = textBefore.trim().split(/\s+/).filter(w => w.length > 0).length
+        setCurrentWordIndex(wordIndex)
+      }
+    }
+    utterance.onend = () => {
+      setSpeaking(false)
+      setCurrentWordIndex(-1)
+    }
+    utterance.onerror = () => {
+      setSpeaking(false)
+      setCurrentWordIndex(-1)
+    }
     
     window.speechSynthesis.speak(utterance)
   }, [webSupported])
@@ -103,13 +128,36 @@ export function useSpeech() {
           const newAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`)
           audioRef.current = newAudio
           
+          // Set duration when metadata is loaded
+          newAudio.onloadedmetadata = () => {
+            setAudioDuration(newAudio.duration)
+          }
+          
           newAudio.onended = () => {
             setSpeaking(false)
+            setCurrentWordIndex(-1)
             setLastVoiceUsed(data.voice || voiceToUse)
           }
           newAudio.onerror = () => {
             setSpeaking(false)
+            setCurrentWordIndex(-1)
             setError('Audio playback failed')
+          }
+          
+          // Track playback progress for word highlighting
+          const trackProgress = () => {
+            if (newAudio.duration && newAudio.currentTime) {
+              const progress = newAudio.currentTime / newAudio.duration
+              const words = text.trim().split(/\s+/).length
+              const wordIndex = Math.floor(progress * words)
+              setCurrentWordIndex(Math.min(wordIndex, words - 1))
+            }
+            if (!newAudio.paused && !newAudio.ended) {
+              requestAnimationFrame(trackProgress)
+            }
+          }
+          newAudio.onplay = () => {
+            trackProgress()
           }
           
           await newAudio.play()
@@ -153,6 +201,7 @@ export function useSpeech() {
       window.speechSynthesis.cancel()
     }
     setSpeaking(false)
+    setCurrentWordIndex(-1)
   }, [webSupported])
   
   const updateConfig = useCallback((newConfig) => {
@@ -171,6 +220,8 @@ export function useSpeech() {
     webSupported,
     error,
     lastVoiceUsed,
+    audioDuration,
+    currentWordIndex,
     clearError: () => setError(null)
   }
 }

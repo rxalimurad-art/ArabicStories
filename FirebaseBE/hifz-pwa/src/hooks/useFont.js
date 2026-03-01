@@ -47,7 +47,7 @@ export const DEFAULT_FONT = 'scheherazade'
 
 // Font size options (px)
 export const FONT_SIZE_MIN = 14
-export const FONT_SIZE_MAX = 48
+export const FONT_SIZE_MAX = 100
 export const FONT_SIZE_DEFAULT = 20
 
 export function useFont() {
