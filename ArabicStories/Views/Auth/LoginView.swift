@@ -103,7 +103,7 @@ struct LoginView: View {
     private var headerSection: some View {
         VStack(spacing: 16) {
             // App Icon with glow
-            Image("AppIcon")
+            Image("Appicon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)
