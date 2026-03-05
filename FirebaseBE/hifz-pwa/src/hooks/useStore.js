@@ -11,6 +11,7 @@ import {
   serverTimestamp 
 } from 'firebase/firestore'
 import { db } from '../firebase'
+import { getStaticGroupsWithStatus, updateStaticLineStatus } from '../data/sarf-static'
 
 const COLLECTION_NAME = 'hifz_groups'
 
@@ -18,9 +19,15 @@ const COLLECTION_NAME = 'hifz_groups'
 export const MAIN_TAGS = ['nahw', 'sarf', 'quran', 'dua', 'hadith']
 
 export function useStore() {
-  const [groups, setGroups] = useState([])
+  const [firebaseGroups, setFirebaseGroups] = useState([])
+  const [staticGroups, setStaticGroups] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  
+  // Initialize static Sarf groups
+  useEffect(() => {
+    setStaticGroups(getStaticGroupsWithStatus())
+  }, [])
   
   // Subscribe to Firestore updates
   useEffect(() => {
@@ -33,9 +40,10 @@ export function useStore() {
           id: doc.id,
           ...doc.data(),
           lines: doc.data().lines || [],
-          tags: doc.data().tags || []
+          tags: doc.data().tags || [],
+          isStatic: false
         }))
-        setGroups(groupsData)
+        setFirebaseGroups(groupsData)
         setLoading(false)
       },
       (err) => {
@@ -48,7 +56,10 @@ export function useStore() {
     return () => unsubscribe()
   }, [])
   
-  // Group operations
+  // Merge static and Firebase groups
+  const groups = [...staticGroups, ...firebaseGroups]
+  
+  // Group operations (Firebase only)
   const addGroup = useCallback(async (name, tags = []) => {
     try {
       const docRef = await addDoc(collection(db, COLLECTION_NAME), {
@@ -66,6 +77,14 @@ export function useStore() {
   }, [])
   
   const updateGroupTags = useCallback(async (groupId, tags) => {
+    // Check if it's a static group
+    const staticGroup = staticGroups.find(g => g.id === groupId)
+    if (staticGroup) {
+      // Static groups don't support tag editing
+      console.log('Cannot edit tags for static Sarf groups')
+      return
+    }
+    
     try {
       const groupRef = doc(db, COLLECTION_NAME, groupId)
       await updateDoc(groupRef, {
@@ -76,22 +95,38 @@ export function useStore() {
       console.error('Error updating tags:', err)
       throw err
     }
-  }, [])
+  }, [staticGroups])
   
   const deleteGroup = useCallback(async (groupId) => {
+    // Check if it's a static group
+    const staticGroup = staticGroups.find(g => g.id === groupId)
+    if (staticGroup) {
+      // Static groups cannot be deleted
+      console.log('Cannot delete static Sarf groups')
+      return
+    }
+    
     try {
       await deleteDoc(doc(db, COLLECTION_NAME, groupId))
     } catch (err) {
       console.error('Error deleting group:', err)
       throw err
     }
-  }, [])
+  }, [staticGroups])
   
   // Line operations
   const addLine = useCallback(async (groupId, arabic, translation = '') => {
+    // Check if it's a static group
+    const staticGroup = staticGroups.find(g => g.id === groupId)
+    if (staticGroup) {
+      // Static groups don't support adding lines
+      console.log('Cannot add lines to static Sarf groups')
+      return
+    }
+    
     try {
       const groupRef = doc(db, COLLECTION_NAME, groupId)
-      const group = groups.find(g => g.id === groupId)
+      const group = firebaseGroups.find(g => g.id === groupId)
       
       if (!group) throw new Error('Group not found')
       
@@ -111,12 +146,30 @@ export function useStore() {
       console.error('Error adding line:', err)
       throw err
     }
-  }, [groups])
+  }, [firebaseGroups, staticGroups])
   
   const updateLineStatus = useCallback(async (groupId, lineId, status) => {
+    // Check if it's a static group
+    const staticGroup = staticGroups.find(g => g.id === groupId)
+    if (staticGroup) {
+      // Update in localStorage
+      updateStaticLineStatus(groupId, lineId, status)
+      // Update local state
+      setStaticGroups(prev => prev.map(g => {
+        if (g.id === groupId) {
+          return {
+            ...g,
+            lines: g.lines.map(l => l.id === lineId ? { ...l, status } : l)
+          }
+        }
+        return g
+      }))
+      return
+    }
+    
     try {
       const groupRef = doc(db, COLLECTION_NAME, groupId)
-      const group = groups.find(g => g.id === groupId)
+      const group = firebaseGroups.find(g => g.id === groupId)
       
       if (!group) throw new Error('Group not found')
       
@@ -132,12 +185,20 @@ export function useStore() {
       console.error('Error updating line:', err)
       throw err
     }
-  }, [groups])
+  }, [firebaseGroups, staticGroups])
   
   const deleteLine = useCallback(async (groupId, lineId) => {
+    // Check if it's a static group
+    const staticGroup = staticGroups.find(g => g.id === groupId)
+    if (staticGroup) {
+      // Static groups don't support deleting lines
+      console.log('Cannot delete lines from static Sarf groups')
+      return
+    }
+    
     try {
       const groupRef = doc(db, COLLECTION_NAME, groupId)
-      const group = groups.find(g => g.id === groupId)
+      const group = firebaseGroups.find(g => g.id === groupId)
       
       if (!group) throw new Error('Group not found')
       
@@ -151,7 +212,7 @@ export function useStore() {
       console.error('Error deleting line:', err)
       throw err
     }
-  }, [groups])
+  }, [firebaseGroups, staticGroups])
   
   // Get progress
   const getGroupProgress = useCallback((groupId) => {

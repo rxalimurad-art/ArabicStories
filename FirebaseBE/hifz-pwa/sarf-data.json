@@ -1,0 +1,152 @@
+{
+  "groups": [
+    {
+      "name": "🔥 Sarf - The 3 Main Families (Fa'ala)",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "فَعَلَ / يَفْعَلُ - Pattern: Past 'a', Present 'a' (U-AAA-U)",
+          "translation": "Example: سَلَمَ / يَسْلَمُ (to be safe). Ism fa'il: مُسْلِم, Ism maf'ool: مُسْلَم"
+        },
+        {
+          "arabic": "فَعَلَ / يَفْعِلُ - Pattern: Past 'a', Present 'i' (UUU-I-A)",
+          "translation": "Example: عَلِمَ / يَعْلَمُ (to know). Ism fa'il: مُعْلِم, Ism maf'ool: مُعْلَم"
+        },
+        {
+          "arabic": "فَعُلَ / يَفْعُلُ - Pattern: Past 'u', Present 'u' (U-AAA-U)",
+          "translation": "Example: جَهُدَ / يَجْهُدُ (to strive). Ism fa'il: مُجْهِد, Ism maf'ool: مُجْهَد"
+        }
+      ]
+    },
+    {
+      "name": "⚡ Sarf - The 2 Heavy Families (Taf'eel)",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "فَعَّلَ / يُفَعِّلُ - Shadda on second letter (تَفْعِيل)",
+          "translation": "Example: عَلَّمَ / يُعَلِّمُ (to teach). Ism fa'il: مُعَلِّم, Ism maf'ool: مُعَلَّم"
+        },
+        {
+          "arabic": "فَاعَلَ / يُفَاعِلُ - Alif after first letter (مُفَاعَلَة)",
+          "translation": "Example: سَأَلَ / يُسَائِلُ (to ask). Ism fa'il: مُسَائِل, Ism maf'ool: مَسْئُول"
+        }
+      ]
+    },
+    {
+      "name": "🌙 Sarf - The 3 Hamza Families (Af'ala)",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "أَفْعَلَ / يُفْعِلُ - Hamza at start, present has kasra (إفْعَال)",
+          "translation": "Example: أَقْبَلَ / يُقْبِلُ (to approach). Ism fa'il: مُقْبِل, Ism maf'ool: مُقْبَل"
+        },
+        {
+          "arabic": "أَفْعَلَ / يُفْعَلُ - Hamza at start, present has fatha (إفْعَال)",
+          "translation": "Example: أَنْقَذَ / يُنْقَذُ (to save). Ism fa'il: مُنْقِذ, Ism maf'ool: مُنْقَذ"
+        },
+        {
+          "arabic": "اسْتَفْعَلَ / يَسْتَفْعِلُ - Istif'aal pattern (اسْتِفْعَال)",
+          "translation": "Example: اسْتَغْفَرَ / يَسْتَغْفِرُ (to seek forgiveness). Ism fa'il: مُسْتَغْفِر"
+        }
+      ]
+    },
+    {
+      "name": "✨ Sarf - The 6 Small Families",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "فَعَلَ / يَفْعُلُ - Light pattern (خَفَّفَ) - sukoon on second",
+          "translation": "Example: رَصَنَ / يَرْصُنُ (to anchor). Ism fa'il: رَاصِن, Ism maf'ool: مَرْصُون"
+        },
+        {
+          "arabic": "فَعَلَ / يَفْعِلُ - Light pattern (حَفِظَ) - kasra on second",
+          "translation": "Example: حَفِظَ / يَحْفِظُ (to protect). Ism fa'il: حَافِظ, Ism maf'ool: مَحْفُوظ"
+        },
+        {
+          "arabic": "فَعِلَ / يَفْعَلُ - Kasra in past, fatha in present",
+          "translation": "Example: بَرِضَ / يَبْرَضُ. Ism fa'il: بَارِض, Ism maf'ool: مَبْرُوض"
+        },
+        {
+          "arabic": "فَعِلَ / يَفْعَلُ - Pattern: عَمِسَ / يَعْمَسُ (dry up)",
+          "translation": "Ism fa'il: عَامِس, Ism maf'ool: مَعْمُوس. This is a rare pattern"
+        },
+        {
+          "arabic": "فَعُلَ / يَفْعُلُ - Pattern: بَسَحَ / يَبْسَحُ (to wash away)",
+          "translation": "Ism fa'il: بَاسِح, Ism maf'ool: مَبْسُوح. Rare intransitive pattern"
+        },
+        {
+          "arabic": "فَعُلَ / يَفْعُلُ - Pattern: كَرُمَ / يَكْرُمُ (to be generous)",
+          "translation": "Ism fa'il: كَرِيم, Ism maf'ool: مَكْرُوم. Color/defect pattern (صِفَة مُشْبِهَة)"
+        }
+      ]
+    },
+    {
+      "name": "🧠 Sarf - Command & Forbidding Forms",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "أَمْر (Command) - Drop the ي from present tense",
+          "translation": "افْعَلْ (Do!) - from يَفْعَلُ. اُكْتُبْ (Write!) - from يَكْتُبُ. اُدْخُلْ (Enter!) - from يَدْخُلُ"
+        },
+        {
+          "arabic": "نَهْي (Forbidding) - لَا + present jussive (سُكُون)",
+          "translation": "لا تَفْعَلْ (Don't do!) - لَا + تَفْعَلْ. لا تَكْتُبْ (Don't write!) - لَا + تَكْتُبْ"
+        },
+        {
+          "arabic": "مَصْدَر (Verbal Noun/Idea) - The abstract concept",
+          "translation": "فِعْلٌ (doing), فَاعِلٌ (doer), مَفْعُولٌ (done-to). Example: كِتَابَة (writing), قِرَاءَة (reading)"
+        },
+        {
+          "arabic": "زَمَان وَمَكَان (Time & Place) - مَفْعَل / مَفْعِل",
+          "translation": "مَفْعَل: مَسْجِد (place of sujood), مَقْبَرَة (cemetery). مَفْعِل: مَلْعَب (playground), مَشْرَب (drinking place)"
+        }
+      ]
+    },
+    {
+      "name": "📊 Sarf - The 14 Forms Summary",
+      "tags": ["sarf"],
+      "lines": [
+        {
+          "arabic": "Form I: فَعَلَ / يَفْعَلُ - The base/root meaning",
+          "translation": "Example: كَتَبَ / يَكْتُبُ (to write). This is where all verbs start"
+        },
+        {
+          "arabic": "Form II: فَعَّلَ / يُفَعِّلُ - Intensive or transitive",
+          "translation": "Example: كَسَّرَ (to smash) from كَسَرَ (to break). Makes intransitive → transitive"
+        },
+        {
+          "arabic": "Form III: فَاعَلَ / يُفَاعِلُ - Mutual/reciprocal action",
+          "translation": "Example: كَاتَبَ (to correspond) from كَتَبَ (to write). Mutual action between two"
+        },
+        {
+          "arabic": "Form IV: أَفْعَلَ / يُفْعِلُ - Causative (make someone do)",
+          "translation": "Example: أَخْرَجَ (to bring out) from خَرَجَ (to exit). Causes the action in another"
+        },
+        {
+          "arabic": "Form V: تَفَعَّلَ / يَتَفَعَّلُ - Reflexive of Form II",
+          "translation": "Example: تَعَلَّمَ (to learn) from عَلَّمَ (to teach). Self-benefiting action"
+        },
+        {
+          "arabic": "Form VI: تَفَاعَلَ / يَتَفَاعَلُ - Reflexive of Form III",
+          "translation": "Example: تَكَاتَبَ (to exchange letters). Mutual action done by oneself"
+        },
+        {
+          "arabic": "Form VII: انْفَعَلَ / يَنْفَعِلُ - Passive/reflexive of Form I",
+          "translation": "Example: انْكَسَرَ (to become broken). Intransitive, happens to oneself"
+        },
+        {
+          "arabic": "Form VIII: افْتَعَلَ / يَفْتَعِلُ - Self-directed action",
+          "translation": "Example: اِفْتَحَرَ (to dig for oneself). Direct benefit to oneself"
+        },
+        {
+          "arabic": "Form IX: افْعَلَّ / يَفْعَلُّ - Color/defect (rare)",
+          "translation": "Example: احْمَرَّ / يَحْمَرُّ (to become red). Only for colors and defects"
+        },
+        {
+          "arabic": "Form X: اسْتَفْعَلَ / يَسْتَفْعِلُ - Seek/request",
+          "translation": "Example: اسْتَعْلَمَ (to ask for information) from عَلِمَ (to know). Seeking the action"
+        }
+      ]
+    }
+  ]
+}

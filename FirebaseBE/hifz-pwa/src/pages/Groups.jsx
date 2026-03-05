@@ -138,10 +138,10 @@ function Groups() {
     setSaveError(null)
   }
   
-  const renderTags = (tags) => {
+  const renderTags = (tags, isStatic) => {
     if (!tags || tags.length === 0) return null
     return (
-      <div className="flex flex-wrap gap-1 mt-2">
+      <div className="flex flex-wrap gap-1 mt-2 items-center">
         {tags.map(tag => (
           <span 
             key={tag} 
@@ -150,6 +150,11 @@ function Groups() {
             {TAG_LABELS[tag] || tag}
           </span>
         ))}
+        {isStatic && (
+          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-500 ml-1">
+            📚 Built-in
+          </span>
+        )}
       </div>
     )
   }
@@ -210,7 +215,7 @@ function Groups() {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h4 className="font-medium text-gray-900">{group.name}</h4>
-                      {renderTags(group.tags)}
+                      {renderTags(group.tags, group.isStatic)}
                       <p className="text-sm text-gray-500 mt-2">
                         {group.lines?.length || 0} lines
                       </p>
@@ -323,32 +328,44 @@ function Groups() {
       )}
       
       <div className="flex-1 overflow-y-auto p-4 pb-20 space-y-6">
-        {/* Tags Section */}
-        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <h3 className="font-semibold text-gray-900 mb-3">Tags</h3>
-          <div className="flex flex-wrap gap-2">
-            {MAIN_TAGS.map(tag => (
-              <button
-                key={tag}
-                onClick={() => {
-                  const newTags = (group.tags || []).includes(tag)
-                    ? (group.tags || []).filter(t => t !== tag)
-                    : [...(group.tags || []), tag]
-                  handleUpdateGroupTags(group.id, newTags)
-                }}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium touch-btn transition-colors ${
-                  (group.tags || []).includes(tag)
-                    ? TAG_COLORS[tag]
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                {(group.tags || []).includes(tag) && '✓ '}{TAG_LABELS[tag]}
-              </button>
-            ))}
+        {group.isStatic ? (
+          /* Static Group Notice */
+          <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+            <p className="text-blue-800 text-sm">
+              <span className="font-medium">📚 Built-in Sarf Group</span>
+              <br />
+              This is a static learning group. You can study and track progress, but cannot edit or delete it.
+            </p>
           </div>
-        </div>
+        ) : (
+          /* Tags Section */
+          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <h3 className="font-semibold text-gray-900 mb-3">Tags</h3>
+            <div className="flex flex-wrap gap-2">
+              {MAIN_TAGS.map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => {
+                    const newTags = (group.tags || []).includes(tag)
+                      ? (group.tags || []).filter(t => t !== tag)
+                      : [...(group.tags || []), tag]
+                    handleUpdateGroupTags(group.id, newTags)
+                  }}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium touch-btn transition-colors ${
+                    (group.tags || []).includes(tag)
+                      ? TAG_COLORS[tag]
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {(group.tags || []).includes(tag) && '✓ '}{TAG_LABELS[tag]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         
-        {/* Add Line */}
+        {!group.isStatic && (
+        /* Add Line */
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <h3 className="font-semibold text-gray-900 mb-3">Add New Line</h3>
           <form onSubmit={handleAddLine} className="space-y-3">
@@ -377,6 +394,7 @@ function Groups() {
             </button>
           </form>
         </div>
+        )}
         
         {/* Lines List */}
         <div>
@@ -400,9 +418,11 @@ function Groups() {
                         <p className="text-sm text-gray-500 mt-2">{line.translation}</p>
                       )}
                     </div>
+                    (!group.isStatic) && (
                     <button onClick={() => handleDeleteLine(group.id, line.id)} className="text-red-400 text-lg touch-btn w-8 h-8 flex items-center justify-center rounded hover:bg-red-50 flex-shrink-0">
                       ×
                     </button>
+                    )
                   </div>
                 </div>
               ))}
