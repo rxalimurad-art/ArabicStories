@@ -84,7 +84,7 @@ function SarfFamilies() {
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3"
+      <div className="flex-1 overflow-y-auto px-4 pt-4 pb-safe space-y-3"
            onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
         {/* Title card */}
