@@ -1,0 +1,25 @@
+{
+  "id": "ibrahim",
+  "title": "قصة سيدنا إبراهيم عليه السلام",
+  "titleEnglish": "Story of Prophet Ibrahim (AS)",
+  "description": "من كسر الأصنام - Who Broke the Idols",
+  "chapterCount": 16,
+  "chapters": [
+    {"order": 1, "file": "01-seller-of-idols.json"},
+    {"order": 2, "file": "02-son-of-azar.json"},
+    {"order": 3, "file": "03-advice-of-ibrahim.json"},
+    {"order": 4, "file": "04-ibrahim-breaks-idols.json"},
+    {"order": 5, "file": "05-who-did-this.json"},
+    {"order": 6, "file": "06-cold-fire.json"},
+    {"order": 7, "file": "07-who-is-my-lord.json"},
+    {"order": 8, "file": "08-allah-is-my-lord.json"},
+    {"order": 9, "file": "09-call-of-ibrahim.json"},
+    {"order": 10, "file": "10-before-the-king.json"},
+    {"order": 11, "file": "11-calling-his-father.json"},
+    {"order": 12, "file": "12-to-makkah.json"},
+    {"order": 13, "file": "13-well-of-zamzam.json"},
+    {"order": 14, "file": "14-dream-of-ibrahim.json"},
+    {"order": 15, "file": "15-the-kaaba.json"},
+    {"order": 16, "file": "16-bayt-al-maqdis.json"}
+  ]
+}

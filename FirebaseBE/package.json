@@ -1,5 +1,42 @@
 {
+  "name": "arabicstories-firebase-backend",
+  "version": "1.0.0",
+  "description": "Firebase backend for Arabic Stories and Hifz memorization PWAs",
+  "main": "functions/index.js",
+  "scripts": {
+    "dev": "firebase emulators:start",
+    "deploy": "firebase deploy",
+    "deploy:qasas": "firebase deploy --only hosting:qasas-stories",
+    "deploy:hifz": "firebase deploy --only hosting:hifz-app",
+    "deploy:functions": "firebase deploy --only functions",
+    "serve": "firebase serve",
+    "serve:qasas": "firebase serve --only hosting:qasas-stories",
+    "serve:hifz": "firebase serve --only hosting:hifz-app",
+    "build": "echo 'Building all PWAs...' && cd qasas-pwa && npm run build && cd .. && if [ -d hifz-pwa ]; then cd hifz-pwa && npm run build && cd ..; fi",
+    "validate": "firebase projects:list && firebase hosting:sites:list",
+    "setup": "firebase login && firebase use arabicstories-82611"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/ArabicStories.git"
+  },
+  "keywords": [
+    "arabic",
+    "stories",
+    "pwa",
+    "firebase",
+    "islamic",
+    "education",
+    "quran",
+    "memorization",
+    "hifz"
+  ],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
     "firebase-tools": "^15.8.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "qasas-un-nabiyeen-pwa",
+  "version": "1.0.0",
+  "description": "Arabic Stories PWA with Interactive Translation",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Build completed - static files ready'",
+    "deploy": "firebase deploy --only hosting"
+  },
+  "keywords": [
+    "arabic",
+    "stories",
+    "pwa",
+    "islamic",
+    "education",
+    "translation"
+  ],
+  "author": "",
+  "license": "MIT"
+}

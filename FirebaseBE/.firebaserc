@@ -2,6 +2,17 @@
   "projects": {
     "prd": "arabicstories-82611"
   },
-  "targets": {},
+  "targets": {
+    "arabicstories-82611": {
+      "hosting": {
+        "qasas-stories": [
+          "qasas-un-nabiyeen"
+        ],
+        "hifz-app": [
+          "hifz-memorization"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

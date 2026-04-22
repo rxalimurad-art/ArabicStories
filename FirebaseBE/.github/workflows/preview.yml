@@ -1,0 +1,110 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy_preview:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build Hifz PWA (if available)
+      if: hashFiles('hifz-pwa/**') != ''
+      run: |
+        cd hifz-pwa
+        npm ci
+        npm run build
+        cd ..
+
+    - name: Deploy Arabic Stories Preview
+      id: deploy_qasas
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ARABICSTORIES_82611 }}'
+        projectId: arabicstories-82611
+        target: qasas-stories
+      env:
+        FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+    - name: Deploy Hifz App Preview (if available)
+      id: deploy_hifz
+      if: hashFiles('hifz-pwa/dist/**') != ''
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ARABICSTORIES_82611 }}'
+        projectId: arabicstories-82611
+        target: hifz-app
+      env:
+        FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+    - name: Comment Preview URLs
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const qasasUrl = '${{ steps.deploy_qasas.outputs.details_url }}' || 'Not deployed';
+          const hifzUrl = '${{ steps.deploy_hifz.outputs.details_url }}' || 'Not available';
+          
+          let comment = '## 🔍 Preview Deployment\n\n';
+          comment += '### 📚 Arabic Stories (قصص الأنبياء)\n';
+          comment += `**Preview URL**: ${qasasUrl}\n\n`;
+          
+          if (hifzUrl !== 'Not available') {
+            comment += '### 📖 Hifz Memorization App\n';
+            comment += `**Preview URL**: ${hifzUrl}\n\n`;
+          }
+          
+          comment += '### 🧪 Test Checklist\n';
+          comment += '- [ ] PWA can be installed on mobile\n';
+          comment += '- [ ] Works offline after initial load\n';
+          comment += '- [ ] Arabic text displays correctly\n';
+          comment += '- [ ] Word translation clicks work\n';
+          comment += '- [ ] Diacritics toggle functions\n';
+          comment += '- [ ] Chapter navigation works\n';
+          comment += '- [ ] Responsive design on mobile/tablet\n';
+          comment += '- [ ] RTL layout displays properly\n\n';
+          
+          comment += '*Preview will be automatically cleaned up when PR is closed.*';
+          
+          // Update existing comment if it exists
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const existingComment = comments.find(comment => 
+            comment.body.includes('🔍 Preview Deployment')
+          );
+          
+          if (existingComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existingComment.id,
+              body: comment
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+          }

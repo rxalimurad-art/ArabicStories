@@ -1,0 +1,200 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Install Functions Dependencies
+      if: hashFiles('functions/package.json') != ''
+      run: |
+        cd functions
+        npm ci
+        cd ..
+
+    - name: Validate Firebase Configuration
+      run: |
+        echo "Validating Firebase configuration..."
+        if [ ! -f "firebase.json" ]; then
+          echo "❌ firebase.json not found"
+          exit 1
+        fi
+        
+        if [ ! -f ".firebaserc" ]; then
+          echo "❌ .firebaserc not found"
+          exit 1
+        fi
+        
+        echo "✅ Firebase configuration files found"
+
+    - name: Validate Arabic Stories PWA
+      run: |
+        echo "Validating Arabic Stories PWA..."
+        cd qasas-pwa
+        
+        # Check required PWA files
+        required_files=("index.html" "manifest.json" "sw.js" "script.js" "styles.css")
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Required file $file not found"
+            exit 1
+          fi
+        done
+        
+        # Validate manifest.json
+        if ! node -e "JSON.parse(require('fs').readFileSync('manifest.json', 'utf8'))"; then
+          echo "❌ Invalid manifest.json"
+          exit 1
+        fi
+        
+        # Check for Arabic content in script.js
+        if ! grep -q "قصة سيدنا إبراهيم" script.js; then
+          echo "❌ Arabic content not found in script.js"
+          exit 1
+        fi
+        
+        echo "✅ Arabic Stories PWA validation passed"
+        cd ..
+
+    - name: Validate Hifz PWA (if exists)
+      if: hashFiles('hifz-pwa/**') != ''
+      run: |
+        echo "Validating Hifz PWA..."
+        cd hifz-pwa
+        
+        if [ -f "package.json" ]; then
+          npm ci
+          
+          # Run build to ensure it works
+          if npm run build; then
+            echo "✅ Hifz PWA build successful"
+          else
+            echo "❌ Hifz PWA build failed"
+            exit 1
+          fi
+        fi
+        
+        cd ..
+
+    - name: Lint and Format Check
+      run: |
+        echo "Running code quality checks..."
+        
+        # Check for common issues in HTML files
+        find . -name "*.html" -not -path "./node_modules/*" -not -path "./functions/node_modules/*" | xargs grep -l "document.write" && {
+          echo "⚠️  Warning: document.write found in HTML files"
+        } || true
+        
+        # Check for console.log in production files (warning only)
+        find . -name "*.js" -not -path "./node_modules/*" -not -path "./functions/node_modules/*" -not -name "sw.js" | xargs grep -l "console.log" && {
+          echo "⚠️  Warning: console.log found in JavaScript files"
+        } || true
+        
+        echo "✅ Code quality checks completed"
+
+    - name: Security Scan
+      run: |
+        echo "Running basic security checks..."
+        
+        # Check for hardcoded secrets (basic patterns)
+        if grep -r -i -E "(api_key|apikey|api-key|password|secret|token)" . \
+           --exclude-dir=node_modules \
+           --exclude-dir=.git \
+           --exclude="*.md" \
+           --exclude="ci.yml" \
+           --exclude="deploy.yml"; then
+          echo "⚠️  Warning: Potential secrets found in files"
+        fi
+        
+        # Check for HTTP URLs (should use HTTPS)
+        if find . -name "*.html" -o -name "*.js" -o -name "*.json" | xargs grep -l "http://" | grep -v node_modules; then
+          echo "⚠️  Warning: HTTP URLs found, consider using HTTPS"
+        fi
+        
+        echo "✅ Security checks completed"
+
+    - name: Test PWA Requirements
+      run: |
+        echo "Testing PWA requirements..."
+        
+        # Check manifest.json has required fields
+        cd qasas-pwa
+        node -e "
+          const manifest = JSON.parse(require('fs').readFileSync('manifest.json', 'utf8'));
+          const required = ['name', 'short_name', 'start_url', 'display', 'theme_color', 'icons'];
+          const missing = required.filter(field => !manifest[field]);
+          if (missing.length > 0) {
+            console.error('❌ Missing manifest fields:', missing);
+            process.exit(1);
+          }
+          console.log('✅ PWA manifest validation passed');
+        "
+        
+        # Check service worker registration
+        if ! grep -q "navigator.serviceWorker.register" index.html && ! grep -q "navigator.serviceWorker.register" script.js; then
+          echo "❌ Service worker registration not found"
+          exit 1
+        fi
+        
+        echo "✅ PWA requirements validation passed"
+        cd ..
+
+  firebase-security:
+    runs-on: ubuntu-latest
+    if: hashFiles('firestore.rules') != ''
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Validate Firestore Rules
+      run: |
+        echo "Validating Firestore security rules..."
+        if [ -f "firestore.rules" ]; then
+          firebase firestore:rules:apply --only-rules firestore.rules --project default || {
+            echo "❌ Firestore rules validation failed"
+            exit 1
+          }
+          echo "✅ Firestore rules validation passed"
+        fi
+
+    - name: Validate Functions (if exists)
+      if: hashFiles('functions/**') != ''
+      run: |
+        echo "Validating Firebase Functions..."
+        cd functions
+        npm ci
+        
+        # Run TypeScript compilation if tsconfig.json exists
+        if [ -f "tsconfig.json" ]; then
+          npx tsc --noEmit
+          echo "✅ TypeScript compilation passed"
+        fi
+        
+        echo "✅ Functions validation passed"
