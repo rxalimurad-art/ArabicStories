@@ -1,47 +1,8 @@
-{
-  "id": 8,
-  "order": 8,
-  "title": "٨ - رَبِّي اللهُ",
-  "titleEnglish": "Allah is My Lord",
-  "arabicText": "وَعَرَفَ إِبْرَاهِيمُ أَنَّ اللهَ رَبُّهُ لِأَنَّ اللهَ حَيٌّ لَا يَمُوتُ، وَأَنَّ اللهَ بَاقٍ لَا يَغِيبُ، وَأَنَّ اللهَ قَوِيٌّ لَا يَغْلِبُهُ شَيْءٌ.\nوَعَرَفَ إِبْرَاهِيمُ أَنَّ اللهَ رَبُّ الْكَوْكَبِ، وَأَنَّ اللهَ رَبُّ الْقَمَرِ، وَأَنَّ اللهَ رَبُّ الشَّمْسِ، وَأَنَّ اللهَ رَبُّ الْعَالَمِينَ.\nوَهَدَى اللهُ إِبْرَاهِيمَ وَجَعَلَهُ نَبِيًّا وَخَلِيلًا.\nوَأَمَرَ اللهُ إِبْرَاهِيمَ أَنْ يَدْعُوَ قَوْمَهُ وَيَمْنَعَهُمْ مِنْ عِبَادَةِ الْأَصْنَامِ.",
-  "arabicTextNoHarakat": "وعرف إبراهيم أن الله ربه لأن الله حي لا يموت، وأن الله باق لا يغيب، وأن الله قوي لا يغلبه شيء.\nوعرف إبراهيم أن الله رب الكوكب، وأن الله رب القمر، وأن الله رب الشمس، وأن الله رب العالمين.\nوهدى الله إبراهيم وجعله نبيا وخليلا.\nوأمر الله إبراهيم أن يدعو قومه ويمنعهم من عبادة الأصنام.",
-  "englishTranslation": "Ibrahim knew that Allah was his Lord because Allah is alive and does not die, Allah is eternal and does not disappear, and Allah is strong and nothing can overcome Him. Ibrahim knew that Allah is the Lord of the star, Allah is the Lord of the moon, Allah is the Lord of the sun, and Allah is the Lord of all the worlds. Allah guided Ibrahim and made him a prophet and a close friend. Allah commanded Ibrahim to call his people and prevent them from worshipping idols.",
-  "urduTranslation": "ابراہیم نے جانا کہ اللہ ان کا رب ہے کیونکہ اللہ زندہ ہے اور نہیں مرتا، اللہ باقی ہے اور غائب نہیں ہوتا، اور اللہ طاقتور ہے اور کوئی چیز اس پر غالب نہیں آتی۔ ابراہیم نے جانا کہ اللہ ستارے کا رب ہے، اللہ چاند کا رب ہے، اللہ سورج کا رب ہے، اور اللہ تمام جہانوں کا رب ہے۔ اللہ نے ابراہیم کی رہنمائی کی اور انہیں نبی اور خلیل بنایا۔ اللہ نے ابراہیم کو حکم دیا کہ وہ اپنی قوم کو بلائیں اور انہیں بتوں کی عبادت سے روکیں۔",
-  "wordDictionary": {
-    "وَعَرَفَ": "and knew",
+// Comprehensive translation dictionary for missing words
+const missingTranslations = {
+    // Names and proper nouns
     "إِبْرَاهِيمُ": "Ibrahim",
-    "أَنَّ": "that",
-    "اللهَ": "Allah",
-    "رَبُّهُ": "his Lord",
-    "لِأَنَّ": "because",
-    "حَيٌّ": "alive",
-    "لَا": "not",
-    "يَمُوتُ": "dies",
-    "وَأَنَّ": "and that",
-    "بَاقٍ": "eternal",
-    "يَغِيبُ": "disappears",
-    "قَوِيٌّ": "strong",
-    "يَغْلِبُهُ": "overcomes Him",
-    "شَيْءٌ": "anything",
-    "رَبُّ": "Lord of",
-    "الْكَوْكَبِ": "the star",
-    "الْقَمَرِ": "the moon",
-    "الشَّمْسِ": "the sun",
-    "الْعَالَمِينَ": "the worlds",
-    "وَهَدَى": "and guided",
-    "اللهُ": "Allah",
-    "وَجَعَلَهُ": "and made him",
-    "نَبِيًّا": "a prophet",
-    "وَخَلِيلًا": "and a close friend",
-    "وَأَمَرَ": "and commanded",
-    "أَنْ": "to",
-    "يَدْعُوَ": "call",
-    "قَوْمَهُ": "his people",
-    "وَيَمْنَعَهُمْ": "and prevent them",
-    "مِنْ": "from",
-    "عِبَادَةِ": "worship",
-    "الْأَصْنَامِ": "idols",
-    "إِبْرَاهِيمَ": "Ibrahim",
+    "إِبْرَاهِيمَ": "Ibrahim", 
     "إِبْرَاهِيمُ:": "Ibrahim said:",
     "إِسْمَاعِيلُ": "Ismail",
     "إِسْمَاعِيلَ": "Ismail",
@@ -50,7 +11,10 @@
     "هَاجَرُ:": "Hajar said:",
     "يَعْقُوبَ": "Yaqub (Jacob)",
     "وَيُوسُفُ": "and Yusuf (Joseph)",
+    "اللهُ": "Allah",
     "اللهِ": "Allah",
+    
+    // Common words and particles
     "وَكَانَ": "and was/and there was",
     "كَانَ:": "was/said:",
     "النَّاسُ": "the people",
@@ -74,11 +38,16 @@
     "ابْنِهِ": "his son",
     "نَفْسَهُ:": "himself/he said to himself:",
     "نَفْسِهِ:": "himself/he said to himself:",
-    "الْأَصْنَامَ": "the idols",
+    
+    // Idol-related terms
+    "الْأَصْنَامِ": "the idols",
+    "الْأَصْنَامَ": "the idols", 
     "الْأَصْنَامُ": "the idols",
     "كَثِيرَةٌ": "many",
     "لِلْأَصْنَامِ:": "to the idols:",
     "أَصْنَامًا﴾": "idols",
+    
+    // Speaking and dialogue
     "قَالَ": "said",
     "فَقَالَ:": "so he said:",
     "فَقَالُوا": "so they said",
@@ -91,6 +60,8 @@
     "لِلْمَلِكِ:": "to the king:",
     "الْمَلِكُ:": "the king said:",
     "الْمَلِكَ": "the king",
+    
+    // Actions and verbs
     "وَرَأَى": "and he saw",
     "وَيَرَى": "and he sees",
     "يَسْجُدُ": "prostrates/worships",
@@ -100,16 +71,22 @@
     "وَصَلَّى": "and he prayed",
     "وَبَارَكَ": "and blessed",
     "وَيَغْلِبُهَا": "and overcomes it",
-    "الْقَمَرُ": "the moon",
+    
+    // Celestial objects and time
+    "الْقَمَرُ": "the moon", 
     "وَالْقَمَرُ": "and the moon",
     "وَالشَّمْسُ": "and the sun",
     "وَالْكَوْكَبُ": "and the star",
     "اللَّيْلُ": "the night",
+    
+    // Religious concepts
     "لِلنَّارِ:": "to the fire:",
     "الشَّيْطَانَ﴾": "Satan",
     "وَالَّذِي": "and the One who",
     "وَقَوِيٌّ": "and powerful",
     "وَبَاقٍ": "and remaining",
+    
+    // Quranic quotation markers and verse references
     "﴿": "﴿",
     "﴾": "﴾",
     "﴿قَالُوا": "﴿They said",
@@ -137,8 +114,10 @@
     "عَلَيْكَ﴾": "upon you﴾",
     "أَرَىٰ": "I see",
     "تَرَىٰ": "you see",
+    
+    // Verse numbers and references
     "[الأنبياء:59]": "(Quran 21:59)",
-    "[الأنبياء:60]": "(Quran 21:60)",
+    "[الأنبياء:60]": "(Quran 21:60)", 
     "[الأنبياء:62]": "(Quran 21:62)",
     "[الأنبياء:63]": "(Quran 21:63)",
     "[الأنبياء:68]": "(Quran 21:68)",
@@ -153,9 +132,11 @@
     "[مريم:42]": "(Quran 19:42)",
     "[مريم:44]": "(Quran 19:44)",
     "[مريم:47]": "(Quran 19:47)",
+    
+    // Verse numbers
     "٤٢﴾": "42﴾",
     "٧٢": "72",
-    "٧٣": "73",
+    "٧٣": "73", 
     "٧٤﴾": "74﴾",
     "٧٨": "78",
     "٧٩": "79",
@@ -163,8 +144,12 @@
     "٨١﴾": "81﴾",
     "١٠٢﴾": "102﴾",
     "١٢٧﴾": "127﴾",
+    
+    // Miscellaneous
+    "وَأَنَّ": "and that",
     "وَإِنَّ": "and indeed",
     "وَكَانُوا": "and they were",
     "-": "-"
-  }
-}
+};
+
+module.exports = missingTranslations;
