@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>قصص الأنبياء - Arabic Stories</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2c5530">
@@ -14,8 +14,13 @@
 <body>
     <div class="app">
         <header>
-            <h1>قصص الأنبياء</h1>
-            <p>Arabic Stories with Interactive Translation</p>
+            <div class="header-content">
+                <div class="nav-breadcrumb" id="nav-breadcrumb">
+                    <span class="breadcrumb-item active">قصص الأنبياء</span>
+                </div>
+                <h1 id="main-title">قصص الأنبياء</h1>
+                <p id="subtitle">Arabic Stories with Interactive Translation</p>
+            </div>
         </header>
 
         <main>
@@ -26,9 +31,13 @@
             </section>
 
             <section id="story" class="screen">
-                <div class="story-header">
-                    <button id="back-btn" class="back-btn">← Back</button>
-                    <h2 id="story-title"></h2>
+                <div class="mobile-nav-bar">
+                    <button id="back-btn" class="mobile-back-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <span class="nav-title" id="story-title-nav"></span>
                 </div>
 
                 <div id="chapters-list" class="chapters-list">
@@ -37,9 +46,13 @@
             </section>
 
             <section id="chapter" class="screen">
-                <div class="story-header">
-                    <button id="back-to-story" class="back-btn">← Back to Story</button>
-                    <h2 id="chapter-title"></h2>
+                <div class="mobile-nav-bar">
+                    <button id="back-to-story" class="mobile-back-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <span class="nav-title" id="chapter-title-nav"></span>
                 </div>
 
                 <div class="story-content">
@@ -47,20 +60,11 @@
                         <!-- Arabic chapter content -->
                     </div>
 
-                    <div id="word-translation" class="word-translation hidden">
-                        <div class="translation-content">
-                            <span id="selected-word"></span>
-                            <span id="word-meaning"></span>
-                        </div>
+                    <div id="word-tooltip" class="word-tooltip hidden">
+                        <span id="word-meaning"></span>
                     </div>
 
-                    <div class="story-actions">
-                        <button id="toggle-harakat" class="action-btn secondary">Toggle Arabic Diacritics</button>
-                        <button id="show-translation" class="action-btn">Show Full Translation</button>
-                        <button id="hide-translation" class="action-btn hidden">Hide Translation</button>
-                    </div>
-
-                    <div id="full-translation" class="full-translation hidden">
+                    <div id="full-translation" class="full-translation">
                         <h3>English Translation:</h3>
                         <p id="english-translation"></p>
                         <h3>اردو ترجمہ:</h3>
@@ -72,6 +76,16 @@
 
         <div id="loading" class="loading hidden">
             <div class="spinner"></div>
+        </div>
+
+        <!-- Swipe hint indicator -->
+        <div id="swipe-hint" class="swipe-hint hidden">
+            <div class="swipe-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="m15 18-6-6 6-6"/>
+                </svg>
+            </div>
+            <span>Swipe right to go back</span>
         </div>
     </div>
 

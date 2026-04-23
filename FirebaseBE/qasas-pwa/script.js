@@ -4,7 +4,13 @@ class ArabicStoriesApp {
         this.currentChapter = null;
         this.showHarakat = true;
         this.stories = [];
+        this.isMobile = window.innerWidth <= 768;
+        this.tooltipTimeout = null;
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.minSwipeDistance = 100;
         this.loadStoriesIndex();
+        this.setupMobileEnhancements();
     }
 
     async loadStoriesIndex() {
@@ -69,21 +75,11 @@ class ArabicStoriesApp {
             this.backToStory();
         });
 
-        document.getElementById('show-translation').addEventListener('click', () => {
-            this.showFullTranslation();
-        });
 
-        document.getElementById('hide-translation').addEventListener('click', () => {
-            this.hideFullTranslation();
-        });
-
-        document.getElementById('toggle-harakat').addEventListener('click', () => {
-            this.toggleHarakat();
-        });
 
         document.addEventListener('click', (e) => {
             if (!e.target.classList.contains('arabic-word')) {
-                this.hideWordTranslation();
+                this.hideWordTooltip();
             }
         });
     }
@@ -118,10 +114,12 @@ class ArabicStoriesApp {
         }
         
         this.currentStory = { ...story, ...storyMetadata };
-        document.getElementById('story-title').textContent = this.currentStory.title;
+        document.getElementById('story-title-nav').textContent = this.currentStory.title;
+        this.updateBreadcrumb(['قصص الأنبياء', this.currentStory.title]);
 
         this.populateChaptersList();
         this.showScreen('story');
+        this.showSwipeHint(); // Show hint on first story entry
         this.showLoading(false);
     }
 
@@ -156,7 +154,8 @@ class ArabicStoriesApp {
         }
         
         this.currentChapter = chapterData;
-        document.getElementById('chapter-title').textContent = chapterData.title;
+        document.getElementById('chapter-title-nav').textContent = chapterData.title;
+        this.updateBreadcrumb(['قصص الأنبياء', this.currentStory.title, chapterData.title]);
 
         this.updateArabicText();
 
@@ -180,65 +179,85 @@ class ArabicStoriesApp {
         if (!this.currentChapter) return;
 
         const arabicTextContainer = document.getElementById('arabic-text');
-        const textToShow = this.showHarakat ? this.currentChapter.arabicText : (this.currentChapter.arabicTextNoHarakat || this.currentChapter.arabicText);
-        arabicTextContainer.innerHTML = this.createClickableText(textToShow, this.currentChapter.wordDictionary);
+        arabicTextContainer.innerHTML = this.createClickableText(this.currentChapter.arabicText, this.currentChapter.wordDictionary);
     }
 
     backToStory() {
         this.showScreen('story');
-        this.hideFullTranslation();
-        this.hideWordTranslation();
+        this.hideWordTooltip();
     }
 
-    toggleHarakat() {
-        this.showHarakat = !this.showHarakat;
-        this.updateArabicText();
-
-        const toggleBtn = document.getElementById('toggle-harakat');
-        toggleBtn.textContent = this.showHarakat ? 'Hide Arabic Diacritics' : 'Show Arabic Diacritics';
-    }
 
     createClickableText(text, translations) {
-        const words = text.split(' ');
-        return words.map(word => {
-            const cleanWord = word.replace(/[،.؟!]/g, '');
-            const punctuation = word.replace(cleanWord, '');
+        const sentences = text.split('.');
+        return sentences.map(sentence => {
+            if (!sentence.trim()) return '';
+            
+            const words = sentence.trim().split(' ');
+            const processedWords = words.map(word => {
+                const cleanWord = word.replace(/[،.؟!]/g, '');
+                const punctuation = word.replace(cleanWord, '');
 
-            if (translations[cleanWord]) {
-                return `<span class="arabic-word" data-word="${cleanWord}" data-translation="${translations[cleanWord]}">${cleanWord}</span>${punctuation}`;
-            } else {
-                return `<span class="arabic-word-no-translation">${word}</span>`;
-            }
-        }).join(' ');
+                if (translations[cleanWord]) {
+                    return `<span class="arabic-word" data-word="${cleanWord}" data-translation="${translations[cleanWord]}">${cleanWord}</span>${punctuation}`;
+                } else {
+                    return `<span class="arabic-word-no-translation">${word}</span>`;
+                }
+            });
+            
+            return processedWords.join(' ') + '.';
+        }).filter(sentence => sentence !== '.').join('<br>');
     }
 
-    showWordTranslation(event) {
+    showWordTooltip(event) {
         const wordElement = event.target;
-        const word = wordElement.dataset.word;
         const translation = wordElement.dataset.translation;
 
         if (translation) {
-            document.getElementById('selected-word').textContent = word;
-            document.getElementById('word-meaning').textContent = translation;
-            document.getElementById('word-translation').classList.remove('hidden');
+            // Clear any existing timeout
+            if (this.tooltipTimeout) {
+                clearTimeout(this.tooltipTimeout);
+                this.tooltipTimeout = null;
+            }
+
+            const tooltip = document.getElementById('word-tooltip');
+            const wordMeaning = document.getElementById('word-meaning');
+            
+            wordMeaning.textContent = translation;
+            tooltip.classList.remove('hidden');
+            
+            // Position tooltip above the clicked word with proper spacing
+            const rect = wordElement.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            // Calculate tooltip height to position it properly above the word
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.display = 'block';
+            const tooltipHeight = tooltip.offsetHeight;
+            tooltip.style.visibility = 'visible';
+            tooltip.style.display = '';
+            
+            tooltip.style.left = (rect.left + rect.width / 2 + scrollLeft) + 'px';
+            tooltip.style.top = (rect.top - tooltipHeight - 15 + scrollTop) + 'px';
+
+            // Auto-hide tooltip after 2 seconds
+            this.tooltipTimeout = setTimeout(() => {
+                this.hideWordTooltip();
+            }, 2000);
         }
     }
 
-    hideWordTranslation() {
-        document.getElementById('word-translation').classList.add('hidden');
+    hideWordTooltip() {
+        document.getElementById('word-tooltip').classList.add('hidden');
+        
+        // Clear any pending timeout
+        if (this.tooltipTimeout) {
+            clearTimeout(this.tooltipTimeout);
+            this.tooltipTimeout = null;
+        }
     }
 
-    showFullTranslation() {
-        document.getElementById('full-translation').classList.remove('hidden');
-        document.getElementById('show-translation').classList.add('hidden');
-        document.getElementById('hide-translation').classList.remove('hidden');
-    }
-
-    hideFullTranslation() {
-        document.getElementById('full-translation').classList.add('hidden');
-        document.getElementById('hide-translation').classList.add('hidden');
-        document.getElementById('show-translation').classList.remove('hidden');
-    }
 
     showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(screen => {
@@ -249,8 +268,164 @@ class ArabicStoriesApp {
 
     goHome() {
         this.showScreen('home');
-        this.hideFullTranslation();
-        this.hideWordTranslation();
+        this.hideWordTooltip();
+        this.updateBreadcrumb(['قصص الأنبياء']);
+    }
+
+    updateBreadcrumb(items) {
+        const breadcrumbEl = document.getElementById('nav-breadcrumb');
+        breadcrumbEl.innerHTML = '';
+        
+        items.forEach((item, index) => {
+            const span = document.createElement('span');
+            span.className = 'breadcrumb-item';
+            span.textContent = item;
+            
+            if (index === items.length - 1) {
+                span.classList.add('active');
+            }
+            
+            breadcrumbEl.appendChild(span);
+        });
+        
+        // Update main title for home screen
+        if (items.length === 1) {
+            document.getElementById('main-title').style.display = 'block';
+            document.getElementById('subtitle').style.display = 'block';
+        } else {
+            document.getElementById('main-title').style.display = 'none';
+            document.getElementById('subtitle').style.display = 'none';
+        }
+    }
+
+    setupMobileEnhancements() {
+        // Add touch feedback for mobile devices
+        if (this.isMobile) {
+            // Prevent zoom on double tap
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Add haptic feedback for supported devices
+            this.addHapticFeedback();
+            
+            // Improve scroll behavior
+            document.body.style.webkitOverflowScrolling = 'touch';
+            
+            // Add orientation change handling
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    this.handleOrientationChange();
+                }, 100);
+            });
+
+            // Add swipe navigation
+            this.setupSwipeNavigation();
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth <= 768;
+        });
+    }
+
+    setupSwipeNavigation() {
+        document.addEventListener('touchstart', (e) => {
+            this.touchStartX = e.touches[0].clientX;
+            this.touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            if (!this.touchStartX || !this.touchStartY) return;
+
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = this.touchStartX - touchEndX;
+            const deltaY = this.touchStartY - touchEndY;
+
+            // Only process horizontal swipes (vertical swipes are for scrolling)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > this.minSwipeDistance) {
+                this.handleSwipeNavigation(deltaX > 0 ? 'left' : 'right');
+            }
+
+            // Reset touch coordinates
+            this.touchStartX = 0;
+            this.touchStartY = 0;
+        }, { passive: true });
+    }
+
+    handleSwipeNavigation(direction) {
+        const currentScreen = document.querySelector('.screen.active').id;
+        
+        // Swipe right (back gesture)
+        if (direction === 'right') {
+            if (currentScreen === 'chapter') {
+                this.backToStory();
+            } else if (currentScreen === 'story') {
+                this.goHome();
+            }
+            
+            // Hide swipe hint after first use
+            this.hideSwipeHint();
+        }
+        
+        // Add haptic feedback for navigation
+        if ('vibrate' in navigator) {
+            navigator.vibrate(30);
+        }
+    }
+
+    showSwipeHint() {
+        if (this.isMobile) {
+            const swipeHint = document.getElementById('swipe-hint');
+            swipeHint.classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                this.hideSwipeHint();
+            }, 5000);
+        }
+    }
+
+    hideSwipeHint() {
+        document.getElementById('swipe-hint').classList.add('hidden');
+    }
+
+    addHapticFeedback() {
+        // Add haptic feedback for word taps
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('arabic-word') && 'vibrate' in navigator) {
+                navigator.vibrate(50); // Light vibration
+            }
+        });
+
+        // Add haptic feedback for button presses
+        const buttons = document.querySelectorAll('.back-btn, .action-btn, .story-card');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(30);
+                }
+            });
+        });
+    }
+
+    handleOrientationChange() {
+        // Adjust layout based on orientation
+        const isLandscape = window.orientation === 90 || window.orientation === -90;
+        
+        if (isLandscape && this.isMobile) {
+            // Optimize for landscape mode
+            document.body.classList.add('landscape-mobile');
+        } else {
+            document.body.classList.remove('landscape-mobile');
+        }
+        
+        // Re-trigger any layout calculations
+        this.updateArabicText();
     }
 }
 
@@ -259,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('arabic-word')) {
-            app.showWordTranslation(e);
+            app.showWordTooltip(e);
         }
     });
 });
