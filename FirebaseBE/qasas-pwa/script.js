@@ -552,13 +552,13 @@ class ArabicStoriesApp {
         );
 
         if (isCompleted) {
-            btn.textContent = '✓ Chapter Completed';
             btn.classList.add('completed');
             btn.disabled = true;
+            btn.title = 'Chapter Completed';
         } else {
-            btn.textContent = 'Mark Chapter as Complete';
             btn.classList.remove('completed');
             btn.disabled = false;
+            btn.title = 'Mark Chapter as Complete';
         }
     }
 
