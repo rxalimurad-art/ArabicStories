@@ -86,10 +86,53 @@ main {
     display: none;
     max-width: 800px;
     margin: 0 auto;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .screen.active {
     display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.screen.prev {
+    transform: translateX(-100%);
+}
+
+/* Slide animation for smooth transitions */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+.screen.slide-in {
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.screen.slide-out {
+    animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Mobile Navigation Bar */
@@ -225,11 +268,21 @@ main {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+.story-card.completed {
+    border-color: rgba(34, 197, 94, 0.5);
+    background: linear-gradient(145deg, #1e293b, #22543d);
+}
+
 .story-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     border-color: rgba(34, 211, 238, 0.5);
     background: linear-gradient(145deg, #334155, #475569);
+}
+
+.story-card:active {
+    transform: translateY(-2px) scale(0.98);
+    transition: transform 0.1s ease;
 }
 
 .story-card h3 {
@@ -243,6 +296,127 @@ main {
     color: #cbd5e1;
     line-height: 1.6;
     font-size: clamp(0.9rem, 2.5vw, 1rem);
+}
+
+/* Progress tracking styles */
+.story-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.complete-badge {
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.story-progress {
+    margin-top: 0.5rem;
+}
+
+.progress-text {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22d3ee, #0891b2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.chapter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chapter-complete-icon {
+    color: #22c55e;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.chapter-actions {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.complete-btn {
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+    min-height: 52px;
+    touch-action: manipulation;
+}
+
+.complete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+}
+
+.complete-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.complete-btn.completed {
+    background: linear-gradient(145deg, #6b7280, #4b5563);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.complete-btn.completed:hover {
+    transform: none;
+    box-shadow: 0 8px 25px rgba(107, 114, 128, 0.3);
+}
+
+.completion-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 20px 60px rgba(34, 197, 94, 0.4);
+    z-index: 2000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.completion-message.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 /* Story Screen */
@@ -597,6 +771,11 @@ main {
         scroll-behavior: smooth;
     }
     
+    /* Reduce layout shift during transitions */
+    .screen {
+        min-height: calc(100vh - 200px);
+    }
+    
     /* Hide old story header on mobile */
     .story-header {
         display: none;
@@ -632,6 +811,46 @@ main {
     .nav-title {
         font-size: 1rem;
         margin-right: 40px;
+    }
+    
+    /* Mobile progress styles */
+    .story-header-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .complete-badge {
+        align-self: flex-end;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .progress-text {
+        font-size: 0.75rem;
+    }
+    
+    .progress-bar {
+        height: 4px;
+    }
+    
+    .chapter-actions {
+        position: sticky;
+        bottom: 2rem;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        margin: 2rem auto;
+        max-width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    
+    .complete-btn {
+        width: 100%;
+        max-width: 280px;
+        font-size: 1.1rem;
+        padding: 1.2rem 2rem;
     }
     
     .story-content {

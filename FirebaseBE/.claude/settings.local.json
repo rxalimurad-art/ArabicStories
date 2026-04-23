@@ -14,7 +14,8 @@
       "Bash(lsof -i :3001,8080)",
       "Bash(python3 -m http.server 9001)",
       "Bash(python3 -m http.server 8000)",
-      "Bash(python3 -m http.server 3333)"
+      "Bash(python3 -m http.server 3333)",
+      "Bash(python3 -m http.server 5555)"
     ]
   }
 }

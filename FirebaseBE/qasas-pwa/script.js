@@ -9,6 +9,7 @@ class ArabicStoriesApp {
         this.touchStartX = 0;
         this.touchStartY = 0;
         this.minSwipeDistance = 100;
+        this.progress = this.loadProgress();
         this.loadStoriesIndex();
         this.setupMobileEnhancements();
     }
@@ -75,6 +76,10 @@ class ArabicStoriesApp {
             this.backToStory();
         });
 
+        document.getElementById('mark-complete-btn').addEventListener('click', () => {
+            this.markChapterComplete();
+        });
+
 
 
         document.addEventListener('click', (e) => {
@@ -90,11 +95,23 @@ class ArabicStoriesApp {
         storiesList.innerHTML = '';
 
         this.stories.forEach(story => {
+            const completedChapters = this.getCompletedChaptersCount(story.id);
+            const totalChapters = story.chapterCount;
+            const isStoryComplete = completedChapters === totalChapters;
+            
             const storyCard = document.createElement('div');
-            storyCard.className = 'story-card';
+            storyCard.className = `story-card ${isStoryComplete ? 'completed' : ''}`;
             storyCard.innerHTML = `
-                <h3>${story.title}</h3>
-                <p class="story-preview">${story.chapterCount} chapters available</p>
+                <div class="story-header-info">
+                    <h3>${story.title}</h3>
+                    ${isStoryComplete ? '<div class="complete-badge">✓ Complete</div>' : ''}
+                </div>
+                <div class="story-progress">
+                    <p class="progress-text">${completedChapters}/${totalChapters} chapters read</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(completedChapters / totalChapters) * 100}%"></div>
+                    </div>
+                </div>
             `;
             storyCard.addEventListener('click', () => {
                 this.openStory(story);
@@ -118,7 +135,7 @@ class ArabicStoriesApp {
         this.updateBreadcrumb(['قصص الأنبياء', this.currentStory.title]);
 
         this.populateChaptersList();
-        this.showScreen('story');
+        this.showScreen('story', 'forward');
         this.showSwipeHint(); // Show hint on first story entry
         this.showLoading(false);
     }
@@ -130,11 +147,16 @@ class ArabicStoriesApp {
         const sortedChapters = [...this.currentStory.chapters].sort((a, b) => a.order - b.order);
 
         sortedChapters.forEach(chapter => {
+            const isCompleted = this.isChapterCompleted(this.currentStory.id, chapter.order);
+            
             const chapterCard = document.createElement('div');
-            chapterCard.className = 'story-card';
+            chapterCard.className = `story-card ${isCompleted ? 'completed' : ''}`;
             chapterCard.innerHTML = `
-                <h3>Chapter ${chapter.order}</h3>
-                <p class="story-preview">Click to load chapter...</p>
+                <div class="chapter-header">
+                    <h3>Chapter ${chapter.order}</h3>
+                    ${isCompleted ? '<div class="chapter-complete-icon">✓</div>' : ''}
+                </div>
+                <p class="story-preview">${isCompleted ? 'Completed' : 'Click to read chapter...'}</p>
             `;
             chapterCard.addEventListener('click', () => {
                 this.openChapter(chapter);
@@ -162,7 +184,8 @@ class ArabicStoriesApp {
         document.getElementById('english-translation').textContent = chapterData.englishTranslation;
         document.getElementById('urdu-translation').textContent = chapterData.urduTranslation;
 
-        this.showScreen('chapter');
+        this.updateCompleteButton();
+        this.showScreen('chapter', 'forward');
         this.showLoading(false);
     }
     
@@ -183,7 +206,7 @@ class ArabicStoriesApp {
     }
 
     backToStory() {
-        this.showScreen('story');
+        this.showScreen('story', 'backward');
         this.hideWordTooltip();
     }
 
@@ -259,15 +282,65 @@ class ArabicStoriesApp {
     }
 
 
-    showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.remove('active');
-        });
-        document.getElementById(screenId).classList.add('active');
+    showScreen(screenId, direction = 'forward') {
+        const currentScreen = document.querySelector('.screen.active');
+        const nextScreen = document.getElementById(screenId);
+
+        if (currentScreen === nextScreen) return;
+
+        // Prepare next screen
+        nextScreen.style.display = 'block';
+        
+        if (direction === 'forward') {
+            // Forward animation (slide left)
+            if (currentScreen) {
+                currentScreen.classList.add('slide-out');
+            }
+            nextScreen.style.transform = 'translateX(100%)';
+            nextScreen.style.opacity = '0';
+            
+            // Trigger transition
+            requestAnimationFrame(() => {
+                nextScreen.style.transform = 'translateX(0)';
+                nextScreen.style.opacity = '1';
+            });
+        } else {
+            // Backward animation (slide right)
+            if (currentScreen) {
+                currentScreen.style.transform = 'translateX(100%)';
+                currentScreen.style.opacity = '0';
+            }
+            nextScreen.style.transform = 'translateX(-100%)';
+            nextScreen.style.opacity = '0';
+            
+            // Trigger transition
+            requestAnimationFrame(() => {
+                nextScreen.style.transform = 'translateX(0)';
+                nextScreen.style.opacity = '1';
+            });
+        }
+
+        // Clean up after animation
+        setTimeout(() => {
+            // Hide all screens and remove animation classes
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active', 'slide-out', 'slide-in');
+                if (screen !== nextScreen) {
+                    screen.style.display = 'none';
+                    screen.style.transform = '';
+                    screen.style.opacity = '';
+                }
+            });
+            
+            // Activate the new screen
+            nextScreen.classList.add('active');
+            nextScreen.style.transform = '';
+            nextScreen.style.opacity = '';
+        }, 300);
     }
 
     goHome() {
-        this.showScreen('home');
+        this.showScreen('home', 'backward');
         this.hideWordTooltip();
         this.updateBreadcrumb(['قصص الأنبياء']);
     }
@@ -370,11 +443,11 @@ class ArabicStoriesApp {
             
             // Hide swipe hint after first use
             this.hideSwipeHint();
-        }
-        
-        // Add haptic feedback for navigation
-        if ('vibrate' in navigator) {
-            navigator.vibrate(30);
+            
+            // Add haptic feedback for navigation
+            if ('vibrate' in navigator) {
+                navigator.vibrate(30);
+            }
         }
     }
 
@@ -426,6 +499,88 @@ class ArabicStoriesApp {
         
         // Re-trigger any layout calculations
         this.updateArabicText();
+    }
+
+    // Progress tracking methods
+    loadProgress() {
+        const saved = localStorage.getItem('qasas-progress');
+        return saved ? JSON.parse(saved) : {};
+    }
+
+    saveProgress() {
+        localStorage.setItem('qasas-progress', JSON.stringify(this.progress));
+    }
+
+    markChapterComplete() {
+        if (!this.currentStory || !this.currentChapter) return;
+
+        const storyId = this.currentStory.id;
+        const chapterOrder = this.currentChapter.order || this.currentChapter.chapterOrder;
+
+        if (!this.progress[storyId]) {
+            this.progress[storyId] = [];
+        }
+
+        if (!this.progress[storyId].includes(chapterOrder)) {
+            this.progress[storyId].push(chapterOrder);
+            this.saveProgress();
+            this.updateCompleteButton();
+            
+            // Add haptic feedback
+            if ('vibrate' in navigator) {
+                navigator.vibrate(50);
+            }
+
+            // Show completion message
+            this.showCompletionMessage();
+        }
+    }
+
+    isChapterCompleted(storyId, chapterOrder) {
+        return this.progress[storyId] && this.progress[storyId].includes(chapterOrder);
+    }
+
+    getCompletedChaptersCount(storyId) {
+        return this.progress[storyId] ? this.progress[storyId].length : 0;
+    }
+
+    updateCompleteButton() {
+        const btn = document.getElementById('mark-complete-btn');
+        const isCompleted = this.isChapterCompleted(
+            this.currentStory.id,
+            this.currentChapter.order || this.currentChapter.chapterOrder
+        );
+
+        if (isCompleted) {
+            btn.textContent = '✓ Chapter Completed';
+            btn.classList.add('completed');
+            btn.disabled = true;
+        } else {
+            btn.textContent = 'Mark Chapter as Complete';
+            btn.classList.remove('completed');
+            btn.disabled = false;
+        }
+    }
+
+    showCompletionMessage() {
+        // Create completion message
+        const message = document.createElement('div');
+        message.className = 'completion-message';
+        message.innerHTML = '✓ Chapter completed!';
+        document.body.appendChild(message);
+
+        // Show with animation
+        setTimeout(() => {
+            message.classList.add('show');
+        }, 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            message.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 300);
+        }, 3000);
     }
 }
 
