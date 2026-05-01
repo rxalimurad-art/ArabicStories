@@ -55,8 +55,8 @@ textarea[dir="rtl"] {
 /* Print Styles - All families in table format */
 @media print {
   @page {
-    size: A4 portrait;
-    margin: 0.4cm;
+    size: A4 landscape;
+    margin: 0.8cm;
   }
   
   /* Reset */
@@ -69,8 +69,8 @@ textarea[dir="rtl"] {
   
   body, html, #root {
     font-family: 'Times New Roman', serif !important;
-    font-size: 8pt !important;
-    line-height: 1.2 !important;
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
     overflow: visible !important;
     height: auto !important;
   }
@@ -80,11 +80,11 @@ textarea[dir="rtl"] {
     text-align: center;
     margin-bottom: 0.5cm;
     border-bottom: 2px solid black;
-    padding-bottom: 0.2cm;
+    padding-bottom: 0.3cm;
   }
   
   .print-title h1 {
-    font-size: 14pt;
+    font-size: 18pt;
     font-weight: bold;
     margin: 0;
   }
@@ -93,24 +93,27 @@ textarea[dir="rtl"] {
   .print-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 7pt;
+    font-size: 9pt;
+    page-break-inside: auto;
   }
   
   .print-table th {
     background: #f0f0f0;
     border: 1px solid black;
-    padding: 0.2cm;
+    padding: 0.3cm;
     text-align: center;
     font-weight: bold;
-    font-size: 7pt;
+    font-size: 8pt;
+    line-height: 1.2;
   }
   
   .print-table td {
     border: 1px solid #ccc;
-    padding: 0.15cm;
+    padding: 0.25cm;
     text-align: center;
     vertical-align: middle;
-    font-size: 7pt;
+    font-size: 9pt;
+    line-height: 1.3;
   }
   
   .family-cell {
@@ -173,33 +176,60 @@ textarea[dir="rtl"] {
   }
   
   .type-cell {
-    font-size: 6pt;
+    font-size: 7pt;
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
-    width: 8%;
+    width: 6%;
+    line-height: 1.2;
   }
   
   .pattern-cell {
     direction: rtl;
     font-family: 'Times New Roman', serif;
-    font-size: 9pt;
+    font-size: 10pt;
     font-weight: bold;
     color: #666;
     font-style: italic;
     background: #f0f0f0 !important;
   }
   
-  /* Column widths for the alternating table (11 columns now) */
-  .print-table th:nth-child(1) { width: 7%; }  /* Family */
-  .print-table th:nth-child(2) { width: 7%; }  /* Type */
-  .print-table th:nth-child(3) { width: 9%; }  /* Root/Pattern */
-  .print-table th:nth-child(4) { width: 10%; } /* Past */
-  .print-table th:nth-child(5) { width: 10%; } /* Present */
-  .print-table th:nth-child(6) { width: 11%; } /* Masdar (Active) */
-  .print-table th:nth-child(7) { width: 9%; }  /* Past Pass */
-  .print-table th:nth-child(8) { width: 9%; }  /* Present Pass */
-  .print-table th:nth-child(9) { width: 11%; } /* Masdar (Passive) */
-  .print-table th:nth-child(10) { width: 9%; } /* Command */
-  .print-table th:nth-child(11) { width: 8%; } /* Ism Fa'il */
+  .arabic-cell {
+    direction: rtl;
+    font-family: 'Times New Roman', serif;
+    font-size: 10pt;
+    font-weight: bold;
+  }
+  
+  /* Column widths for logical order (12 columns) */
+  .print-table th:nth-child(1) { width: 10%; }  /* Family */
+  .print-table th:nth-child(2) { width: 8%; }   /* Active Past */
+  .print-table th:nth-child(3) { width: 8%; }   /* Active Present */
+  .print-table th:nth-child(4) { width: 8%; }   /* Active Masdar */
+  .print-table th:nth-child(5) { width: 8%; }   /* Ism Fa'il */
+  .print-table th:nth-child(6) { width: 8%; }   /* Passive Past */
+  .print-table th:nth-child(7) { width: 8%; }   /* Passive Present */
+  .print-table th:nth-child(8) { width: 8%; }   /* Passive Masdar */
+  .print-table th:nth-child(9) { width: 8%; }   /* Ism Maf'ul */
+  .print-table th:nth-child(10) { width: 7%; }  /* Command */
+  .print-table th:nth-child(11) { width: 7%; }  /* Prohibition */
+  .print-table th:nth-child(12) { width: 8%; }  /* Time/Place */
+  
+  .root {
+    font-size: 7pt;
+    color: #666;
+    font-weight: bold;
+  }
+  
+  .meaning {
+    font-size: 6pt;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .subtype {
+    font-size: 6pt;
+    font-style: italic;
+    color: #666;
+  }
 }

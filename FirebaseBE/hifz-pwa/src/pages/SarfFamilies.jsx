@@ -94,16 +94,17 @@ function SarfFamilies() {
           <thead>
             <tr>
               <th>Family</th>
-              <th>Type</th>
-              <th>Root/Pattern</th>
-              <th>Past</th>
-              <th>Present</th>
-              <th>Masdar (Active)</th>
-              <th>Past Pass.</th>
-              <th>Present Pass.</th>
-              <th>Masdar (Passive)</th>
-              <th>Command</th>
+              <th>Active Past</th>
+              <th>Active Present</th>
+              <th>Active Masdar</th>
               <th>Ism Fa'il</th>
+              <th>Passive Past</th>
+              <th>Passive Present</th>
+              <th>Passive Masdar</th>
+              <th>Ism Maf'ul</th>
+              <th>Command</th>
+              <th>Prohibition</th>
+              <th>Time/Place</th>
             </tr>
           </thead>
           <tbody>
@@ -112,17 +113,13 @@ function SarfFamilies() {
                 {/* Abstract Pattern Row */}
                 <tr key={`abstract-${family.id}`} className="abstract-row">
                   <td className="family-cell abstract-family">
-                    Family {family.familyNum}
+                    Family {family.familyNum} Abstract فعل
                     {family.subtypeLabel && (
                       <>
                         <br />
                         <span className="subtype">{family.subtypeLabel}</span>
                       </>
                     )}
-                  </td>
-                  <td className="type-cell">Abstract فعل</td>
-                  <td className="pattern-cell" dir="rtl">
-                    {family.abstract.past}
                   </td>
                   <td className="arabic-cell" dir="rtl">
                     {family.abstract.past}
@@ -134,6 +131,9 @@ function SarfFamilies() {
                     {family.abstract.masdar}
                   </td>
                   <td className="arabic-cell" dir="rtl">
+                    {family.abstract.ismFaail}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
                     {family.abstract.pastPassive || '—'}
                   </td>
                   <td className="arabic-cell" dir="rtl">
@@ -143,31 +143,33 @@ function SarfFamilies() {
                     {family.abstract.masdar}
                   </td>
                   <td className="arabic-cell" dir="rtl">
+                    {family.abstract.ismMafool || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
                     {family.abstract.amr}
                   </td>
                   <td className="arabic-cell" dir="rtl">
-                    {family.abstract.ismFaail}
+                    {family.abstract.nahy}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.zarf}
                   </td>
                 </tr>
 
                 {/* Actual Forms Row */}
                 <tr key={`actual-${family.id}`} className="actual-row">
                   <td className="family-cell actual-family">
-                    Family {family.familyNum}
+                    Family {family.familyNum} Actual
                     {family.subtypeLabel && (
                       <>
                         <br />
                         <span className="subtype">{family.subtypeLabel}</span>
                       </>
                     )}
-                  </td>
-                  <td className="type-cell">
-                    Actual
                     <br />
                     <span className="meaning">{family.meaning}</span>
-                  </td>
-                  <td className="arabic-cell" dir="rtl">
-                    {family.root}
+                    <br />
+                    <span className="root" dir="rtl">{family.root}</span>
                   </td>
                   <td className="arabic-cell" dir="rtl">
                     {family.forms.past}
@@ -179,6 +181,9 @@ function SarfFamilies() {
                     {family.forms.masdar}
                   </td>
                   <td className="arabic-cell" dir="rtl">
+                    {family.forms.ismFaail}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
                     {family.forms.pastPassive || '—'}
                   </td>
                   <td className="arabic-cell" dir="rtl">
@@ -188,10 +193,16 @@ function SarfFamilies() {
                     {family.forms.masdar}
                   </td>
                   <td className="arabic-cell" dir="rtl">
+                    {family.forms.ismMafool || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
                     {family.forms.amr}
                   </td>
                   <td className="arabic-cell" dir="rtl">
-                    {family.forms.ismFaail}
+                    {family.forms.nahy}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.zarf}
                   </td>
                 </tr>
               </>
