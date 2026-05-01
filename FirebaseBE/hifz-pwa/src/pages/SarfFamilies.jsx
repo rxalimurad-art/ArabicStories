@@ -65,7 +65,7 @@ function SarfFamilies() {
     <div className="h-full flex flex-col bg-white">
 
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between print:hidden">
         <div>
           <h1 className="font-bold text-gray-900">Sarf Families</h1>
           <p className="text-xs text-gray-400" dir="ltr">{idx + 1} of {SARF_FAMILIES.length}</p>
@@ -83,8 +83,125 @@ function SarfFamilies() {
         </div>
       </div>
 
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-4 pt-4 pb-safe space-y-3"
+      {/* Print View - All Families */}
+      <div className="hidden print:block">
+        <div className="print-title">
+          <h1>Sarf Families - Complete Reference</h1>
+        </div>
+        
+        {/* Alternating Abstract and Actual Forms */}
+        <table className="print-table">
+          <thead>
+            <tr>
+              <th>Family</th>
+              <th>Type</th>
+              <th>Root/Pattern</th>
+              <th>Past</th>
+              <th>Present</th>
+              <th>Masdar (Active)</th>
+              <th>Past Pass.</th>
+              <th>Present Pass.</th>
+              <th>Masdar (Passive)</th>
+              <th>Command</th>
+              <th>Ism Fa'il</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SARF_FAMILIES.map((family) => (
+              <>
+                {/* Abstract Pattern Row */}
+                <tr key={`abstract-${family.id}`} className="abstract-row">
+                  <td className="family-cell abstract-family">
+                    Family {family.familyNum}
+                    {family.subtypeLabel && (
+                      <>
+                        <br />
+                        <span className="subtype">{family.subtypeLabel}</span>
+                      </>
+                    )}
+                  </td>
+                  <td className="type-cell">Abstract فعل</td>
+                  <td className="pattern-cell" dir="rtl">
+                    {family.abstract.past}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.past}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.present}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.masdar}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.pastPassive || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.presentPassive || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.masdar}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.amr}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.abstract.ismFaail}
+                  </td>
+                </tr>
+
+                {/* Actual Forms Row */}
+                <tr key={`actual-${family.id}`} className="actual-row">
+                  <td className="family-cell actual-family">
+                    Family {family.familyNum}
+                    {family.subtypeLabel && (
+                      <>
+                        <br />
+                        <span className="subtype">{family.subtypeLabel}</span>
+                      </>
+                    )}
+                  </td>
+                  <td className="type-cell">
+                    Actual
+                    <br />
+                    <span className="meaning">{family.meaning}</span>
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.root}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.past}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.present}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.masdar}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.pastPassive || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.presentPassive || '—'}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.masdar}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.amr}
+                  </td>
+                  <td className="arabic-cell" dir="rtl">
+                    {family.forms.ismFaail}
+                  </td>
+                </tr>
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Screen View - Single Family */}
+      <div className="flex-1 overflow-y-auto px-4 pt-4 pb-safe space-y-3 print:hidden"
            onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
         {/* Title card */}
