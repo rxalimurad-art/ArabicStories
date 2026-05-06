@@ -15,7 +15,19 @@
       "Bash(python3 -m http.server 9001)",
       "Bash(python3 -m http.server 8000)",
       "Bash(python3 -m http.server 3333)",
-      "Bash(python3 -m http.server 5555)"
+      "Bash(python3 -m http.server 5555)",
+      "WebFetch(domain:bayan-rho.vercel.app)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npx playwright *)",
+      "Bash(wait)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['apiResponses'][0]['body'], indent=2, ensure_ascii=False\\)\\)\")",
+      "Bash(curl -s http://localhost:5174)",
+      "Bash(kill %1)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s -o /tmp/test-font.woff2 \"https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/al-qalam-quran-majeed-1.woff2\")",
+      "Read(//tmp/**)",
+      "WebFetch(domain:api-docs.quran.foundation)"
     ]
   }
 }
