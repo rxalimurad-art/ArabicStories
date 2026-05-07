@@ -5,7 +5,40 @@
       "Bash(find:*)",
       "Bash(npm run build)",
       "Bash(npm install)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(chmod +x /Users/amurad/Desktop/ArabicStories/QuranReaderApp/copy_quran_data.sh)",
+      "Bash(./copy_quran_data.sh)",
+      "Bash(npx react-native init QuranReaderAppTemp --template react-native-template-typescript)",
+      "Bash(npx react-native@latest init QuranReaderTemp)",
+      "Bash(npx @react-native-community/cli@latest init QuranReaderTemp)",
+      "Bash(npx @react-native-community/cli@latest init QuranReaderTemp --skip-install)",
+      "Bash(pod install)",
+      "Bash(env /usr/bin/arch -arm64 /bin/bash -c \"pod install\")",
+      "Bash(pod cache clean --all)",
+      "Bash(npx react-native run-ios)",
+      "Bash(npx react-native run-ios --scheme QuranReaderTemp)",
+      "Bash(open ios/QuranReaderApp.xcodeproj)",
+      "Bash(npx react-native start)",
+      "Bash(ulimit -n 65536)",
+      "Bash(npx react-native start --reset-cache)",
+      "Bash(open ios/QuranReaderApp.xcworkspace)",
+      "Bash(pod install --repo-update)",
+      "Bash(npx react-native run-ios --scheme QuranReaderTemp --no-packager)",
+      "Bash(npx react-native init QuranReaderTemp --template react-native-template-typescript)",
+      "Bash(npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs @react-native-async-storage/async-storage react-native-render-html react-native-vector-icons react-native-share)",
+      "Bash(npm install react-native-gesture-handler react-native-screens react-native-safe-area-context)",
+      "Bash(curl -L \"https://github.com/googlefonts/noto-fonts/raw/main/hinted/ttf/NotoNastaliqUrdu/NotoNastaliqUrdu-Regular.ttf\" -o ios/QuranReaderTemp/Fonts/NotoNastaliqUrdu-Regular.ttf)",
+      "Bash(curl -L \"https://github.com/googlefonts/amiri/releases/download/1.000/Amiri-1.000.zip\" -o /tmp/amiri.zip)",
+      "Bash(unzip -o amiri.zip)",
+      "Bash(curl -L \"https://github.com/googlefonts/amiri/raw/main/Amiri-Regular.ttf\" -o ios/QuranReaderTemp/Fonts/Amiri-Regular.ttf)",
+      "Bash(open QuranReaderTemp.xcworkspace)",
+      "Bash(curl -L \"https://fonts.qurancomplex.gov.sa/wp02/wp-content/uploads/2020/01/UthmanicHafs1_Ver18.zip\" -o /tmp/quran_font.zip)",
+      "Bash(curl -L \"https://github.com/aliftype/amiri-quran/raw/master/AmiriQuran-Regular.ttf\" -o ios/QuranReaderTemp/Fonts/AmiriQuran-Regular.ttf)",
+      "Bash(curl -L \"https://github.com/aliftype/amiri-quran/raw/master/AmiriQuran-Regular.ttf\" -o QuranReaderTemp/Fonts/AmiriQuran-Regular.ttf)",
+      "Bash(curl -L \"https://github.com/mustafabindak/fonts/raw/main/Uthmani-Hafs.otf\" -o QuranReaderTemp/Fonts/Uthmani-Hafs.otf)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
     ]
   }
 }

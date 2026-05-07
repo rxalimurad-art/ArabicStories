@@ -1,0 +1,13 @@
+{
+  "name": "bayan-scraper",
+  "version": "1.0.0",
+  "description": "Playwright scraper for bayan-rho.vercel.app",
+  "main": "scrape.js",
+  "scripts": {
+    "scrape": "node scrape.js",
+    "install-browsers": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.44.0"
+  }
+}
