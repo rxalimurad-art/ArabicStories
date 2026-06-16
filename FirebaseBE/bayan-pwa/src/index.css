@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* IndoPak Pakistani Quran font (Quran Foundation CDN) */
+/* IndoPak Pakistani Quran font */
 @font-face {
   font-family: 'IndoPak';
   src: url('https://verses.quran.foundation/fonts/quran/hafs/nastaleeq/indopak/indopak-nastaleeq-waqf-lazim-v4.2.1.woff2') format('woff2'),
@@ -29,79 +29,81 @@
   /* ── Arabic Quran text ─────────────────────────── */
   .arabic-text {
     font-family: 'IndoPak', 'Amiri Quran', serif;
-    font-size: 1.75rem;       /* mobile */
+    font-size: 1.75rem;
     line-height: 3.25rem;
     direction: rtl;
     text-align: center;
     color: #1a1a1a;
   }
-
   @media (min-width: 480px) {
-    .arabic-text {
-      font-size: 2.1rem;
-      line-height: 3.75rem;
-    }
+    .arabic-text { font-size: 2.1rem; line-height: 3.75rem; }
   }
-
   @media (min-width: 640px) {
-    .arabic-text {
-      font-size: 2.4rem;
-      line-height: 4rem;
-    }
+    .arabic-text { font-size: 2.4rem; line-height: 4rem; }
   }
 
   /* ── Urdu text ──────────────────────────────────── */
   .urdu-text {
     font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: 1.15rem;       /* mobile */
+    font-size: 1.1rem;
     line-height: 2.75rem;
     direction: rtl;
     text-align: right;
-    color: #2c2c2c;
+    color: #e2d9f3;
   }
-
   @media (min-width: 640px) {
-    .urdu-text {
-      font-size: 1.35rem;
-      line-height: 3rem;
-    }
+    .urdu-text { font-size: 1.25rem; line-height: 3rem; }
   }
-
   .urdu-text p { margin-bottom: 0.5rem; }
+
+  /* Urdu inside white card (darker) */
+  .urdu-text-dark {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 1.1rem;
+    line-height: 2.75rem;
+    direction: rtl;
+    text-align: right;
+    color: #374151;
+  }
+  @media (min-width: 640px) {
+    .urdu-text-dark { font-size: 1.25rem; line-height: 3rem; }
+  }
 
   /* ── Footnote citation buttons ──────────────────── */
   .footnote-btn {
     @apply inline-flex items-center justify-center;
     font-family: sans-serif;
-    font-size: 0.75rem;
-    color: #b8860b;
-    background: #fef9e7;
-    border: 1px solid #d4a017;
+    font-size: 0.7rem;
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
     border-radius: 4px;
-    padding: 0 4px;
+    padding: 0 5px;
     margin: 0 2px;
     cursor: pointer;
     vertical-align: super;
     line-height: 1.4;
     min-width: 22px;
     min-height: 20px;
+    font-weight: 600;
     transition: background 0.15s;
   }
-  .footnote-btn:hover  { background: #fef08a; }
-  .footnote-btn:active { background: #fde047; }
+  .footnote-btn:hover  { background: #fde68a; }
+  .footnote-btn:active { background: #fcd34d; }
 
   /* ── Tafseer HTML content ───────────────────────── */
   .tafseer-html h5 {
     @apply font-semibold mt-3 mb-1;
     font-family: 'Noto Nastaliq Urdu', serif;
-    color: #166534;
+    color: #6d28d9;
   }
   .tafseer-html p { @apply mb-2; }
 
-  /* ── Bottom-sheet modal (mobile) ────────────────── */
+  /* ── Bottom-sheet modal ─────────────────────────── */
   .modal-backdrop {
     @apply fixed inset-0 z-50 flex items-end sm:items-center justify-center;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
   }
   .modal-sheet {
     @apply bg-white w-full max-h-[85vh] overflow-y-auto
@@ -110,6 +112,15 @@
            shadow-2xl;
   }
   .modal-drag-handle {
-    @apply w-10 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-1 sm:hidden;
+    @apply w-10 h-1 bg-gray-200 rounded-full mx-auto mt-3 mb-1 sm:hidden;
+  }
+
+  /* ── Progress bar ───────────────────────────────── */
+  .progress-bar {
+    @apply h-1.5 rounded-full bg-white/20 overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: linear-gradient(90deg, #a78bfa, #f59e0b);
   }
 }

@@ -3,17 +3,81 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
+    // ── User profiles & data ──────────────────────────────────────────────
+    // /users/{uid}           — profile doc + streak/settings fields
+    // /users/{uid}/sessions  — reading sessions
+    // /users/{uid}/activity  — daily activity logs
+
+    match /users/{uid} {
+      // Any authenticated user can read profiles (friend discovery)
+      allow read: if request.auth != null;
+      // Only the owner can write their own document
+      allow write: if request.auth != null && request.auth.uid == uid;
+
+      match /sessions/{sessionId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+
+      match /activity/{activityId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+
+    // ── Friend requests ───────────────────────────────────────────────────
+    // /friend_requests/{requestId}
+    // Fields: fromUserId, toUserId, status, createdAt
+
+    match /friend_requests/{requestId} {
+      // Read: either party in the request
+      allow read: if request.auth != null &&
+        (resource.data.fromUserId == request.auth.uid ||
+         resource.data.toUserId   == request.auth.uid);
+
+      // Create: sender must be the authenticated user, status must be "pending"
+      allow create: if request.auth != null &&
+        request.resource.data.fromUserId == request.auth.uid &&
+        request.resource.data.status == "pending";
+
+      // Update: only the recipient can accept/decline
+      allow update: if request.auth != null &&
+        resource.data.toUserId == request.auth.uid &&
+        request.resource.data.status in ["accepted", "declined"];
+
+      // Delete: either party can remove (unfriend / cancel request)
+      allow delete: if request.auth != null &&
+        (resource.data.fromUserId == request.auth.uid ||
+         resource.data.toUserId   == request.auth.uid);
+    }
+
+    // ── Conversations / messages ──────────────────────────────────────────
+    // /conversations/{convId}               — conversation metadata
+    // /conversations/{convId}/messages/{id} — individual messages
     //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if true;
+    // convId = [uid1, uid2].sorted().joined(separator: "_")
+
+    function isParticipant(convId) {
+      let parts = convId.split("_");
+      return request.auth.uid in parts;
+    }
+
+    match /conversations/{convId} {
+      allow read, write: if request.auth != null && isParticipant(convId);
+
+      match /messages/{messageId} {
+        allow read: if request.auth != null && isParticipant(convId);
+        allow create: if request.auth != null &&
+          isParticipant(convId) &&
+          request.resource.data.fromUserId == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+
+    // ── Device tokens (FCM) ───────────────────────────────────────────────
+    // /device_tokens/{uid}
+
+    match /device_tokens/{uid} {
+      allow read:  if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null && request.auth.uid == uid;
     }
   }
 }

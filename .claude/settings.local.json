@@ -35,7 +35,8 @@
       "Bash(curl -L \"https://fonts.qurancomplex.gov.sa/wp02/wp-content/uploads/2020/01/UthmanicHafs1_Ver18.zip\" -o /tmp/quran_font.zip)",
       "Bash(curl -L \"https://github.com/aliftype/amiri-quran/raw/master/AmiriQuran-Regular.ttf\" -o ios/QuranReaderTemp/Fonts/AmiriQuran-Regular.ttf)",
       "Bash(curl -L \"https://github.com/aliftype/amiri-quran/raw/master/AmiriQuran-Regular.ttf\" -o QuranReaderTemp/Fonts/AmiriQuran-Regular.ttf)",
-      "Bash(curl -L \"https://github.com/mustafabindak/fonts/raw/main/Uthmani-Hafs.otf\" -o QuranReaderTemp/Fonts/Uthmani-Hafs.otf)"
+      "Bash(curl -L \"https://github.com/mustafabindak/fonts/raw/main/Uthmani-Hafs.otf\" -o QuranReaderTemp/Fonts/Uthmani-Hafs.otf)",
+      "Bash(git push *)"
     ],
     "additionalDirectories": [
       "/tmp"
