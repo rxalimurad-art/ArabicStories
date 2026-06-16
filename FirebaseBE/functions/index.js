@@ -24,12 +24,12 @@ exports.api = onRequest(app);
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 async function getFCMToken(uid) {
-  const doc = await db.collection('device_tokens').doc(uid).get();
+  const doc = await db.collection('bayan_device_tokens').doc(uid).get();
   return doc.exists ? (doc.data().token ?? null) : null;
 }
 
 async function getDisplayName(uid) {
-  const doc = await db.collection('users').doc(uid).get();
+  const doc = await db.collection('bayan_users').doc(uid).get();
   return doc.exists ? (doc.data().displayName ?? 'Someone') : 'Someone';
 }
 
@@ -49,7 +49,7 @@ async function sendPush(token, title, body, data) {
 // ── Bayan: friend request created ─────────────────────────────────────────
 
 exports.onFriendRequestCreated = onDocumentCreated(
-  'friend_requests/{requestId}',
+  'bayan_friend_requests/{requestId}',
   async (event) => {
     const data = event.data.data();
     if (!data || data.status !== 'pending') return;
@@ -73,7 +73,7 @@ exports.onFriendRequestCreated = onDocumentCreated(
 // ── Bayan: friend request accepted ────────────────────────────────────────
 
 exports.onFriendRequestUpdated = onDocumentUpdated(
-  'friend_requests/{requestId}',
+  'bayan_friend_requests/{requestId}',
   async (event) => {
     const before = event.data.before.data();
     const after  = event.data.after.data();
@@ -100,7 +100,7 @@ exports.onFriendRequestUpdated = onDocumentUpdated(
 // ── Bayan: new message sent ───────────────────────────────────────────────
 
 exports.onMessageCreated = onDocumentCreated(
-  'conversations/{convId}/messages/{messageId}',
+  'bayan_conversations/{convId}/messages/{messageId}',
   async (event) => {
     const data = event.data.data();
     if (!data) return;
