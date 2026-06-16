@@ -13,7 +13,7 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -31,15 +31,6 @@ jobs:
           cd functions && npm ci && cd ..
         fi
 
-    - name: Build Hifz PWA
-      run: |
-        if [ -d "hifz-pwa" ]; then
-          cd hifz-pwa
-          npm ci
-          npm run build
-          cd ..
-        fi
-
     - name: Verify Arabic Stories PWA
       run: |
         if [ -d "qasas-pwa" ]; then
@@ -47,17 +38,7 @@ jobs:
           ls -la qasas-pwa/
         fi
 
-    - name: Deploy to Firebase Hosting
-      uses: FirebaseExtended/action-hosting-deploy@v0
-      with:
-        repoToken: '${{ secrets.GITHUB_TOKEN }}'
-        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ARABICSTORIES_82611 }}'
-        projectId: arabicstories-82611
-      env:
-        FIREBASE_CLI_EXPERIMENTS: webframeworks
-
     - name: Deploy Arabic Stories PWA
-      if: success()
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -68,48 +49,26 @@ jobs:
       env:
         FIREBASE_CLI_EXPERIMENTS: webframeworks
 
-    - name: Deploy Hifz PWA (if available)
-      if: success() && hashFiles('hifz-pwa/dist/**') != ''
-      uses: FirebaseExtended/action-hosting-deploy@v0
-      with:
-        repoToken: '${{ secrets.GITHUB_TOKEN }}'
-        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ARABICSTORIES_82611 }}'
-        projectId: arabicstories-82611
-        channelId: live
-        target: hifz-app
-      env:
-        FIREBASE_CLI_EXPERIMENTS: webframeworks
-
     - name: Comment PR Preview URLs
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
         script: |
-          const fs = require('fs');
-          
-          let comment = '## 🚀 Firebase Hosting Preview URLs\n\n';
-          
-          // Add Arabic Stories preview URL
-          comment += '### قصص الأنبياء (Arabic Stories)\n';
-          comment += '- **Preview URL**: https://qasas-un-nabiyeen--pr-${{ github.event.number }}.web.app\n';
-          comment += '- **Target**: `qasas-stories`\n\n';
-          
-          // Add Hifz app preview URL if it exists
-          if (fs.existsSync('hifz-pwa/dist')) {
-            comment += '### 📚 Hifz Memorization App\n';
-            comment += '- **Preview URL**: https://hifz-memorization--pr-${{ github.event.number }}.web.app\n';
-            comment += '- **Target**: `hifz-app`\n\n';
-          }
-          
-          comment += '### 📱 Features:\n';
-          comment += '- ✅ Progressive Web App (PWA)\n';
-          comment += '- ✅ Offline functionality\n';
-          comment += '- ✅ Mobile installation support\n';
-          comment += '- ✅ Arabic RTL layout\n';
-          comment += '- ✅ Interactive word translation\n';
-          comment += '- ✅ Diacritics toggle (harakat)\n\n';
-          comment += '*Preview URLs are available for 7 days after deployment.*';
-          
+          const comment = [
+            '## 🚀 Firebase Hosting Preview URLs\n',
+            '### قصص الأنبياء (Arabic Stories)',
+            '- **Preview URL**: https://qasas-un-nabiyeen--pr-${{ github.event.number }}.web.app',
+            '- **Target**: `qasas-stories`\n',
+            '### 📱 Features:',
+            '- ✅ Progressive Web App (PWA)',
+            '- ✅ Offline functionality',
+            '- ✅ Mobile installation support',
+            '- ✅ Arabic RTL layout',
+            '- ✅ Interactive word translation',
+            '- ✅ Diacritics toggle (harakat)\n',
+            '*Preview URLs are available for 7 days after deployment.*',
+          ].join('\n');
+
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
