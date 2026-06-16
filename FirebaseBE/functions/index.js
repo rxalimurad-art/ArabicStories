@@ -1,4 +1,5 @@
-const functions = require('firebase-functions');
+const { onRequest } = require('firebase-functions/v2/https');
+const { onDocumentCreated, onDocumentUpdated } = require('firebase-functions/v2/firestore');
 const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
@@ -18,7 +19,7 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', service: 'Arabic Stories API' });
 });
 
-exports.api = functions.https.onRequest(app);
+exports.api = onRequest(app);
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -47,10 +48,10 @@ async function sendPush(token, title, body, data) {
 
 // ── Bayan: friend request created ─────────────────────────────────────────
 
-exports.onFriendRequestCreated = functions.firestore
-  .document('friend_requests/{requestId}')
-  .onCreate(async (snap) => {
-    const data = snap.data();
+exports.onFriendRequestCreated = onDocumentCreated(
+  'friend_requests/{requestId}',
+  async (event) => {
+    const data = event.data.data();
     if (!data || data.status !== 'pending') return;
 
     const { fromUserId, toUserId } = data;
@@ -66,15 +67,16 @@ exports.onFriendRequestCreated = functions.firestore
       `${senderName} sent you a friend request`,
       { type: 'friend_request', fromUserId }
     );
-  });
+  }
+);
 
 // ── Bayan: friend request accepted ────────────────────────────────────────
 
-exports.onFriendRequestUpdated = functions.firestore
-  .document('friend_requests/{requestId}')
-  .onUpdate(async (change) => {
-    const before = change.before.data();
-    const after  = change.after.data();
+exports.onFriendRequestUpdated = onDocumentUpdated(
+  'friend_requests/{requestId}',
+  async (event) => {
+    const before = event.data.before.data();
+    const after  = event.data.after.data();
     if (!before || !after) return;
     if (before.status === after.status) return;
     if (after.status !== 'accepted') return;
@@ -92,20 +94,20 @@ exports.onFriendRequestUpdated = functions.firestore
       `${acceptorName} accepted your friend request`,
       { type: 'request_accepted', fromUserId: toUserId }
     );
-  });
+  }
+);
 
 // ── Bayan: new message sent ───────────────────────────────────────────────
 
-exports.onMessageCreated = functions.firestore
-  .document('conversations/{convId}/messages/{messageId}')
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
+exports.onMessageCreated = onDocumentCreated(
+  'conversations/{convId}/messages/{messageId}',
+  async (event) => {
+    const data = event.data.data();
     if (!data) return;
 
     const { fromUserId, body } = data;
-    const convId = context.params.convId;
+    const convId = event.params.convId;
 
-    // convId = "uid1_uid2" (sorted) — recipient is the other uid
     const [uid1, uid2] = convId.split('_');
     const recipientId = uid1 === fromUserId ? uid2 : uid1;
 
@@ -122,4 +124,5 @@ exports.onMessageCreated = functions.firestore
       preview,
       { type: 'message', fromUserId, convId }
     );
-  });
+  }
+);
