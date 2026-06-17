@@ -76,6 +76,13 @@ service cloud.firestore {
       }
     }
 
+    // ── Bayan: device tokens (FCM) ────────────────────────────────────────
+    // Each user owns their token doc; the Cloud Function reads via Admin SDK
+    // (which bypasses rules), so no cross-user read is needed here.
+    match /bayan_device_tokens/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
     // ── Friend requests ───────────────────────────────────────────────────
     // /friend_requests/{requestId}
     // Fields: fromUserId, toUserId, status, createdAt
