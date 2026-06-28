@@ -3,6 +3,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ── Daily Checklist PWA (no-auth, single shared space) ────────────────
+    // Intentionally public read/write: the app has no login and everyone who
+    // opens the URL shares one checklist. Scoped to this collection only so no
+    // other data is exposed. Docs are tiny ({taskKey,date,done,note}).
+    match /checklist_entries/{docId} {
+      allow read, write: if true;
+    }
+
     // ── User profiles & data ──────────────────────────────────────────────
     // /users/{uid}           — profile doc + streak/settings fields
     // /users/{uid}/sessions  — reading sessions
@@ -74,6 +82,14 @@ service cloud.firestore {
           request.resource.data.fromUserId == request.auth.uid;
         allow update, delete: if false;
       }
+    }
+
+    // ── Bayan: user reports (moderation) ──────────────────────────────────
+    // Users can file reports; only moderators (Admin SDK) read/act on them.
+    match /bayan_reports/{reportId} {
+      allow create: if request.auth != null &&
+        request.resource.data.reporterId == request.auth.uid;
+      allow read, update, delete: if false;
     }
 
     // ── Bayan: device tokens (FCM) ────────────────────────────────────────

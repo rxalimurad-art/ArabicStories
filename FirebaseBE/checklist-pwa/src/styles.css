@@ -1,0 +1,370 @@
+:root {
+  --bg: #14171c;
+  --surface: #1c2128;
+  --surface-2: #232a33;
+  --ink: #ece6d8;
+  --muted: #8c8678;
+  --teal: #5fa08e;
+  --gold: #c9a24b;
+  --violet: #9486b4;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --maxw: 540px;
+
+  --font: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.app {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 22px 16px calc(40px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hero__eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero__date {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.15;
+  max-width: 12ch;
+}
+
+/* ── Progress ring ────────────────────────────────────────────────────── */
+
+.ring {
+  position: relative;
+  flex: 0 0 auto;
+  width: 116px;
+  height: 116px;
+  display: grid;
+  place-items: center;
+}
+
+.ring__track {
+  fill: none;
+  stroke: var(--surface-2);
+}
+
+.ring__value {
+  fill: none;
+  stroke: var(--teal);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+}
+
+.ring--complete .ring__value {
+  stroke: var(--gold);
+}
+
+.ring__label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.ring__count {
+  font-size: 30px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ring--complete .ring__count {
+  color: var(--gold);
+}
+
+.ring__total {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ring__done {
+  position: absolute;
+  top: calc(100% + 6px);
+  margin: 0;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--gold);
+}
+
+/* ── Weekly grid ──────────────────────────────────────────────────────── */
+
+.grid {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow-x: auto;
+}
+
+.grid__head,
+.grid__row {
+  display: grid;
+  grid-template-columns: minmax(72px, 1fr) repeat(7, 26px);
+  align-items: center;
+  gap: 6px;
+}
+
+.grid__corner {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.grid__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  border-radius: 8px;
+  padding: 2px 0;
+}
+
+.grid__col--today {
+  background: color-mix(in srgb, var(--gold) 16%, transparent);
+}
+
+.grid__dow {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.grid__dom {
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.grid__name {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid__cell {
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+  border-radius: 6px;
+  background: var(--surface-2);
+  transition: background 0.25s ease;
+}
+
+.grid__cell--on {
+  background: var(--teal);
+}
+
+.grid__cell--today {
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--gold) 60%, transparent);
+}
+
+/* ── Sections + rows ──────────────────────────────────────────────────── */
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.section__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding-left: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.section__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.row--done {
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.row__main {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 14px;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.row__check {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--surface-2);
+  color: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.row--done .row__check {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #14171c;
+}
+
+.row__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row__title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.row__hint {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.row__streak {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  min-width: 34px;
+}
+
+.row__streak-num {
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+
+.row__streak-label {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.row__note {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--surface-2);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 9px 14px;
+}
+
+.row__note::placeholder {
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+.row__note:focus {
+  outline: none;
+  background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+
+.footnote {
+  text-align: center;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+  letter-spacing: 0.03em;
+}
+
+/* ── Focus rings (keyboard) ───────────────────────────────────────────── */
+
+.row__main:focus-visible,
+.row__note:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
