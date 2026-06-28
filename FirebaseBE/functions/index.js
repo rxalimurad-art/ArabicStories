@@ -451,3 +451,67 @@ exports.weeklyChecklistReportNow = functions.https.onRequest(async (req, res) =>
     res.status(500).json({ error: String(e) });
   }
 });
+
+// ── Connect Bayan Qur'an reading → checklist "Daily Qur'an reading" ──────────
+// When this user reads in the Bayan app, the checklist's quran-reading task is
+// auto-completed for that day, so the PWA shows it ticked and streaks stay
+// accurate. Reading lives in bayan_users/{uid}/activity ({ date, versesRead,
+// secondsRead }); a day counts as "read" if verses or seconds > 0.
+
+const BAYAN_READING_UID = 'Y5tVDGDvPMST5fqy9YGBhRneGyU2';
+const QURAN_TASK_KEY = 'quran-reading';
+
+const activityShowsRead = (d) =>
+  (Number(d.versesRead) || 0) > 0 || (Number(d.secondsRead) || 0) > 0;
+
+async function markQuranRead(date) {
+  await db.collection('checklist_entries').doc(`${QURAN_TASK_KEY}__${date}`).set(
+    { taskKey: QURAN_TASK_KEY, date, done: true, source: 'bayan' },
+    { merge: true },                       // preserve any existing note
+  );
+}
+
+// Sync the user's reading for the last `days` days into checklist_entries.
+async function syncQuranReading(days = 60) {
+  const cutoff = karachiDate(new Date(Date.now() - (days - 1) * 24 * 3600 * 1000));
+  const snap = await db.collection('bayan_users').doc(BAYAN_READING_UID)
+    .collection('activity').where('date', '>=', cutoff).get();
+  const readDates = new Set();
+  snap.forEach((doc) => {
+    const d = doc.data();
+    if (d && d.date && activityShowsRead(d)) readDates.add(d.date);
+  });
+  await Promise.all([...readDates].map(markQuranRead));
+  console.log(`syncQuranReading: marked ${readDates.size} reading day(s) since ${cutoff}.`);
+  return { markedDays: readDates.size, cutoff, dates: [...readDates].sort() };
+}
+
+// Real-time: a new/updated reading activity for this user → tick that day.
+exports.syncQuranReadingOnActivity = functions.firestore
+  .document('bayan_users/{uid}/activity/{activityId}')
+  .onWrite(async (change, context) => {
+    if (context.params.uid !== BAYAN_READING_UID) return;
+    const after = change.after.exists ? change.after.data() : null;
+    if (!after || !after.date || !activityShowsRead(after)) return;
+    await markQuranRead(after.date);
+  });
+
+// Nightly self-heal at 00:10 PKT (covers history + any missed triggers).
+exports.syncQuranReadingDaily = onSchedule(
+  { schedule: '10 0 * * *', timeZone: 'Asia/Karachi' },
+  async () => { await syncQuranReading(14); },
+);
+
+// Manual immediate sync (token-guarded) — backfill history now / testing.
+//   /syncQuranReadingNow?token=volution-weekly&days=60
+exports.syncQuranReadingNow = functions.https.onRequest(async (req, res) => {
+  if (req.query.token !== 'volution-weekly') { res.status(403).json({ error: 'forbidden' }); return; }
+  try {
+    const days = Math.min(Number(req.query.days) || 60, 400);
+    const result = await syncQuranReading(days);
+    res.json({ ok: true, ...result });
+  } catch (e) {
+    console.error('syncQuranReadingNow error:', e);
+    res.status(500).json({ error: String(e) });
+  }
+});
