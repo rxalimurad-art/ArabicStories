@@ -18,9 +18,9 @@ export const GROUPS: GroupDef[] = [
  * `key` is the persisted identifier — keep it stable once a task has history.
  */
 export const TASKS: TaskDef[] = [
-  { key: 'arabic-memorization', group: 'deen', title: 'Arabic memorization', hint: '15 min after Fajr' },
+  { key: 'arabic-memorization', group: 'deen', title: 'Arabic memorization', hint: 'auto · Quran Rifqah memorize', auto: true },
   { key: 'bayyinah-lectures', group: 'deen', title: 'Bayyinah lectures', hint: 'watch or review' },
-  { key: 'quran-reading', group: 'deen', title: "Daily Qur'an reading", hint: 'after Maghrib' },
+  { key: 'quran-reading', group: 'deen', title: "Daily Qur'an reading", hint: 'auto · Quran Rifqah reading', auto: true },
 
   { key: 'cap-mobile', group: 'projects', title: 'CAP Mobile', hint: 'client · as scheduled' },
   { key: 'vida-driver', group: 'projects', title: 'VIDA Driver', hint: 'client · as scheduled' },

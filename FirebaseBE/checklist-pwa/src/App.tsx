@@ -92,6 +92,7 @@ export default function App() {
 
   const toggle = useCallback(
     async (t: TaskDef) => {
+      if (t.auto) return; // auto-driven from Quran Rifqah — not manually editable
       const cur = states[t.key];
       if (!cur) return;
       const done = !cur.done;

@@ -322,6 +322,24 @@ body {
   color: var(--muted);
 }
 
+/* Auto-driven tasks (synced from Quran Rifqah) — not manually editable. */
+.row--auto .row__main {
+  cursor: default;
+}
+
+.row__main:disabled {
+  opacity: 1; /* keep done/undone styling readable despite being disabled */
+}
+
+.row__lock {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  color: var(--muted);
+}
+
 .row__note {
   width: 100%;
   border: 0;

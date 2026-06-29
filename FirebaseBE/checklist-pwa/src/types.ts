@@ -6,6 +6,8 @@ export interface TaskDef {
   title: string;
   hint: string;
   group: Group;
+  /** Auto-driven from the Quran Rifqah app (Firestore) — not manually editable here. */
+  auto?: boolean;
 }
 
 /** One task's record for one calendar day. Primary key is [taskKey, date]. */

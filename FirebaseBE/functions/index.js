@@ -460,6 +460,15 @@ exports.weeklyChecklistReportNow = functions.https.onRequest(async (req, res) =>
 
 const BAYAN_READING_UID = 'Y5tVDGDvPMST5fqy9YGBhRneGyU2';
 const QURAN_TASK_KEY = 'quran-reading';
+const ARABIC_TASK_KEY = 'arabic-memorization';
+
+// Mark a checklist task done for a given day (merge — keeps any note).
+async function markChecklistDone(taskKey, date, source) {
+  await db.collection('checklist_entries').doc(`${taskKey}__${date}`).set(
+    { taskKey, date, done: true, source },
+    { merge: true },
+  );
+}
 
 const activityShowsRead = (d) =>
   (Number(d.versesRead) || 0) > 0 || (Number(d.secondsRead) || 0) > 0;
@@ -515,3 +524,29 @@ exports.syncQuranReadingNow = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: String(e) });
   }
 });
+
+// ── Connect Memorize (Quran Rifqah) → checklist "Arabic memorization" ────────
+// When the user marks any memorisation item done, count Arabic memorization as
+// done for that day. Items live in bayan_users/{uid}/remember_groups/{groupId}
+// as an embedded `items` array; each item has `id` and (when done) `isDone:true`.
+const doneItemIds = (group) =>
+  new Set(((group && group.items) || []).filter((it) => it && it.isDone === true).map((it) => it.id));
+
+exports.syncMemorizeToArabicChecklist = functions.firestore
+  .document('bayan_users/{uid}/remember_groups/{groupId}')
+  .onWrite(async (change, context) => {
+    if (context.params.uid !== BAYAN_READING_UID) return;
+    const before = change.before.exists ? change.before.data() : null;
+    const after  = change.after.exists ? change.after.data() : null;
+    if (!after) return;
+
+    const beforeDone = doneItemIds(before);
+    const afterDone  = doneItemIds(after);
+    // Only act when an item transitioned into "done".
+    const newlyDone = [...afterDone].some((id) => !beforeDone.has(id));
+    if (!newlyDone) return;
+
+    const today = karachiDate(new Date());
+    await markChecklistDone(ARABIC_TASK_KEY, today, 'bayan-memorize');
+    console.log(`Arabic memorization marked done for ${today} (memorize item completed).`);
+  });
