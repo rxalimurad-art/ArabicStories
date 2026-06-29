@@ -402,7 +402,7 @@ async function buildAndSendWeeklyChecklist() {
         <div style="font-size:13px;color:#8c8678;margin-top:4px;">check-ins completed · ${pct}% of the week${bestTask ? ` · most consistent: <span style="color:#c9a24b;">${escHtml(bestTask.title)}</span> (${bestTask.count}/7)` : ''}</div>
       </div>
       ${sectionsHtml}
-      <p style="color:#aaa;font-size:11px;margin-top:18px;">Sent automatically every Monday 09:00 PKT · deen-daily-checklist.web.app</p>
+      <p style="color:#aaa;font-size:11px;margin-top:18px;">Sent automatically every Monday 09:00 PKT · Quran Rifqah</p>
     </div>`;
 
   const csv = ['task_key,title,date,done,note']

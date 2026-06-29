@@ -3,12 +3,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Daily Checklist PWA (no-auth, single shared space) ────────────────
-    // Intentionally public read/write: the app has no login and everyone who
-    // opens the URL shares one checklist. Scoped to this collection only so no
-    // other data is exposed. Docs are tiny ({taskKey,date,done,note}).
+    // ── Daily Checklist (native, owner-only) ──────────────────────────────
+    // Personal checklist now lives in the Quran Rifqah app (the public PWA was
+    // removed). Only the owner's account can read/write; Cloud Functions use the
+    // Admin SDK and bypass these rules. Docs are tiny ({taskKey,date,done,note}).
     match /checklist_entries/{docId} {
-      allow read, write: if true;
+      allow read, write: if request.auth != null
+        && request.auth.uid == 'Y5tVDGDvPMST5fqy9YGBhRneGyU2';
     }
 
     // ── User profiles & data ──────────────────────────────────────────────
