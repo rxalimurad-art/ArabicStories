@@ -46,17 +46,17 @@ export function TaskRow({ task, accentVar, state, onToggle, onNote }: Props) {
           <span className="row__hint">{task.hint}</span>
         </span>
 
-        {auto ? (
+        <span className="row__streak" title={`${streak}-day streak`}>
+          <span className="row__streak-num">{streak}</span>
+          <span className="row__streak-label">day{streak === 1 ? '' : 's'}</span>
+        </span>
+
+        {auto && (
           <span className="row__lock" aria-label="Auto-synced" title="Synced automatically — can't edit here">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="5" y="11" width="14" height="9" rx="2" />
               <path d="M8 11V8a4 4 0 0 1 8 0v3" strokeLinecap="round" />
             </svg>
-          </span>
-        ) : (
-          <span className="row__streak" title={`${streak}-day streak`}>
-            <span className="row__streak-num">{streak}</span>
-            <span className="row__streak-label">day{streak === 1 ? '' : 's'}</span>
           </span>
         )}
       </button>

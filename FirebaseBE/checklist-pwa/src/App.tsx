@@ -155,7 +155,7 @@ export default function App() {
         ))}
       </div>
 
-      <footer className="footnote">Stored on this device · works offline</footer>
+      <footer className="footnote">Synced to the cloud · works offline</footer>
     </main>
   );
 }
