@@ -550,3 +550,36 @@ exports.syncMemorizeToArabicChecklist = functions.firestore
     await markChecklistDone(ARABIC_TASK_KEY, today, 'bayan-memorize');
     console.log(`Arabic memorization marked done for ${today} (memorize item completed).`);
   });
+
+// ── Callable: send email ─────────────────────────────────────────────────────
+// data: { htmlBody: string, subject: string, to: string[], cc?: string|string[] }
+exports.sendEmail = functions.https.onCall(async (data) => {
+  const { htmlBody, subject, to, cc } = data || {};
+
+  if (!htmlBody || !subject || !Array.isArray(to) || to.length === 0) {
+    throw new functions.https.HttpsError(
+      'invalid-argument',
+      'htmlBody, subject and a non-empty to[] array are required.'
+    );
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_PASSWORD },
+  });
+
+  try {
+    const info = await transporter.sendMail({
+      from: `Volution Technologies <${GMAIL_USER}>`,
+      to: to.join(', '),
+      ...(cc ? { cc: Array.isArray(cc) ? cc.join(', ') : cc } : {}),
+      subject,
+      html: htmlBody,
+    });
+    console.log(`sendEmail: sent "${subject}" to ${to.join(', ')} (${info.messageId})`);
+    return { ok: true, messageId: info.messageId };
+  } catch (e) {
+    console.error('sendEmail error:', e);
+    throw new functions.https.HttpsError('internal', 'Failed to send email.');
+  }
+});
